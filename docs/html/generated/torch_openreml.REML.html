@@ -238,7 +238,6 @@
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.utils.get_device.html">torch_openreml.utils.get_device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.utils.get_dtype.html">torch_openreml.utils.get_dtype</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.utils.categorical_to_design_matrix.html">torch_openreml.utils.categorical_to_design_matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.utils.augment.html">torch_openreml.utils.augment</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.utils.interaction.html">torch_openreml.utils.interaction</a></li>
 </ul>
@@ -246,6 +245,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../api/example_data.html">Example Datasets</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../change_log.html">Changelog</a></li>
 </ul>
 
 </div>
@@ -370,17 +370,17 @@ provided, the Jacobian is computed via automatic differentiation.</p></li>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:       3.3765, ∥Δ∥: 0.0329, η: 1.00, ∥Δᶜ∥: 0.0329, log 𝓛: -29.6050
-∥∇∥:       0.1086, ∥Δ∥: 0.0011, η: 1.00, ∥Δᶜ∥: 0.0011, log 𝓛: -29.5483 (+0.0567)
-∥∇∥:       0.0001, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -29.5483 (+0.0001)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -29.5483 (+0.0000)
+∥∇∥:       7.1281, ∥Δ∥: 0.0647, η: 1.00, ∥Δᶜ∥: 0.0647, log 𝓛: -31.3238
+∥∇∥:       0.4416, ∥Δ∥: 0.0046, η: 1.00, ∥Δᶜ∥: 0.0046, log 𝓛: -31.0838 (+0.2400)
+∥∇∥:       0.0020, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -31.0827 (+0.0010)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -31.0827 (+0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
 ✓ Converged at iteration 4
 </pre></div>
 </div>
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0.0340]), tensor([-0.1204, -0.0761]))
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0.0692]), tensor([ 0.0352, -0.2596]))
 </pre></div>
 </div>
 </div>

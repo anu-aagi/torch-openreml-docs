@@ -9,7 +9,7 @@
         <title>For R Users - torch-openreml 0.1.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css?v=572af1d6" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=df86a2a8" />
@@ -238,7 +238,6 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.get_device.html">torch_openreml.utils.get_device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.get_dtype.html">torch_openreml.utils.get_dtype</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.categorical_to_design_matrix.html">torch_openreml.utils.categorical_to_design_matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.augment.html">torch_openreml.utils.augment</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.interaction.html">torch_openreml.utils.interaction</a></li>
 </ul>
@@ -246,6 +245,7 @@
 <li class="toctree-l2"><a class="reference internal" href="api/example_data.html">Example Datasets</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="change_log.html">Changelog</a></li>
 </ul>
 
 </div>
@@ -290,13 +290,13 @@
         <article role="main" id="furo-main-content">
           <section id="for-r-users">
 <h1>For R Users<a class="headerlink" href="#for-r-users" title="Link to this heading">¶</a></h1>
-<p>torch-openreml can be used in R via <code class="docutils literal notranslate"><span class="pre">reticulate</span></code>, we recommend using
-torch-openreml in a conda environment.</p>
+<p>torch-openreml can be used in R through the <code class="docutils literal notranslate"><span class="pre">reticulate</span></code> package.
+We recommend installing torch-openreml inside a dedicated conda environment.</p>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
 <section id="install-conda">
 <h3>1. Install Conda<a class="headerlink" href="#install-conda" title="Link to this heading">¶</a></h3>
-<p>You can safely skip this step if you have conda in your system</p>
+<p>You can skip this step if conda is already installed on your system.</p>
 <div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nf">is.null</span><span class="p">(</span><span class="n">reticulate</span><span class="o">:::</span><span class="nf">find_conda</span><span class="p">()[[</span><span class="m">1</span><span class="p">]]))</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">reticulate</span><span class="o">::</span><span class="nf">install_miniconda</span><span class="p">()</span>
 <span class="p">}</span>
@@ -317,15 +317,17 @@ torch-openreml in a conda environment.</p>
 <section id="install-torch-openreml">
 <h3>3. Install torch-openreml<a class="headerlink" href="#install-torch-openreml" title="Link to this heading">¶</a></h3>
 <div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="n">reticulate</span><span class="o">::</span><span class="nf">conda_install</span><span class="p">(</span><span class="s">&quot;torch-openreml&quot;</span><span class="p">,</span>
-<span class="w">                           </span><span class="n">pip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span>
-<span class="w">                           </span><span class="n">packages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;torch-openreml&quot;</span><span class="p">)))</span>
+<span class="w">                          </span><span class="n">pip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span>
+<span class="w">                          </span><span class="n">packages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;torch-openreml&quot;</span><span class="p">)))</span>
 </pre></div>
 </div>
 </section>
 </section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h2>
-<p>We will illustrate the usage using the same example in the getting started.</p>
+<p>The following example mirrors the Getting Started example.
+In R, it is often more convenient to construct design matrices directly
+using <code class="docutils literal notranslate"><span class="pre">model.matrix()</span></code>.</p>
 <div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">reticulate</span><span class="p">)</span>
 <span class="nf">use_condaenv</span><span class="p">(</span><span class="s">&quot;torch-openreml&quot;</span><span class="p">)</span>
 
@@ -359,14 +361,40 @@ torch-openreml in a conda environment.</p>
 
 <span class="n">fit_openreml</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">REML</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
 <span class="n">result</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">torch</span><span class="o">$</span><span class="nf">zeros</span><span class="p">(</span><span class="m">3L</span><span class="p">),</span><span class="w"> </span><span class="n">verbose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2L</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">get_theta</span><span class="p">()</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">V</span><span class="o">$</span><span class="nf">trans_params</span><span class="p">(</span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">get_theta</span><span class="p">())</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">get_beta</span><span class="p">()</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
 </pre></div>
 </div>
 <div class="jupyter_cell docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[1] 1 2 3
-</pre></div>
-</div>
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Makefile [1m[36mbuild[m[m    make.bat [1m[36msource[m[m
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
+∥∇∥:      41.8197, ∥Δ∥: 8.9438, η: 1.00, ∥Δᶜ∥: 8.9438, log 𝓛: -34.3129
+∥∇∥:  315227.5000, ∥Δ∥: 0.8838, η: 1.00, ∥Δᶜ∥: 0.8838, log 𝓛: -201185.4531 (-201151.1402)
+∥∇∥:  119231.8828, ∥Δ∥: 0.8520, η: 1.00, ∥Δᶜ∥: 0.8520, log 𝓛: -71845.0547 (+129340.3984)
+∥∇∥:   44274.7461, ∥Δ∥: 0.8143, η: 1.00, ∥Δᶜ∥: 0.8143, log 𝓛: -26065.9766 (+45779.0781)
+∥∇∥:   16330.8594, ∥Δ∥: 0.7587, η: 1.00, ∥Δᶜ∥: 0.7587, log 𝓛: -9457.3301 (+16608.6465)
+∥∇∥:    6001.5029, ∥Δ∥: 0.7142, η: 1.00, ∥Δᶜ∥: 0.7142, log 𝓛: -3392.9321 (+6064.3979)
+∥∇∥:    2194.9402, ∥Δ∥: 0.7031, η: 1.00, ∥Δᶜ∥: 0.7031, log 𝓛: -1181.3041 (+2211.6281)
+∥∇∥:     793.7997, ∥Δ∥: 0.6952, η: 1.00, ∥Δᶜ∥: 0.6952, log 𝓛: -382.4992 (+798.8049)
+∥∇∥:     278.6937, ∥Δ∥: 0.6715, η: 1.00, ∥Δᶜ∥: 0.6715, log 𝓛: -102.3017 (+280.1975)
+∥∇∥:      90.4135, ∥Δ∥: 0.5957, η: 1.00, ∥Δᶜ∥: 0.5957, log 𝓛: -11.4286 (+90.8731)
+∥∇∥:      23.9223, ∥Δ∥: 0.4006, η: 1.00, ∥Δᶜ∥: 0.4006, log 𝓛:  12.6798 (+24.1084)
+∥∇∥:       3.8675, ∥Δ∥: 0.1392, η: 1.00, ∥Δᶜ∥: 0.1392, log 𝓛:  16.5910 (+3.9112)
+∥∇∥:       0.2448, ∥Δ∥: 0.0157, η: 1.00, ∥Δᶜ∥: 0.0157, log 𝓛:  16.8083 (+0.2173)
+∥∇∥:       0.0103, ∥Δ∥: 0.0007, η: 1.00, ∥Δᶜ∥: 0.0007, log 𝓛:  16.8099 (+0.0017)
+∥∇∥:       0.0004, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8096 (-0.0004)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8103 (+0.0007)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8101 (-0.0002)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8100 (-0.0001)
+
+[∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
+
+✓ Converged at iteration 18
+[1] -0.9727983 -1.3280727 -1.2528644
+[1] 0.14290193 0.07021837 0.08161610
+[1]  4.5182509  0.2978451 -0.4140463
 </pre></div>
 </div>
 </div>

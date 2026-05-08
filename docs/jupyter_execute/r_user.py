@@ -4,6 +4,6 @@
 # In[1]:
 
 
-get_ipython().system('Rscript -e "print(c(1,2,3))"')
-get_ipython().system('ls')
+get_ipython().system('Rscript source/r_user/code.R > source/r_user/output.txt 2>/dev/null')
+get_ipython().system('cat source/r_user/output.txt')
 

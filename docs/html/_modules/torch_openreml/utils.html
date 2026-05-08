@@ -237,7 +237,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.utils.get_device.html">torch_openreml.utils.get_device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.utils.get_dtype.html">torch_openreml.utils.get_dtype</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.utils.categorical_to_design_matrix.html">torch_openreml.utils.categorical_to_design_matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.utils.augment.html">torch_openreml.utils.augment</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.utils.interaction.html">torch_openreml.utils.interaction</a></li>
 </ul>
@@ -245,6 +244,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api/example_data.html">Example Datasets</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../change_log.html">Changelog</a></li>
 </ul>
 
 </div>
@@ -446,73 +446,6 @@
         <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="categorical_to_design_matrix">
-<a class="viewcode-back" href="../../generated/torch_openreml.utils.categorical_to_design_matrix.html#torch_openreml.utils.categorical_to_design_matrix">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">categorical_to_design_matrix</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">drop_first</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Construct a one-hot encoded design matrix from a categorical vector.</span>
-
-<span class="sd">    Each unique level in ``x`` becomes one column in the output matrix.</span>
-<span class="sd">    The column ordering follows ``levels`` if provided, otherwise the</span>
-<span class="sd">    sorted unique values of ``x``.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        x (list or tuple of str or pd.Series): Categorical vector of string labels.</span>
-<span class="sd">        levels (list of str, optional): Explicit level ordering. Must</span>
-<span class="sd">            contain exactly the same unique values as ``x``. Defaults to</span>
-<span class="sd">            the sorted unique values of ``x``.</span>
-<span class="sd">        drop_first (bool, optional): Whether to drop the first column to</span>
-<span class="sd">            avoid multicollinearity. Defaults to ``False``.</span>
-<span class="sd">        dtype (torch.dtype, optional): Desired dtype of the matrix.</span>
-<span class="sd">                Defaults to the PyTorch default dtype.</span>
-<span class="sd">        device (torch.device, optional): Desired device of the matrix.</span>
-<span class="sd">            Defaults to the PyTorch default device.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        torch.Tensor: One-hot encoded matrix of shape</span>
-<span class="sd">        ``(len(x), len(levels))`` or ``(len(x), len(levels) - 1)`` if</span>
-<span class="sd">        ``drop_first=True``.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        ValueError: If ``levels`` does not match the number of unique</span>
-<span class="sd">            values in ``x``.</span>
-
-<span class="sd">    Example:</span>
-
-<span class="sd">    .. jupyter-execute::</span>
-
-<span class="sd">        import torch</span>
-<span class="sd">        from torch_openreml.utils import categorical_to_design_matrix</span>
-
-<span class="sd">        print(categorical_to_design_matrix([&quot;a&quot;, &quot;b&quot;, &quot;a&quot;, &quot;c&quot;]))</span>
-
-<span class="sd">        print(categorical_to_design_matrix([&quot;a&quot;, &quot;b&quot;, &quot;a&quot;, &quot;c&quot;], drop_first=True))</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span> <span class="ow">or</span> <span class="n">torch</span><span class="o">.</span><span class="n">get_default_dtype</span><span class="p">()</span>
-    <span class="n">device</span> <span class="o">=</span> <span class="n">device</span> <span class="ow">or</span> <span class="n">torch</span><span class="o">.</span><span class="n">get_default_device</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="n">levels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">levels</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">levels</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;levels&#39; must match the number of unique values in &#39;x&#39;!&quot;</span><span class="p">)</span>
-
-    <span class="n">level_to_idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">lev</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">lev</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">levels</span><span class="p">)}</span>
-
-    <span class="n">idx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">level_to_idx</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">x</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
-
-    <span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">one_hot</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">levels</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">drop_first</span><span class="p">:</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
-
-    <span class="k">return</span> <span class="n">z</span></div>
 
 
 <div class="viewcode-block" id="augment">

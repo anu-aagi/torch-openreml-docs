@@ -9,7 +9,7 @@
         <title>torch_openreml.covariance.DummyMatrix - torch-openreml 0.1.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -238,7 +238,6 @@
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.utils.get_device.html">torch_openreml.utils.get_device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.utils.get_dtype.html">torch_openreml.utils.get_dtype</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.utils.categorical_to_design_matrix.html">torch_openreml.utils.categorical_to_design_matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.utils.augment.html">torch_openreml.utils.augment</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.utils.interaction.html">torch_openreml.utils.interaction</a></li>
 </ul>
@@ -246,6 +245,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../api/example_data.html">Example Datasets</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../change_log.html">Changelog</a></li>
 </ul>
 
 </div>
@@ -292,7 +292,7 @@
 <h1>torch_openreml.covariance.DummyMatrix<a class="headerlink" href="#torch-openreml-covariance-dummymatrix" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_openreml.covariance.DummyMatrix">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_openreml.covariance.</span></span><span class="sig-name descname"><span class="pre">DummyMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lex_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/dummy_matrix.html#DummyMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.DummyMatrix" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_openreml.covariance.</span></span><span class="sig-name descname"><span class="pre">DummyMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lex_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/dummy_matrix.html#DummyMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.DummyMatrix" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix" title="torch_openreml.covariance.matrix.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a></p>
 <p>Fixed dummy matrix constructed from categorical input.</p>
 <div class="math-wrapper docutils container">
@@ -308,6 +308,9 @@ so <code class="xref py py-meth docutils literal notranslate"><span class="pre">
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>*args</strong> (<em>list</em><em>, </em><em>tuple</em><em>, or </em><em>pandas.Series</em>) – Input data. One or many lists
 of strings for categorical data.</p></li>
+<li><p><strong>levels</strong> (<em>list</em><em> or </em><em>tuple</em><em>, </em><em>optional</em>) – Levels of each list of strings.
+Defaults to a list of sorted unique elements in each list of
+strings.</p></li>
 <li><p><strong>lex_order</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the result columns are
 lexically ordered.</p></li>
 <li><p><strong>drop_first</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to drop the first column.
@@ -335,6 +338,14 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">False</
 <span class="n">mat</span> <span class="o">=</span> <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">rep</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">drop_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">colnames</span><span class="p">)</span>
+
+<span class="n">mat</span> <span class="o">=</span> <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">rep</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[[</span><span class="s2">&quot;rep1&quot;</span><span class="p">,</span> <span class="s2">&quot;rep2&quot;</span><span class="p">,</span> <span class="s2">&quot;rep3&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;block1&quot;</span><span class="p">,</span> <span class="s2">&quot;block2&quot;</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">colnames</span><span class="p">)</span>
+
+<span class="n">mat</span> <span class="o">=</span> <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">rep</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[[</span><span class="s2">&quot;rep3&quot;</span><span class="p">,</span> <span class="s2">&quot;rep1&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;block1&quot;</span><span class="p">,</span> <span class="s2">&quot;block2&quot;</span><span class="p">]],</span> <span class="n">lex_order</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">colnames</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -347,6 +358,14 @@ tensor([[0., 0., 0.],
         [0., 0., 1.],
         [0., 1., 0.]])
 [&#39;rep1⋈block2&#39;, &#39;rep2⋈block1&#39;, &#39;rep2⋈block2&#39;]
+tensor([[1., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 1., 0., 0.],
+        [0., 0., 1., 0., 0., 0.]])
+[&#39;rep1⋈block1&#39;, &#39;rep1⋈block2&#39;, &#39;rep2⋈block1&#39;, &#39;rep2⋈block2&#39;, &#39;rep3⋈block1&#39;, &#39;rep3⋈block2&#39;]
+tensor([[0., 0., 1., 0.],
+        [0., 0., 0., 0.],
+        [0., 0., 0., 0.]])
+[&#39;rep3⋈block1&#39;, &#39;rep3⋈block2&#39;, &#39;rep1⋈block1&#39;, &#39;rep1⋈block2&#39;]
 </pre></div>
 </div>
 </div>
