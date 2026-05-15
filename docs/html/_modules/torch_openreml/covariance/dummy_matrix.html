@@ -8,7 +8,7 @@
         <title>torch_openreml.covariance.dummy_matrix - torch-openreml 0.1.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df86a2a8" />
@@ -311,7 +311,7 @@
 <span class="sd">    so :meth:`grad` always returns ``(None, [])``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lex_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop_first</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lex_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop_first</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">drop_empty_cols</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a fixed dummy matrix from numeric or categorical input.</span>
 
@@ -325,6 +325,7 @@
 <span class="sd">                lexically ordered.</span>
 <span class="sd">            drop_first (bool, optional): Whether to drop the first column.</span>
 <span class="sd">                Defaults to ``False``.</span>
+<span class="sd">            drop_empty_cols (bool, optional): Whether to drop empty columns.</span>
 <span class="sd">            dtype (torch.dtype, optional): Desired dtype of the matrix.</span>
 <span class="sd">            device (torch.device, optional): Desired device of the matrix.</span>
 
@@ -353,6 +354,10 @@
 <span class="sd">            print(mat.colnames)</span>
 
 <span class="sd">            mat = DummyMatrix(rep, block, levels=[[&quot;rep3&quot;, &quot;rep1&quot;], [&quot;block1&quot;, &quot;block2&quot;]], lex_order=False)</span>
+<span class="sd">            print(mat())</span>
+<span class="sd">            print(mat.colnames)</span>
+
+<span class="sd">            mat = DummyMatrix(rep, block, levels=[[&quot;rep2&quot;, &quot;rep1&quot;], [&quot;block1&quot;, &quot;block2&quot;]], lex_order=False, drop_empty_cols=True)</span>
 <span class="sd">            print(mat())</span>
 <span class="sd">            print(mat.colnames)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -391,10 +396,13 @@
         <span class="k">if</span> <span class="n">drop_first</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
 
+        <span class="k">if</span> <span class="n">drop_empty_cols</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">(</span><span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)]</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_colnames</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="p">[],</span> <span class="p">[])</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="p">{})</span>
 
 <div class="viewcode-block" id="DummyMatrix.__call__">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.DummyMatrix.html#torch_openreml.covariance.DummyMatrix.__call__">[docs]</a>

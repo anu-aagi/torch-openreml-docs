@@ -9,7 +9,7 @@
         <title>For R Users - torch-openreml 0.1.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=df86a2a8" />
@@ -363,7 +363,7 @@ using <code class="docutils literal notranslate"><span class="pre">model.matrix(
 <span class="n">result</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">torch</span><span class="o">$</span><span class="nf">zeros</span><span class="p">(</span><span class="m">3L</span><span class="p">),</span><span class="w"> </span><span class="n">verbose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2L</span><span class="p">)</span>
 
 <span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">get_theta</span><span class="p">()</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
-<span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">V</span><span class="o">$</span><span class="nf">trans_params</span><span class="p">(</span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">get_theta</span><span class="p">())</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">V</span><span class="o">$</span><span class="nf">build_params</span><span class="p">(</span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">get_theta</span><span class="p">())</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
 <span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">get_beta</span><span class="p">()</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
 </pre></div>
 </div>

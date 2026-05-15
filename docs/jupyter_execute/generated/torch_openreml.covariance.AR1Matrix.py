@@ -8,6 +8,6 @@ import torch
 from torch_openreml.covariance import AR1Matrix
 
 mat = AR1Matrix(4)
-params = torch.tensor([0.5, 0.0])
-mat(params)
+free_params = torch.tensor([0.5, 0.0])
+mat(free_params)
 

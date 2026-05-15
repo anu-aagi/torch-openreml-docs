@@ -8,7 +8,7 @@ import torch
 from torch_openreml.covariance import ScalarMatrix
 
 mat = ScalarMatrix(3)
-params = torch.tensor([0.5])
-print(mat(params))
-print(mat.grad(params))
+free_params = torch.tensor([0.5])
+print(mat(free_params))
+print(mat.grad(free_params))
 

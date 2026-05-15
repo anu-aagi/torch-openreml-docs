@@ -296,7 +296,6 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance.transform</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transform</span>
 
-
 <div class="viewcode-block" id="Matrix">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Matrix</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
@@ -317,22 +316,20 @@
   
     <span class="n">_repr_single_line</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">param_names</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">no_grad_index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">param_spec</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a covariance matrix with optional parameter transforms.</span>
+<span class="sd">        Initialize a covariance matrix with parameter specifications.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            shape (tuple or None): Expected output dimensions of the constructed matrix.</span>
 <span class="sd">                Used for validation; the actual shape may be set by subclasses.</span>
-<span class="sd">            param_names (list of str): Ordered names of parameters in :attr:`params`.</span>
-<span class="sd">                Empty list if no trainable parameters (e.g., fixed matrices).</span>
-<span class="sd">            trans (list of Transform or None): List of transforms applied to each</span>
-<span class="sd">                parameter before constructing the matrix. If None, no transforms are used.</span>
-<span class="sd">                Typically used for variance (:math:`\exp(2\theta) &gt; 0`) or correlation</span>
-<span class="sd">                constraints (:math:`\rho \in (-1, 1)`).</span>
-<span class="sd">            no_grad_index (list of int): Indices to exclude from gradient computation.</span>
-<span class="sd">                Parameters at these indices will be omitted from :attr:`grad` and</span>
-<span class="sd">                :attr:`grad_names`. Use :meth:`set_no_grad` instead for convenience.</span>
+<span class="sd">            param_spec (dict): Parameter specifications. Keys should be strings</span>
+<span class="sd">                representing parameter names. Values should be dictionaries</span>
+<span class="sd">                containing the specification for each parameter. Each specification</span>
+<span class="sd">                dictionary should contain the keys &quot;fixed&quot;, &quot;default&quot;, and &quot;trans&quot;,</span>
+<span class="sd">                representing whether the parameter is fixed or free (bool), the</span>
+<span class="sd">                default value (1D torch.Tensor), and the transform (Transform),</span>
+<span class="sd">                respectively.</span>
 
 <span class="sd">        Note:</span>
 <span class="sd">            The transform applies as</span>
@@ -340,29 +337,20 @@
 <span class="sd">            .. math::</span>
 <span class="sd">                \symbf{V} = \left[f_0(\theta_0), \ldots, f_{p-1}(\theta_{p-1}) \right]^\top,</span>
 
-<span class="sd">            where each :math:`f_i` is the i-th transform in :attr:`trans`.</span>
-<span class="sd">            If :attr:`trans` has length 1, the single transform is broadcast and applied elementwise to all parameters.</span>
+<span class="sd">            where :math:`f_i` is the transform for `i`-th parameter.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            TypeError: If ``param_names`` is not a list of strings, or if</span>
-<span class="sd">                transforms contain non-Transform objects.</span>
-<span class="sd">            ValueError: If parameter names are not unique, or if indices in</span>
-<span class="sd">                ``no_grad_index`` are out of range.</span>
+<span class="sd">            TypeError: If ``param_spec`` does not follow any of the requirements</span>
+<span class="sd">                list in the argument description.</span>
+<span class="sd">            ValueError: If parameter names are not unique, or if keys in</span>
+<span class="sd">                ``fix_params`` are out of range.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">shape</span> <span class="ow">or</span> <span class="p">())</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_no_grad_index</span><span class="p">(</span><span class="n">no_grad_index</span><span class="p">)</span>
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_param_names</span><span class="p">(</span><span class="n">param_names</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_param_names</span> <span class="o">=</span> <span class="n">param_names</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_num_params</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">param_names</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_trans</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_trans</span> <span class="o">=</span> <span class="n">trans</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_no_grad_index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">no_grad_index</span> <span class="ow">or</span> <span class="p">[]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_param_spec</span><span class="p">(</span><span class="n">param_spec</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_param_spec</span> <span class="o">=</span> <span class="n">param_spec</span>
 
         <span class="c1">#: Gradient computation mode: ``&quot;manual&quot;`` uses a class-defined manual gradient,</span>
         <span class="c1"># ``&quot;auto&quot;`` uses automatic differentiation, and ``&quot;default&quot;`` uses the manual</span>
@@ -383,13 +371,12 @@
 <span class="sd">        multiple calls with identical parameters.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            params (torch.Tensor or dict): Current parameter tensor or dictionary.</span>
-<span class="sd">                Converted to a flat tensor via :meth:`from_param_dict` before hashing.</span>
+<span class="sd">            params (torch.Tensor): Current parameter tensor.</span>
 <span class="sd">            intermediates: Arbitrary object to cache (e.g. Cholesky factors,</span>
 <span class="sd">                eigendecompositions, or any reusable computation).</span>
 
 <span class="sd">        Note:</span>
-<span class="sd">            If ``params`` has length 0 (no trainable parameters), this is a no-op.</span>
+<span class="sd">            If ``params`` has length 0 (no free parameters), this is a no-op.</span>
 
 <span class="sd">        Example:</span>
 
@@ -399,13 +386,12 @@
 <span class="sd">            from torch_openreml.covariance import DiagonalMatrix</span>
 
 <span class="sd">            mat = DiagonalMatrix(3)</span>
-<span class="sd">            params = torch.tensor([0.0, 0.5, 1.0])</span>
-<span class="sd">            sigma2 = mat.trans_params(params)</span>
-<span class="sd">            mat.set_intermediates(params, {&quot;sigma2&quot;: sigma2})</span>
-<span class="sd">            mat.get_intermediates(params)</span>
+<span class="sd">            free_params = torch.tensor([0.0, 0.5, 1.0])</span>
+<span class="sd">            sigma2 = mat.build_params(free_params)</span>
+<span class="sd">            mat.set_intermediates(free_params, {&quot;sigma2&quot;: sigma2})</span>
+<span class="sd">            mat.get_intermediates(free_params)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_param_dict</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_param_tensor</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
@@ -429,9 +415,7 @@
 <span class="sd">        after a parameter update, device transfer, or dtype cast.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            params (torch.Tensor or dict): Current parameter tensor or dictionary.</span>
-<span class="sd">                Converted to a flat tensor via :meth:`from_param_dict` before</span>
-<span class="sd">                comparison.</span>
+<span class="sd">            params (torch.Tensor): Current parameter tensor.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The cached intermediate object if the cache is valid, or ``None`` if</span>
@@ -445,13 +429,12 @@
 <span class="sd">            from torch_openreml.covariance import DiagonalMatrix</span>
 
 <span class="sd">            mat = DiagonalMatrix(3)</span>
-<span class="sd">            params = torch.tensor([0.0, 0.5, 1.0])</span>
-<span class="sd">            sigma2 = mat.trans_params(params)</span>
-<span class="sd">            mat.set_intermediates(params, {&quot;sigma2&quot;: sigma2})</span>
-<span class="sd">            mat.get_intermediates(params)</span>
+<span class="sd">            free_params = torch.tensor([0.0, 0.5, 1.0])</span>
+<span class="sd">            sigma2 = mat.build_params(free_params)</span>
+<span class="sd">            mat.set_intermediates(free_params, {&quot;sigma2&quot;: sigma2})</span>
+<span class="sd">            mat.get_intermediates(free_params)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_param_dict</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_param_tensor</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
@@ -484,231 +467,106 @@
 <span class="sd">            from torch_openreml.covariance import DiagonalMatrix</span>
 
 <span class="sd">            mat = DiagonalMatrix(3)</span>
-<span class="sd">            params = torch.tensor([0.0, 0.5, 1.0])</span>
-<span class="sd">            sigma2 = mat.trans_params(params)</span>
-<span class="sd">            mat.set_intermediates(params, {&quot;sigma2&quot;: sigma2})</span>
-<span class="sd">            print(mat.get_intermediates(params))</span>
+<span class="sd">            free_params = torch.tensor([0.0, 0.5, 1.0])</span>
+<span class="sd">            sigma2 = mat.build_params(free_params)</span>
+<span class="sd">            mat.set_intermediates(free_params, {&quot;sigma2&quot;: sigma2})</span>
+<span class="sd">            print(mat.get_intermediates(free_params))</span>
 <span class="sd">            mat.reset_intermediates()</span>
-<span class="sd">            print(mat.get_intermediates(params))</span>
+<span class="sd">            print(mat.get_intermediates(free_params))</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;hash&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;intermediates&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="Matrix.set_no_grad">
-<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.set_no_grad">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_no_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">param_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the indices of parameters to exclude from gradient computation.</span>
+<div class="viewcode-block" id="Matrix.build_params">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.build_params">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="p">,</span> <span class="n">include_fixed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">out_format</span><span class="o">=</span><span class="s2">&quot;tensor&quot;</span><span class="p">):</span>
 
-<span class="sd">        Replaces :attr:`no_grad_index` with the provided indices. Exactly one</span>
-<span class="sd">        of ``index`` or ``param_name`` must be supplied; providing both or neither</span>
-<span class="sd">        raises an error.</span>
+        <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_free_param_dict</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_param_tensor</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_free_params</span><span class="p">)</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            index (int or list of int, optional): Zero-based index or list of</span>
-<span class="sd">                indices into :attr:`param_names` to exclude from gradient</span>
-<span class="sd">                computation.</span>
-<span class="sd">            param_name (str or list of str, optional): Parameter name or list</span>
-<span class="sd">                of names to exclude. Names must exist in :attr:`param_names`.</span>
+        <span class="k">if</span> <span class="n">include_fixed</span><span class="p">:</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="n">free_params</span><span class="o">.</span><span class="n">new_empty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_params</span><span class="p">)</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            ValueError: If both or neither of ``index`` and ``param_name``</span>
-<span class="sd">                are provided, or if any index is out of range.</span>
-<span class="sd">            KeyError: If any name in ``param_name`` is not found in</span>
-<span class="sd">                :attr:`param_names`.</span>
-
-<span class="sd">        Example:</span>
-
-<span class="sd">        .. jupyter-execute::</span>
-
-<span class="sd">            import torch</span>
-<span class="sd">            from torch_openreml.covariance import DiagonalMatrix</span>
-
-<span class="sd">            mat = DiagonalMatrix(3)</span>
-<span class="sd">            mat.set_no_grad(index=0)</span>
-<span class="sd">            print(mat.no_grad_index)</span>
-<span class="sd">            print(mat.grad(torch.zeros(3)))</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">param_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Provide exactly one of &#39;index&#39; or &#39;param_name&#39;!&quot;</span><span class="p">)</span>
-        
-        <span class="k">if</span> <span class="n">param_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_check_no_grad_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_no_grad_index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
-        
-        <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                <span class="n">param_name</span> <span class="o">=</span> <span class="p">[</span><span class="n">param_name</span><span class="p">]</span>
-            <span class="n">index_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_param_names</span><span class="p">)}</span>
-            <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">index_map</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">param_name</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_no_grad_index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">index</span><span class="p">))</span></div>
-
-
-<div class="viewcode-block" id="Matrix.from_param_dict">
-<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.from_param_dict">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">from_param_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_dict</span><span class="p">):</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Extract parameter tensors from a dictionary into a flat 1D tensor.</span>
-
-<span class="sd">        Converts a parameter dictionary to a concatenated 1D tensor ordered</span>
-<span class="sd">        according to :attr:`param_names`. The inverse operation is provided</span>
-<span class="sd">        by :meth:`to_param_dict`.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            param_dict (torch.Tensor or dict): Either a flat parameter tensor</span>
-<span class="sd">                (returned as-is), or a dictionary mapping parameter names to</span>
-<span class="sd">                tensors. All keys must exist in :attr:`param_names` and no</span>
-<span class="sd">                extra keys are allowed.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            torch.Tensor: Concatenated 1D tensor containing all parameters</span>
-<span class="sd">                in the order specified by :attr:`param_names`.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            ValueError: If ``param_dict`` is a dictionary missing required keys</span>
-<span class="sd">                or containing unexpected keys, or if the tensor length does not</span>
-<span class="sd">                match the number of parameters.</span>
-
-<span class="sd">        Example:</span>
-
-<span class="sd">        .. jupyter-execute::</span>
-
-<span class="sd">            import torch</span>
-<span class="sd">            from torch_openreml.covariance import DiagonalMatrix</span>
-
-<span class="sd">            mat = DiagonalMatrix(3)</span>
-<span class="sd">            param_dict = {&quot;sigma^2_0&quot;: torch.tensor([0.0]),</span>
-<span class="sd">                          &quot;sigma^2_1&quot;: torch.tensor([0.5]),</span>
-<span class="sd">                          &quot;sigma^2_2&quot;: torch.tensor([1.0])}</span>
-<span class="sd">            mat.from_param_dict(param_dict)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">param_dict</span>
-        
-        <span class="n">missing</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_param_names</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">param_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing parameters: </span><span class="si">{</span><span class="n">missing</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
-        
-        <span class="n">extra</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">param_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_param_names</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">extra</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected parameters: </span><span class="si">{</span><span class="n">extra</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
-        
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">param_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param_names</span><span class="p">])</span></div>
-
-
-<div class="viewcode-block" id="Matrix.to_param_dict">
-<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.to_param_dict">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_param_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Convert a flat parameter tensor to a parameter dictionary.</span>
-
-<span class="sd">        Maps each element of a 1D parameter tensor to its corresponding name</span>
-<span class="sd">        in :attr:`param_names`, returning a dictionary of scalar tensors.</span>
-<span class="sd">        This is the inverse of :meth:`from_param_dict`.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            params (torch.Tensor or dict): Either a flat 1D tensor of length</span>
-<span class="sd">                :attr:`num_params` (converted to a dict), or a dict (returned</span>
-<span class="sd">                as-is).</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            dict: Mapping from each name in :attr:`param_names` to a</span>
-<span class="sd">            1D single-element tensor.</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            ValueError: If ``params`` is a tensor whose length does not equal</span>
-<span class="sd">                :attr:`num_params`.</span>
-
-<span class="sd">        Example:</span>
-
-<span class="sd">        .. jupyter-execute::</span>
-
-<span class="sd">            import torch</span>
-<span class="sd">            from torch_openreml.covariance import DiagonalMatrix</span>
-
-<span class="sd">            mat = DiagonalMatrix(3)</span>
-<span class="sd">            params = torch.tensor([0.0, 0.5, 1.0])</span>
-<span class="sd">            mat.to_param_dict(params)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">params</span>
-        
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_param_names</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_param_names</span><span class="p">)</span><span class="si">}</span><span class="s2"> parameters, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
-        
-        <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">tensor</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">tensor</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_names</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))}</span></div>
-
-
-<div class="viewcode-block" id="Matrix.trans_params">
-<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.trans_params">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">trans_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Apply parameter transforms to a flat parameter tensor.</span>
-
-<span class="sd">        Applies the transforms in :attr:`trans` element-wise to ``params``.</span>
-<span class="sd">        If :attr:`trans` is ``None`` or empty, returns ``params`` unchanged.</span>
-<span class="sd">        If :attr:`trans` has a single entry, that transform is broadcast and</span>
-<span class="sd">        applied to all parameters simultaneously. Otherwise, each transform</span>
-<span class="sd">        is applied to its corresponding parameter individually.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
-<span class="sd">                dictionary. Converted via :meth:`from_param_dict` before</span>
-<span class="sd">                transformation.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            torch.Tensor: Transformed parameter tensor of the same shape</span>
-<span class="sd">            as ``params``.</span>
-
-<span class="sd">        Example:</span>
-
-<span class="sd">        .. jupyter-execute::</span>
-
-<span class="sd">            import torch</span>
-<span class="sd">            from torch_openreml.covariance import DiagonalMatrix</span>
-
-<span class="sd">            mat = DiagonalMatrix(3)</span>
-<span class="sd">            params = torch.tensor([0.0, 0.5, 1.0])</span>
-<span class="sd">            mat.trans_params(params)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_param_dict</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trans</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">params</span>
-
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trans</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">params</span><span class="p">)</span>
+            <span class="n">free_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="ow">not</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_spec</span><span class="o">.</span><span class="n">values</span><span class="p">()],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">params</span><span class="p">[</span><span class="n">free_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">free_params</span>
+            <span class="n">params</span><span class="p">[</span><span class="o">~</span><span class="n">free_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">([</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_spec</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">]],</span>
+                                                 <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">trans</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))])</span></div>
+            <span class="n">params</span> <span class="o">=</span> <span class="n">free_params</span>
 
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">out_format</span> <span class="o">==</span> <span class="s2">&quot;tensor&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([],</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">out_format</span> <span class="o">==</span> <span class="s2">&quot;dict&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected &#39;out_format&#39;: </span><span class="si">{</span><span class="n">out_format</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">trans</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">include_fixed</span><span class="p">:</span>
+                <span class="n">param_trans</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_trans</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">param_trans</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_param_trans</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="n">ref_dict</span> <span class="o">=</span> <span class="n">param_trans</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span>
+            <span class="n">ref_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">param_trans</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span> <span class="ow">is</span> <span class="n">ref_type</span> <span class="ow">and</span> <span class="n">trans</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">==</span> <span class="n">ref_dict</span> <span class="k">for</span> <span class="n">trans</span> <span class="ow">in</span> <span class="n">param_trans</span><span class="p">):</span>
+                <span class="n">params</span> <span class="o">=</span> <span class="n">param_trans</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">params</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">trans</span><span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="k">for</span> <span class="n">trans</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">param_trans</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))])</span>
+
+        <span class="k">if</span> <span class="n">out_format</span> <span class="o">==</span> <span class="s2">&quot;tensor&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">params</span>
+        <span class="k">elif</span> <span class="n">out_format</span> <span class="o">==</span> <span class="s2">&quot;dict&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">include_fixed</span><span class="p">:</span>
+                <span class="n">param_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_names</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">param_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">param_names</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected &#39;out_format&#39;: </span><span class="si">{</span><span class="n">out_format</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_from_free_param_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_param_dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">free_param_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">free_param_dict</span>
+        
+        <span class="n">missing</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">free_param_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing free parameters: </span><span class="si">{</span><span class="n">missing</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+        
+        <span class="n">extra</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">free_param_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">extra</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected free parameters: </span><span class="si">{</span><span class="n">extra</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">free_param_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_free_param_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">free_params</span>
+        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">)</span><span class="si">}</span><span class="s2"> parameters, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">tensor</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">tensor</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_names</span><span class="p">,</span> <span class="n">free_params</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))}</span>
 
 <div class="viewcode-block" id="Matrix.trans_grad">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.trans_grad">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">trans_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">trans_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute the element-wise derivative of the parameter transforms.</span>
+<span class="sd">        Compute the element-wise derivative of the transforms for the free parameters.</span>
 
-<span class="sd">        Returns the Jacobian diagonal of :meth:`trans_params` with respect</span>
+<span class="sd">        Returns the Jacobian diagonal of :meth:`trans_free_params` with respect</span>
 <span class="sd">        to the raw (untransformed) parameters. Used in the chain rule when</span>
 <span class="sd">        computing gradients of the matrix with respect to the original</span>
 <span class="sd">        parameterisation.</span>
 
-<span class="sd">        If :attr:`trans` is ``None`` or empty, returns a tensor of ones</span>
-<span class="sd">        (identity derivative). If :attr:`trans` has a single entry, its</span>
-<span class="sd">        derivative is broadcast across all parameters. Otherwise, each</span>
-<span class="sd">        transform&#39;s derivative is evaluated at its corresponding parameter.</span>
-
 <span class="sd">        Args:</span>
-<span class="sd">            params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
-<span class="sd">                dictionary. Converted via :meth:`from_param_dict` before</span>
-<span class="sd">                evaluation.</span>
+<span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
+<span class="sd">                dictionary.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            torch.Tensor: 1D tensor of element-wise transform derivatives,</span>
-<span class="sd">            of the same length as ``params``.</span>
+<span class="sd">            of the same length as ``free_params``.</span>
 
 <span class="sd">        Example:</span>
 
@@ -718,39 +576,38 @@
 <span class="sd">            from torch_openreml.covariance import DiagonalMatrix</span>
 
 <span class="sd">            mat = DiagonalMatrix(3)</span>
-<span class="sd">            params = torch.tensor([0.0, 0.5, 1.0])</span>
-<span class="sd">            mat.trans_grad(params)</span>
+<span class="sd">            free_params = torch.tensor([0.0, 0.5, 1.0])</span>
+<span class="sd">            mat.trans_grad(free_params)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_param_dict</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_free_param_dict</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_param_tensor</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_free_params</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trans</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trans</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">free_param_trans</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_param_trans</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">ref_dict</span> <span class="o">=</span> <span class="n">free_param_trans</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="n">ref_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">free_param_trans</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span> <span class="ow">is</span> <span class="n">ref_type</span> <span class="ow">and</span> <span class="n">trans</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">==</span> <span class="n">ref_dict</span> <span class="k">for</span> <span class="n">trans</span> <span class="ow">in</span> <span class="n">free_param_trans</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">free_param_trans</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">trans</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))])</span></div>
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">trans</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">free_param</span><span class="p">)</span> <span class="k">for</span> <span class="n">trans</span><span class="p">,</span> <span class="n">free_param</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">free_param_trans</span><span class="p">,</span> <span class="n">free_params</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))])</span></div>
 
-      
+
 <div class="viewcode-block" id="Matrix.auto_grad">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.auto_grad">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">auto_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">auto_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the Jacobian of :meth:`build` with respect to</span>
-<span class="sd">        trainable parameters using automatic differentiation.</span>
+<span class="sd">        free parameters using automatic differentiation.</span>
 
-<span class="sd">        Uses :func:`torch.func.jacrev` to compute the full Jacobian, then</span>
-<span class="sd">        masks out parameters listed in :attr:`no_grad_index`.</span>
+<span class="sd">        Uses :func:`torch.func.jacrev` to compute the full Jacobian.</span>
 
-<span class="sd">        If all parameters are excluded via ``no_grad_index``, returns ``(None, [])``</span>
+<span class="sd">        If all parameters are fixed, returns ``(None, [])``</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            params (torch.Tensor): Flat 1D parameter tensor.</span>
+<span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or dict.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            tuple: ``(grad, grad_names)``, where ``grad`` is a 3D tensor of</span>
-<span class="sd">            shape ``(num_params - len(no_grad_index), *shape)``, and</span>
+<span class="sd">            shape ``(num_free_params, *shape)``, and</span>
 <span class="sd">            ``grad_names`` has the same length as ``grad``.</span>
 
 <span class="sd">        Example:</span>
@@ -761,29 +618,28 @@
 <span class="sd">            from torch_openreml.covariance import DiagonalMatrix</span>
 
 <span class="sd">            mat = DiagonalMatrix(2)</span>
-<span class="sd">            params = torch.tensor([0.0, 0.5])</span>
-<span class="sd">            grad, grad_names = mat.auto_grad(params)</span>
+<span class="sd">            free_params = torch.tensor([0.0, 0.5])</span>
+<span class="sd">            grad, grad_names = mat.auto_grad(free_params)</span>
 <span class="sd">            grad, grad_names</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">no_grad_index</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_params</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[]</span>
+
+        <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_free_param_dict</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_param_tensor</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_free_params</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">reset_intermediates</span><span class="p">()</span>
 
-        <span class="n">jacobian</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span><span class="p">)(</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">jacobian</span> <span class="o">=</span> <span class="n">jacobian</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-
-        <span class="n">mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_params</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
-        <span class="n">mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">no_grad_index</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">grad</span> <span class="o">=</span> <span class="n">jacobian</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
-        <span class="n">grad_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_names</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_grad_index</span><span class="p">]</span>
+        <span class="n">jacobian</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span><span class="p">)(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="n">grad</span> <span class="o">=</span> <span class="n">jacobian</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">grad_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span>
 
         <span class="k">return</span> <span class="n">grad</span><span class="p">,</span> <span class="n">grad_names</span></div>
 
 
 <div class="viewcode-block" id="Matrix.manual_grad">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.manual_grad">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">manual_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">manual_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the Jacobian of :meth:`__call__` with respect to trainable</span>
 <span class="sd">        parameters using a closed-form analytic expression.</span>
@@ -796,25 +652,23 @@
 
 <span class="sd">        Implementations must satisfy the following contract:</span>
 
-<span class="sd">        - Return ``(None, [])`` if all parameters are excluded via</span>
-<span class="sd">          :attr:`no_grad_index`.</span>
+<span class="sd">        - Return ``(None, [])`` if all parameters are fixed.</span>
 <span class="sd">        - Return a 3D gradient tensor of shape</span>
-<span class="sd">          ``(num_params - len(no_grad_index), *shape)`` and a matching list</span>
-<span class="sd">          of parameter names, omitting any index in :attr:`no_grad_index`.</span>
+<span class="sd">          ``(num_free_params, *shape)`` and a matching list</span>
+<span class="sd">          of parameter names.</span>
 <span class="sd">        - Apply transform derivatives from :meth:`trans_grad` via the chain</span>
 <span class="sd">          rule so that gradients are with respect to the raw (untransformed)</span>
 <span class="sd">          parameters.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
+<span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
 <span class="sd">                parameter dictionary.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            tuple: ``(grad, grad_names)``, where ``grad`` is a 3D tensor of</span>
-<span class="sd">            shape ``(num_params - len(no_grad_index), *shape)`` and</span>
+<span class="sd">            shape ``(num_free_params, *shape)`` and</span>
 <span class="sd">            ``grad_names`` is a list of the corresponding parameter names.</span>
-<span class="sd">            Returns ``(None, [])`` if all parameters are excluded from</span>
-<span class="sd">            gradient computation.</span>
+<span class="sd">            Returns ``(None, [])`` if all parameters are fixed.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            NotImplementedError: If the subclass does not provide an analytic</span>
@@ -827,17 +681,16 @@
 <div class="viewcode-block" id="Matrix.__call__">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.__call__">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct the matrix from a flat parameter tensor.</span>
 
 <span class="sd">        Must be implemented by subclasses. Implementations should convert</span>
-<span class="sd">        ``params`` via :meth:`from_param_dict` or :meth:`to_param_dict`,</span>
-<span class="sd">        then call :meth:`check_params` to validate and :meth:`trans_params`</span>
-<span class="sd">        to apply transforms before any computation.</span>
+<span class="sd">        ``free_params`` via :meth:`build_params` to validate,</span>
+<span class="sd">        include fixed parameters, and apply transforms before any computation.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
+<span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
 <span class="sd">                parameter dictionary.</span>
 
 <span class="sd">        Returns:</span>
@@ -848,7 +701,7 @@
 
 <div class="viewcode-block" id="Matrix.grad">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.grad">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the Jacobian of :meth:`__call__` with respect to trainable</span>
 <span class="sd">        parameters.</span>
@@ -861,7 +714,7 @@
 <span class="sd">        - ``&quot;auto&quot;``: always uses :meth:`auto_grad`.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
+<span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
 <span class="sd">                parameter dictionary.</span>
 
 <span class="sd">        Returns:</span>
@@ -879,17 +732,17 @@
 <span class="sd">            from torch_openreml.covariance import DiagonalMatrix</span>
 
 <span class="sd">            mat = DiagonalMatrix(2)</span>
-<span class="sd">            params = torch.tensor([0.0, 0.5])</span>
-<span class="sd">            grad, grad_names = mat.grad(params)</span>
+<span class="sd">            free_params = torch.tensor([0.0, 0.5])</span>
+<span class="sd">            grad, grad_names = mat.grad(free_params)</span>
 <span class="sd">            grad, grad_names</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad_mode</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">manual_grad</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">manual_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_grad</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad_mode</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_grad</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown grad mode &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">grad_mode</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span></div>
 
@@ -926,16 +779,12 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            torch.Tensor or None: Jacobian tensor of shape</span>
-<span class="sd">            ``(num_grad_params, *shape)``, or ``None`` if all parameters</span>
-<span class="sd">            are excluded from gradient computation.</span>
+<span class="sd">            ``(num_free_params, *shape)``, or ``None`` if all parameters</span>
+<span class="sd">            are fixed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">grad</span><span class="p">,</span> <span class="n">grad_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">grad</span></div>
 
-    
-    <span class="k">def</span><span class="w"> </span><span class="nf">_check_n</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;n&#39; must be an int!&quot;</span><span class="p">)</span>
           
     <span class="k">def</span><span class="w"> </span><span class="nf">_check_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -949,63 +798,44 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">p</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">]):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;All elements of &#39;shape&#39; must be positive int!&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_check_trans</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trans</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">trans</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_param_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_spec</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_spec</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;param_sepc&#39; must be a dict!&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trans</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
-            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">trans</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Transform</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;trans&#39; must be a list of Transform objects!&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;trans&#39; must be a list of Transform objects!&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">param_spec</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter name must be a str, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">param_name</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_params</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;trans&#39; must be 0, 1, or &#39;num_params&#39;!&quot;</span><span class="p">)</span>
-      
-    <span class="k">def</span><span class="w"> </span><span class="nf">_check_no_grad_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">no_grad_index</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">no_grad_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">idx</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_params</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">no_grad_index</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameter index outside range!&quot;</span><span class="p">)</span>
-              
-<div class="viewcode-block" id="Matrix.check_params">
-<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.check_params">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">check_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Validate a parameter tensor and return its device and dtype.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Individual parameter specification must be a dict, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
 
-<span class="sd">        Accepts a parameter dictionary and converts it to a flat tensor</span>
-<span class="sd">        via :meth:`from_param_dict` before validation.</span>
+            <span class="k">if</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span> <span class="o">!=</span> <span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="s2">&quot;fixed&quot;</span><span class="p">,</span> <span class="s2">&quot;trans&quot;</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter specification fields must be &#39;fixed&#39;, &#39;default&#39;, and &#39;trans&#39;, got </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            params (torch.Tensor or dict): Parameters to validate.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter specification field &#39;fixed&#39; must be a bool, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            tuple: ``(device, dtype)`` of the parameter tensor.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter specification field &#39;default&#39; must be a torch.Tensor, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            TypeError: If ``params`` is not a tensor.</span>
-<span class="sd">            ValueError: If ``params`` is not 1D or has the wrong length.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_param_dict</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-        
+            <span class="k">if</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter specification field &#39;default&#39; must be a 1D torch.Tensor, got </span><span class="si">{</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;trans&quot;</span><span class="p">],</span> <span class="n">Transform</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter specification field &#39;trans&#39; must be a Transform, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;trans&quot;</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_param_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Parameters must be a Torch tensor!&quot;</span><span class="p">)</span>
-    
+
         <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameters must be a 1D tensor!&quot;</span><span class="p">)</span>
-    
-        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_params</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameters must have length </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_params</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
-        
-        <span class="k">return</span> <span class="n">params</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">dtype</span></div>
 
-    
-    <span class="k">def</span><span class="w"> </span><span class="nf">_check_param_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_names</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_names</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">param_names</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;param_names&#39; must be a list or tuple of strings!&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">param_names</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">param_names</span><span class="p">)):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter names must be unique!&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">length</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">length</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameters must have length </span><span class="si">{</span><span class="n">length</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">params</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">dtype</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repr_indented</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -1017,10 +847,17 @@
             <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">repr_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;param_names&quot;</span><span class="p">,</span> <span class="s2">&quot;trans&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
-                        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">=[</span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, ..., </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="c1"># if key == &quot;param_spec&quot;:</span>
+                    <span class="c1">#     if len(value) &lt; 3:</span>
+                    <span class="c1">#         list(value.keys())</span>
+                    <span class="c1">#         args.append(f&quot;{value}&quot;)</span>
+                    <span class="c1">#     else:</span>
+                    <span class="c1">#         items = list(value.items())</span>
+                    <span class="c1">#         first = items[0]</span>
+                    <span class="c1">#         last = items[-1]</span>
+                    <span class="c1">#         args.append(f&quot;{key}={{{first[0]!r}: {first[1]!r}, ..., {last[0]!r}: {last[1]!r}}}&quot;)</span>
+                    <span class="c1"># else:</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">args</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">)&quot;</span>
           
@@ -1072,31 +909,84 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;tuple: Output matrix shape.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">param_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;dict: Parameter specifications.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param_spec</span>
       
     <span class="nd">@property</span>  
     <span class="k">def</span><span class="w"> </span><span class="nf">param_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;list of str: Ordered parameter names.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param_names</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;list of str: Parameter names.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_spec</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">free_param_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;list of str: Free parameter names.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">param_name</span> <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_spec</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">]]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fixed_param_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;list of str: Fixed parameter names.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">param_name</span> <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_spec</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">]]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">free_param_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_spec</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">]]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fixed_param_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_spec</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">]]</span>
     
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">num_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;int: Total number of parameters.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_params</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_spec</span><span class="p">)</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_free_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;int: Total number of free parameters.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">)</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_fixed_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;int: Total number of fixed parameters.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fixed_param_names</span><span class="p">)</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">param_defaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dict of torch.Tensor: Parameter defaults.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">param_name</span><span class="p">:</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_spec</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">trans</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;list of Transform: Parameter transforms.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trans</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">free_param_defaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dict of torch.Tensor: Free parameter defaults.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">param_name</span><span class="p">:</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_spec</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">]}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fixed_param_defaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dict of torch.Tensor: Fixed parameter defaults.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">param_name</span><span class="p">:</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_spec</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">]}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">param_trans</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dict of Transform: Parameter transforms.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">param_name</span><span class="p">:</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;trans&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_spec</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
     
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">no_grad_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;list of int: Indices of parameters excluded from gradient computation.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_no_grad_index</span>
-    
+    <span class="k">def</span><span class="w"> </span><span class="nf">free_param_trans</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dict of Transform: Transforms for free parameters.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">param_name</span><span class="p">:</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;trans&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_spec</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">]}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fixed_param_trans</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dict of Transform: Transforms for fixed parameters.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">param_name</span><span class="p">:</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;trans&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_spec</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">]}</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">repr_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;dict: Key-value pairs used to build the string representation.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="s2">&quot;param_names&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param_names</span><span class="p">,</span> <span class="s2">&quot;trans&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trans</span><span class="p">,</span> <span class="s2">&quot;no_grad_index&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_no_grad_index</span><span class="p">}</span></div>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="s2">&quot;param_spec&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_spec</span><span class="p">}</span></div>
 
 
 </pre></div>

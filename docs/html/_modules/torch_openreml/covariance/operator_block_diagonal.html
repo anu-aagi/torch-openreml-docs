@@ -314,11 +314,11 @@
 <span class="sd">        Initialize a block diagonal operator from two or more operands.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">           \*args: Two or more operands as positional arguments, each a</span>
+<span class="sd">           *args: Two or more operands as positional arguments, each a</span>
 <span class="sd">               :class:`~torch_openreml.covariance.matrix.Matrix` or</span>
 <span class="sd">               :class:`torch.Tensor`. A single dict argument is also accepted.</span>
 
-<span class="sd">           \**kwargs: Two or more operands as keyword arguments.</span>
+<span class="sd">           **kwargs: Two or more operands as keyword arguments.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">           ValueError: If fewer than two operands are provided.</span>
@@ -334,8 +334,8 @@
 <span class="sd">               residual=ScalarMatrix(3),</span>
 <span class="sd">               random=DiagonalMatrix(2)</span>
 <span class="sd">           )</span>
-<span class="sd">           params = torch.tensor([0.5, 0.0, 1.0])</span>
-<span class="sd">           block(params)</span>
+<span class="sd">           free_params = torch.tensor([0.5, 0.0, 1.0])</span>
+<span class="sd">           block(free_params)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -343,11 +343,12 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operands</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;At least two operands are required&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_or_build_intermediates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-        <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_intermediates</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_or_build_intermediates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="p">):</span>
+        <span class="n">bulit_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_intermediates</span><span class="p">(</span><span class="n">bulit_params</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">cache</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">v_groups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_operands</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+            <span class="n">v_groups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_operands</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
             <span class="n">v</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">block_diag</span><span class="p">(</span><span class="o">*</span><span class="n">v_groups</span><span class="p">)</span>
 
             <span class="n">row_offsets</span> <span class="o">=</span> <span class="p">[]</span>
@@ -369,14 +370,14 @@
                 <span class="s2">&quot;col_offsets&quot;</span><span class="p">:</span> <span class="n">col_offsets</span>
             <span class="p">}</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_intermediates</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">cache</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_intermediates</span><span class="p">(</span><span class="n">bulit_params</span><span class="p">,</span> <span class="n">cache</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">cache</span>
 
 <div class="viewcode-block" id="BlockDiagonal.__call__">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.BlockDiagonal.html#torch_openreml.covariance.BlockDiagonal.__call__">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-        <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_or_build_intermediates</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="p">):</span>
+        <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_or_build_intermediates</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span><span class="s2">&quot;v&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
@@ -385,27 +386,25 @@
 
 <div class="viewcode-block" id="BlockDiagonal.manual_grad">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.BlockDiagonal.html#torch_openreml.covariance.BlockDiagonal.manual_grad">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">manual_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">manual_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the Jacobian of :meth:`__call__` with respect to trainable</span>
 <span class="sd">        parameters using a closed-form analytic expression.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
+<span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
 <span class="sd">                parameter dictionary.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            tuple: ``(grad, grad_names)``, where ``grad`` is a 3D tensor of</span>
-<span class="sd">            shape ``(num_params - len(no_grad_index), *shape)`` and</span>
+<span class="sd">            shape ``(num_free_params, *shape)`` and</span>
 <span class="sd">            ``grad_names`` is a list of the corresponding parameter names.</span>
-<span class="sd">            Returns ``(None, [])`` if all parameters are excluded from</span>
-<span class="sd">            gradient computation.</span>
+<span class="sd">            Returns ``(None, [])`` if all parameters are fixed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">grad_groups</span><span class="p">,</span> <span class="n">grad_name_groups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operands_grad</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">grad_groups</span><span class="p">,</span> <span class="n">grad_name_groups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operands_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
 
-        <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_or_build_intermediates</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_or_build_intermediates</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span><span class="s2">&quot;v&quot;</span><span class="p">]</span>
-        <span class="n">v_groups</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span><span class="s2">&quot;v_groups&quot;</span><span class="p">]</span>
         <span class="n">row_offsets</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span><span class="s2">&quot;row_offsets&quot;</span><span class="p">]</span>
         <span class="n">col_offsets</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span><span class="s2">&quot;col_offsets&quot;</span><span class="p">]</span>
 
@@ -420,8 +419,8 @@
             <span class="p">(</span><span class="n">c0</span><span class="p">,</span> <span class="n">c1</span><span class="p">)</span> <span class="o">=</span> <span class="n">col_offsets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
             <span class="n">tmp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">grad</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],)</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
-                              <span class="n">dtype</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
-                              <span class="n">device</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                              <span class="n">dtype</span><span class="o">=</span><span class="n">free_params</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                              <span class="n">device</span><span class="o">=</span><span class="n">free_params</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
             <span class="n">tmp</span><span class="p">[:,</span> <span class="n">r0</span><span class="p">:</span><span class="n">r1</span><span class="p">,</span> <span class="n">c0</span><span class="p">:</span><span class="n">c1</span><span class="p">]</span> <span class="o">=</span> <span class="n">grad</span>
 

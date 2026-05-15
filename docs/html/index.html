@@ -9,7 +9,7 @@
         <title>torch-openreml 0.1.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=df86a2a8" />
@@ -319,7 +319,7 @@
     <p style="margin:0; padding:0;">A PyTorch-based library for AI-REML estimation of linear mixed models.</p>
   </div>
 </div><p>
-  <img src="https://img.shields.io/badge/version-0.1.0--alpha-blue" alt="Version 0.1.0-alpha">
+  <img src="https://img.shields.io/badge/version-0.1.1--alpha-blue" alt="Version 0.1.1-alpha">
   <img src="https://img.shields.io/badge/license-GPLv3-blue" alt="GPL-3.0 License">
   <a href="https://www.python.org/">
     <img src="https://img.shields.io/badge/python-3.12-blue" alt="Python 3.12">
@@ -514,7 +514,7 @@ and <span class="math notranslate nohighlight">\(\mathbf{G}_{block} = \sigma^2_{
     &#39;op_0&#39;: CovariancePropagation(
       operands={
         &#39;op_0&#39;: DummyMatrix(shape=(72, 24)),
-        &#39;op_1&#39;: ScalarMatrix(shape=(24, 24), param_names=[&#39;sigma^2&#39;], trans=[TransformExpPow2()])
+        &#39;op_1&#39;: ScalarMatrix(shape=(24, 24), param_spec={&#39;sigma^2&#39;: {&#39;fixed&#39;: False, &#39;default&#39;: tensor([0.]), &#39;trans&#39;: TransformExpPow2()}})
       }
     ),
     &#39;op_1&#39;: CovariancePropagation(
@@ -523,12 +523,12 @@ and <span class="math notranslate nohighlight">\(\mathbf{G}_{block} = \sigma^2_{
         &#39;op_1&#39;: KroneckerProduct(
           operands={
             &#39;op_0&#39;: IdentityMatrix(shape=(3, 3)),
-            &#39;op_1&#39;: ScalarMatrix(shape=(6, 6), param_names=[&#39;sigma^2&#39;], trans=[TransformExpPow2()])
+            &#39;op_1&#39;: ScalarMatrix(shape=(6, 6), param_spec={&#39;sigma^2&#39;: {&#39;fixed&#39;: False, &#39;default&#39;: tensor([0.]), &#39;trans&#39;: TransformExpPow2()}})
           }
         )
       }
     ),
-    &#39;op_2&#39;: ScalarMatrix(shape=(72, 72), param_names=[&#39;sigma^2&#39;], trans=[TransformExpPow2()])
+    &#39;op_2&#39;: ScalarMatrix(shape=(72, 72), param_spec={&#39;sigma^2&#39;: {&#39;fixed&#39;: False, &#39;default&#39;: tensor([0.]), &#39;trans&#39;: TransformExpPow2()}})
   }
 )
 </pre></div>
@@ -539,13 +539,13 @@ and <span class="math notranslate nohighlight">\(\mathbf{G}_{block} = \sigma^2_{
 <section id="reml-optimizer">
 <h2>REML Optimizer<a class="headerlink" href="#reml-optimizer" title="Link to this heading">¶</a></h2>
 <p>Once the covariance structure has been defined, it is passed to <a class="reference internal" href="generated/torch_openreml.REML.html#torch_openreml.REML" title="torch_openreml.REML"><code class="xref py py-class docutils literal notranslate"><span class="pre">REML</span></code></a> to initialize the estimation procedure. The <a class="reference internal" href="generated/torch_openreml.REML.html#torch_openreml.REML.optimize" title="torch_openreml.REML.optimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optimize</span></code></a> method is then called with <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, and an initial value for <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> (set to zeros in this example). The <cite>verbose</cite> argument controls the level of diagnostic output.</p>
-<p>Because the optimization is performed on the transformed parameter scale, the estimated parameters can be mapped back to variance components using <a class="reference internal" href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.trans_params" title="torch_openreml.covariance.Matrix.trans_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">V.trans_params</span></code></a>. The resulting values correspond to the variance components associated with the parameter names stored in <a class="reference internal" href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.param_names" title="torch_openreml.covariance.Matrix.param_names"><code class="xref py py-attr docutils literal notranslate"><span class="pre">V.param_names</span></code></a>.</p>
+<p>Because the optimization is performed on the transformed parameter scale, the estimated parameters can be mapped back to variance components using <a class="reference internal" href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.build_params" title="torch_openreml.covariance.Matrix.build_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">V.build_params</span></code></a>. The resulting values correspond to the variance components associated with the parameter names stored in <a class="reference internal" href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.param_names" title="torch_openreml.covariance.Matrix.param_names"><code class="xref py py-attr docutils literal notranslate"><span class="pre">V.param_names</span></code></a>.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reml</span> <span class="o">=</span> <span class="n">REML</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
 <span class="n">theta_hat</span><span class="p">,</span> <span class="n">beta_hat</span><span class="p">,</span> <span class="n">n_iter</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">theta_hat</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">trans_params</span><span class="p">(</span><span class="n">theta_hat</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">param_names</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">theta_hat</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">theta_hat</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">beta_hat</span><span class="p">)</span>
 </pre></div>
 </div>

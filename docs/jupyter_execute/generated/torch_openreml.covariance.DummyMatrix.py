@@ -25,3 +25,7 @@ mat = DummyMatrix(rep, block, levels=[["rep3", "rep1"], ["block1", "block2"]], l
 print(mat())
 print(mat.colnames)
 
+mat = DummyMatrix(rep, block, levels=[["rep2", "rep1"], ["block1", "block2"]], lex_order=False, drop_empty_cols=True)
+print(mat())
+print(mat.colnames)
+

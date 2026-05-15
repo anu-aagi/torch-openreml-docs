@@ -11,6 +11,6 @@ n, q = 6, 3
 z = torch.randn(n, q)
 g = DiagonalMatrix(q)
 op = CovariancePropagation(z=z, g=g)
-params = torch.tensor([0.0, 0.5, 1.0])
-op(params)
+free_params = torch.tensor([0.0, 0.5, 1.0])
+op(free_params)
 

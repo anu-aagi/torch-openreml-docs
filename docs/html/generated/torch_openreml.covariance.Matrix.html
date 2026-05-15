@@ -292,7 +292,7 @@
 <h1>torch_openreml.covariance.Matrix<a class="headerlink" href="#torch-openreml-covariance-matrix" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Matrix">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_openreml.covariance.</span></span><span class="sig-name descname"><span class="pre">Matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_grad_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_openreml.covariance.</span></span><span class="sig-name descname"><span class="pre">Matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_spec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Abstract base class for covariance matrices with parameterized structure.</p>
 <div class="math-wrapper docutils container">
@@ -305,21 +305,19 @@ parameters that define the matrix entries.</p>
 and Jacobian computation (both manual and automatic).
 Subclasses must implement <code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code> to construct their specific matrix
 structure from the provided parameters.</p>
-<p>Initialize a covariance matrix with optional parameter transforms.</p>
+<p>Initialize a covariance matrix with parameter specifications.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>shape</strong> (<em>tuple</em><em> or </em><em>None</em>) – Expected output dimensions of the constructed matrix.
 Used for validation; the actual shape may be set by subclasses.</p></li>
-<li><p><strong>param_names</strong> (<em>list</em><em> of </em><em>str</em>) – Ordered names of parameters in <code class="xref py py-attr docutils literal notranslate"><span class="pre">params</span></code>.
-Empty list if no trainable parameters (e.g., fixed matrices).</p></li>
-<li><p><strong>trans</strong> (<em>list</em><em> of </em><a class="reference internal" href="torch_openreml.covariance.transform.Transform.html#torch_openreml.covariance.transform.Transform" title="torch_openreml.covariance.transform.Transform"><em>Transform</em></a><em> or </em><em>None</em>) – List of transforms applied to each
-parameter before constructing the matrix. If None, no transforms are used.
-Typically used for variance (<span class="math notranslate nohighlight">\(\exp(2\theta) &gt; 0\)</span>) or correlation
-constraints (<span class="math notranslate nohighlight">\(\rho \in (-1, 1)\)</span>).</p></li>
-<li><p><strong>no_grad_index</strong> (<em>list</em><em> of </em><em>int</em>) – Indices to exclude from gradient computation.
-Parameters at these indices will be omitted from <a class="reference internal" href="#torch_openreml.covariance.Matrix.grad" title="torch_openreml.covariance.Matrix.grad"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grad</span></code></a> and
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">grad_names</span></code>. Use <a class="reference internal" href="#torch_openreml.covariance.Matrix.set_no_grad" title="torch_openreml.covariance.Matrix.set_no_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_no_grad()</span></code></a> instead for convenience.</p></li>
+<li><p><strong>param_spec</strong> (<em>dict</em>) – Parameter specifications. Keys should be strings
+representing parameter names. Values should be dictionaries
+containing the specification for each parameter. Each specification
+dictionary should contain the keys “fixed”, “default”, and “trans”,
+representing whether the parameter is fixed or free (bool), the
+default value (1D torch.Tensor), and the transform (Transform),
+respectively.</p></li>
 </ul>
 </dd>
 </dl>
@@ -330,16 +328,15 @@ Parameters at these indices will be omitted from <a class="reference internal" h
 <div class="math notranslate nohighlight">
 \[\symbf{V} = \left[f_0(\theta_0), \ldots, f_{p-1}(\theta_{p-1}) \right]^\top,\]</div>
 </div>
-<p>where each <span class="math notranslate nohighlight">\(f_i\)</span> is the i-th transform in <a class="reference internal" href="#torch_openreml.covariance.Matrix.trans" title="torch_openreml.covariance.Matrix.trans"><code class="xref py py-attr docutils literal notranslate"><span class="pre">trans</span></code></a>.
-If <a class="reference internal" href="#torch_openreml.covariance.Matrix.trans" title="torch_openreml.covariance.Matrix.trans"><code class="xref py py-attr docutils literal notranslate"><span class="pre">trans</span></code></a> has length 1, the single transform is broadcast and applied elementwise to all parameters.</p>
+<p>where <span class="math notranslate nohighlight">\(f_i\)</span> is the transform for <cite>i</cite>-th parameter.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">param_names</span></code> is not a list of strings, or if
-    transforms contain non-Transform objects.</p></li>
-<li><p><strong>ValueError</strong> – If parameter names are not unique, or if indices in
-    <code class="docutils literal notranslate"><span class="pre">no_grad_index</span></code> are out of range.</p></li>
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">param_spec</span></code> does not follow any of the requirements
+    list in the argument description.</p></li>
+<li><p><strong>ValueError</strong> – If parameter names are not unique, or if keys in
+    <code class="docutils literal notranslate"><span class="pre">fix_params</span></code> are out of range.</p></li>
 </ul>
 </dd>
 </dl>
@@ -347,50 +344,38 @@ If <a class="reference internal" href="#torch_openreml.covariance.Matrix.trans" 
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.__call__" title="torch_openreml.covariance.Matrix.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a>(params)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.__call__" title="torch_openreml.covariance.Matrix.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a>(free_params)</p></td>
 <td><p>Construct the matrix from a flat parameter tensor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_grad" title="torch_openreml.covariance.Matrix.auto_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_grad</span></code></a>(params)</p></td>
-<td><p>Compute the Jacobian of <code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code> with respect to trainable parameters using automatic differentiation.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_grad" title="torch_openreml.covariance.Matrix.auto_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_grad</span></code></a>(free_params)</p></td>
+<td><p>Compute the Jacobian of <code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code> with respect to free parameters using automatic differentiation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.check_params" title="torch_openreml.covariance.Matrix.check_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_params</span></code></a>(params)</p></td>
-<td><p>Validate a parameter tensor and return its device and dtype.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.build_params" title="torch_openreml.covariance.Matrix.build_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_params</span></code></a>(free_params[, include_fixed, ...])</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.from_param_dict" title="torch_openreml.covariance.Matrix.from_param_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_param_dict</span></code></a>(param_dict)</p></td>
-<td><p>Extract parameter tensors from a dictionary into a flat 1D tensor.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.get_intermediates" title="torch_openreml.covariance.Matrix.get_intermediates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_intermediates</span></code></a>(params)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.get_intermediates" title="torch_openreml.covariance.Matrix.get_intermediates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_intermediates</span></code></a>(params)</p></td>
 <td><p>Retrieve cached intermediate computation results if still valid.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.grad" title="torch_openreml.covariance.Matrix.grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code></a>(params)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.grad" title="torch_openreml.covariance.Matrix.grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code></a>(free_params)</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.Matrix.__call__" title="torch_openreml.covariance.Matrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable parameters.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.manual_grad" title="torch_openreml.covariance.Matrix.manual_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code></a>(params)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.manual_grad" title="torch_openreml.covariance.Matrix.manual_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code></a>(free_params)</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.Matrix.__call__" title="torch_openreml.covariance.Matrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable parameters using a closed-form analytic expression.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.map_theta_to_dv" title="torch_openreml.covariance.Matrix.map_theta_to_dv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_theta_to_dv</span></code></a>(theta)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.map_theta_to_dv" title="torch_openreml.covariance.Matrix.map_theta_to_dv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_theta_to_dv</span></code></a>(theta)</p></td>
 <td><p>An interface compatible with <a class="reference internal" href="torch_openreml.REML.html#torch_openreml.REML" title="torch_openreml.REML"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch_openreml.REML</span></code></a> that maps parameters to the matrix Jacobian.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.map_theta_to_v" title="torch_openreml.covariance.Matrix.map_theta_to_v"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_theta_to_v</span></code></a>(theta)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.map_theta_to_v" title="torch_openreml.covariance.Matrix.map_theta_to_v"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_theta_to_v</span></code></a>(theta)</p></td>
 <td><p>An interface compatible with <a class="reference internal" href="torch_openreml.REML.html#torch_openreml.REML" title="torch_openreml.REML"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch_openreml.REML</span></code></a> that maps parameters to a matrix.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.reset_intermediates" title="torch_openreml.covariance.Matrix.reset_intermediates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.reset_intermediates" title="torch_openreml.covariance.Matrix.reset_intermediates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code></a>()</p></td>
 <td><p>Clear the intermediate computation cache.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_intermediates" title="torch_openreml.covariance.Matrix.set_intermediates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code></a>(params, intermediates)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_intermediates" title="torch_openreml.covariance.Matrix.set_intermediates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code></a>(params, intermediates)</p></td>
 <td><p>Cache intermediate computation results keyed by parameter hash.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_no_grad" title="torch_openreml.covariance.Matrix.set_no_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_no_grad</span></code></a>([index, param_name])</p></td>
-<td><p>Set the indices of parameters to exclude from gradient computation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.to_param_dict" title="torch_openreml.covariance.Matrix.to_param_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_param_dict</span></code></a>(params)</p></td>
-<td><p>Convert a flat parameter tensor to a parameter dictionary.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.trans_grad" title="torch_openreml.covariance.Matrix.trans_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code></a>(params)</p></td>
-<td><p>Compute the element-wise derivative of the parameter transforms.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.trans_params" title="torch_openreml.covariance.Matrix.trans_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_params</span></code></a>(params)</p></td>
-<td><p>Apply parameter transforms to a flat parameter tensor.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.trans_grad" title="torch_openreml.covariance.Matrix.trans_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code></a>(free_params)</p></td>
+<td><p>Compute the element-wise derivative of the transforms for the free parameters.</p></td>
 </tr>
 </tbody>
 </table>
@@ -399,23 +384,56 @@ If <a class="reference internal" href="#torch_openreml.covariance.Matrix.trans" 
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.no_grad_index" title="torch_openreml.covariance.Matrix.no_grad_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_grad_index</span></code></a></p></td>
-<td><p>Indices of parameters excluded from gradient computation.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.fixed_param_defaults" title="torch_openreml.covariance.Matrix.fixed_param_defaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixed_param_defaults</span></code></a></p></td>
+<td><p>Fixed parameter defaults.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.num_params" title="torch_openreml.covariance.Matrix.num_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_params</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.fixed_param_index" title="torch_openreml.covariance.Matrix.fixed_param_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixed_param_index</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.fixed_param_names" title="torch_openreml.covariance.Matrix.fixed_param_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixed_param_names</span></code></a></p></td>
+<td><p>Fixed parameter names.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.fixed_param_trans" title="torch_openreml.covariance.Matrix.fixed_param_trans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixed_param_trans</span></code></a></p></td>
+<td><p>Transforms for fixed parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.free_param_defaults" title="torch_openreml.covariance.Matrix.free_param_defaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">free_param_defaults</span></code></a></p></td>
+<td><p>Free parameter defaults.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.free_param_index" title="torch_openreml.covariance.Matrix.free_param_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">free_param_index</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.free_param_names" title="torch_openreml.covariance.Matrix.free_param_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">free_param_names</span></code></a></p></td>
+<td><p>Free parameter names.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.free_param_trans" title="torch_openreml.covariance.Matrix.free_param_trans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">free_param_trans</span></code></a></p></td>
+<td><p>Transforms for free parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.num_fixed_params" title="torch_openreml.covariance.Matrix.num_fixed_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_fixed_params</span></code></a></p></td>
+<td><p>Total number of fixed parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.num_free_params" title="torch_openreml.covariance.Matrix.num_free_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_free_params</span></code></a></p></td>
+<td><p>Total number of free parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.num_params" title="torch_openreml.covariance.Matrix.num_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_params</span></code></a></p></td>
 <td><p>Total number of parameters.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.param_defaults" title="torch_openreml.covariance.Matrix.param_defaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_defaults</span></code></a></p></td>
+<td><p>Parameter defaults.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.param_names" title="torch_openreml.covariance.Matrix.param_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_names</span></code></a></p></td>
-<td><p>Ordered parameter names.</p></td>
+<td><p>Parameter names.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.param_spec" title="torch_openreml.covariance.Matrix.param_spec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_spec</span></code></a></p></td>
+<td><p>Parameter specifications.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.param_trans" title="torch_openreml.covariance.Matrix.param_trans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_trans</span></code></a></p></td>
+<td><p>Parameter transforms.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.repr_dict" title="torch_openreml.covariance.Matrix.repr_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">repr_dict</span></code></a></p></td>
 <td><p>Key-value pairs used to build the string representation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.shape" title="torch_openreml.covariance.Matrix.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
 <td><p>Output matrix shape.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.trans" title="torch_openreml.covariance.Matrix.trans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans</span></code></a></p></td>
-<td><p>Parameter transforms.</p></td>
 </tr>
 </tbody>
 </table>
@@ -431,8 +449,7 @@ multiple calls with identical parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Current parameter tensor or dictionary.
-Converted to a flat tensor via <a class="reference internal" href="#torch_openreml.covariance.Matrix.from_param_dict" title="torch_openreml.covariance.Matrix.from_param_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_param_dict()</span></code></a> before hashing.</p></li>
+<li><p><strong>params</strong> (<em>torch.Tensor</em>) – Current parameter tensor.</p></li>
 <li><p><strong>intermediates</strong> – Arbitrary object to cache (e.g. Cholesky factors,
 eigendecompositions, or any reusable computation).</p></li>
 </ul>
@@ -440,7 +457,7 @@ eigendecompositions, or any reusable computation).</p></li>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">params</span></code> has length 0 (no trainable parameters), this is a no-op.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">params</span></code> has length 0 (no free parameters), this is a no-op.</p>
 </div>
 <p>Example:</p>
 <div class="jupyter_cell jupyter_container docutils container">
@@ -449,10 +466,10 @@ eigendecompositions, or any reusable computation).</p></li>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiagonalMatrix</span>
 
 <span class="n">mat</span> <span class="o">=</span> <span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
-<span class="n">sigma2</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">trans_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-<span class="n">mat</span><span class="o">.</span><span class="n">set_intermediates</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;sigma2&quot;</span><span class="p">:</span> <span class="n">sigma2</span><span class="p">})</span>
-<span class="n">mat</span><span class="o">.</span><span class="n">get_intermediates</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="n">free_params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">sigma2</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">set_intermediates</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;sigma2&quot;</span><span class="p">:</span> <span class="n">sigma2</span><span class="p">})</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">get_intermediates</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -474,9 +491,7 @@ value only if all three match, ensuring stale results are never returned
 after a parameter update, device transfer, or dtype cast.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Current parameter tensor or dictionary.
-Converted to a flat tensor via <a class="reference internal" href="#torch_openreml.covariance.Matrix.from_param_dict" title="torch_openreml.covariance.Matrix.from_param_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_param_dict()</span></code></a> before
-comparison.</p>
+<dd class="field-odd"><p><strong>params</strong> (<em>torch.Tensor</em>) – Current parameter tensor.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The cached intermediate object if the cache is valid, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if
@@ -490,10 +505,10 @@ the cache is missing, stale, or <code class="docutils literal notranslate"><span
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiagonalMatrix</span>
 
 <span class="n">mat</span> <span class="o">=</span> <span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
-<span class="n">sigma2</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">trans_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-<span class="n">mat</span><span class="o">.</span><span class="n">set_intermediates</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;sigma2&quot;</span><span class="p">:</span> <span class="n">sigma2</span><span class="p">})</span>
-<span class="n">mat</span><span class="o">.</span><span class="n">get_intermediates</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="n">free_params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">sigma2</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">set_intermediates</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;sigma2&quot;</span><span class="p">:</span> <span class="n">sigma2</span><span class="p">})</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">get_intermediates</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -520,12 +535,12 @@ and within <a class="reference internal" href="#torch_openreml.covariance.Matrix
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiagonalMatrix</span>
 
 <span class="n">mat</span> <span class="o">=</span> <span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
-<span class="n">sigma2</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">trans_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-<span class="n">mat</span><span class="o">.</span><span class="n">set_intermediates</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;sigma2&quot;</span><span class="p">:</span> <span class="n">sigma2</span><span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">get_intermediates</span><span class="p">(</span><span class="n">params</span><span class="p">))</span>
+<span class="n">free_params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">sigma2</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">set_intermediates</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;sigma2&quot;</span><span class="p">:</span> <span class="n">sigma2</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">get_intermediates</span><span class="p">(</span><span class="n">free_params</span><span class="p">))</span>
 <span class="n">mat</span><span class="o">.</span><span class="n">reset_intermediates</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">get_intermediates</span><span class="p">(</span><span class="n">params</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">get_intermediates</span><span class="p">(</span><span class="n">free_params</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -539,222 +554,26 @@ None
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.set_no_grad">
-<span class="sig-name descname"><span class="pre">set_no_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.set_no_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.set_no_grad" title="Link to this definition">¶</a></dt>
-<dd><p>Set the indices of parameters to exclude from gradient computation.</p>
-<p>Replaces <a class="reference internal" href="#torch_openreml.covariance.Matrix.no_grad_index" title="torch_openreml.covariance.Matrix.no_grad_index"><code class="xref py py-attr docutils literal notranslate"><span class="pre">no_grad_index</span></code></a> with the provided indices. Exactly one
-of <code class="docutils literal notranslate"><span class="pre">index</span></code> or <code class="docutils literal notranslate"><span class="pre">param_name</span></code> must be supplied; providing both or neither
-raises an error.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>index</strong> (<em>int</em><em> or </em><em>list</em><em> of </em><em>int</em><em>, </em><em>optional</em>) – Zero-based index or list of
-indices into <a class="reference internal" href="#torch_openreml.covariance.Matrix.param_names" title="torch_openreml.covariance.Matrix.param_names"><code class="xref py py-attr docutils literal notranslate"><span class="pre">param_names</span></code></a> to exclude from gradient
-computation.</p></li>
-<li><p><strong>param_name</strong> (<em>str</em><em> or </em><em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – Parameter name or list
-of names to exclude. Names must exist in <a class="reference internal" href="#torch_openreml.covariance.Matrix.param_names" title="torch_openreml.covariance.Matrix.param_names"><code class="xref py py-attr docutils literal notranslate"><span class="pre">param_names</span></code></a>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>ValueError</strong> – If both or neither of <code class="docutils literal notranslate"><span class="pre">index</span></code> and <code class="docutils literal notranslate"><span class="pre">param_name</span></code>
-    are provided, or if any index is out of range.</p></li>
-<li><p><strong>KeyError</strong> – If any name in <code class="docutils literal notranslate"><span class="pre">param_name</span></code> is not found in
-    <a class="reference internal" href="#torch_openreml.covariance.Matrix.param_names" title="torch_openreml.covariance.Matrix.param_names"><code class="xref py py-attr docutils literal notranslate"><span class="pre">param_names</span></code></a>.</p></li>
-</ul>
-</dd>
-</dl>
-<p>Example:</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiagonalMatrix</span>
-
-<span class="n">mat</span> <span class="o">=</span> <span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">mat</span><span class="o">.</span><span class="n">set_no_grad</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">no_grad_index</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[0]
-(tensor([[[0., 0., 0.],
-         [0., 2., 0.],
-         [0., 0., 0.]],
-
-        [[0., 0., 0.],
-         [0., 0., 0.],
-         [0., 0., 2.]]]), [&#39;sigma^2_1&#39;, &#39;sigma^2_2&#39;])
-</pre></div>
-</div>
-</div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.from_param_dict">
-<span class="sig-name descname"><span class="pre">from_param_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.from_param_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.from_param_dict" title="Link to this definition">¶</a></dt>
-<dd><p>Extract parameter tensors from a dictionary into a flat 1D tensor.</p>
-<p>Converts a parameter dictionary to a concatenated 1D tensor ordered
-according to <a class="reference internal" href="#torch_openreml.covariance.Matrix.param_names" title="torch_openreml.covariance.Matrix.param_names"><code class="xref py py-attr docutils literal notranslate"><span class="pre">param_names</span></code></a>. The inverse operation is provided
-by <a class="reference internal" href="#torch_openreml.covariance.Matrix.to_param_dict" title="torch_openreml.covariance.Matrix.to_param_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_param_dict()</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>param_dict</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Either a flat parameter tensor
-(returned as-is), or a dictionary mapping parameter names to
-tensors. All keys must exist in <a class="reference internal" href="#torch_openreml.covariance.Matrix.param_names" title="torch_openreml.covariance.Matrix.param_names"><code class="xref py py-attr docutils literal notranslate"><span class="pre">param_names</span></code></a> and no
-extra keys are allowed.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>Concatenated 1D tensor containing all parameters</dt><dd><p>in the order specified by <a class="reference internal" href="#torch_openreml.covariance.Matrix.param_names" title="torch_openreml.covariance.Matrix.param_names"><code class="xref py py-attr docutils literal notranslate"><span class="pre">param_names</span></code></a>.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>torch.Tensor</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">param_dict</span></code> is a dictionary missing required keys
-    or containing unexpected keys, or if the tensor length does not
-    match the number of parameters.</p>
-</dd>
-</dl>
-<p>Example:</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiagonalMatrix</span>
-
-<span class="n">mat</span> <span class="o">=</span> <span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;sigma^2_0&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]),</span>
-              <span class="s2">&quot;sigma^2_1&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.5</span><span class="p">]),</span>
-              <span class="s2">&quot;sigma^2_2&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">])}</span>
-<span class="n">mat</span><span class="o">.</span><span class="n">from_param_dict</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([0.0000, 0.5000, 1.0000])
-</pre></div>
-</div>
-</div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.to_param_dict">
-<span class="sig-name descname"><span class="pre">to_param_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.to_param_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.to_param_dict" title="Link to this definition">¶</a></dt>
-<dd><p>Convert a flat parameter tensor to a parameter dictionary.</p>
-<p>Maps each element of a 1D parameter tensor to its corresponding name
-in <a class="reference internal" href="#torch_openreml.covariance.Matrix.param_names" title="torch_openreml.covariance.Matrix.param_names"><code class="xref py py-attr docutils literal notranslate"><span class="pre">param_names</span></code></a>, returning a dictionary of scalar tensors.
-This is the inverse of <a class="reference internal" href="#torch_openreml.covariance.Matrix.from_param_dict" title="torch_openreml.covariance.Matrix.from_param_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_param_dict()</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Either a flat 1D tensor of length
-<a class="reference internal" href="#torch_openreml.covariance.Matrix.num_params" title="torch_openreml.covariance.Matrix.num_params"><code class="xref py py-attr docutils literal notranslate"><span class="pre">num_params</span></code></a> (converted to a dict), or a dict (returned
-as-is).</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Mapping from each name in <a class="reference internal" href="#torch_openreml.covariance.Matrix.param_names" title="torch_openreml.covariance.Matrix.param_names"><code class="xref py py-attr docutils literal notranslate"><span class="pre">param_names</span></code></a> to a
-1D single-element tensor.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">params</span></code> is a tensor whose length does not equal
-    <a class="reference internal" href="#torch_openreml.covariance.Matrix.num_params" title="torch_openreml.covariance.Matrix.num_params"><code class="xref py py-attr docutils literal notranslate"><span class="pre">num_params</span></code></a>.</p>
-</dd>
-</dl>
-<p>Example:</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiagonalMatrix</span>
-
-<span class="n">mat</span> <span class="o">=</span> <span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
-<span class="n">mat</span><span class="o">.</span><span class="n">to_param_dict</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;sigma^2_0&#39;: tensor([0.]),
- &#39;sigma^2_1&#39;: tensor([0.5000]),
- &#39;sigma^2_2&#39;: tensor([1.])}
-</pre></div>
-</div>
-</div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.trans_params">
-<span class="sig-name descname"><span class="pre">trans_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.trans_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.trans_params" title="Link to this definition">¶</a></dt>
-<dd><p>Apply parameter transforms to a flat parameter tensor.</p>
-<p>Applies the transforms in <a class="reference internal" href="#torch_openreml.covariance.Matrix.trans" title="torch_openreml.covariance.Matrix.trans"><code class="xref py py-attr docutils literal notranslate"><span class="pre">trans</span></code></a> element-wise to <code class="docutils literal notranslate"><span class="pre">params</span></code>.
-If <a class="reference internal" href="#torch_openreml.covariance.Matrix.trans" title="torch_openreml.covariance.Matrix.trans"><code class="xref py py-attr docutils literal notranslate"><span class="pre">trans</span></code></a> is <code class="docutils literal notranslate"><span class="pre">None</span></code> or empty, returns <code class="docutils literal notranslate"><span class="pre">params</span></code> unchanged.
-If <a class="reference internal" href="#torch_openreml.covariance.Matrix.trans" title="torch_openreml.covariance.Matrix.trans"><code class="xref py py-attr docutils literal notranslate"><span class="pre">trans</span></code></a> has a single entry, that transform is broadcast and
-applied to all parameters simultaneously. Otherwise, each transform
-is applied to its corresponding parameter individually.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
-dictionary. Converted via <a class="reference internal" href="#torch_openreml.covariance.Matrix.from_param_dict" title="torch_openreml.covariance.Matrix.from_param_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_param_dict()</span></code></a> before
-transformation.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Transformed parameter tensor of the same shape
-as <code class="docutils literal notranslate"><span class="pre">params</span></code>.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>torch.Tensor</p>
-</dd>
-</dl>
-<p>Example:</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiagonalMatrix</span>
-
-<span class="n">mat</span> <span class="o">=</span> <span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
-<span class="n">mat</span><span class="o">.</span><span class="n">trans_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([1.0000, 2.7183, 7.3891])
-</pre></div>
-</div>
-</div>
-</div>
-</dd></dl>
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.build_params">
+<span class="sig-name descname"><span class="pre">build_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tensor'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.build_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.build_params" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.trans_grad">
-<span class="sig-name descname"><span class="pre">trans_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.trans_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.trans_grad" title="Link to this definition">¶</a></dt>
-<dd><p>Compute the element-wise derivative of the parameter transforms.</p>
-<p>Returns the Jacobian diagonal of <a class="reference internal" href="#torch_openreml.covariance.Matrix.trans_params" title="torch_openreml.covariance.Matrix.trans_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">trans_params()</span></code></a> with respect
+<span class="sig-name descname"><span class="pre">trans_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.trans_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.trans_grad" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the element-wise derivative of the transforms for the free parameters.</p>
+<p>Returns the Jacobian diagonal of <code class="xref py py-meth docutils literal notranslate"><span class="pre">trans_free_params()</span></code> with respect
 to the raw (untransformed) parameters. Used in the chain rule when
 computing gradients of the matrix with respect to the original
 parameterisation.</p>
-<p>If <a class="reference internal" href="#torch_openreml.covariance.Matrix.trans" title="torch_openreml.covariance.Matrix.trans"><code class="xref py py-attr docutils literal notranslate"><span class="pre">trans</span></code></a> is <code class="docutils literal notranslate"><span class="pre">None</span></code> or empty, returns a tensor of ones
-(identity derivative). If <a class="reference internal" href="#torch_openreml.covariance.Matrix.trans" title="torch_openreml.covariance.Matrix.trans"><code class="xref py py-attr docutils literal notranslate"><span class="pre">trans</span></code></a> has a single entry, its
-derivative is broadcast across all parameters. Otherwise, each
-transform’s derivative is evaluated at its corresponding parameter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
-dictionary. Converted via <a class="reference internal" href="#torch_openreml.covariance.Matrix.from_param_dict" title="torch_openreml.covariance.Matrix.from_param_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_param_dict()</span></code></a> before
-evaluation.</p>
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
+dictionary.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>1D tensor of element-wise transform derivatives,
-of the same length as <code class="docutils literal notranslate"><span class="pre">params</span></code>.</p>
+of the same length as <code class="docutils literal notranslate"><span class="pre">free_params</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch.Tensor</p>
@@ -767,8 +586,8 @@ of the same length as <code class="docutils literal notranslate"><span class="pr
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiagonalMatrix</span>
 
 <span class="n">mat</span> <span class="o">=</span> <span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
-<span class="n">mat</span><span class="o">.</span><span class="n">trans_grad</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="n">free_params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">trans_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -782,19 +601,18 @@ of the same length as <code class="docutils literal notranslate"><span class="pr
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.auto_grad">
-<span class="sig-name descname"><span class="pre">auto_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.auto_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.auto_grad" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">auto_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.auto_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.auto_grad" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the Jacobian of <code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code> with respect to
-trainable parameters using automatic differentiation.</p>
-<p>Uses <code class="xref py py-func docutils literal notranslate"><span class="pre">torch.func.jacrev()</span></code> to compute the full Jacobian, then
-masks out parameters listed in <a class="reference internal" href="#torch_openreml.covariance.Matrix.no_grad_index" title="torch_openreml.covariance.Matrix.no_grad_index"><code class="xref py py-attr docutils literal notranslate"><span class="pre">no_grad_index</span></code></a>.</p>
-<p>If all parameters are excluded via <code class="docutils literal notranslate"><span class="pre">no_grad_index</span></code>, returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code></p>
+free parameters using automatic differentiation.</p>
+<p>Uses <code class="xref py py-func docutils literal notranslate"><span class="pre">torch.func.jacrev()</span></code> to compute the full Jacobian.</p>
+<p>If all parameters are fixed, returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>torch.Tensor</em>) – Flat 1D parameter tensor.</p>
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or dict.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(grad,</span> <span class="pre">grad_names)</span></code>, where <code class="docutils literal notranslate"><span class="pre">grad</span></code> is a 3D tensor of
-shape <code class="docutils literal notranslate"><span class="pre">(num_params</span> <span class="pre">-</span> <span class="pre">len(no_grad_index),</span> <span class="pre">*shape)</span></code>, and
+shape <code class="docutils literal notranslate"><span class="pre">(num_free_params,</span> <span class="pre">*shape)</span></code>, and
 <code class="docutils literal notranslate"><span class="pre">grad_names</span></code> has the same length as <code class="docutils literal notranslate"><span class="pre">grad</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -808,8 +626,8 @@ shape <code class="docutils literal notranslate"><span class="pre">(num_params</
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiagonalMatrix</span>
 
 <span class="n">mat</span> <span class="o">=</span> <span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
-<span class="n">grad</span><span class="p">,</span> <span class="n">grad_names</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">auto_grad</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="n">free_params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<span class="n">grad</span><span class="p">,</span> <span class="n">grad_names</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">auto_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
 <span class="n">grad</span><span class="p">,</span> <span class="n">grad_names</span>
 </pre></div>
 </div>
@@ -829,7 +647,7 @@ shape <code class="docutils literal notranslate"><span class="pre">(num_params</
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.manual_grad">
-<span class="sig-name descname"><span class="pre">manual_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.manual_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.manual_grad" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">manual_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.manual_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.manual_grad" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.Matrix.__call__" title="torch_openreml.covariance.Matrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable
 parameters using a closed-form analytic expression.</p>
 <p>This method is optional. When implemented by a subclass, <a class="reference internal" href="#torch_openreml.covariance.Matrix.grad" title="torch_openreml.covariance.Matrix.grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grad()</span></code></a>
@@ -839,26 +657,24 @@ grad mode. If not implemented, calling this method raises
 differentiation.</p>
 <p>Implementations must satisfy the following contract:</p>
 <ul class="simple">
-<li><p>Return <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code> if all parameters are excluded via
-<a class="reference internal" href="#torch_openreml.covariance.Matrix.no_grad_index" title="torch_openreml.covariance.Matrix.no_grad_index"><code class="xref py py-attr docutils literal notranslate"><span class="pre">no_grad_index</span></code></a>.</p></li>
+<li><p>Return <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code> if all parameters are fixed.</p></li>
 <li><p>Return a 3D gradient tensor of shape
-<code class="docutils literal notranslate"><span class="pre">(num_params</span> <span class="pre">-</span> <span class="pre">len(no_grad_index),</span> <span class="pre">*shape)</span></code> and a matching list
-of parameter names, omitting any index in <a class="reference internal" href="#torch_openreml.covariance.Matrix.no_grad_index" title="torch_openreml.covariance.Matrix.no_grad_index"><code class="xref py py-attr docutils literal notranslate"><span class="pre">no_grad_index</span></code></a>.</p></li>
+<code class="docutils literal notranslate"><span class="pre">(num_free_params,</span> <span class="pre">*shape)</span></code> and a matching list
+of parameter names.</p></li>
 <li><p>Apply transform derivatives from <a class="reference internal" href="#torch_openreml.covariance.Matrix.trans_grad" title="torch_openreml.covariance.Matrix.trans_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">trans_grad()</span></code></a> via the chain
 rule so that gradients are with respect to the raw (untransformed)
 parameters.</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
 parameter dictionary.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(grad,</span> <span class="pre">grad_names)</span></code>, where <code class="docutils literal notranslate"><span class="pre">grad</span></code> is a 3D tensor of
-shape <code class="docutils literal notranslate"><span class="pre">(num_params</span> <span class="pre">-</span> <span class="pre">len(no_grad_index),</span> <span class="pre">*shape)</span></code> and
+shape <code class="docutils literal notranslate"><span class="pre">(num_free_params,</span> <span class="pre">*shape)</span></code> and
 <code class="docutils literal notranslate"><span class="pre">grad_names</span></code> is a list of the corresponding parameter names.
-Returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code> if all parameters are excluded from
-gradient computation.</p>
+Returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code> if all parameters are fixed.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
@@ -873,15 +689,14 @@ gradient computation.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.__call__">
-<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.__call__" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.__call__" title="Link to this definition">¶</a></dt>
 <dd><p>Construct the matrix from a flat parameter tensor.</p>
 <p>Must be implemented by subclasses. Implementations should convert
-<code class="docutils literal notranslate"><span class="pre">params</span></code> via <a class="reference internal" href="#torch_openreml.covariance.Matrix.from_param_dict" title="torch_openreml.covariance.Matrix.from_param_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_param_dict()</span></code></a> or <a class="reference internal" href="#torch_openreml.covariance.Matrix.to_param_dict" title="torch_openreml.covariance.Matrix.to_param_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_param_dict()</span></code></a>,
-then call <a class="reference internal" href="#torch_openreml.covariance.Matrix.check_params" title="torch_openreml.covariance.Matrix.check_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">check_params()</span></code></a> to validate and <a class="reference internal" href="#torch_openreml.covariance.Matrix.trans_params" title="torch_openreml.covariance.Matrix.trans_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">trans_params()</span></code></a>
-to apply transforms before any computation.</p>
+<code class="docutils literal notranslate"><span class="pre">free_params</span></code> via <a class="reference internal" href="#torch_openreml.covariance.Matrix.build_params" title="torch_openreml.covariance.Matrix.build_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build_params()</span></code></a> to validate,
+include fixed parameters, and apply transforms before any computation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
 parameter dictionary.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -895,7 +710,7 @@ parameter dictionary.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.grad">
-<span class="sig-name descname"><span class="pre">grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.grad" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.grad" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.Matrix.__call__" title="torch_openreml.covariance.Matrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable
 parameters.</p>
 <p>Dispatches to <a class="reference internal" href="#torch_openreml.covariance.Matrix.manual_grad" title="torch_openreml.covariance.Matrix.manual_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">manual_grad()</span></code></a> or <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_grad" title="torch_openreml.covariance.Matrix.auto_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code></a> according to
@@ -907,7 +722,7 @@ parameters.</p>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
 parameter dictionary.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -928,8 +743,8 @@ and <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_g
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiagonalMatrix</span>
 
 <span class="n">mat</span> <span class="o">=</span> <span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
-<span class="n">grad</span><span class="p">,</span> <span class="n">grad_names</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="n">free_params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<span class="n">grad</span><span class="p">,</span> <span class="n">grad_names</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
 <span class="n">grad</span><span class="p">,</span> <span class="n">grad_names</span>
 </pre></div>
 </div>
@@ -978,36 +793,11 @@ to the matrix Jacobian.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Jacobian tensor of shape
-<code class="docutils literal notranslate"><span class="pre">(num_grad_params,</span> <span class="pre">*shape)</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if all parameters
-are excluded from gradient computation.</p>
+<code class="docutils literal notranslate"><span class="pre">(num_free_params,</span> <span class="pre">*shape)</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if all parameters
+are fixed.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch.Tensor or None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.check_params">
-<span class="sig-name descname"><span class="pre">check_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.check_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.check_params" title="Link to this definition">¶</a></dt>
-<dd><p>Validate a parameter tensor and return its device and dtype.</p>
-<p>Accepts a parameter dictionary and converts it to a flat tensor
-via <a class="reference internal" href="#torch_openreml.covariance.Matrix.from_param_dict" title="torch_openreml.covariance.Matrix.from_param_dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_param_dict()</span></code></a> before validation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Parameters to validate.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(device,</span> <span class="pre">dtype)</span></code> of the parameter tensor.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">params</span></code> is not a tensor.</p></li>
-<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">params</span></code> is not 1D or has the wrong length.</p></li>
-</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -1024,15 +814,58 @@ via <a class="reference internal" href="#torch_openreml.covariance.Matrix.from_p
 </dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.param_spec">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">param_spec</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.param_spec" title="Link to this definition">¶</a></dt>
+<dd><p>Parameter specifications.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.param_names">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">param_names</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.param_names" title="Link to this definition">¶</a></dt>
-<dd><p>Ordered parameter names.</p>
+<dd><p>Parameter names.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list of str</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.free_param_names">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">free_param_names</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.free_param_names" title="Link to this definition">¶</a></dt>
+<dd><p>Free parameter names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.fixed_param_names">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">fixed_param_names</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.fixed_param_names" title="Link to this definition">¶</a></dt>
+<dd><p>Fixed parameter names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.free_param_index">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">free_param_index</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.free_param_index" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.fixed_param_index">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">fixed_param_index</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.fixed_param_index" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.num_params">
@@ -1046,23 +879,89 @@ via <a class="reference internal" href="#torch_openreml.covariance.Matrix.from_p
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.trans">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">trans</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.trans" title="Link to this definition">¶</a></dt>
-<dd><p>Parameter transforms.</p>
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.num_free_params">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">num_free_params</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.num_free_params" title="Link to this definition">¶</a></dt>
+<dd><p>Total number of free parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list of <a class="reference internal" href="torch_openreml.covariance.transform.Transform.html#torch_openreml.covariance.transform.Transform" title="torch_openreml.covariance.transform.Transform">Transform</a></p>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.no_grad_index">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">no_grad_index</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.no_grad_index" title="Link to this definition">¶</a></dt>
-<dd><p>Indices of parameters excluded from gradient computation.</p>
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.num_fixed_params">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">num_fixed_params</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.num_fixed_params" title="Link to this definition">¶</a></dt>
+<dd><p>Total number of fixed parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list of int</p>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.param_defaults">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">param_defaults</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.param_defaults" title="Link to this definition">¶</a></dt>
+<dd><p>Parameter defaults.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict of torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.free_param_defaults">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">free_param_defaults</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.free_param_defaults" title="Link to this definition">¶</a></dt>
+<dd><p>Free parameter defaults.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict of torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.fixed_param_defaults">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">fixed_param_defaults</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.fixed_param_defaults" title="Link to this definition">¶</a></dt>
+<dd><p>Fixed parameter defaults.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict of torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.param_trans">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">param_trans</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.param_trans" title="Link to this definition">¶</a></dt>
+<dd><p>Parameter transforms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict of <a class="reference internal" href="torch_openreml.covariance.transform.Transform.html#torch_openreml.covariance.transform.Transform" title="torch_openreml.covariance.transform.Transform">Transform</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.free_param_trans">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">free_param_trans</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.free_param_trans" title="Link to this definition">¶</a></dt>
+<dd><p>Transforms for free parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict of <a class="reference internal" href="torch_openreml.covariance.transform.Transform.html#torch_openreml.covariance.transform.Transform" title="torch_openreml.covariance.transform.Transform">Transform</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.fixed_param_trans">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">fixed_param_trans</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.fixed_param_trans" title="Link to this definition">¶</a></dt>
+<dd><p>Transforms for fixed parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict of <a class="reference internal" href="torch_openreml.covariance.transform.Transform.html#torch_openreml.covariance.transform.Transform" title="torch_openreml.covariance.transform.Transform">Transform</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1149,10 +1048,7 @@ via <a class="reference internal" href="#torch_openreml.covariance.Matrix.from_p
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_intermediates"><code class="docutils literal notranslate"><span class="pre">Matrix.set_intermediates()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.get_intermediates"><code class="docutils literal notranslate"><span class="pre">Matrix.get_intermediates()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.reset_intermediates"><code class="docutils literal notranslate"><span class="pre">Matrix.reset_intermediates()</span></code></a></li>
-<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_no_grad"><code class="docutils literal notranslate"><span class="pre">Matrix.set_no_grad()</span></code></a></li>
-<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.from_param_dict"><code class="docutils literal notranslate"><span class="pre">Matrix.from_param_dict()</span></code></a></li>
-<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.to_param_dict"><code class="docutils literal notranslate"><span class="pre">Matrix.to_param_dict()</span></code></a></li>
-<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.trans_params"><code class="docutils literal notranslate"><span class="pre">Matrix.trans_params()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.build_params"><code class="docutils literal notranslate"><span class="pre">Matrix.build_params()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.trans_grad"><code class="docutils literal notranslate"><span class="pre">Matrix.trans_grad()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_grad"><code class="docutils literal notranslate"><span class="pre">Matrix.auto_grad()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.manual_grad"><code class="docutils literal notranslate"><span class="pre">Matrix.manual_grad()</span></code></a></li>
@@ -1160,12 +1056,22 @@ via <a class="reference internal" href="#torch_openreml.covariance.Matrix.from_p
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.grad"><code class="docutils literal notranslate"><span class="pre">Matrix.grad()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.map_theta_to_v"><code class="docutils literal notranslate"><span class="pre">Matrix.map_theta_to_v()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.map_theta_to_dv"><code class="docutils literal notranslate"><span class="pre">Matrix.map_theta_to_dv()</span></code></a></li>
-<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.check_params"><code class="docutils literal notranslate"><span class="pre">Matrix.check_params()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.shape"><code class="docutils literal notranslate"><span class="pre">Matrix.shape</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.param_spec"><code class="docutils literal notranslate"><span class="pre">Matrix.param_spec</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.param_names"><code class="docutils literal notranslate"><span class="pre">Matrix.param_names</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.free_param_names"><code class="docutils literal notranslate"><span class="pre">Matrix.free_param_names</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.fixed_param_names"><code class="docutils literal notranslate"><span class="pre">Matrix.fixed_param_names</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.free_param_index"><code class="docutils literal notranslate"><span class="pre">Matrix.free_param_index</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.fixed_param_index"><code class="docutils literal notranslate"><span class="pre">Matrix.fixed_param_index</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.num_params"><code class="docutils literal notranslate"><span class="pre">Matrix.num_params</span></code></a></li>
-<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.trans"><code class="docutils literal notranslate"><span class="pre">Matrix.trans</span></code></a></li>
-<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.no_grad_index"><code class="docutils literal notranslate"><span class="pre">Matrix.no_grad_index</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.num_free_params"><code class="docutils literal notranslate"><span class="pre">Matrix.num_free_params</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.num_fixed_params"><code class="docutils literal notranslate"><span class="pre">Matrix.num_fixed_params</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.param_defaults"><code class="docutils literal notranslate"><span class="pre">Matrix.param_defaults</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.free_param_defaults"><code class="docutils literal notranslate"><span class="pre">Matrix.free_param_defaults</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.fixed_param_defaults"><code class="docutils literal notranslate"><span class="pre">Matrix.fixed_param_defaults</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.param_trans"><code class="docutils literal notranslate"><span class="pre">Matrix.param_trans</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.free_param_trans"><code class="docutils literal notranslate"><span class="pre">Matrix.free_param_trans</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.fixed_param_trans"><code class="docutils literal notranslate"><span class="pre">Matrix.fixed_param_trans</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.repr_dict"><code class="docutils literal notranslate"><span class="pre">Matrix.repr_dict</span></code></a></li>
 </ul>
 </li>

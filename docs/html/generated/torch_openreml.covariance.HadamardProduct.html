@@ -324,8 +324,8 @@ dict. The first is <span class="math notranslate nohighlight">\(\symbf{A}\)</spa
 
 <span class="n">n</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">op</span> <span class="o">=</span> <span class="n">HadamardProduct</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">EquicorrelationMatrix</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">b</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">5.0</span><span class="p">]))</span>
-<span class="n">params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">])</span>
-<span class="n">op</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="n">free_params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">])</span>
+<span class="n">op</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -342,31 +342,25 @@ dict. The first is <span class="math notranslate nohighlight">\(\symbf{A}\)</spa
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.HadamardProduct.__call__" title="torch_openreml.covariance.HadamardProduct.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a>(params)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.HadamardProduct.__call__" title="torch_openreml.covariance.HadamardProduct.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a>(free_params)</p></td>
 <td><p>Construct the matrix from a flat parameter tensor.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_grad</span></code>(params)</p></td>
-<td><p>Compute the Jacobian of <code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code> with respect to trainable parameters using automatic differentiation.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_grad</span></code>(free_params)</p></td>
+<td><p>Compute the Jacobian of <code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code> with respect to free parameters using automatic differentiation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_operands</span></code>(params)</p></td>
-<td><p>Evaluate each operand at the current parameters.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_operands</span></code>(free_params)</p></td>
+<td><p>Evaluate each operand at the current free parameters.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_operands</span></code>(operands)</p></td>
-<td><p>Validate the operand dictionary.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_params</span></code>(params)</p></td>
-<td><p>Validate a parameter tensor and return its device and dtype.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_param_dict</span></code>(param_dict)</p></td>
-<td><p>Extract parameter tensors from a dictionary into a flat 1D tensor.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_params</span></code>(free_params[, include_fixed, ...])</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_intermediates</span></code>(params)</p></td>
 <td><p>Retrieve cached intermediate computation results if still valid.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>(params)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>(free_params)</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.HadamardProduct.__call__" title="torch_openreml.covariance.HadamardProduct.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable parameters.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.HadamardProduct.manual_grad" title="torch_openreml.covariance.HadamardProduct.manual_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code></a>(params)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.HadamardProduct.manual_grad" title="torch_openreml.covariance.HadamardProduct.manual_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code></a>(free_params)</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.HadamardProduct.__call__" title="torch_openreml.covariance.HadamardProduct.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable parameters using a closed-form analytic expression.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_theta_to_dv</span></code>(theta)</p></td>
@@ -375,7 +369,7 @@ dict. The first is <span class="math notranslate nohighlight">\(\symbf{A}\)</spa
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_theta_to_v</span></code>(theta)</p></td>
 <td><p>An interface compatible with <a class="reference internal" href="torch_openreml.REML.html#torch_openreml.REML" title="torch_openreml.REML"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch_openreml.REML</span></code></a> that maps parameters to a matrix.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">operands_grad</span></code>(params)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">operands_grad</span></code>(free_params)</p></td>
 <td><p>Compute the Jacobian of each operand with respect to its parameters.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code>()</p></td>
@@ -384,17 +378,8 @@ dict. The first is <span class="math notranslate nohighlight">\(\symbf{A}\)</spa
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
 <td><p>Cache intermediate computation results keyed by parameter hash.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_no_grad</span></code>([index, param_name])</p></td>
-<td><p>Disabled — <code class="docutils literal notranslate"><span class="pre">no_grad_index</span></code> is managed by each operand directly.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_param_dict</span></code>(params)</p></td>
-<td><p>Convert a flat parameter tensor to a parameter dictionary.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>(params)</p></td>
-<td><p>Compute the element-wise derivative of the parameter transforms.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_params</span></code>(params)</p></td>
-<td><p>Apply each operand's parameter transforms to the joint parameter tensor.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>(free_params)</p></td>
+<td><p>Compute the element-wise derivative of the transforms for the free parameters.</p></td>
 </tr>
 </tbody>
 </table>
@@ -403,17 +388,53 @@ dict. The first is <span class="math notranslate nohighlight">\(\symbf{A}\)</spa
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_grad_index</span></code></p></td>
-<td><p>Aggregated indices of parameters excluded from gradient computation, derived from each operand's <code class="xref py py-attr docutils literal notranslate"><span class="pre">no_grad_index</span></code> and offset by the cumulative parameter count of preceding operands.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixed_param_defaults</span></code></p></td>
+<td><p>Fixed parameter defaults.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_params</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixed_param_index</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixed_param_names</span></code></p></td>
+<td><p>Fixed parameter names.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixed_param_trans</span></code></p></td>
+<td><p>Transforms for fixed parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">free_param_defaults</span></code></p></td>
+<td><p>Free parameter defaults.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">free_param_index</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">free_param_names</span></code></p></td>
+<td><p>Free parameter names.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">free_param_trans</span></code></p></td>
+<td><p>Transforms for free parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_fixed_params</span></code></p></td>
+<td><p>Total number of fixed parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_free_params</span></code></p></td>
+<td><p>Total number of free parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_params</span></code></p></td>
 <td><p>Total number of parameters.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">operands</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">operands</span></code></p></td>
 <td><p>Mapping from operand names to operand matrices or tensors.</p></td>
 </tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_defaults</span></code></p></td>
+<td><p>Parameter defaults.</p></td>
+</tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_names</span></code></p></td>
-<td><p>Ordered parameter names.</p></td>
+<td><p>Parameter names.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_spec</span></code></p></td>
+<td><p>Parameter specifications.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_trans</span></code></p></td>
+<td><p>Parameter transforms.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">repr_dict</span></code></p></td>
 <td><p>Key-value pairs used to build the string representation.</p></td>
@@ -421,23 +442,19 @@ dict. The first is <span class="math notranslate nohighlight">\(\symbf{A}\)</spa
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></p></td>
 <td><p>Output matrix shape.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans</span></code></p></td>
-<td><p>Parameter transforms.</p></td>
-</tr>
 </tbody>
 </table>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.HadamardProduct.__call__">
-<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/operator_hadamard_product.html#HadamardProduct.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.HadamardProduct.__call__" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/operator_hadamard_product.html#HadamardProduct.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.HadamardProduct.__call__" title="Link to this definition">¶</a></dt>
 <dd><p>Construct the matrix from a flat parameter tensor.</p>
 <p>Must be implemented by subclasses. Implementations should convert
-<code class="docutils literal notranslate"><span class="pre">params</span></code> via <code class="xref py py-meth docutils literal notranslate"><span class="pre">from_param_dict()</span></code> or <code class="xref py py-meth docutils literal notranslate"><span class="pre">to_param_dict()</span></code>,
-then call <code class="xref py py-meth docutils literal notranslate"><span class="pre">check_params()</span></code> to validate and <code class="xref py py-meth docutils literal notranslate"><span class="pre">trans_params()</span></code>
-to apply transforms before any computation.</p>
+<code class="docutils literal notranslate"><span class="pre">free_params</span></code> via <code class="xref py py-meth docutils literal notranslate"><span class="pre">build_params()</span></code> to validate,
+include fixed parameters, and apply transforms before any computation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
 parameter dictionary.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -451,20 +468,19 @@ parameter dictionary.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.HadamardProduct.manual_grad">
-<span class="sig-name descname"><span class="pre">manual_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/operator_hadamard_product.html#HadamardProduct.manual_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.HadamardProduct.manual_grad" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">manual_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/operator_hadamard_product.html#HadamardProduct.manual_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.HadamardProduct.manual_grad" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.HadamardProduct.__call__" title="torch_openreml.covariance.HadamardProduct.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable
 parameters using a closed-form analytic expression.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
 parameter dictionary.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(grad,</span> <span class="pre">grad_names)</span></code>, where <code class="docutils literal notranslate"><span class="pre">grad</span></code> is a 3D tensor of
-shape <code class="docutils literal notranslate"><span class="pre">(num_params</span> <span class="pre">-</span> <span class="pre">len(no_grad_index),</span> <span class="pre">*shape)</span></code> and
+shape <code class="docutils literal notranslate"><span class="pre">(num_free_params,</span> <span class="pre">*shape)</span></code> and
 <code class="docutils literal notranslate"><span class="pre">grad_names</span></code> is a list of the corresponding parameter names.
-Returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code> if all parameters are excluded from
-gradient computation.</p>
+Returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code> if all parameters are fixed.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>

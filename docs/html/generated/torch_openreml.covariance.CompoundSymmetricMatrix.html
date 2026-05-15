@@ -292,7 +292,7 @@
 <h1>torch_openreml.covariance.CompoundSymmetricMatrix<a class="headerlink" href="#torch-openreml-covariance-compoundsymmetricmatrix" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_openreml.covariance.CompoundSymmetricMatrix">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_openreml.covariance.</span></span><span class="sig-name descname"><span class="pre">CompoundSymmetricMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_grad_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/compound_symmetric_matrix.html#CompoundSymmetricMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.CompoundSymmetricMatrix" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_openreml.covariance.</span></span><span class="sig-name descname"><span class="pre">CompoundSymmetricMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_spec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/compound_symmetric_matrix.html#CompoundSymmetricMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.CompoundSymmetricMatrix" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix" title="torch_openreml.covariance.matrix.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a></p>
 <p>Compound symmetric covariance matrix with shared variance and correlation.</p>
 <div class="math-wrapper docutils container">
@@ -311,14 +311,13 @@ by mapping an unconstrained scalar through a sigmoid scaled to
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n</strong> (<em>int</em>) – Matrix dimension.</p></li>
-<li><p><strong>param_names</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – Names for the variance and
-correlation parameters. Defaults to <code class="docutils literal notranslate"><span class="pre">[&quot;sigma^2&quot;,</span> <span class="pre">&quot;rho&quot;]</span></code>.</p></li>
-<li><p><strong>trans</strong> (<em>list</em><em> of </em><a class="reference internal" href="torch_openreml.covariance.transform.Transform.html#torch_openreml.covariance.transform.Transform" title="torch_openreml.covariance.transform.Transform"><em>Transform</em></a><em>, </em><em>optional</em>) – Transforms applied to each
-parameter. Defaults to <a class="reference internal" href="torch_openreml.covariance.transform.TransformExpPow2.html#torch_openreml.covariance.transform.TransformExpPow2" title="torch_openreml.covariance.transform.TransformExpPow2"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformExpPow2</span></code></a>
-for <span class="math notranslate nohighlight">\(\sigma^2\)</span> and a sigmoid scaled to
-<span class="math notranslate nohighlight">\((-1/(n-1),\, 1)\)</span> for <span class="math notranslate nohighlight">\(\rho\)</span>.</p></li>
-<li><p><strong>no_grad_index</strong> (<em>list</em><em> of </em><em>int</em><em>, </em><em>optional</em>) – Indices of parameters to
-exclude from gradient computation.</p></li>
+<li><p><strong>param_spec</strong> (<em>dict</em>) – Parameter specifications. Keys should be strings
+representing parameter names. Values should be dictionaries
+containing the specification for each parameter. Each specification
+dictionary should contain the keys “fixed”, “default”, and “trans”,
+representing whether the parameter is fixed or free (bool), the
+default value (1D torch.Tensor), and the transform (Transform),
+respectively.</p></li>
 </ul>
 </dd>
 </dl>
@@ -329,9 +328,9 @@ exclude from gradient computation.</p></li>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompoundSymmetricMatrix</span>
 
 <span class="n">mat</span> <span class="o">=</span> <span class="n">CompoundSymmetricMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="p">(</span><span class="n">params</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">params</span><span class="p">))</span>
+<span class="n">free_params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="p">(</span><span class="n">free_params</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -354,50 +353,38 @@ exclude from gradient computation.</p></li>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.CompoundSymmetricMatrix.__call__" title="torch_openreml.covariance.CompoundSymmetricMatrix.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a>(params)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.CompoundSymmetricMatrix.__call__" title="torch_openreml.covariance.CompoundSymmetricMatrix.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a>(free_params)</p></td>
 <td><p>Construct the matrix from a flat parameter tensor.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_grad</span></code>(params)</p></td>
-<td><p>Compute the Jacobian of <code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code> with respect to trainable parameters using automatic differentiation.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_grad</span></code>(free_params)</p></td>
+<td><p>Compute the Jacobian of <code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code> with respect to free parameters using automatic differentiation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_params</span></code>(params)</p></td>
-<td><p>Validate a parameter tensor and return its device and dtype.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_params</span></code>(free_params[, include_fixed, ...])</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_param_dict</span></code>(param_dict)</p></td>
-<td><p>Extract parameter tensors from a dictionary into a flat 1D tensor.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_intermediates</span></code>(params)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_intermediates</span></code>(params)</p></td>
 <td><p>Retrieve cached intermediate computation results if still valid.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>(params)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>(free_params)</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.CompoundSymmetricMatrix.__call__" title="torch_openreml.covariance.CompoundSymmetricMatrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable parameters.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.CompoundSymmetricMatrix.manual_grad" title="torch_openreml.covariance.CompoundSymmetricMatrix.manual_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code></a>(params)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.CompoundSymmetricMatrix.manual_grad" title="torch_openreml.covariance.CompoundSymmetricMatrix.manual_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code></a>(free_params)</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.CompoundSymmetricMatrix.__call__" title="torch_openreml.covariance.CompoundSymmetricMatrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable parameters using a closed-form analytic expression.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_theta_to_dv</span></code>(theta)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_theta_to_dv</span></code>(theta)</p></td>
 <td><p>An interface compatible with <a class="reference internal" href="torch_openreml.REML.html#torch_openreml.REML" title="torch_openreml.REML"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch_openreml.REML</span></code></a> that maps parameters to the matrix Jacobian.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_theta_to_v</span></code>(theta)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_theta_to_v</span></code>(theta)</p></td>
 <td><p>An interface compatible with <a class="reference internal" href="torch_openreml.REML.html#torch_openreml.REML" title="torch_openreml.REML"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch_openreml.REML</span></code></a> that maps parameters to a matrix.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code>()</p></td>
 <td><p>Clear the intermediate computation cache.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
 <td><p>Cache intermediate computation results keyed by parameter hash.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_no_grad</span></code>([index, param_name])</p></td>
-<td><p>Set the indices of parameters to exclude from gradient computation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_param_dict</span></code>(params)</p></td>
-<td><p>Convert a flat parameter tensor to a parameter dictionary.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>(params)</p></td>
-<td><p>Compute the element-wise derivative of the parameter transforms.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_params</span></code>(params)</p></td>
-<td><p>Apply parameter transforms to a flat parameter tensor.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>(free_params)</p></td>
+<td><p>Compute the element-wise derivative of the transforms for the free parameters.</p></td>
 </tr>
 </tbody>
 </table>
@@ -406,14 +393,50 @@ exclude from gradient computation.</p></li>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_grad_index</span></code></p></td>
-<td><p>Indices of parameters excluded from gradient computation.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixed_param_defaults</span></code></p></td>
+<td><p>Fixed parameter defaults.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_params</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixed_param_index</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixed_param_names</span></code></p></td>
+<td><p>Fixed parameter names.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixed_param_trans</span></code></p></td>
+<td><p>Transforms for fixed parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">free_param_defaults</span></code></p></td>
+<td><p>Free parameter defaults.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">free_param_index</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">free_param_names</span></code></p></td>
+<td><p>Free parameter names.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">free_param_trans</span></code></p></td>
+<td><p>Transforms for free parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_fixed_params</span></code></p></td>
+<td><p>Total number of fixed parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_free_params</span></code></p></td>
+<td><p>Total number of free parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_params</span></code></p></td>
 <td><p>Total number of parameters.</p></td>
 </tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_defaults</span></code></p></td>
+<td><p>Parameter defaults.</p></td>
+</tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_names</span></code></p></td>
-<td><p>Ordered parameter names.</p></td>
+<td><p>Parameter names.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_spec</span></code></p></td>
+<td><p>Parameter specifications.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_trans</span></code></p></td>
+<td><p>Parameter transforms.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">repr_dict</span></code></p></td>
 <td><p>Key-value pairs used to build the string representation.</p></td>
@@ -421,23 +444,19 @@ exclude from gradient computation.</p></li>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></p></td>
 <td><p>Output matrix shape.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans</span></code></p></td>
-<td><p>Parameter transforms.</p></td>
-</tr>
 </tbody>
 </table>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.CompoundSymmetricMatrix.__call__">
-<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/compound_symmetric_matrix.html#CompoundSymmetricMatrix.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.CompoundSymmetricMatrix.__call__" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/compound_symmetric_matrix.html#CompoundSymmetricMatrix.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.CompoundSymmetricMatrix.__call__" title="Link to this definition">¶</a></dt>
 <dd><p>Construct the matrix from a flat parameter tensor.</p>
 <p>Must be implemented by subclasses. Implementations should convert
-<code class="docutils literal notranslate"><span class="pre">params</span></code> via <code class="xref py py-meth docutils literal notranslate"><span class="pre">from_param_dict()</span></code> or <code class="xref py py-meth docutils literal notranslate"><span class="pre">to_param_dict()</span></code>,
-then call <code class="xref py py-meth docutils literal notranslate"><span class="pre">check_params()</span></code> to validate and <code class="xref py py-meth docutils literal notranslate"><span class="pre">trans_params()</span></code>
-to apply transforms before any computation.</p>
+<code class="docutils literal notranslate"><span class="pre">free_params</span></code> via <code class="xref py py-meth docutils literal notranslate"><span class="pre">build_params()</span></code> to validate,
+include fixed parameters, and apply transforms before any computation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
 parameter dictionary.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -451,20 +470,19 @@ parameter dictionary.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.CompoundSymmetricMatrix.manual_grad">
-<span class="sig-name descname"><span class="pre">manual_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/compound_symmetric_matrix.html#CompoundSymmetricMatrix.manual_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.CompoundSymmetricMatrix.manual_grad" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">manual_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/compound_symmetric_matrix.html#CompoundSymmetricMatrix.manual_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.CompoundSymmetricMatrix.manual_grad" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.CompoundSymmetricMatrix.__call__" title="torch_openreml.covariance.CompoundSymmetricMatrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable
 parameters using a closed-form analytic expression.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
 parameter dictionary.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(grad,</span> <span class="pre">grad_names)</span></code>, where <code class="docutils literal notranslate"><span class="pre">grad</span></code> is a 3D tensor of
-shape <code class="docutils literal notranslate"><span class="pre">(num_params</span> <span class="pre">-</span> <span class="pre">len(no_grad_index),</span> <span class="pre">*shape)</span></code> and
+shape <code class="docutils literal notranslate"><span class="pre">(num_free_params,</span> <span class="pre">*shape)</span></code> and
 <code class="docutils literal notranslate"><span class="pre">grad_names</span></code> is a list of the corresponding parameter names.
-Returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code> if all parameters are excluded from
-gradient computation.</p>
+Returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code> if all parameters are fixed.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>

@@ -11,6 +11,6 @@ block = BlockDiagonal(
     residual=ScalarMatrix(3),
     random=DiagonalMatrix(2)
 )
-params = torch.tensor([0.5, 0.0, 1.0])
-block(params)
+free_params = torch.tensor([0.5, 0.0, 1.0])
+block(free_params)
 

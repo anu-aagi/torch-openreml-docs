@@ -26,22 +26,12 @@ import torch
 from torch_openreml.covariance import Sum, ScalarMatrix
 
 x = Sum(ScalarMatrix(2), ScalarMatrix(2))
-print(x.trans_params(torch.zeros(2)))
-
-
-# In[3]:
-
-
-import torch
-from torch_openreml.covariance import Sum, ScalarMatrix
-
-x = Sum(ScalarMatrix(2), ScalarMatrix(2))
 v_groups = x.build_operands(torch.tensor([1.0, 2.0]))
 print(v_groups[0])
 print(v_groups[1])
 
 
-# In[4]:
+# In[3]:
 
 
 import torch

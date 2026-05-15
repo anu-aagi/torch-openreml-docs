@@ -8,10 +8,10 @@ import torch
 from torch_openreml.covariance import DiagonalMatrix
 
 mat = DiagonalMatrix(3)
-params = torch.tensor([0.0, 0.5, 1.0])
-sigma2 = mat.trans_params(params)
-mat.set_intermediates(params, {"sigma2": sigma2})
-mat.get_intermediates(params)
+free_params = torch.tensor([0.0, 0.5, 1.0])
+sigma2 = mat.build_params(free_params)
+mat.set_intermediates(free_params, {"sigma2": sigma2})
+mat.get_intermediates(free_params)
 
 
 # In[2]:
@@ -21,10 +21,10 @@ import torch
 from torch_openreml.covariance import DiagonalMatrix
 
 mat = DiagonalMatrix(3)
-params = torch.tensor([0.0, 0.5, 1.0])
-sigma2 = mat.trans_params(params)
-mat.set_intermediates(params, {"sigma2": sigma2})
-mat.get_intermediates(params)
+free_params = torch.tensor([0.0, 0.5, 1.0])
+sigma2 = mat.build_params(free_params)
+mat.set_intermediates(free_params, {"sigma2": sigma2})
+mat.get_intermediates(free_params)
 
 
 # In[3]:
@@ -34,12 +34,12 @@ import torch
 from torch_openreml.covariance import DiagonalMatrix
 
 mat = DiagonalMatrix(3)
-params = torch.tensor([0.0, 0.5, 1.0])
-sigma2 = mat.trans_params(params)
-mat.set_intermediates(params, {"sigma2": sigma2})
-print(mat.get_intermediates(params))
+free_params = torch.tensor([0.0, 0.5, 1.0])
+sigma2 = mat.build_params(free_params)
+mat.set_intermediates(free_params, {"sigma2": sigma2})
+print(mat.get_intermediates(free_params))
 mat.reset_intermediates()
-print(mat.get_intermediates(params))
+print(mat.get_intermediates(free_params))
 
 
 # In[4]:
@@ -49,9 +49,8 @@ import torch
 from torch_openreml.covariance import DiagonalMatrix
 
 mat = DiagonalMatrix(3)
-mat.set_no_grad(index=0)
-print(mat.no_grad_index)
-print(mat.grad(torch.zeros(3)))
+free_params = torch.tensor([0.0, 0.5, 1.0])
+mat.trans_grad(free_params)
 
 
 # In[5]:
@@ -60,11 +59,10 @@ print(mat.grad(torch.zeros(3)))
 import torch
 from torch_openreml.covariance import DiagonalMatrix
 
-mat = DiagonalMatrix(3)
-param_dict = {"sigma^2_0": torch.tensor([0.0]),
-              "sigma^2_1": torch.tensor([0.5]),
-              "sigma^2_2": torch.tensor([1.0])}
-mat.from_param_dict(param_dict)
+mat = DiagonalMatrix(2)
+free_params = torch.tensor([0.0, 0.5])
+grad, grad_names = mat.auto_grad(free_params)
+grad, grad_names
 
 
 # In[6]:
@@ -73,53 +71,8 @@ mat.from_param_dict(param_dict)
 import torch
 from torch_openreml.covariance import DiagonalMatrix
 
-mat = DiagonalMatrix(3)
-params = torch.tensor([0.0, 0.5, 1.0])
-mat.to_param_dict(params)
-
-
-# In[7]:
-
-
-import torch
-from torch_openreml.covariance import DiagonalMatrix
-
-mat = DiagonalMatrix(3)
-params = torch.tensor([0.0, 0.5, 1.0])
-mat.trans_params(params)
-
-
-# In[8]:
-
-
-import torch
-from torch_openreml.covariance import DiagonalMatrix
-
-mat = DiagonalMatrix(3)
-params = torch.tensor([0.0, 0.5, 1.0])
-mat.trans_grad(params)
-
-
-# In[9]:
-
-
-import torch
-from torch_openreml.covariance import DiagonalMatrix
-
 mat = DiagonalMatrix(2)
-params = torch.tensor([0.0, 0.5])
-grad, grad_names = mat.auto_grad(params)
-grad, grad_names
-
-
-# In[10]:
-
-
-import torch
-from torch_openreml.covariance import DiagonalMatrix
-
-mat = DiagonalMatrix(2)
-params = torch.tensor([0.0, 0.5])
-grad, grad_names = mat.grad(params)
+free_params = torch.tensor([0.0, 0.5])
+grad, grad_names = mat.grad(free_params)
 grad, grad_names
 

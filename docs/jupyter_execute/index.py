@@ -51,7 +51,7 @@ print(V)
 
 reml = REML(V)
 theta_hat, beta_hat, n_iter = reml.optimize(y, X, torch.zeros(3), verbose=2)
-print(theta_hat, V.trans_params(theta_hat))
-print(V.param_names)
+print(theta_hat, V.build_params(theta_hat))
+print(V.free_param_names)
 print(beta_hat)
 
