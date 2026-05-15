@@ -6,10 +6,10 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Covariance" href="../api/covariance.html"><link rel="prev" title="REML" href="../api/reml.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>torch_openreml.REML - torch-openreml 0.1.0-alpha documentation</title>
+        <title>torch_openreml.REML - torch-openreml 0.1.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -164,7 +164,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">torch-openreml 0.1.0-alpha documentation</div></a>
+      <a href="../index.html"><div class="brand">torch-openreml 0.1.1-alpha documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -185,7 +185,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
-  <span class="sidebar-brand-text">torch-openreml 0.1.0-alpha documentation</span>
+  <span class="sidebar-brand-text">torch-openreml 0.1.1-alpha documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -370,17 +370,16 @@ provided, the Jacobian is computed via automatic differentiation.</p></li>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:      12.7180, ∥Δ∥: 0.1047, η: 1.00, ∥Δᶜ∥: 0.1047, log 𝓛: -34.2997
-∥∇∥:       1.2436, ∥Δ∥: 0.0126, η: 1.00, ∥Δᶜ∥: 0.0126, log 𝓛: -33.5895 (+0.7101)
-∥∇∥:       0.0156, ∥Δ∥: 0.0002, η: 1.00, ∥Δᶜ∥: 0.0002, log 𝓛: -33.5816 (+0.0079)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -33.5816 (-0.0000)
+∥∇∥:       0.8825, ∥Δ∥: 0.0094, η: 1.00, ∥Δᶜ∥: 0.0094, log 𝓛: -27.4146
+∥∇∥:       0.0083, ∥Δ∥: 0.0001, η: 1.00, ∥Δᶜ∥: 0.0001, log 𝓛: -27.4105 (+0.0041)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -27.4105 (-0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 4
+✓ Converged at iteration 3
 </pre></div>
 </div>
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0.1175]), tensor([ 0.2423, -0.1787]))
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([-0.0093]), tensor([ 0.1332, -0.1002]))
 </pre></div>
 </div>
 </div>
@@ -962,7 +961,7 @@ estimate, and <code class="docutils literal notranslate"><span class="pre">n_ite
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=f34cbc3c"></script>
+</div><script src="../_static/documentation_options.js?v=e30984f2"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
