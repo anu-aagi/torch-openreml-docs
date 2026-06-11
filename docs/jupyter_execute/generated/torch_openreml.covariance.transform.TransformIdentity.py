@@ -30,6 +30,6 @@ import torch
 from torch_openreml.covariance.transform import TransformIdentity
 
 t = TransformIdentity()
-x = torch.tensor([0.0])
+x = torch.tensor([0.0, 1.0])
 t.grad(x)
 

@@ -1,0 +1,59 @@
+﻿torch\_openreml.covariance.OperatorGram
+=======================================
+
+.. currentmodule:: torch_openreml.covariance
+
+.. autoclass:: OperatorGram
+
+   
+   
+   
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~OperatorGram.__call__
+      ~OperatorGram.auto_grad
+      ~OperatorGram.build_operands
+      ~OperatorGram.build_params
+      ~OperatorGram.get_intermediates
+      ~OperatorGram.grad
+      ~OperatorGram.manual_grad
+      ~OperatorGram.map_theta_to_dv
+      ~OperatorGram.map_theta_to_v
+      ~OperatorGram.operands_grad
+      ~OperatorGram.reset_intermediates
+      ~OperatorGram.set_intermediates
+      ~OperatorGram.trans_grad
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OperatorGram.fixed_param_defaults
+      ~OperatorGram.fixed_param_index
+      ~OperatorGram.fixed_param_names
+      ~OperatorGram.fixed_param_trans
+      ~OperatorGram.free_param_defaults
+      ~OperatorGram.free_param_index
+      ~OperatorGram.free_param_names
+      ~OperatorGram.free_param_trans
+      ~OperatorGram.gram_type
+      ~OperatorGram.num_fixed_params
+      ~OperatorGram.num_free_params
+      ~OperatorGram.num_params
+      ~OperatorGram.operands
+      ~OperatorGram.param_defaults
+      ~OperatorGram.param_names
+      ~OperatorGram.param_specs
+      ~OperatorGram.param_trans
+      ~OperatorGram.repr_dict
+      ~OperatorGram.shape
+   
+   
