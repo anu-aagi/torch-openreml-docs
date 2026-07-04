@@ -216,6 +216,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.LowerTriangularMatrix.html">torch_openreml.covariance.LowerTriangularMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.ScalarMatrix.html">torch_openreml.covariance.ScalarMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.UnconstrainedMatrix.html">torch_openreml.covariance.UnconstrainedMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.SimpleMatrix.html">torch_openreml.covariance.SimpleMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.simple_param_specs.html">torch_openreml.covariance.simple_param_specs</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/operators.html">Operators</a><input aria-label="Toggle navigation of Operators" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -651,10 +653,10 @@ and residual variance parameters.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:       4.0029, ∥Δ∥: 6.7343, η: 1.00, ∥Δᶜ∥: 6.7343, log 𝓛: -31.9255
-∥∇∥:       1.5172, ∥Δ∥: 0.0153, η: 1.00, ∥Δᶜ∥: 0.0153, log 𝓛: -30.3102 (+1.6153)
-∥∇∥:       0.0230, ∥Δ∥: 0.0002, η: 1.00, ∥Δᶜ∥: 0.0002, log 𝓛: -30.2984 (+0.0117)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -30.2984 (+0.0000)
+∥∇∥:      11.6700, ∥Δ∥: 20.1473, η: 1.00, ∥Δᶜ∥: 20.1473, log 𝓛: -24.4980
+∥∇∥:       1.9137, ∥Δ∥: 0.0192, η: 1.00, ∥Δᶜ∥: 0.0192, log 𝓛: -20.9836 (+3.5145)
+∥∇∥:       0.0362, ∥Δ∥: 0.0004, η: 1.00, ∥Δᶜ∥: 0.0004, log 𝓛: -20.9650 (+0.0186)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -20.9650 (+0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
