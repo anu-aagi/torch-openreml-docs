@@ -5,17 +5,17 @@
 
 
 import torch
-from torch_openreml.covariance import OperatorGram, LowerTriangularMatrix
+from torch_openreml.covariance import Gram, LowerTriangularMatrix
 
 x = LowerTriangularMatrix(3, 2)
-op = OperatorGram(x, gram_type="xtx")
+op = Gram(x, gram_type="xtx")
 op()
 
 
 # In[2]:
 
 
-op_xxt = OperatorGram(x, gram_type="xxt")
+op_xxt = Gram(x, gram_type="xxt")
 op_xxt()
 
 
@@ -23,10 +23,10 @@ op_xxt()
 
 
 import torch
-from torch_openreml.covariance import OperatorGram, LowerTriangularMatrix
+from torch_openreml.covariance import Gram, LowerTriangularMatrix
 
 x = LowerTriangularMatrix(3, 2)
-op = OperatorGram(x, gram_type="xtx")
+op = Gram(x, gram_type="xtx")
 free_params = torch.tensor([0.0, 0.5, 1.0, 0.2, -0.3])
 grad, grad_names = op.manual_grad(free_params)
 grad
@@ -41,7 +41,7 @@ grad_names
 # In[5]:
 
 
-op_xxt = OperatorGram(x, gram_type="xxt")
+op_xxt = Gram(x, gram_type="xxt")
 grad_xxt, grad_names_xxt  = op_xxt.manual_grad(free_params)
 grad_xxt
 

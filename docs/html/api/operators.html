@@ -9,7 +9,7 @@
         <title>Operators - torch-openreml 0.1.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -224,7 +224,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.HadamardProduct.html">torch_openreml.covariance.HadamardProduct</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.KroneckerProduct.html">torch_openreml.covariance.KroneckerProduct</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.CovariancePropagation.html">torch_openreml.covariance.CovariancePropagation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.OperatorGram.html">torch_openreml.covariance.OperatorGram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Gram.html">torch_openreml.covariance.Gram</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Sum.html">torch_openreml.covariance.Sum</a></li>
 </ul>
 </li>
@@ -251,6 +251,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.augment.html">torch_openreml.utils.augment</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.interaction.html">torch_openreml.utils.interaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.n_distinct.html">torch_openreml.utils.n_distinct</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="example_data.html">Example Datasets</a></li>
@@ -319,8 +320,8 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="../generated/torch_openreml.covariance.CovariancePropagation.html#torch_openreml.covariance.CovariancePropagation" title="torch_openreml.covariance.CovariancePropagation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.covariance.CovariancePropagation</span></code></a>(...)</p></td>
 <td><p>Covariance propagation operator.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../generated/torch_openreml.covariance.OperatorGram.html#torch_openreml.covariance.OperatorGram" title="torch_openreml.covariance.OperatorGram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.covariance.OperatorGram</span></code></a>(x[, ...])</p></td>
-<td><p>Gram matrix operator: <span class="math notranslate nohighlight">\(\\symbf{X}^\\top \\symbf{X}\)</span> or <span class="math notranslate nohighlight">\(\\symbf{X} \\symbf{X}^\\top\)</span>.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/torch_openreml.covariance.Gram.html#torch_openreml.covariance.Gram" title="torch_openreml.covariance.Gram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.covariance.Gram</span></code></a>(*args[, ...])</p></td>
+<td><p>Gram matrix operator: <span class="math notranslate nohighlight">\(\symbf{X}^\top \symbf{X}\)</span> or <span class="math notranslate nohighlight">\(\symbf{X} \symbf{X}^\top\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="../generated/torch_openreml.covariance.Sum.html#torch_openreml.covariance.Sum" title="torch_openreml.covariance.Sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.covariance.Sum</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Sum of multiple covariance matrices.</p></td>

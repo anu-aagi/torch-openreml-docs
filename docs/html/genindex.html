@@ -7,7 +7,7 @@
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 --><title>Index - torch-openreml 0.1.1-alpha documentation</title>
 <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css?v=572af1d6" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=df86a2a8" />
@@ -222,7 +222,7 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.HadamardProduct.html">torch_openreml.covariance.HadamardProduct</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.KroneckerProduct.html">torch_openreml.covariance.KroneckerProduct</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.CovariancePropagation.html">torch_openreml.covariance.CovariancePropagation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.OperatorGram.html">torch_openreml.covariance.OperatorGram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Gram.html">torch_openreml.covariance.Gram</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Sum.html">torch_openreml.covariance.Sum</a></li>
 </ul>
 </li>
@@ -249,6 +249,7 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.augment.html">torch_openreml.utils.augment</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.interaction.html">torch_openreml.utils.interaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.n_distinct.html">torch_openreml.utils.n_distinct</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/example_data.html">Example Datasets</a></li>
@@ -313,6 +314,8 @@
 </li>
           <li><a href="generated/torch_openreml.covariance.EquicorrelationMatrix.html#torch_openreml.covariance.EquicorrelationMatrix.__call__">(torch_openreml.covariance.EquicorrelationMatrix method)</a>
 </li>
+          <li><a href="generated/torch_openreml.covariance.Gram.html#torch_openreml.covariance.Gram.__call__">(torch_openreml.covariance.Gram method)</a>
+</li>
           <li><a href="generated/torch_openreml.covariance.HadamardProduct.html#torch_openreml.covariance.HadamardProduct.__call__">(torch_openreml.covariance.HadamardProduct method)</a>
 </li>
           <li><a href="generated/torch_openreml.covariance.IdentityMatrix.html#torch_openreml.covariance.IdentityMatrix.__call__">(torch_openreml.covariance.IdentityMatrix method)</a>
@@ -322,8 +325,6 @@
           <li><a href="generated/torch_openreml.covariance.LowerTriangularMatrix.html#torch_openreml.covariance.LowerTriangularMatrix.__call__">(torch_openreml.covariance.LowerTriangularMatrix method)</a>
 </li>
           <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.__call__">(torch_openreml.covariance.Matrix method)</a>
-</li>
-          <li><a href="generated/torch_openreml.covariance.OperatorGram.html#torch_openreml.covariance.OperatorGram.__call__">(torch_openreml.covariance.OperatorGram method)</a>
 </li>
           <li><a href="generated/torch_openreml.covariance.ScalarMatrix.html#torch_openreml.covariance.ScalarMatrix.__call__">(torch_openreml.covariance.ScalarMatrix method)</a>
 </li>
@@ -556,7 +557,9 @@
         </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="generated/torch_openreml.covariance.OperatorGram.html#torch_openreml.covariance.OperatorGram.gram_type">gram_type (torch_openreml.covariance.OperatorGram property)</a>
+        <li><a href="generated/torch_openreml.covariance.Gram.html#torch_openreml.covariance.Gram">Gram (class in torch_openreml.covariance)</a>
+</li>
+        <li><a href="generated/torch_openreml.covariance.Gram.html#torch_openreml.covariance.Gram.gram_type">gram_type (torch_openreml.covariance.Gram property)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -653,6 +656,8 @@
 </li>
           <li><a href="generated/torch_openreml.covariance.EquicorrelationMatrix.html#torch_openreml.covariance.EquicorrelationMatrix.manual_grad">(torch_openreml.covariance.EquicorrelationMatrix method)</a>
 </li>
+          <li><a href="generated/torch_openreml.covariance.Gram.html#torch_openreml.covariance.Gram.manual_grad">(torch_openreml.covariance.Gram method)</a>
+</li>
           <li><a href="generated/torch_openreml.covariance.HadamardProduct.html#torch_openreml.covariance.HadamardProduct.manual_grad">(torch_openreml.covariance.HadamardProduct method)</a>
 </li>
           <li><a href="generated/torch_openreml.covariance.KroneckerProduct.html#torch_openreml.covariance.KroneckerProduct.manual_grad">(torch_openreml.covariance.KroneckerProduct method)</a>
@@ -660,8 +665,6 @@
           <li><a href="generated/torch_openreml.covariance.LowerTriangularMatrix.html#torch_openreml.covariance.LowerTriangularMatrix.manual_grad">(torch_openreml.covariance.LowerTriangularMatrix method)</a>
 </li>
           <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.manual_grad">(torch_openreml.covariance.Matrix method)</a>
-</li>
-          <li><a href="generated/torch_openreml.covariance.OperatorGram.html#torch_openreml.covariance.OperatorGram.manual_grad">(torch_openreml.covariance.OperatorGram method)</a>
 </li>
           <li><a href="generated/torch_openreml.covariance.ScalarMatrix.html#torch_openreml.covariance.ScalarMatrix.manual_grad">(torch_openreml.covariance.ScalarMatrix method)</a>
 </li>
@@ -690,12 +693,14 @@
   <h2>N</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.num_fixed_params">num_fixed_params (torch_openreml.covariance.Matrix property)</a>
+        <li><a href="generated/torch_openreml.utils.n_distinct.html#torch_openreml.utils.n_distinct">n_distinct() (in module torch_openreml.utils)</a>
 </li>
-        <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.num_free_params">num_free_params (torch_openreml.covariance.Matrix property)</a>
+        <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.num_fixed_params">num_fixed_params (torch_openreml.covariance.Matrix property)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.num_free_params">num_free_params (torch_openreml.covariance.Matrix property)</a>
+</li>
         <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.num_params">num_params (torch_openreml.covariance.Matrix property)</a>
 </li>
         <li><a href="generated/torch_openreml.utils.numeric_to_design_matrix.html#torch_openreml.utils.numeric_to_design_matrix">numeric_to_design_matrix() (in module torch_openreml.utils)</a>
@@ -715,8 +720,6 @@
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator">Operator (class in torch_openreml.covariance)</a>
-</li>
-        <li><a href="generated/torch_openreml.covariance.OperatorGram.html#torch_openreml.covariance.OperatorGram">OperatorGram (class in torch_openreml.covariance)</a>
 </li>
         <li><a href="generated/torch_openreml.REML.html#torch_openreml.REML.optimize">optimize() (torch_openreml.REML method)</a>
 </li>
@@ -763,11 +766,11 @@
         <ul>
           <li><a href="generated/torch_openreml.covariance.DummyMatrix.html#torch_openreml.covariance.DummyMatrix.repr_dict">(torch_openreml.covariance.DummyMatrix property)</a>
 </li>
+          <li><a href="generated/torch_openreml.covariance.Gram.html#torch_openreml.covariance.Gram.repr_dict">(torch_openreml.covariance.Gram property)</a>
+</li>
           <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.repr_dict">(torch_openreml.covariance.Matrix property)</a>
 </li>
           <li><a href="generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.repr_dict">(torch_openreml.covariance.Operator property)</a>
-</li>
-          <li><a href="generated/torch_openreml.covariance.OperatorGram.html#torch_openreml.covariance.OperatorGram.repr_dict">(torch_openreml.covariance.OperatorGram property)</a>
 </li>
         </ul></li>
     </ul></td>

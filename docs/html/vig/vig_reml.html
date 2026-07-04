@@ -224,7 +224,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.HadamardProduct.html">torch_openreml.covariance.HadamardProduct</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.KroneckerProduct.html">torch_openreml.covariance.KroneckerProduct</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.CovariancePropagation.html">torch_openreml.covariance.CovariancePropagation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.OperatorGram.html">torch_openreml.covariance.OperatorGram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Gram.html">torch_openreml.covariance.Gram</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Sum.html">torch_openreml.covariance.Sum</a></li>
 </ul>
 </li>
@@ -251,6 +251,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.augment.html">torch_openreml.utils.augment</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.interaction.html">torch_openreml.utils.interaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.n_distinct.html">torch_openreml.utils.n_distinct</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api/example_data.html">Example Datasets</a></li>
@@ -650,10 +651,10 @@ and residual variance parameters.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:       9.8709, ∥Δ∥: 23.0035, η: 1.00, ∥Δᶜ∥: 23.0035, log 𝓛: -25.2022
-∥∇∥:       0.7636, ∥Δ∥: 0.0078, η: 1.00, ∥Δᶜ∥: 0.0078, log 𝓛: -21.8203 (+3.3819)
-∥∇∥:       0.0060, ∥Δ∥: 0.0001, η: 1.00, ∥Δᶜ∥: 0.0001, log 𝓛: -21.8173 (+0.0030)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -21.8173 (+0.0000)
+∥∇∥:       4.0029, ∥Δ∥: 6.7343, η: 1.00, ∥Δᶜ∥: 6.7343, log 𝓛: -31.9255
+∥∇∥:       1.5172, ∥Δ∥: 0.0153, η: 1.00, ∥Δᶜ∥: 0.0153, log 𝓛: -30.3102 (+1.6153)
+∥∇∥:       0.0230, ∥Δ∥: 0.0002, η: 1.00, ∥Δᶜ∥: 0.0002, log 𝓛: -30.2984 (+0.0117)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -30.2984 (+0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 

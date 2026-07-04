@@ -223,7 +223,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.covariance.HadamardProduct.html">torch_openreml.covariance.HadamardProduct</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.covariance.KroneckerProduct.html">torch_openreml.covariance.KroneckerProduct</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.covariance.CovariancePropagation.html">torch_openreml.covariance.CovariancePropagation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.covariance.OperatorGram.html">torch_openreml.covariance.OperatorGram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.covariance.Gram.html">torch_openreml.covariance.Gram</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.covariance.Sum.html">torch_openreml.covariance.Sum</a></li>
 </ul>
 </li>
@@ -250,6 +250,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.utils.augment.html">torch_openreml.utils.augment</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.utils.interaction.html">torch_openreml.utils.interaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.utils.n_distinct.html">torch_openreml.utils.n_distinct</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/example_data.html">Example Datasets</a></li>
@@ -534,6 +535,8 @@
     <span class="k">return</span> <span class="p">[</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="k">for</span> <span class="n">parts</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)]</span></div>
 
 
+<div class="viewcode-block" id="n_distinct">
+<a class="viewcode-back" href="../../generated/torch_openreml.utils.n_distinct.html#torch_openreml.utils.n_distinct">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">n_distinct</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Count the unique elements of a list/tuple of strings.</span>
@@ -558,7 +561,8 @@
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Argument x is not a list/tuple of strings!&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Argument x is not a list/tuple of strings!&quot;</span><span class="p">)</span></div>
+
 </pre></div>
         </article>
       </div>

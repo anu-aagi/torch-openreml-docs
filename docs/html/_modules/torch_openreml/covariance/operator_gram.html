@@ -8,7 +8,7 @@
         <title>torch_openreml.covariance.operator_gram - torch-openreml 0.1.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css?v=572af1d6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df86a2a8" />
@@ -223,7 +223,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.HadamardProduct.html">torch_openreml.covariance.HadamardProduct</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.KroneckerProduct.html">torch_openreml.covariance.KroneckerProduct</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.CovariancePropagation.html">torch_openreml.covariance.CovariancePropagation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.OperatorGram.html">torch_openreml.covariance.OperatorGram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.Gram.html">torch_openreml.covariance.Gram</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.Sum.html">torch_openreml.covariance.Sum</a></li>
 </ul>
 </li>
@@ -250,6 +250,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.utils.augment.html">torch_openreml.utils.augment</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.utils.interaction.html">torch_openreml.utils.interaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.utils.n_distinct.html">torch_openreml.utils.n_distinct</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/example_data.html">Example Datasets</a></li>
@@ -297,7 +298,7 @@
 <span class="sd">for use in linear mixed-effects models.</span>
 
 <span class="sd">Classes:</span>
-<span class="sd">    OperatorGram:</span>
+<span class="sd">    Gram:</span>
 <span class="sd">        A covariance operator representing a Gram matrix.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -306,9 +307,9 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 
-<div class="viewcode-block" id="OperatorGram">
-<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.OperatorGram.html#torch_openreml.covariance.OperatorGram">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">OperatorGram</span><span class="p">(</span><span class="n">Operator</span><span class="p">):</span>
+<div class="viewcode-block" id="Gram">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Gram.html#torch_openreml.covariance.Gram">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Gram</span><span class="p">(</span><span class="n">Operator</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gram matrix operator: :math:`\symbf{X}^\top \symbf{X}` or</span>
 <span class="sd">    :math:`\symbf{X} \symbf{X}^\top`.</span>
@@ -334,13 +335,15 @@
 <span class="sd">    via the product rule.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">gram_type</span><span class="o">=</span><span class="s2">&quot;xtx&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">gram_type</span><span class="o">=</span><span class="s2">&quot;xtx&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialise a Gram operator.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            x (:class:`torch.Tensor` or :class:`~torch_openreml.covariance.matrix.Matrix`):</span>
-<span class="sd">                The input matrix of shape ``(n, m)``.</span>
+<span class="sd">            *args: Exactly one operand as positional arguments or a single</span>
+<span class="sd">                dict. The first is :math:`\\symbf{Z}`, the second</span>
+<span class="sd">                :math:`\\symbf{G}`.</span>
+<span class="sd">            **kwargs: Exactly one operand as keyword arguments.</span>
 <span class="sd">            gram_type (str): Which Gram product to compute. Must be one of</span>
 <span class="sd">                ``&quot;xtx&quot;`` (:math:`\\symbf{X}^\\top \\symbf{X}`) or</span>
 <span class="sd">                ``&quot;xxt&quot;`` (:math:`\\symbf{X} \\symbf{X}^\\top`).</span>
@@ -354,15 +357,15 @@
 <span class="sd">        .. jupyter-execute::</span>
 
 <span class="sd">            import torch</span>
-<span class="sd">            from torch_openreml.covariance import OperatorGram, LowerTriangularMatrix</span>
+<span class="sd">            from torch_openreml.covariance import Gram, LowerTriangularMatrix</span>
 
 <span class="sd">            x = LowerTriangularMatrix(3, 2)</span>
-<span class="sd">            op = OperatorGram(x, gram_type=&quot;xtx&quot;)</span>
+<span class="sd">            op = Gram(x, gram_type=&quot;xtx&quot;)</span>
 <span class="sd">            op()</span>
 
 <span class="sd">        .. jupyter-execute::</span>
 
-<span class="sd">            op_xxt = OperatorGram(x, gram_type=&quot;xxt&quot;)</span>
+<span class="sd">            op_xxt = Gram(x, gram_type=&quot;xxt&quot;)</span>
 <span class="sd">            op_xxt()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">gram_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;xtx&quot;</span><span class="p">,</span> <span class="s2">&quot;xxt&quot;</span><span class="p">):</span>
@@ -371,10 +374,13 @@
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gram_type</span> <span class="o">=</span> <span class="n">gram_type</span>
 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="OperatorGram.__call__">
-<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.OperatorGram.html#torch_openreml.covariance.OperatorGram.__call__">[docs]</a>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operands</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;One operand is required&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Gram.__call__">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Gram.html#torch_openreml.covariance.Gram.__call__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">free_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_defaults</span>
@@ -390,8 +396,8 @@
         <span class="k">return</span> <span class="n">v</span></div>
 
 
-<div class="viewcode-block" id="OperatorGram.manual_grad">
-<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.OperatorGram.html#torch_openreml.covariance.OperatorGram.manual_grad">[docs]</a>
+<div class="viewcode-block" id="Gram.manual_grad">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Gram.html#torch_openreml.covariance.Gram.manual_grad">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">manual_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the Jacobian of :meth:`__call__` with respect to trainable</span>
@@ -431,10 +437,10 @@
 <span class="sd">        .. jupyter-execute::</span>
 
 <span class="sd">            import torch</span>
-<span class="sd">            from torch_openreml.covariance import OperatorGram, LowerTriangularMatrix</span>
+<span class="sd">            from torch_openreml.covariance import Gram, LowerTriangularMatrix</span>
 
 <span class="sd">            x = LowerTriangularMatrix(3, 2)</span>
-<span class="sd">            op = OperatorGram(x, gram_type=&quot;xtx&quot;)</span>
+<span class="sd">            op = Gram(x, gram_type=&quot;xtx&quot;)</span>
 <span class="sd">            free_params = torch.tensor([0.0, 0.5, 1.0, 0.2, -0.3])</span>
 <span class="sd">            grad, grad_names = op.manual_grad(free_params)</span>
 <span class="sd">            grad</span>
@@ -445,7 +451,7 @@
 
 <span class="sd">        .. jupyter-execute::</span>
 
-<span class="sd">            op_xxt = OperatorGram(x, gram_type=&quot;xxt&quot;)</span>
+<span class="sd">            op_xxt = Gram(x, gram_type=&quot;xxt&quot;)</span>
 <span class="sd">            grad_xxt, grad_names_xxt  = op_xxt.manual_grad(free_params)</span>
 <span class="sd">            grad_xxt</span>
 <span class="sd">        &quot;&quot;&quot;</span>
