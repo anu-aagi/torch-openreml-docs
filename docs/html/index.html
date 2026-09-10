@@ -195,14 +195,14 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="vig.html">Vignettes</a><input aria-label="Toggle navigation of Vignettes" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="vig/vig_reml.html">Introduction to REML Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vig/vig_marginal_reml.html">Introduction to Marginal REML Estimation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="r_user.html">For R Users</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tech.html">Technical Documentation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/reml.html">REML</a><input aria-label="Toggle navigation of REML" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.REML.html">torch_openreml.REML</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/reml.html">MarginalREML</a><input aria-label="Toggle navigation of MarginalREML" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.MarginalREML.html">torch_openreml.MarginalREML</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="api/covariance.html">Covariance</a><input aria-label="Toggle navigation of Covariance" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -211,6 +211,7 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.CompoundSymmetricMatrix.html">torch_openreml.covariance.CompoundSymmetricMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.DiagonalMatrix.html">torch_openreml.covariance.DiagonalMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.DummyMatrix.html">torch_openreml.covariance.DummyMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.EqualEntryMatrix.html">torch_openreml.covariance.EqualEntryMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.EquicorrelationMatrix.html">torch_openreml.covariance.EquicorrelationMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.IdentityMatrix.html">torch_openreml.covariance.IdentityMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.LowerTriangularMatrix.html">torch_openreml.covariance.LowerTriangularMatrix</a></li>
@@ -228,6 +229,7 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.CovariancePropagation.html">torch_openreml.covariance.CovariancePropagation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Gram.html">torch_openreml.covariance.Gram</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Sum.html">torch_openreml.covariance.Sum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Augment.html">torch_openreml.covariance.Augment</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="api/adapter.html">Adapter</a><input aria-label="Toggle navigation of Adapter" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -247,7 +249,17 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.transform.TransformSigmoid.html">torch_openreml.covariance.transform.TransformSigmoid</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.blue.html">torch_openreml.blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.blup.html">torch_openreml.blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.marginal_predict.html">torch_openreml.marginal_predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.marginal_residual.html">torch_openreml.marginal_residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.predict.html">torch_openreml.predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.residual.html">torch_openreml.residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.loglik.html">torch_openreml.loglik</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.get_device.html">torch_openreml.utils.get_device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.get_dtype.html">torch_openreml.utils.get_dtype</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
@@ -454,7 +466,7 @@ and <code class="docutils literal notranslate"><span class="pre">gen</span></cod
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml</span><span class="w"> </span><span class="kn">import</span> <span class="n">REML</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml</span><span class="w"> </span><span class="kn">import</span> <span class="n">MarginalREML</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">augment</span><span class="p">,</span> <span class="n">n_distinct</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DummyMatrix</span><span class="p">,</span> <span class="n">IdentityMatrix</span><span class="p">,</span> <span class="n">ScalarMatrix</span><span class="p">,</span> <span class="n">Sum</span><span class="p">,</span> <span class="n">CovariancePropagation</span><span class="p">,</span> <span class="n">KroneckerProduct</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.example_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">john_alpha</span>
@@ -550,13 +562,13 @@ and <span class="math notranslate nohighlight">\(\mathbf{G}_{block} = \sigma^2_{
 </div>
 </div>
 </section>
-<section id="reml-optimizer">
-<h2>REML Optimizer<a class="headerlink" href="#reml-optimizer" title="Link to this heading">¶</a></h2>
-<p>Once the covariance structure has been defined, it is passed to <a class="reference internal" href="generated/torch_openreml.REML.html#torch_openreml.REML" title="torch_openreml.REML"><code class="xref py py-class docutils literal notranslate"><span class="pre">REML</span></code></a> to initialize the estimation procedure. The <a class="reference internal" href="generated/torch_openreml.REML.html#torch_openreml.REML.optimize" title="torch_openreml.REML.optimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optimize</span></code></a> method is then called with <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, and an initial value for <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> (set to zeros in this example). The <cite>verbose</cite> argument controls the level of diagnostic output.</p>
+<section id="marginalreml-optimizer">
+<h2>MarginalREML Optimizer<a class="headerlink" href="#marginalreml-optimizer" title="Link to this heading">¶</a></h2>
+<p>Once the covariance structure has been defined, it is passed to <a class="reference internal" href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML" title="torch_openreml.MarginalREML"><code class="xref py py-class docutils literal notranslate"><span class="pre">MarginalREML</span></code></a> to initialize the estimation procedure. The <a class="reference internal" href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.optimize" title="torch_openreml.MarginalREML.optimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optimize</span></code></a> method is then called with <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, and an initial value for <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> (set to zeros in this example). The <cite>verbose</cite> argument controls the level of diagnostic output.</p>
 <p>Because the optimization is performed on the transformed parameter scale, the estimated parameters can be mapped back to variance components using <a class="reference internal" href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.build_params" title="torch_openreml.covariance.Matrix.build_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">V.build_params</span></code></a>. The resulting values correspond to the variance components associated with the parameter names stored in <a class="reference internal" href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.param_names" title="torch_openreml.covariance.Matrix.param_names"><code class="xref py py-attr docutils literal notranslate"><span class="pre">V.param_names</span></code></a>.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reml</span> <span class="o">=</span> <span class="n">REML</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reml</span> <span class="o">=</span> <span class="n">MarginalREML</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
 <span class="n">theta_hat</span><span class="p">,</span> <span class="n">beta_hat</span><span class="p">,</span> <span class="n">n_iter</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">theta_hat</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">theta_hat</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">)</span>
@@ -568,24 +580,27 @@ and <span class="math notranslate nohighlight">\(\mathbf{G}_{block} = \sigma^2_{
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
 ∥∇∥:      41.8197, ∥Δ∥: 8.9438, η: 1.00, ∥Δᶜ∥: 8.9438, log 𝓛: -34.3129
 ∥∇∥:  315227.4375, ∥Δ∥: 0.8838, η: 1.00, ∥Δᶜ∥: 0.8838, log 𝓛: -201185.3906 (-201151.0777)
-∥∇∥:  119229.9453, ∥Δ∥: 0.8520, η: 1.00, ∥Δᶜ∥: 0.8520, log 𝓛: -71844.4531 (+129340.9375)
-∥∇∥:   44273.4570, ∥Δ∥: 0.8143, η: 1.00, ∥Δᶜ∥: 0.8143, log 𝓛: -26065.4551 (+45778.9980)
-∥∇∥:   16330.5117, ∥Δ∥: 0.7587, η: 1.00, ∥Δᶜ∥: 0.7587, log 𝓛: -9457.1396 (+16608.3154)
-∥∇∥:    6001.4102, ∥Δ∥: 0.7142, η: 1.00, ∥Δᶜ∥: 0.7142, log 𝓛: -3392.8696 (+6064.2700)
-∥∇∥:    2194.8989, ∥Δ∥: 0.7031, η: 1.00, ∥Δᶜ∥: 0.7031, log 𝓛: -1181.2805 (+2211.5891)
-∥∇∥:     793.7851, ∥Δ∥: 0.6952, η: 1.00, ∥Δᶜ∥: 0.6952, log 𝓛: -382.4908 (+798.7897)
-∥∇∥:     278.6875, ∥Δ∥: 0.6715, η: 1.00, ∥Δᶜ∥: 0.6715, log 𝓛: -102.2992 (+280.1916)
-∥∇∥:      90.4116, ∥Δ∥: 0.5957, η: 1.00, ∥Δᶜ∥: 0.5957, log 𝓛: -11.4274 (+90.8718)
-∥∇∥:      23.9216, ∥Δ∥: 0.4006, η: 1.00, ∥Δᶜ∥: 0.4006, log 𝓛:  12.6792 (+24.1066)
-∥∇∥:       3.8674, ∥Δ∥: 0.1392, η: 1.00, ∥Δᶜ∥: 0.1392, log 𝓛:  16.5908 (+3.9116)
-∥∇∥:       0.2448, ∥Δ∥: 0.0157, η: 1.00, ∥Δᶜ∥: 0.0157, log 𝓛:  16.8078 (+0.2170)
+∥∇∥:  119230.2656, ∥Δ∥: 0.8519, η: 1.00, ∥Δᶜ∥: 0.8519, log 𝓛: -71844.5469 (+129340.8438)
+∥∇∥:   44273.9336, ∥Δ∥: 0.8143, η: 1.00, ∥Δᶜ∥: 0.8143, log 𝓛: -26065.6270 (+45778.9199)
+∥∇∥:   16331.3926, ∥Δ∥: 0.7587, η: 1.00, ∥Δᶜ∥: 0.7587, log 𝓛: -9457.4141 (+16608.2129)
+∥∇∥:    6001.7085, ∥Δ∥: 0.7142, η: 1.00, ∥Δᶜ∥: 0.7142, log 𝓛: -3393.0168 (+6064.3972)
+∥∇∥:    2194.9878, ∥Δ∥: 0.7031, η: 1.00, ∥Δᶜ∥: 0.7031, log 𝓛: -1181.3339 (+2211.6830)
+∥∇∥:     793.8170, ∥Δ∥: 0.6952, η: 1.00, ∥Δᶜ∥: 0.6952, log 𝓛: -382.5103 (+798.8235)
+∥∇∥:     278.6989, ∥Δ∥: 0.6715, η: 1.00, ∥Δᶜ∥: 0.6715, log 𝓛: -102.3058 (+280.2045)
+∥∇∥:      90.4160, ∥Δ∥: 0.5957, η: 1.00, ∥Δᶜ∥: 0.5957, log 𝓛: -11.4295 (+90.8763)
+∥∇∥:      23.9232, ∥Δ∥: 0.4006, η: 1.00, ∥Δᶜ∥: 0.4006, log 𝓛:  12.6788 (+24.1083)
+∥∇∥:       3.8678, ∥Δ∥: 0.1392, η: 1.00, ∥Δᶜ∥: 0.1392, log 𝓛:  16.5908 (+3.9120)
+∥∇∥:       0.2448, ∥Δ∥: 0.0157, η: 1.00, ∥Δᶜ∥: 0.0157, log 𝓛:  16.8077 (+0.2169)
 ∥∇∥:       0.0104, ∥Δ∥: 0.0007, η: 1.00, ∥Δᶜ∥: 0.0007, log 𝓛:  16.8099 (+0.0021)
-∥∇∥:       0.0004, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8100 (+0.0001)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8099 (-0.0001)
+∥∇∥:       0.0005, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8097 (-0.0002)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8101 (+0.0004)
+∥∇∥:       0.0001, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8098 (-0.0002)
+∥∇∥:       0.0001, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8101 (+0.0002)
+∥∇∥:       0.0001, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8101 (+0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 16
+✓ Converged at iteration 19
 tensor([-0.9728, -1.3281, -1.2529]) tensor([0.1429, 0.0702, 0.0816])
 [&#39;op_0/op_1/sigma^2&#39;, &#39;op_1/op_1/op_1/sigma^2&#39;, &#39;op_2/sigma^2&#39;]
 tensor([ 4.5183,  0.2978, -0.4140])
@@ -616,7 +631,7 @@ tensor([ 4.5183,  0.2978, -0.4140])
 <td><p>Model formulation, REML and ML theory, score and AI matrix derivations.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="api.html#api"><span class="std std-ref">API Reference</span></a></p></td>
-<td><p>Full documentation for <code class="docutils literal notranslate"><span class="pre">REML</span></code>, covariance matrices, operators, transforms, and utilities.</p></td>
+<td><p>Full documentation for <code class="docutils literal notranslate"><span class="pre">MarginalREML</span></code>, covariance matrices, operators, transforms, and utilities.</p></td>
 </tr>
 </tbody>
 </table>

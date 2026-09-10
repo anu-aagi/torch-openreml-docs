@@ -20,8 +20,6 @@
       ~Matrix.get_intermediates
       ~Matrix.grad
       ~Matrix.manual_grad
-      ~Matrix.map_theta_to_dv
-      ~Matrix.map_theta_to_v
       ~Matrix.reset_intermediates
       ~Matrix.set_intermediates
       ~Matrix.trans_grad

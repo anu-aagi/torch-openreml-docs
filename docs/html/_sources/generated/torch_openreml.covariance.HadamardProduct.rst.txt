@@ -21,8 +21,6 @@
       ~HadamardProduct.get_intermediates
       ~HadamardProduct.grad
       ~HadamardProduct.manual_grad
-      ~HadamardProduct.map_theta_to_dv
-      ~HadamardProduct.map_theta_to_v
       ~HadamardProduct.operands_grad
       ~HadamardProduct.reset_intermediates
       ~HadamardProduct.set_intermediates

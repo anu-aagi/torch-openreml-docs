@@ -21,8 +21,6 @@
       ~KroneckerProduct.get_intermediates
       ~KroneckerProduct.grad
       ~KroneckerProduct.manual_grad
-      ~KroneckerProduct.map_theta_to_dv
-      ~KroneckerProduct.map_theta_to_v
       ~KroneckerProduct.operands_grad
       ~KroneckerProduct.reset_intermediates
       ~KroneckerProduct.set_intermediates

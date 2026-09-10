@@ -20,8 +20,6 @@
       ~IdentityMatrix.get_intermediates
       ~IdentityMatrix.grad
       ~IdentityMatrix.manual_grad
-      ~IdentityMatrix.map_theta_to_dv
-      ~IdentityMatrix.map_theta_to_v
       ~IdentityMatrix.reset_intermediates
       ~IdentityMatrix.set_intermediates
       ~IdentityMatrix.trans_grad

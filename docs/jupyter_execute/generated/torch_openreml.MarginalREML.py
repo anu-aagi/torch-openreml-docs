@@ -5,7 +5,7 @@
 
 
 import torch
-from torch_openreml import REML
+from torch_openreml import MarginalREML
 from torch_openreml.covariance import ScalarMatrix
 
 n, p = 50, 2
@@ -14,7 +14,7 @@ x = torch.randn(n, p)
 theta = torch.tensor([0.0])
 
 mat = ScalarMatrix(n)
-reml = REML(v_builder=mat)
+reml = MarginalREML(mat)
 theta_hat, beta_hat, n_iter = reml.optimize(y, x, theta, verbose=2)
 theta_hat, beta_hat
 

@@ -21,8 +21,6 @@
       ~CovariancePropagation.get_intermediates
       ~CovariancePropagation.grad
       ~CovariancePropagation.manual_grad
-      ~CovariancePropagation.map_theta_to_dv
-      ~CovariancePropagation.map_theta_to_v
       ~CovariancePropagation.operands_grad
       ~CovariancePropagation.reset_intermediates
       ~CovariancePropagation.set_intermediates

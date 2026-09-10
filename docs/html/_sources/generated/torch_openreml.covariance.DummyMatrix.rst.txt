@@ -20,8 +20,6 @@
       ~DummyMatrix.get_intermediates
       ~DummyMatrix.grad
       ~DummyMatrix.manual_grad
-      ~DummyMatrix.map_theta_to_dv
-      ~DummyMatrix.map_theta_to_v
       ~DummyMatrix.reset_intermediates
       ~DummyMatrix.set_intermediates
       ~DummyMatrix.trans_grad

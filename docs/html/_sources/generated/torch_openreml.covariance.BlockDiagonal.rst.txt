@@ -21,8 +21,6 @@
       ~BlockDiagonal.get_intermediates
       ~BlockDiagonal.grad
       ~BlockDiagonal.manual_grad
-      ~BlockDiagonal.map_theta_to_dv
-      ~BlockDiagonal.map_theta_to_v
       ~BlockDiagonal.operands_grad
       ~BlockDiagonal.reset_intermediates
       ~BlockDiagonal.set_intermediates

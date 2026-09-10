@@ -21,8 +21,6 @@
       ~Operator.get_intermediates
       ~Operator.grad
       ~Operator.manual_grad
-      ~Operator.map_theta_to_dv
-      ~Operator.map_theta_to_v
       ~Operator.operands_grad
       ~Operator.reset_intermediates
       ~Operator.set_intermediates

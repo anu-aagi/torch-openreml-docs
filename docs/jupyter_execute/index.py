@@ -12,7 +12,7 @@ print(torch_openreml.example_data.john_alpha)
 
 
 import torch
-from torch_openreml import REML
+from torch_openreml import MarginalREML
 from torch_openreml.utils import augment, n_distinct
 from torch_openreml.covariance import DummyMatrix, IdentityMatrix, ScalarMatrix, Sum, CovariancePropagation, KroneckerProduct
 from torch_openreml.example_data import john_alpha
@@ -49,7 +49,7 @@ print(V)
 # In[4]:
 
 
-reml = REML(V)
+reml = MarginalREML(V)
 theta_hat, beta_hat, n_iter = reml.optimize(y, X, torch.zeros(3), verbose=2)
 print(theta_hat, V.build_params(theta_hat))
 print(V.free_param_names)

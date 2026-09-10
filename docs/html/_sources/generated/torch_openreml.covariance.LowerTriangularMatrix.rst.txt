@@ -20,8 +20,6 @@
       ~LowerTriangularMatrix.get_intermediates
       ~LowerTriangularMatrix.grad
       ~LowerTriangularMatrix.manual_grad
-      ~LowerTriangularMatrix.map_theta_to_dv
-      ~LowerTriangularMatrix.map_theta_to_v
       ~LowerTriangularMatrix.reset_intermediates
       ~LowerTriangularMatrix.set_intermediates
       ~LowerTriangularMatrix.trans_grad

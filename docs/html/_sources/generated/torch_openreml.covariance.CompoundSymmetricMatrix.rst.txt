@@ -20,8 +20,6 @@
       ~CompoundSymmetricMatrix.get_intermediates
       ~CompoundSymmetricMatrix.grad
       ~CompoundSymmetricMatrix.manual_grad
-      ~CompoundSymmetricMatrix.map_theta_to_dv
-      ~CompoundSymmetricMatrix.map_theta_to_v
       ~CompoundSymmetricMatrix.reset_intermediates
       ~CompoundSymmetricMatrix.set_intermediates
       ~CompoundSymmetricMatrix.trans_grad

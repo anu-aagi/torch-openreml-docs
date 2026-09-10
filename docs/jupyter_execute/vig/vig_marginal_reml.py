@@ -6,20 +6,15 @@
 
 import torch
 
-from torch_openreml import REML
-from torch_openreml.covariance import (
-    DummyMatrix,
-    ScalarMatrix,
-    CovariancePropagation,
-    Sum,
-)
+from torch_openreml import MarginalREML
+from torch_openreml.covariance import DummyMatrix, ScalarMatrix, CovariancePropagation, Sum
 
 n, p = 50, 2
 
 y = torch.randn(n)
 X = torch.randn(n, p)
 
-Z = DummyMatrix(["a", "b"] * 25)()
+Z = DummyMatrix(["a", "b"] * 25)
 
 V = Sum(
     CovariancePropagation(
@@ -29,7 +24,7 @@ V = Sum(
     ScalarMatrix(n),
 )
 
-reml = REML(v_builder=V)
+reml = MarginalREML(V)
 
 theta_start = torch.zeros(V.num_free_params)
 
@@ -60,66 +55,35 @@ beta_hat = reml.blue(y, X, theta_hat)
 # In[4]:
 
 
-b_hat = reml.blup(
+y_hat = reml.predict(
     y,
     X,
-    Z,
     theta_hat,
-    map_theta_to_g=ScalarMatrix(2),
-    mask_theta_to_g=torch.tensor([True, False]),
 )
 
 
 # In[5]:
 
 
-y_hat_marginal = reml.marginal_predict(
+e = reml.residual(
     y,
     X,
     theta_hat,
-)
-
-y_hat_conditional = reml.predict(
-    y,
-    X,
-    Z,
-    theta_hat,
-    map_theta_to_g=ScalarMatrix(2),
-    mask_theta_to_g=torch.tensor([True, False]),
 )
 
 
 # In[6]:
 
 
-e_marginal = reml.marginal_residual(
-    y,
-    X,
-    theta_hat,
-)
-
-e_conditional = reml.residual(
-    y,
-    X,
-    Z,
-    theta_hat,
-    map_theta_to_g=ScalarMatrix(2),
-    mask_theta_to_g=torch.tensor([True, False]),
-)
+loglik = reml.loglik(y, X, theta_hat)
 
 
 # In[7]:
 
 
-loglik = reml.loglik(y, X, theta_hat)
-
-
-# In[8]:
-
-
 import torch
 
-from torch_openreml import REML
+from torch_openreml import MarginalREML
 from torch_openreml.utils import augment, n_distinct
 
 from torch_openreml.covariance import (
@@ -164,7 +128,7 @@ V = Sum(
 )
 
 # --- REML fit ---
-reml = REML(v_builder=V)
+reml = MarginalREML(V)
 
 theta_start = torch.zeros(V.num_free_params)
 
@@ -185,7 +149,7 @@ print("fixed effects:", beta_hat)
 print("loglik:", reml.loglik(y, X, theta_hat))
 
 
-# In[9]:
+# In[8]:
 
 
 scores = [

@@ -20,8 +20,6 @@
       ~EquicorrelationMatrix.get_intermediates
       ~EquicorrelationMatrix.grad
       ~EquicorrelationMatrix.manual_grad
-      ~EquicorrelationMatrix.map_theta_to_dv
-      ~EquicorrelationMatrix.map_theta_to_v
       ~EquicorrelationMatrix.reset_intermediates
       ~EquicorrelationMatrix.set_intermediates
       ~EquicorrelationMatrix.trans_grad

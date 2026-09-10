@@ -20,8 +20,6 @@
       ~ScalarMatrix.get_intermediates
       ~ScalarMatrix.grad
       ~ScalarMatrix.manual_grad
-      ~ScalarMatrix.map_theta_to_dv
-      ~ScalarMatrix.map_theta_to_v
       ~ScalarMatrix.reset_intermediates
       ~ScalarMatrix.set_intermediates
       ~ScalarMatrix.trans_grad

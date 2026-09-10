@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Technical Documentation" href="tech.html"><link rel="prev" title="Introduction to REML Estimation" href="vig/vig_reml.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Technical Documentation" href="tech.html"><link rel="prev" title="Introduction to Marginal REML Estimation" href="vig/vig_marginal_reml.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>For R Users - torch-openreml 0.1.1-alpha documentation</title>
@@ -195,14 +195,14 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1 has-children"><a class="reference internal" href="vig.html">Vignettes</a><input aria-label="Toggle navigation of Vignettes" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="vig/vig_reml.html">Introduction to REML Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vig/vig_marginal_reml.html">Introduction to Marginal REML Estimation</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">For R Users</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tech.html">Technical Documentation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/reml.html">REML</a><input aria-label="Toggle navigation of REML" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.REML.html">torch_openreml.REML</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/reml.html">MarginalREML</a><input aria-label="Toggle navigation of MarginalREML" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.MarginalREML.html">torch_openreml.MarginalREML</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="api/covariance.html">Covariance</a><input aria-label="Toggle navigation of Covariance" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -211,6 +211,7 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.CompoundSymmetricMatrix.html">torch_openreml.covariance.CompoundSymmetricMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.DiagonalMatrix.html">torch_openreml.covariance.DiagonalMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.DummyMatrix.html">torch_openreml.covariance.DummyMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.EqualEntryMatrix.html">torch_openreml.covariance.EqualEntryMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.EquicorrelationMatrix.html">torch_openreml.covariance.EquicorrelationMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.IdentityMatrix.html">torch_openreml.covariance.IdentityMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.LowerTriangularMatrix.html">torch_openreml.covariance.LowerTriangularMatrix</a></li>
@@ -228,6 +229,7 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.CovariancePropagation.html">torch_openreml.covariance.CovariancePropagation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Gram.html">torch_openreml.covariance.Gram</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Sum.html">torch_openreml.covariance.Sum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Augment.html">torch_openreml.covariance.Augment</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="api/adapter.html">Adapter</a><input aria-label="Toggle navigation of Adapter" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -247,7 +249,17 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.transform.TransformSigmoid.html">torch_openreml.covariance.transform.TransformSigmoid</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.blue.html">torch_openreml.blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.blup.html">torch_openreml.blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.marginal_predict.html">torch_openreml.marginal_predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.marginal_residual.html">torch_openreml.marginal_residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.predict.html">torch_openreml.predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.residual.html">torch_openreml.residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.loglik.html">torch_openreml.loglik</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.get_device.html">torch_openreml.utils.get_device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.get_dtype.html">torch_openreml.utils.get_dtype</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
@@ -353,7 +365,7 @@ using <code class="docutils literal notranslate"><span class="pre">model.matrix(
 <span class="n">KroneckerProduct</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">covariance</span><span class="o">$</span><span class="n">KroneckerProduct</span>
 <span class="n">CovariancePropagation</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">covariance</span><span class="o">$</span><span class="n">CovariancePropagation</span>
 <span class="n">Sum</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">covariance</span><span class="o">$</span><span class="n">Sum</span>
-<span class="n">REML</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">REML</span>
+<span class="n">MarginalREML</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">MarginalREML</span>
 
 <span class="n">data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">agridat</span><span class="o">::</span><span class="n">john.alpha</span>
 
@@ -373,7 +385,7 @@ using <code class="docutils literal notranslate"><span class="pre">model.matrix(
 <span class="w">         </span><span class="nf">CovariancePropagation</span><span class="p">(</span><span class="n">Z_rep_block</span><span class="p">,</span><span class="w"> </span><span class="n">G_rep_block</span><span class="p">),</span>
 <span class="w">         </span><span class="nf">ScalarMatrix</span><span class="p">(</span><span class="nf">nrow</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
 
-<span class="n">fit_openreml</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">REML</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">fit_openreml</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">MarginalREML</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
 <span class="n">result</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">torch</span><span class="o">$</span><span class="nf">zeros</span><span class="p">(</span><span class="m">3L</span><span class="p">),</span><span class="w"> </span><span class="n">verbose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2L</span><span class="p">)</span>
 
 <span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">get_theta</span><span class="p">()</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
@@ -383,34 +395,6 @@ using <code class="docutils literal notranslate"><span class="pre">model.matrix(
 </div>
 <div class="jupyter_cell docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:      41.8197, ∥Δ∥: 8.9438, η: 1.00, ∥Δᶜ∥: 8.9438, log 𝓛: -34.3129
-∥∇∥:  315227.5000, ∥Δ∥: 0.8838, η: 1.00, ∥Δᶜ∥: 0.8838, log 𝓛: -201185.4531 (-201151.1402)
-∥∇∥:  119231.8828, ∥Δ∥: 0.8520, η: 1.00, ∥Δᶜ∥: 0.8520, log 𝓛: -71845.0547 (+129340.3984)
-∥∇∥:   44274.7461, ∥Δ∥: 0.8143, η: 1.00, ∥Δᶜ∥: 0.8143, log 𝓛: -26065.9766 (+45779.0781)
-∥∇∥:   16330.8594, ∥Δ∥: 0.7587, η: 1.00, ∥Δᶜ∥: 0.7587, log 𝓛: -9457.3301 (+16608.6465)
-∥∇∥:    6001.5029, ∥Δ∥: 0.7142, η: 1.00, ∥Δᶜ∥: 0.7142, log 𝓛: -3392.9321 (+6064.3979)
-∥∇∥:    2194.9402, ∥Δ∥: 0.7031, η: 1.00, ∥Δᶜ∥: 0.7031, log 𝓛: -1181.3041 (+2211.6281)
-∥∇∥:     793.7997, ∥Δ∥: 0.6952, η: 1.00, ∥Δᶜ∥: 0.6952, log 𝓛: -382.4992 (+798.8049)
-∥∇∥:     278.6937, ∥Δ∥: 0.6715, η: 1.00, ∥Δᶜ∥: 0.6715, log 𝓛: -102.3017 (+280.1975)
-∥∇∥:      90.4135, ∥Δ∥: 0.5957, η: 1.00, ∥Δᶜ∥: 0.5957, log 𝓛: -11.4286 (+90.8731)
-∥∇∥:      23.9223, ∥Δ∥: 0.4006, η: 1.00, ∥Δᶜ∥: 0.4006, log 𝓛:  12.6798 (+24.1084)
-∥∇∥:       3.8675, ∥Δ∥: 0.1392, η: 1.00, ∥Δᶜ∥: 0.1392, log 𝓛:  16.5910 (+3.9112)
-∥∇∥:       0.2448, ∥Δ∥: 0.0157, η: 1.00, ∥Δᶜ∥: 0.0157, log 𝓛:  16.8083 (+0.2173)
-∥∇∥:       0.0103, ∥Δ∥: 0.0007, η: 1.00, ∥Δᶜ∥: 0.0007, log 𝓛:  16.8099 (+0.0017)
-∥∇∥:       0.0004, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8096 (-0.0004)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8103 (+0.0007)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8101 (-0.0002)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8100 (-0.0001)
-
-[∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
-
-✓ Converged at iteration 18
-[1] -0.9727983 -1.3280727 -1.2528644
-[1] 0.14290193 0.07021837 0.08161610
-[1]  4.5182509  0.2978451 -0.4140463
-</pre></div>
-</div>
 </div>
 </div>
 </section>
@@ -430,14 +414,14 @@ using <code class="docutils literal notranslate"><span class="pre">model.matrix(
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="vig/vig_reml.html">
+          <a class="prev-page" href="vig/vig_marginal_reml.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Introduction to REML Estimation</div>
+                <div class="title">Introduction to Marginal REML Estimation</div>
                 
               </div>
             </a>

@@ -8,10 +8,9 @@ import torch
 from torch_openreml.covariance import SimpleMatrix
 
 def my_v(free_params):
-    n = free_params.shape[0]
     return torch.diag(free_params)
 
-mat = SimpleMatrix(n=3, call=my_v)
+mat = SimpleMatrix(num_free_params=3, call=my_v)
 mat(torch.tensor([1.0, 2.0, 3.0]))
 
 

@@ -20,8 +20,6 @@
       ~DiagonalMatrix.get_intermediates
       ~DiagonalMatrix.grad
       ~DiagonalMatrix.manual_grad
-      ~DiagonalMatrix.map_theta_to_dv
-      ~DiagonalMatrix.map_theta_to_v
       ~DiagonalMatrix.reset_intermediates
       ~DiagonalMatrix.set_intermediates
       ~DiagonalMatrix.trans_grad

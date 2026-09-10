@@ -20,8 +20,6 @@
       ~SimpleMatrix.get_intermediates
       ~SimpleMatrix.grad
       ~SimpleMatrix.manual_grad
-      ~SimpleMatrix.map_theta_to_dv
-      ~SimpleMatrix.map_theta_to_v
       ~SimpleMatrix.reset_intermediates
       ~SimpleMatrix.set_intermediates
       ~SimpleMatrix.trans_grad

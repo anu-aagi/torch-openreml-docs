@@ -194,14 +194,14 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../vig.html">Vignettes</a><input aria-label="Toggle navigation of Vignettes" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../vig/vig_reml.html">Introduction to REML Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../vig/vig_marginal_reml.html">Introduction to Marginal REML Estimation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../r_user.html">For R Users</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tech.html">Technical Documentation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../api.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/reml.html">REML</a><input aria-label="Toggle navigation of REML" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.REML.html">torch_openreml.REML</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/reml.html">MarginalREML</a><input aria-label="Toggle navigation of MarginalREML" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.MarginalREML.html">torch_openreml.MarginalREML</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/covariance.html">Covariance</a><input aria-label="Toggle navigation of Covariance" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -210,6 +210,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.CompoundSymmetricMatrix.html">torch_openreml.covariance.CompoundSymmetricMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.DiagonalMatrix.html">torch_openreml.covariance.DiagonalMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.DummyMatrix.html">torch_openreml.covariance.DummyMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.EqualEntryMatrix.html">torch_openreml.covariance.EqualEntryMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.EquicorrelationMatrix.html">torch_openreml.covariance.EquicorrelationMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.IdentityMatrix.html">torch_openreml.covariance.IdentityMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.LowerTriangularMatrix.html">torch_openreml.covariance.LowerTriangularMatrix</a></li>
@@ -227,6 +228,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.CovariancePropagation.html">torch_openreml.covariance.CovariancePropagation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.Gram.html">torch_openreml.covariance.Gram</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.Sum.html">torch_openreml.covariance.Sum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.Augment.html">torch_openreml.covariance.Augment</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/adapter.html">Adapter</a><input aria-label="Toggle navigation of Adapter" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -246,7 +248,17 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.covariance.transform.TransformSigmoid.html">torch_openreml.covariance.transform.TransformSigmoid</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.blue.html">torch_openreml.blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.blup.html">torch_openreml.blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.marginal_predict.html">torch_openreml.marginal_predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.marginal_residual.html">torch_openreml.marginal_residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.predict.html">torch_openreml.predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.residual.html">torch_openreml.residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.loglik.html">torch_openreml.loglik</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.utils.get_device.html">torch_openreml.utils.get_device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.utils.get_dtype.html">torch_openreml.utils.get_dtype</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
@@ -315,7 +327,7 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A covariance matrix for simple, function-based parameterisations.</span>
 
-<span class="sd">    This is the easiest way to use :class:`~torch_openreml.REML` with a custom</span>
+<span class="sd">    This is the easiest way to use :class:`~torch_openreml.MarginalREML` with a custom</span>
 <span class="sd">    covariance structure: provide the number of parameters and a function that</span>
 <span class="sd">    maps a flat parameter tensor to the covariance matrix. All parameters are</span>
 <span class="sd">    free and use an identity transform (unconstrained). The ``default``</span>
@@ -325,44 +337,47 @@
 <span class="sd">    For more advanced needs (custom transforms, fixed parameters, manual</span>
 <span class="sd">    gradients), subclass :class:`~torch_openreml.covariance.matrix.Matrix`</span>
 <span class="sd">    directly.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        n (int): Number of free parameters.</span>
-<span class="sd">        call (callable): Function with signature</span>
-<span class="sd">            ``call(free_params) -&gt; torch.Tensor`` that constructs the</span>
-<span class="sd">            covariance matrix from a flat 1D parameter tensor.</span>
-<span class="sd">        manual_grad (callable, optional): Function with signature</span>
-<span class="sd">            ``manual_grad(free_params) -&gt; (grad, grad_names)`` for a</span>
-<span class="sd">            closed-form Jacobian. If ``None`` (default), automatic</span>
-<span class="sd">            differentiation is used.</span>
-<span class="sd">        default (float or torch.Tensor, optional): Default value for each</span>
-<span class="sd">            parameter. Passed to :func:`simple_param_specs`. Defaults to</span>
-<span class="sd">            ``0.0``.</span>
-
-<span class="sd">    Example:</span>
-
-<span class="sd">    .. jupyter-execute::</span>
-
-<span class="sd">        import torch</span>
-<span class="sd">        from torch_openreml.covariance import SimpleMatrix</span>
-
-<span class="sd">        def my_v(free_params):</span>
-<span class="sd">            n = free_params.shape[0]</span>
-<span class="sd">            return torch.diag(free_params)</span>
-
-<span class="sd">        mat = SimpleMatrix(n=3, call=my_v)</span>
-<span class="sd">        mat(torch.tensor([1.0, 2.0, 3.0]))</span>
-
-<span class="sd">    .. jupyter-execute::</span>
-
-<span class="sd">        mat.grad(torch.tensor([1.0, 2.0, 3.0]))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">manual_grad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_free_params</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">manual_grad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a simple covariance matrix.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            num_free_params (int): Number of free parameters.</span>
+<span class="sd">            call (callable): Function with signature</span>
+<span class="sd">                ``call(free_params) -&gt; torch.Tensor`` that constructs the</span>
+<span class="sd">                covariance matrix from a flat 1D parameter tensor.</span>
+<span class="sd">            manual_grad (callable, optional): Function with signature</span>
+<span class="sd">                ``manual_grad(free_params) -&gt; (grad, grad_names)`` for a</span>
+<span class="sd">                closed-form Jacobian. If ``None`` (default), automatic</span>
+<span class="sd">                differentiation is used.</span>
+<span class="sd">            default (float or torch.Tensor, optional): Default value for each</span>
+<span class="sd">                parameter. Passed to :func:`simple_param_specs`. Defaults to</span>
+<span class="sd">                ``0.0``.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from torch_openreml.covariance import SimpleMatrix</span>
+
+<span class="sd">            def my_v(free_params):</span>
+<span class="sd">                return torch.diag(free_params)</span>
+
+<span class="sd">            mat = SimpleMatrix(num_free_params=3, call=my_v)</span>
+<span class="sd">            mat(torch.tensor([1.0, 2.0, 3.0]))</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            mat.grad(torch.tensor([1.0, 2.0, 3.0]))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="n">call</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;call&#39; must be provided.&quot;</span><span class="p">)</span>
 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">simple_param_specs</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">simple_param_specs</span><span class="p">(</span><span class="n">num_free_params</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_call</span> <span class="o">=</span> <span class="n">call</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_manual_grad</span> <span class="o">=</span> <span class="n">manual_grad</span>
 

@@ -21,8 +21,6 @@
       ~Sum.get_intermediates
       ~Sum.grad
       ~Sum.manual_grad
-      ~Sum.map_theta_to_dv
-      ~Sum.map_theta_to_v
       ~Sum.operands_grad
       ~Sum.reset_intermediates
       ~Sum.set_intermediates

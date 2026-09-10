@@ -21,8 +21,6 @@
       ~Gram.get_intermediates
       ~Gram.grad
       ~Gram.manual_grad
-      ~Gram.map_theta_to_dv
-      ~Gram.map_theta_to_v
       ~Gram.operands_grad
       ~Gram.reset_intermediates
       ~Gram.set_intermediates

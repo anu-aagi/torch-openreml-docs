@@ -20,8 +20,6 @@
       ~Adapter.get_intermediates
       ~Adapter.grad
       ~Adapter.manual_grad
-      ~Adapter.map_theta_to_dv
-      ~Adapter.map_theta_to_v
       ~Adapter.reset_intermediates
       ~Adapter.set_intermediates
       ~Adapter.trans_grad
