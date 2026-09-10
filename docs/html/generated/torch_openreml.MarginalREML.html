@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Covariance" href="../api/covariance.html"><link rel="prev" title="MarginalREML" href="../api/reml.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>torch_openreml.MarginalREML - torch-openreml 0.1.1-alpha documentation</title>
+        <title>torch_openreml.MarginalREML - torch-openreml 0.2.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
@@ -164,7 +164,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">torch-openreml 0.1.1-alpha documentation</div></a>
+      <a href="../index.html"><div class="brand">torch-openreml 0.2.0-alpha documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -185,7 +185,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
-  <span class="sidebar-brand-text">torch-openreml 0.1.1-alpha documentation</span>
+  <span class="sidebar-brand-text">torch-openreml 0.2.0-alpha documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -376,16 +376,17 @@ and its Jacobian.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:       2.1749, ∥Δ∥: 0.0217, η: 1.00, ∥Δᶜ∥: 0.0217, log 𝓛: -28.8374
-∥∇∥:       0.0465, ∥Δ∥: 0.0005, η: 1.00, ∥Δᶜ∥: 0.0005, log 𝓛: -28.8135 (+0.0239)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -28.8135 (+0.0000)
+∥∇∥:       4.8321, ∥Δ∥: 0.0457, η: 1.00, ∥Δᶜ∥: 0.0457, log 𝓛: -30.4843
+∥∇∥:       0.2144, ∥Δ∥: 0.0022, η: 1.00, ∥Δᶜ∥: 0.0022, log 𝓛: -30.3705 (+0.1138)
+∥∇∥:       0.0005, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -30.3703 (+0.0002)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -30.3703 (-0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 3
+✓ Converged at iteration 4
 </pre></div>
 </div>
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0.0222]), tensor([ 0.0198, -0.4711]))
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0.0480]), tensor([-0.0764, -0.0343]))
 </pre></div>
 </div>
 </div>
@@ -955,7 +956,7 @@ estimate, and <code class="docutils literal notranslate"><span class="pre">n_ite
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=e30984f2"></script>
+</div><script src="../_static/documentation_options.js?v=74c14a11"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
