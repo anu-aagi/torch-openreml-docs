@@ -8,7 +8,7 @@
         <title>torch_openreml.marginal_reml - torch-openreml 0.1.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css?v=572af1d6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df86a2a8" />
@@ -506,8 +506,7 @@
 
 <div class="viewcode-block" id="MarginalREML.ai_step">
 <a class="viewcode-back" href="../../generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.ai_step">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">ai_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">require_loglik</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">require_beta</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">trace_approx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                <span class="n">subspace_fraction</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ai_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">require_loglik</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">require_beta</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">trace_approx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">subspace_fraction</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perform a single average information (AI) algorithm step.</span>
 
