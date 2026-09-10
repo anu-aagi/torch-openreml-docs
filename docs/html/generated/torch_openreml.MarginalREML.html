@@ -9,7 +9,7 @@
         <title>torch_openreml.MarginalREML - torch-openreml 0.1.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -376,17 +376,17 @@ and its Jacobian.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:       8.8570, ∥Δ∥: 0.0779, η: 1.00, ∥Δᶜ∥: 0.0779, log 𝓛: -32.2782
-∥∇∥:       0.6554, ∥Δ∥: 0.0067, η: 1.00, ∥Δᶜ∥: 0.0067, log 𝓛: -31.9160 (+0.3622)
-∥∇∥:       0.0044, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -31.9138 (+0.0022)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -31.9138 (+0.0000)
+∥∇∥:       6.8240, ∥Δ∥: 0.0622, η: 1.00, ∥Δᶜ∥: 0.0622, log 𝓛: -31.4145
+∥∇∥:       0.4076, ∥Δ∥: 0.0042, η: 1.00, ∥Δᶜ∥: 0.0042, log 𝓛: -31.1936 (+0.2209)
+∥∇∥:       0.0017, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -31.1927 (+0.0009)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -31.1927 (+0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
 ✓ Converged at iteration 4
 </pre></div>
 </div>
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0.0847]), tensor([ 0.0732, -0.0255]))
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0.0665]), tensor([ 0.2100, -0.0443]))
 </pre></div>
 </div>
 </div>
@@ -562,7 +562,7 @@ shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <s
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.MarginalREML.ai_step">
-<span class="sig-name descname"><span class="pre">ai_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.ai_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.ai_step" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ai_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace_approx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subspace_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.ai_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.ai_step" title="Link to this definition">¶</a></dt>
 <dd><p>Perform a single average information (AI) algorithm step.</p>
 <p>Computes the score vector <span class="math notranslate nohighlight">\(\symbf{s}\)</span>, AI matrix, and
 optionally the REML log-likelihood and coefficient estimate at the
@@ -582,6 +582,53 @@ current <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span
     \frac{\partial\symbf{V}(\boldsymbol{\theta})}{\partial\theta_j}
     \symbf{P} \symbf{y}\end{split}\]</div>
 </div>
+<p>When <code class="docutils literal notranslate"><span class="pre">trace_approx</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, the trace term
+<span class="math notranslate nohighlight">\(\mathrm{tr}(\symbf{P}\,\partial\symbf{V}/\partial\theta_k)\)</span>
+is replaced by a stochastic probe estimate, which avoids forming
+<span class="math notranslate nohighlight">\(\symbf{V}^{-1}\partial\symbf{V}\)</span> in full. With</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\symbf{A}_k = \symbf{V}^{-1}
+    \frac{\partial \symbf{V}}{\partial \theta_k},
+\qquad
+\symbf{B}_k = \symbf{V}^{-1} \symbf{X}
+    (\symbf{X}^\top \symbf{V}^{-1} \symbf{X})^{-1}
+    \symbf{X}^\top \symbf{V}^{-1}
+    \frac{\partial \symbf{V}}{\partial \theta_k},\]</div>
+</div>
+<p>the trace splits as</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\mathrm{tr}\!\left(\symbf{P}
+    \frac{\partial \symbf{V}}{\partial \theta_k}\right)
+= \mathrm{tr}(\symbf{A}_k) - \mathrm{tr}(\symbf{B}_k),\]</div>
+</div>
+<p>and each of the two terms is estimated on its own, so that neither
+<span class="math notranslate nohighlight">\(\symbf{A}_k\)</span> nor <span class="math notranslate nohighlight">\(\symbf{B}_k\)</span> is ever formed in full.</p>
+<p>The estimator is Hutch++ (Meyer, Musco, Musco &amp; Woodruff,
+<em>Hutch++: Optimal stochastic trace estimation</em>, SOSA 2021,
+pp. 142–155, <a class="reference external" href="https://doi.org/10.1137/1.9781611976496.16">doi:10.1137/1.9781611976496.16</a>). For a matrix
+<span class="math notranslate nohighlight">\(\symbf{C}\)</span>, two independent Rademacher probe matrices
+<span class="math notranslate nohighlight">\(\symbf{S}, \symbf{G} \in \{\pm 1\}^{n \times m}\)</span> are drawn
+once per call and shared across parameters, with
+<span class="math notranslate nohighlight">\(m = \lfloor n f \rfloor + 1\)</span> probes each and <span class="math notranslate nohighlight">\(f\)</span> the
+<code class="docutils literal notranslate"><span class="pre">subspace_fraction</span></code>, and</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\symbf{Q} &amp;= \mathrm{qr}(\symbf{C} \symbf{S}), \\
+\hat{h}(\symbf{C}) &amp;= \mathrm{tr}(\symbf{Q}^\top \symbf{C}
+    \symbf{Q})
+    + \frac{1}{m} \mathrm{tr}\!\left( \symbf{G}^\top
+    (\symbf{I} - \symbf{Q}\symbf{Q}^\top) \symbf{C}
+    (\symbf{I} - \symbf{Q}\symbf{Q}^\top) \symbf{G} \right).\end{split}\]</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\symbf{Q}\)</span> spans the dominant range of <span class="math notranslate nohighlight">\(\symbf{C}\)</span>, so
+the first term is exact there; the second applies Hutchinson’s
+estimator to the deflated residual.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">trace_approx</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code> the traces are evaluated
+exactly. The average information matrix and the log-likelihood are
+computed exactly either way; only the trace term of the score is
+approximated.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -592,17 +639,34 @@ current <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span
 log-likelihood. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 <li><p><strong>require_beta</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to compute the coefficient
 estimate. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>trace_approx</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to estimate the trace term of
+the score stochastically. <code class="docutils literal notranslate"><span class="pre">False</span></code> computes the exact
+score, which is more expensive per call. This is a plain
+switch with no internal state:
+<a class="reference internal" href="#torch_openreml.MarginalREML.optimize" title="torch_openreml.MarginalREML.optimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optimize()</span></code></a> owns the decision of when to turn it off.
+Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>subspace_fraction</strong> (<em>float</em><em>, </em><em>optional</em>) – Fraction of the <code class="docutils literal notranslate"><span class="pre">n</span></code>
+observations used as the dimension of the random probe
+subspace in the stochastic trace estimate. Each of the two
+probe matrices holds <code class="docutils literal notranslate"><span class="pre">int(n</span> <span class="pre">*</span> <span class="pre">subspace_fraction)</span> <span class="pre">+</span> <span class="pre">1</span></code>
+vectors, so the total probe budget is about twice that.
+Must lie in <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code>; larger values trade time for
+accuracy of the approximate score. Only used when
+<code class="docutils literal notranslate"><span class="pre">trace_approx</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>. Defaults to <code class="docutils literal notranslate"><span class="pre">0.01</span></code>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(beta,</span> <span class="pre">score,</span> <span class="pre">ai,</span> <span class="pre">loglik)</span></code>, where <code class="docutils literal notranslate"><span class="pre">beta</span></code> is of shape
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">subspace_fraction</span></code> is outside <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code>.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">(beta,</span> <span class="pre">score,</span> <span class="pre">ai,</span> <span class="pre">loglik)</span></code>, where <code class="docutils literal notranslate"><span class="pre">beta</span></code> is of shape
 <code class="docutils literal notranslate"><span class="pre">(p,)</span></code>, <code class="docutils literal notranslate"><span class="pre">score</span></code> is of shape <code class="docutils literal notranslate"><span class="pre">(num_params,)</span></code>, <code class="docutils literal notranslate"><span class="pre">ai</span></code> is of
 shape <code class="docutils literal notranslate"><span class="pre">(num_params,</span> <span class="pre">num_params)</span></code>, and <code class="docutils literal notranslate"><span class="pre">loglik</span></code> is a scalar
 tensor. <code class="docutils literal notranslate"><span class="pre">beta</span></code> and <code class="docutils literal notranslate"><span class="pre">loglik</span></code> are <code class="docutils literal notranslate"><span class="pre">torch.nan</span></code> if their
 respective <code class="docutils literal notranslate"><span class="pre">require_*</span></code> flag is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>
@@ -724,7 +788,7 @@ after clipping.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.MarginalREML.optimize">
-<span class="sig-name descname"><span class="pre">optimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.optimize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.optimize" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">optimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace_approx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subspace_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exact_score_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.optimize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.optimize" title="Link to this definition">¶</a></dt>
 <dd><p>Run the AI-REML optimisation loop.</p>
 <p>Iterates <a class="reference internal" href="#torch_openreml.MarginalREML.ai_step" title="torch_openreml.MarginalREML.ai_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ai_step()</span></code></a> and <a class="reference internal" href="#torch_openreml.MarginalREML.update" title="torch_openreml.MarginalREML.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> until convergence or
 <code class="docutils literal notranslate"><span class="pre">max_iter</span></code> is reached. Optimisation history is stored in
@@ -761,6 +825,32 @@ convergence check. Defaults to <code class="docutils literal notranslate"><span 
 tolerance. Defaults to <code class="docutils literal notranslate"><span class="pre">1e-4</span></code>.</p></li>
 <li><p><strong>tol_loglik</strong> (<em>float</em><em>, </em><em>optional</em>) – Log-likelihood change tolerance.
 Defaults to <code class="docutils literal notranslate"><span class="pre">1e-4</span></code>.</p></li>
+<li><p><strong>trace_approx</strong> (<em>bool</em><em>, </em><em>optional</em>) – <p>Whether to start the optimisation with
+the stochastic probe estimate of <a class="reference internal" href="#torch_openreml.MarginalREML.ai_step" title="torch_openreml.MarginalREML.ai_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ai_step()</span></code></a> for the
+score, which follows Hutch++ (Meyer, Musco, Musco &amp; Woodruff,
+<em>Hutch++: Optimal stochastic trace estimation</em>, SOSA 2021,
+pp. 142–155, <a class="reference external" href="https://doi.org/10.1137/1.9781611976496.16">doi:10.1137/1.9781611976496.16</a>). While it is
+on, the optimiser monitors the score norm, and once that norm
+drops below <code class="docutils literal notranslate"><span class="pre">exact_score_threshold</span></code> the exact score is used
+for that and every remaining iteration. The probe estimate has
+a noise floor that does not decay, so an optimisation left on
+the approximation cannot satisfy <code class="docutils literal notranslate"><span class="pre">tol_score</span></code> and will run to
+<code class="docutils literal notranslate"><span class="pre">max_iter</span></code>; the switch is what makes the approximation
+usable. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>, which runs the whole
+optimisation with the exact score.</p>
+</p></li>
+<li><p><strong>subspace_fraction</strong> (<em>float</em><em>, </em><em>optional</em>) – Fraction of the <code class="docutils literal notranslate"><span class="pre">n</span></code>
+observations used as the dimension of the random probe
+subspace in the stochastic trace estimate of <a class="reference internal" href="#torch_openreml.MarginalREML.ai_step" title="torch_openreml.MarginalREML.ai_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ai_step()</span></code></a>.
+Must lie in <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code>; larger values trade time for accuracy
+of the score on iterations that are still far from the
+optimum. Defaults to <code class="docutils literal notranslate"><span class="pre">0.01</span></code>.</p></li>
+<li><p><strong>exact_score_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – Score norm below which
+the stochastic probe estimate is switched off for the
+remainder of the optimisation. Since the first score is
+always computed with the current setting, <code class="docutils literal notranslate"><span class="pre">inf</span></code> switches off
+after the first iteration while <code class="docutils literal notranslate"><span class="pre">0.0</span></code> keeps the
+approximation on throughout. Defaults to <code class="docutils literal notranslate"><span class="pre">10.0</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

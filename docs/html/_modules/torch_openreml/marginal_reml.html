@@ -8,7 +8,7 @@
         <title>torch_openreml.marginal_reml - torch-openreml 0.1.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df86a2a8" />
@@ -506,7 +506,8 @@
 
 <div class="viewcode-block" id="MarginalREML.ai_step">
 <a class="viewcode-back" href="../../generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.ai_step">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">ai_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">require_loglik</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">require_beta</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ai_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">require_loglik</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">require_beta</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">trace_approx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">subspace_fraction</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perform a single average information (AI) algorithm step.</span>
 
@@ -529,6 +530,57 @@
 <span class="sd">                \frac{\partial\symbf{V}(\boldsymbol{\theta})}{\partial\theta_j}</span>
 <span class="sd">                \symbf{P} \symbf{y}</span>
 
+<span class="sd">        When ``trace_approx`` is ``True``, the trace term</span>
+<span class="sd">        :math:`\mathrm{tr}(\symbf{P}\,\partial\symbf{V}/\partial\theta_k)`</span>
+<span class="sd">        is replaced by a stochastic probe estimate, which avoids forming</span>
+<span class="sd">        :math:`\symbf{V}^{-1}\partial\symbf{V}` in full. With</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \symbf{A}_k = \symbf{V}^{-1}</span>
+<span class="sd">                \frac{\partial \symbf{V}}{\partial \theta_k},</span>
+<span class="sd">            \qquad</span>
+<span class="sd">            \symbf{B}_k = \symbf{V}^{-1} \symbf{X}</span>
+<span class="sd">                (\symbf{X}^\top \symbf{V}^{-1} \symbf{X})^{-1}</span>
+<span class="sd">                \symbf{X}^\top \symbf{V}^{-1}</span>
+<span class="sd">                \frac{\partial \symbf{V}}{\partial \theta_k},</span>
+
+<span class="sd">        the trace splits as</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \mathrm{tr}\!\left(\symbf{P}</span>
+<span class="sd">                \frac{\partial \symbf{V}}{\partial \theta_k}\right)</span>
+<span class="sd">            = \mathrm{tr}(\symbf{A}_k) - \mathrm{tr}(\symbf{B}_k),</span>
+
+<span class="sd">        and each of the two terms is estimated on its own, so that neither</span>
+<span class="sd">        :math:`\symbf{A}_k` nor :math:`\symbf{B}_k` is ever formed in full.</span>
+
+<span class="sd">        The estimator is Hutch++ (Meyer, Musco, Musco &amp; Woodruff,</span>
+<span class="sd">        *Hutch++: Optimal stochastic trace estimation*, SOSA 2021,</span>
+<span class="sd">        pp. 142--155, `doi:10.1137/1.9781611976496.16</span>
+<span class="sd">        &lt;https://doi.org/10.1137/1.9781611976496.16&gt;`_). For a matrix</span>
+<span class="sd">        :math:`\symbf{C}`, two independent Rademacher probe matrices</span>
+<span class="sd">        :math:`\symbf{S}, \symbf{G} \in \{\pm 1\}^{n \times m}` are drawn</span>
+<span class="sd">        once per call and shared across parameters, with</span>
+<span class="sd">        :math:`m = \lfloor n f \rfloor + 1` probes each and :math:`f` the</span>
+<span class="sd">        ``subspace_fraction``, and</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \symbf{Q} &amp;= \mathrm{qr}(\symbf{C} \symbf{S}), \\</span>
+<span class="sd">            \hat{h}(\symbf{C}) &amp;= \mathrm{tr}(\symbf{Q}^\top \symbf{C}</span>
+<span class="sd">                \symbf{Q})</span>
+<span class="sd">                + \frac{1}{m} \mathrm{tr}\!\left( \symbf{G}^\top</span>
+<span class="sd">                (\symbf{I} - \symbf{Q}\symbf{Q}^\top) \symbf{C}</span>
+<span class="sd">                (\symbf{I} - \symbf{Q}\symbf{Q}^\top) \symbf{G} \right).</span>
+
+<span class="sd">        :math:`\symbf{Q}` spans the dominant range of :math:`\symbf{C}`, so</span>
+<span class="sd">        the first term is exact there; the second applies Hutchinson&#39;s</span>
+<span class="sd">        estimator to the deflated residual.</span>
+
+<span class="sd">        When ``trace_approx`` is ``False`` the traces are evaluated</span>
+<span class="sd">        exactly. The average information matrix and the log-likelihood are</span>
+<span class="sd">        computed exactly either way; only the trace term of the score is</span>
+<span class="sd">        approximated.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            y (torch.Tensor): Response vector of shape ``(n,)``.</span>
 <span class="sd">            x (torch.Tensor): Design matrix of shape ``(n, p)``.</span>
@@ -537,6 +589,23 @@
 <span class="sd">                log-likelihood. Defaults to ``True``.</span>
 <span class="sd">            require_beta (bool, optional): Whether to compute the coefficient</span>
 <span class="sd">                estimate. Defaults to ``True``.</span>
+<span class="sd">            trace_approx (bool, optional): Whether to estimate the trace term of</span>
+<span class="sd">                the score stochastically. ``False`` computes the exact</span>
+<span class="sd">                score, which is more expensive per call. This is a plain</span>
+<span class="sd">                switch with no internal state:</span>
+<span class="sd">                :meth:`optimize` owns the decision of when to turn it off.</span>
+<span class="sd">                Defaults to ``False``.</span>
+<span class="sd">            subspace_fraction (float, optional): Fraction of the ``n``</span>
+<span class="sd">                observations used as the dimension of the random probe</span>
+<span class="sd">                subspace in the stochastic trace estimate. Each of the two</span>
+<span class="sd">                probe matrices holds ``int(n * subspace_fraction) + 1``</span>
+<span class="sd">                vectors, so the total probe budget is about twice that.</span>
+<span class="sd">                Must lie in ``[0, 1]``; larger values trade time for</span>
+<span class="sd">                accuracy of the approximate score. Only used when</span>
+<span class="sd">                ``trace_approx`` is ``True``. Defaults to ``0.01``.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If ``subspace_fraction`` is outside ``[0, 1]``.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            tuple: ``(beta, score, ai, loglik)``, where ``beta`` is of shape</span>
@@ -547,6 +616,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">device</span> <span class="o">=</span> <span class="n">get_device</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
         <span class="n">dtype</span> <span class="o">=</span> <span class="n">get_dtype</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="mf">0.0</span> <span class="o">&lt;=</span> <span class="n">subspace_fraction</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;subspace_fraction must be between 0 and 1, got </span><span class="si">{</span><span class="n">subspace_fraction</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
         
         <span class="n">matrix</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">vector</span> <span class="o">=</span> <span class="p">{}</span>
@@ -579,26 +651,70 @@
         <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} Y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1}&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">]</span>
         
         <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;P Y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;V^{-1} Y&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} Y&quot;</span><span class="p">]</span>
-        
-        <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} dV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cholesky_solve</span><span class="p">(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV&quot;</span><span class="p">],</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">])</span>
-        
-        <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} dV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1}&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV&quot;</span><span class="p">]</span>
-        
-        <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;P dV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} dV&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} dV&quot;</span><span class="p">]</span>
-        
-        <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;P dV P Y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;P dV&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;P Y&quot;</span><span class="p">]</span>
-        
-        <span class="n">vector</span><span class="p">[</span><span class="s2">&quot;Y^T P dV P Y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;P dV P Y&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-        
-        <span class="n">vector</span><span class="p">[</span><span class="s2">&quot;tr(P dV)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">trace</span><span class="p">)(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;P dV&quot;</span><span class="p">])</span>
-        
-        <span class="c1"># Score vector</span>
-        <span class="n">vector</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">vector</span><span class="p">[</span><span class="s2">&quot;Y^T P dV P Y&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">vector</span><span class="p">[</span><span class="s2">&quot;tr(P dV)&quot;</span><span class="p">])</span>
-        
-        <span class="c1"># AI matrix</span>
-        <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Y^T P dV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;P dV&quot;</span><span class="p">]</span>
-        
-        <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;AI&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Y^T P dV&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;P dV P Y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">trace_approx</span><span class="p">:</span>
+            <span class="n">subspace_dim</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">scalar</span><span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">subspace_fraction</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">scalar</span><span class="p">[</span><span class="s2">&quot;m / 3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subspace_dim</span>
+
+            <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;S&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">scalar</span><span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">],</span> <span class="n">scalar</span><span class="p">[</span><span class="s2">&quot;m / 3&quot;</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">1.0</span>
+            <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;G&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">scalar</span><span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">],</span> <span class="n">scalar</span><span class="p">[</span><span class="s2">&quot;m / 3&quot;</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">1.0</span>
+
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV S&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;S&quot;</span><span class="p">]</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} dV S&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cholesky_solve</span><span class="p">(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV S&quot;</span><span class="p">],</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">])</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">],</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} dV S&quot;</span><span class="p">])</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;(I - Q Q^T) G&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;G&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="p">(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mT</span> <span class="o">@</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;G&quot;</span><span class="p">])</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV (I - Q Q^T) G&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;(I - Q Q^T) G&quot;</span><span class="p">]</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} dV (I - Q Q^T) G&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cholesky_solve</span><span class="p">(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV (I - Q Q^T) G&quot;</span><span class="p">],</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">])</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;G^T (I - Q Q^T)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;(I - Q Q^T) G&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mT</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;G^T (I - Q Q^T) (V^{-1} dV) (I - Q Q^T) G&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;G^T (I - Q Q^T)&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} dV (I - Q Q^T) G&quot;</span><span class="p">]</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Q^T (V^{-1} dV) Q&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mT</span> <span class="o">@</span> <span class="n">torch</span><span class="o">.</span><span class="n">cholesky_solve</span><span class="p">(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">],</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">])</span>
+            <span class="n">vector</span><span class="p">[</span><span class="s2">&quot;tr(V^{-1} dV)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">trace</span><span class="p">)(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Q^T (V^{-1} dV) Q&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">scalar</span><span class="p">[</span><span class="s2">&quot;m / 3&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">trace</span><span class="p">)(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;G^T (I - Q Q^T) (V^{-1} dV) (I - Q Q^T) G&quot;</span><span class="p">])</span>
+
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} dV S&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1}&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV S&quot;</span><span class="p">]</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">],</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} dV S&quot;</span><span class="p">])</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;(I - Q Q^T) G&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;G&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="p">(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mT</span> <span class="o">@</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;G&quot;</span><span class="p">])</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV (I - Q Q^T) G&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;(I - Q Q^T) G&quot;</span><span class="p">]</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} dV (I - Q Q^T) G&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1}&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV (I - Q Q^T) G&quot;</span><span class="p">]</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;G^T (I - Q Q^T)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;G&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">-</span> <span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;G&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">])</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mT</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;G^T (I - Q Q^T) (V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} dV) (I - Q Q^T) G&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;G^T (I - Q Q^T)&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} dV (I - Q Q^T) G&quot;</span><span class="p">]</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Q^T (V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} dV) Q&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mT</span> <span class="o">@</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1}&quot;</span><span class="p">])</span> <span class="o">@</span> <span class="p">(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">])</span>
+            <span class="n">vector</span><span class="p">[</span><span class="s2">&quot;tr(V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} dV)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">trace</span><span class="p">)(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Q^T (V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} dV) Q&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">scalar</span><span class="p">[</span><span class="s2">&quot;m / 3&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">trace</span><span class="p">)(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;G^T (I - Q Q^T) (V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} dV) (I - Q Q^T) G&quot;</span><span class="p">])</span>
+            <span class="n">vector</span><span class="p">[</span><span class="s2">&quot;tr(P dV)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vector</span><span class="p">[</span><span class="s2">&quot;tr(V^{-1} dV)&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">vector</span><span class="p">[</span><span class="s2">&quot;tr(V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} dV)&quot;</span><span class="p">]</span>
+
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV P Y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;P Y&quot;</span><span class="p">]</span>
+            <span class="n">vector</span><span class="p">[</span><span class="s2">&quot;Y^T P dV P Y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;P Y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV P Y&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+            <span class="c1"># Score vector</span>
+            <span class="n">vector</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">vector</span><span class="p">[</span><span class="s2">&quot;Y^T P dV P Y&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">vector</span><span class="p">[</span><span class="s2">&quot;tr(P dV)&quot;</span><span class="p">])</span>
+
+            <span class="c1"># AI matrix</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Y^T P dV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;P Y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV&quot;</span><span class="p">]</span>
+
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} dV P Y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cholesky_solve</span><span class="p">(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV P Y&quot;</span><span class="p">],</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">])</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} dV P Y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1}&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV P Y&quot;</span><span class="p">]</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;P dV P Y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} dV P Y&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} dV P Y&quot;</span><span class="p">]</span>
+
+            <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;AI&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Y^T P dV&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;P dV P Y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} dV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cholesky_solve</span><span class="p">(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV&quot;</span><span class="p">],</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">])</span>
+
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} dV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1}&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;dV&quot;</span><span class="p">]</span>
+
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;P dV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} dV&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;V^{-1} X (X^T V^{-1} X)^{-1} X^T V{-1} dV&quot;</span><span class="p">]</span>
+
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;P dV P Y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;P dV&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;P Y&quot;</span><span class="p">]</span>
+
+            <span class="n">vector</span><span class="p">[</span><span class="s2">&quot;Y^T P dV P Y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;P dV P Y&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+            <span class="n">vector</span><span class="p">[</span><span class="s2">&quot;tr(P dV)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">trace</span><span class="p">)(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;P dV&quot;</span><span class="p">])</span>
+
+            <span class="c1"># Score vector</span>
+            <span class="n">vector</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">vector</span><span class="p">[</span><span class="s2">&quot;Y^T P dV P Y&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">vector</span><span class="p">[</span><span class="s2">&quot;tr(P dV)&quot;</span><span class="p">])</span>
+
+            <span class="c1"># AI matrix</span>
+            <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Y^T P dV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;P dV&quot;</span><span class="p">]</span>
+
+            <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;AI&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;Y^T P dV&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span> <span class="o">@</span> <span class="n">tensor3d</span><span class="p">[</span><span class="s2">&quot;P dV P Y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;AI&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;AI&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -791,8 +907,11 @@
                  <span class="n">check_loglik</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">tol_score</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
                  <span class="n">tol_delta</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
-                 <span class="n">tol_loglik</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+                 <span class="n">tol_loglik</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+                 <span class="n">trace_approx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">subspace_fraction</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+                 <span class="n">exact_score_threshold</span><span class="o">=</span><span class="mf">10.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run the AI-REML optimisation loop.</span>
 
 <span class="sd">        Iterates :meth:`ai_step` and :meth:`update` until convergence or</span>
@@ -829,6 +948,32 @@
 <span class="sd">                tolerance. Defaults to ``1e-4``.</span>
 <span class="sd">            tol_loglik (float, optional): Log-likelihood change tolerance.</span>
 <span class="sd">                Defaults to ``1e-4``.</span>
+<span class="sd">            trace_approx (bool, optional): Whether to start the optimisation with</span>
+<span class="sd">                the stochastic probe estimate of :meth:`ai_step` for the</span>
+<span class="sd">                score, which follows Hutch++ (Meyer, Musco, Musco &amp; Woodruff,</span>
+<span class="sd">                *Hutch++: Optimal stochastic trace estimation*, SOSA 2021,</span>
+<span class="sd">                pp. 142--155, `doi:10.1137/1.9781611976496.16</span>
+<span class="sd">                &lt;https://doi.org/10.1137/1.9781611976496.16&gt;`_). While it is</span>
+<span class="sd">                on, the optimiser monitors the score norm, and once that norm</span>
+<span class="sd">                drops below ``exact_score_threshold`` the exact score is used</span>
+<span class="sd">                for that and every remaining iteration. The probe estimate has</span>
+<span class="sd">                a noise floor that does not decay, so an optimisation left on</span>
+<span class="sd">                the approximation cannot satisfy ``tol_score`` and will run to</span>
+<span class="sd">                ``max_iter``; the switch is what makes the approximation</span>
+<span class="sd">                usable. Defaults to ``False``, which runs the whole</span>
+<span class="sd">                optimisation with the exact score.</span>
+<span class="sd">            subspace_fraction (float, optional): Fraction of the ``n``</span>
+<span class="sd">                observations used as the dimension of the random probe</span>
+<span class="sd">                subspace in the stochastic trace estimate of :meth:`ai_step`.</span>
+<span class="sd">                Must lie in ``[0, 1]``; larger values trade time for accuracy</span>
+<span class="sd">                of the score on iterations that are still far from the</span>
+<span class="sd">                optimum. Defaults to ``0.01``.</span>
+<span class="sd">            exact_score_threshold (float, optional): Score norm below which</span>
+<span class="sd">                the stochastic probe estimate is switched off for the</span>
+<span class="sd">                remainder of the optimisation. Since the first score is</span>
+<span class="sd">                always computed with the current setting, ``inf`` switches off</span>
+<span class="sd">                after the first iteration while ``0.0`` keeps the</span>
+<span class="sd">                approximation on throughout. Defaults to ``10.0``.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            tuple: ``(theta, beta, n_iter)``, where ``theta`` is the final</span>
@@ -850,7 +995,14 @@
         
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
-                <span class="n">beta</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">ai</span><span class="p">,</span> <span class="n">loglik</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ai_step</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">require_loglik</span><span class="o">=</span><span class="n">require_loglik</span><span class="p">)</span>
+                <span class="n">beta</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">ai</span><span class="p">,</span> <span class="n">loglik</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ai_step</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span>
+                                                       <span class="n">require_loglik</span><span class="o">=</span><span class="n">require_loglik</span><span class="p">,</span>
+                                                       <span class="n">subspace_fraction</span><span class="o">=</span><span class="n">subspace_fraction</span><span class="p">,</span>
+                                                       <span class="n">trace_approx</span><span class="o">=</span><span class="n">trace_approx</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">trace_approx</span> <span class="ow">and</span> <span class="n">torch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">score</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">exact_score_threshold</span><span class="p">:</span>
+                    <span class="n">trace_approx</span> <span class="o">=</span> <span class="kc">False</span>
+
                 <span class="n">delta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">ai</span><span class="p">,</span> <span class="n">score</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
                 <span class="n">theta</span><span class="p">,</span> <span class="n">update</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">lb</span><span class="p">,</span> <span class="n">ub</span><span class="p">)</span>
                 

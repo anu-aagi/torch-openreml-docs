@@ -9,7 +9,7 @@
         <title>Introduction to Marginal REML Estimation - torch-openreml 0.1.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -605,10 +605,10 @@ necessary.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:       8.7667, ∥Δ∥: 15.5016, η: 1.00, ∥Δᶜ∥: 15.5016, log 𝓛: -25.9052
-∥∇∥:       1.1429, ∥Δ∥: 0.0116, η: 1.00, ∥Δᶜ∥: 0.0116, log 𝓛: -23.0281 (+2.8771)
-∥∇∥:       0.0132, ∥Δ∥: 0.0001, η: 1.00, ∥Δᶜ∥: 0.0001, log 𝓛: -23.0214 (+0.0067)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -23.0214 (-0.0000)
+∥∇∥:       3.9604, ∥Δ∥: 11.4421, η: 1.00, ∥Δᶜ∥: 11.4421, log 𝓛: -31.8734
+∥∇∥:       0.2258, ∥Δ∥: 0.0023, η: 1.00, ∥Δᶜ∥: 0.0023, log 𝓛: -29.6487 (+2.2247)
+∥∇∥:       0.0005, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -29.6484 (+0.0003)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -29.6484 (+0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
@@ -679,6 +679,91 @@ oscillates or diverges.</p>
 <li><p>learning rate,</p></li>
 <li><p>iteration count.</p></li>
 </ul>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">trace_approx</span></code> (default <code class="docutils literal notranslate"><span class="pre">False</span></code>)</dt><dd><p>Whether to start the optimisation with the stochastic probe estimate for
+the score. The estimator is Hutch++ — Meyer, Musco, Musco &amp; Woodruff,
+<em>Hutch++: Optimal stochastic trace estimation</em>, SOSA 2021, pp. 142–155,
+doi:<a class="reference external" href="https://doi.org/10.1137/1.9781611976496.16">10.1137/1.9781611976496.16</a>.</p>
+<p>With</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\mathbf{A}_k =
+\mathbf{V}^{-1} \frac{\partial \mathbf{V}}{\partial \theta_k},
+\qquad
+\mathbf{B}_k =
+\mathbf{V}^{-1} \mathbf{X}
+\left(\mathbf{X}^\top \mathbf{V}^{-1} \mathbf{X}\right)^{-1}
+\mathbf{X}^\top \mathbf{V}^{-1}
+\frac{\partial \mathbf{V}}{\partial \theta_k}\]</div>
+</div>
+<p>the trace term of the score splits as
+<span class="math notranslate nohighlight">\(\mathrm{tr}(\mathbf{P} \, \partial \mathbf{V} / \partial
+\theta_k) = \mathrm{tr}(\mathbf{A}_k) - \mathrm{tr}(\mathbf{B}_k)\)</span>, and
+the two terms are estimated separately, so neither matrix is formed in
+full.</p>
+<p>The estimate of a matrix <span class="math notranslate nohighlight">\(\mathbf{C}\)</span> draws two independent
+Rademacher probe matrices <span class="math notranslate nohighlight">\(\mathbf{S}, \mathbf{G} \in \{\pm
+1\}^{n \times m}\)</span> with <span class="math notranslate nohighlight">\(m = \lfloor n f \rfloor + 1\)</span> probes each,
+where <span class="math notranslate nohighlight">\(f\)</span> is <code class="docutils literal notranslate"><span class="pre">subspace_fraction</span></code>, and combines a QR sketch with
+Hutchinson’s estimator on the deflated residual:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\mathbf{Q} = \mathrm{qr}(\mathbf{C} \mathbf{S}),
+\qquad
+\hat{h}(\mathbf{C}) =
+\mathrm{tr}(\mathbf{Q}^\top \mathbf{C} \mathbf{Q})
++
+\frac{1}{m}
+\mathrm{tr}\!\left(
+    \mathbf{G}^\top
+    (\mathbf{I} - \mathbf{Q}\mathbf{Q}^\top)
+    \mathbf{C}
+    (\mathbf{I} - \mathbf{Q}\mathbf{Q}^\top)
+    \mathbf{G}
+\right).\]</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\mathbf{Q}\)</span> spans the dominant range of <span class="math notranslate nohighlight">\(\mathbf{C}\)</span>, so
+the first term is exact there; the second applies Hutchinson’s estimator
+to the deflated residual.</p>
+<p>The estimate has an inherent noise floor: its error remains roughly
+constant even as the optimisation approaches the optimum, while the true
+score norm tends to zero. Far from the optimum, the score is much larger
+than this error, so the estimate is sufficiently accurate to make
+progress. Once the true score norm becomes comparable to the error,
+however, the norm seen by the optimiser stops decreasing and plateaus. As
+a result, <code class="docutils literal notranslate"><span class="pre">tol_score</span></code> is never reached, and the optimisation continues
+until <code class="docutils literal notranslate"><span class="pre">max_iter</span></code> rather than stopping. The average information matrix
+and log-likelihood are exact at every iteration and are computed
+regardless, so these additional iterations provide no benefit. In fact, a
+run that uses the approximation throughout can cost more than one that
+uses the exact score from the beginning.</p>
+<p>To avoid this, the optimiser monitors the score norm and switches to the
+exact score once the norm falls below <code class="docutils literal notranslate"><span class="pre">exact_score_threshold</span></code>. The
+exact score is then used for that iteration and all subsequent
+iterations. This is what makes the approximation worthwhile: it
+accelerates the early iterations, when the score is well above the noise
+floor, while leaving the final stage of optimisation to the exact score.
+By default, <code class="docutils literal notranslate"><span class="pre">trace_approx=False</span></code>, so the entire optimisation uses the
+exact score. Set <code class="docutils literal notranslate"><span class="pre">trace_approx=True</span></code> to opt in to the approximation.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">subspace_fraction</span></code> (default <code class="docutils literal notranslate"><span class="pre">0.01</span></code>)</dt><dd><p>Fraction of the <code class="docutils literal notranslate"><span class="pre">n</span></code> observations used as the dimension of the random
+probe subspace in the stochastic trace estimate that forms the score on
+iterations that are still far from the optimum.</p>
+<p>Each of the two probe matrices holds <code class="docutils literal notranslate"><span class="pre">int(n</span> <span class="pre">*</span> <span class="pre">subspace_fraction)</span> <span class="pre">+</span> <span class="pre">1</span></code>
+vectors, so the value must lie in <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code> and the total probe budget
+is about twice that. Larger values give a more accurate approximate
+score at a higher cost per iteration. Only used when
+<code class="docutils literal notranslate"><span class="pre">trace_approx=True</span></code>. Only the score is affected: the average
+information matrix and the log-likelihood are always computed exactly.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">exact_score_threshold</span></code> (default <code class="docutils literal notranslate"><span class="pre">10.0</span></code>)</dt><dd><p>Score norm below which the stochastic probe estimate is switched off for
+the remainder of the optimisation.</p>
+<p>Since the first score is always computed with the current setting,
+<code class="docutils literal notranslate"><span class="pre">inf</span></code> switches the approximation off after the first iteration while
+<code class="docutils literal notranslate"><span class="pre">0.0</span></code> keeps it on throughout. Use <code class="docutils literal notranslate"><span class="pre">trace_approx=False</span></code> instead to skip it
+entirely.</p>
+</dd>
+</dl>
 </section>
 </section>
 <section id="convergence-criteria">
