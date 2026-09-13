@@ -269,6 +269,13 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api/example_data.html">Example Datasets</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/config.html">Configuration</a><input aria-label="Toggle navigation of Configuration" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.set_default_jacobian_method.html">torch_openreml.set_default_jacobian_method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.get_default_jacobian_method.html">torch_openreml.get_default_jacobian_method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.get_default_chunk_size.html">torch_openreml.get_default_chunk_size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.jacobian_method.html">torch_openreml.jacobian_method</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../change_log.html">Changelog</a></li>
@@ -445,7 +452,7 @@ and treated as a named operand mapping.</p></li>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>([free_params])</p></td>
 <td><p>Construct the matrix from a flat parameter tensor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Operator.auto_grad" title="torch_openreml.covariance.Operator.auto_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_grad</span></code></a>([free_params])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_grad</span></code>([free_params])</p></td>
 <td><p>Compute the Jacobian of <code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code> with respect to free parameters using automatic differentiation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Operator.build_operands" title="torch_openreml.covariance.Operator.build_operands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_operands</span></code></a>([free_params])</p></td>
@@ -466,8 +473,8 @@ and treated as a named operand mapping.</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Operator.operands_grad" title="torch_openreml.covariance.Operator.operands_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">operands_grad</span></code></a>([free_params])</p></td>
 <td><p>Compute the Jacobian of each operand with respect to its parameters.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code>()</p></td>
-<td><p>Clear the intermediate computation cache.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Operator.reset_intermediates" title="torch_openreml.covariance.Operator.reset_intermediates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code></a>()</p></td>
+<td><p>Clear the intermediate caches of this operator and its operands.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
 <td><p>Cache intermediate computation results keyed by parameter hash.</p></td>
@@ -741,57 +748,14 @@ tensor([[[109.1963,   0.0000],
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="torch_openreml.covariance.Operator.auto_grad">
-<span class="sig-name descname"><span class="pre">auto_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/operator.html#Operator.auto_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Operator.auto_grad" title="Link to this definition">¶</a></dt>
-<dd><p>Compute the Jacobian of <code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code> with respect to
-free parameters using automatic differentiation.</p>
-<p>Uses <code class="xref py py-func docutils literal notranslate"><span class="pre">torch.func.jacrev()</span></code> to compute the full Jacobian.</p>
-<p>If all parameters are fixed, returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code></p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or dict.
-If omitted, default values are used. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is not a Torch tensor.</p></li>
-<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is not a 1D tensor or has the wrong length,
-    or if <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is a dict with missing or unexpected keys.</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">(grad,</span> <span class="pre">grad_names)</span></code>, where <code class="docutils literal notranslate"><span class="pre">grad</span></code> is a 3D tensor of
-shape <code class="docutils literal notranslate"><span class="pre">(num_free_params,</span> <span class="pre">*shape)</span></code>, and
-<code class="docutils literal notranslate"><span class="pre">grad_names</span></code> has the same length as <code class="docutils literal notranslate"><span class="pre">grad</span></code>.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple</p>
-</dd>
-</dl>
-<p>Example:</p>
-<div class="jupyter_cell jupyter_container docutils container">
-<div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiagonalMatrix</span>
-
-<span class="n">mat</span> <span class="o">=</span> <span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">free_params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
-<span class="n">grad</span><span class="p">,</span> <span class="n">grad_names</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">auto_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
-<span class="n">grad</span><span class="p">,</span> <span class="n">grad_names</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([[[2.0000, 0.0000],
-          [0.0000, 0.0000]],
- 
-         [[0.0000, 0.0000],
-          [0.0000, 5.4366]]]),
- [&#39;sigma^2_0&#39;, &#39;sigma^2_1&#39;])
-</pre></div>
-</div>
-</div>
-</div>
+<dt class="sig sig-object py" id="torch_openreml.covariance.Operator.reset_intermediates">
+<span class="sig-name descname"><span class="pre">reset_intermediates</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/operator.html#Operator.reset_intermediates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Operator.reset_intermediates" title="Link to this definition">¶</a></dt>
+<dd><p>Clear the intermediate caches of this operator and its operands.</p>
+<p>Extends <code class="xref py py-meth docutils literal notranslate"><span class="pre">reset_intermediates()</span></code>,
+which clears this operator’s own cache, by recursively clearing the
+cache of every <a class="reference internal" href="torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix" title="torch_openreml.covariance.matrix.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a>
+operand. Nested operators continue the descent through this same
+override, so resetting a node resets everything below it.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -898,7 +862,7 @@ shape <code class="docutils literal notranslate"><span class="pre">(num_free_par
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.build_params"><code class="docutils literal notranslate"><span class="pre">Operator.build_params()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.build_operands"><code class="docutils literal notranslate"><span class="pre">Operator.build_operands()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.operands_grad"><code class="docutils literal notranslate"><span class="pre">Operator.operands_grad()</span></code></a></li>
-<li><a class="reference internal" href="#torch_openreml.covariance.Operator.auto_grad"><code class="docutils literal notranslate"><span class="pre">Operator.auto_grad()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Operator.reset_intermediates"><code class="docutils literal notranslate"><span class="pre">Operator.reset_intermediates()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.operands"><code class="docutils literal notranslate"><span class="pre">Operator.operands</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.param_specs"><code class="docutils literal notranslate"><span class="pre">Operator.param_specs</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.repr_dict"><code class="docutils literal notranslate"><span class="pre">Operator.repr_dict</span></code></a></li>

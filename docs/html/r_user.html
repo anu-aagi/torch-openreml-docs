@@ -269,6 +269,13 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/example_data.html">Example Datasets</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/config.html">Configuration</a><input aria-label="Toggle navigation of Configuration" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.set_default_jacobian_method.html">torch_openreml.set_default_jacobian_method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.get_default_jacobian_method.html">torch_openreml.get_default_jacobian_method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.get_default_chunk_size.html">torch_openreml.get_default_chunk_size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.jacobian_method.html">torch_openreml.jacobian_method</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="change_log.html">Changelog</a></li>
@@ -344,7 +351,7 @@ We recommend installing torch-openreml inside a dedicated conda environment.</p>
 <h3>3. Install torch-openreml<a class="headerlink" href="#install-torch-openreml" title="Link to this heading">¶</a></h3>
 <div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="n">reticulate</span><span class="o">::</span><span class="nf">conda_install</span><span class="p">(</span><span class="s">&quot;torch-openreml&quot;</span><span class="p">,</span>
 <span class="w">                          </span><span class="n">pip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span>
-<span class="w">                          </span><span class="n">packages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;torch-openreml&quot;</span><span class="p">)))</span>
+<span class="w">                          </span><span class="n">packages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;git+https://github.com/anu-aagi/torch-openreml.git&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </section>

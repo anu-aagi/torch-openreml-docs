@@ -269,6 +269,13 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api/example_data.html">Example Datasets</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/config.html">Configuration</a><input aria-label="Toggle navigation of Configuration" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.set_default_jacobian_method.html">torch_openreml.set_default_jacobian_method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.get_default_jacobian_method.html">torch_openreml.get_default_jacobian_method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.get_default_chunk_size.html">torch_openreml.get_default_chunk_size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.jacobian_method.html">torch_openreml.jacobian_method</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../change_log.html">Changelog</a></li>
@@ -354,7 +361,8 @@ dictionaries with keys <code class="docutils literal notranslate"><span class="p
 <li><p><strong>param_map</strong> (<em>callable</em>) – A function <code class="docutils literal notranslate"><span class="pre">f(params)</span> <span class="pre">-&gt;</span> <span class="pre">adaptee_params</span></code>
 that maps the adapter’s parameter tensor to the parameter
 tensor expected by <code class="docutils literal notranslate"><span class="pre">adaptee</span></code>.  Must be differentiable
-(compatible with <code class="xref py py-func docutils literal notranslate"><span class="pre">torch.func.jacrev()</span></code>).</p></li>
+(compatible with the configured Jacobian method; see
+<code class="xref py py-func docutils literal notranslate"><span class="pre">set_default_jacobian_method()</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -525,7 +533,7 @@ Default: <code class="docutils literal notranslate"><span class="pre">None</span
 differentiation.</p>
 <p>Resets the adaptee’s intermediate cache before calling the parent
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code>, which
-uses <code class="xref py py-func docutils literal notranslate"><span class="pre">torch.func.jacrev()</span></code>.</p>
+uses the configured Jacobian method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or

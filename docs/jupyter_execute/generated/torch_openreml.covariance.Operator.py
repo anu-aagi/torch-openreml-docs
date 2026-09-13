@@ -91,15 +91,3 @@ print(grad_groups[1])
 print(grad_name_groups[0])
 print(grad_name_groups[1])
 
-
-# In[12]:
-
-
-import torch
-from torch_openreml.covariance import DiagonalMatrix
-
-mat = DiagonalMatrix(2)
-free_params = torch.tensor([0.0, 0.5])
-grad, grad_names = mat.auto_grad(free_params)
-grad, grad_names
-

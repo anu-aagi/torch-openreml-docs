@@ -269,6 +269,13 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api/example_data.html">Example Datasets</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/config.html">Configuration</a><input aria-label="Toggle navigation of Configuration" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.set_default_jacobian_method.html">torch_openreml.set_default_jacobian_method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.get_default_jacobian_method.html">torch_openreml.get_default_jacobian_method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.get_default_chunk_size.html">torch_openreml.get_default_chunk_size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.jacobian_method.html">torch_openreml.jacobian_method</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../change_log.html">Changelog</a></li>
@@ -605,10 +612,10 @@ necessary.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:       1.9878, ∥Δ∥: 53.0103, η: 1.00, ∥Δᶜ∥: 53.0103, log 𝓛: -29.8628
-∥∇∥:       1.5223, ∥Δ∥: 0.0164, η: 1.00, ∥Δᶜ∥: 0.0164, log 𝓛: -26.8814 (+2.9814)
-∥∇∥:       0.0252, ∥Δ∥: 0.0003, η: 1.00, ∥Δᶜ∥: 0.0003, log 𝓛: -26.8691 (+0.0123)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -26.8691 (+0.0000)
+∥∇∥:       3.7240, ∥Δ∥: 182.6029, η: 1.00, ∥Δᶜ∥: 182.6029, log 𝓛: -31.8959
+∥∇∥:       1.7600, ∥Δ∥: 0.0190, η: 1.00, ∥Δᶜ∥: 0.0190, log 𝓛: -28.7323 (+3.1636)
+∥∇∥:       0.0339, ∥Δ∥: 0.0004, η: 1.00, ∥Δᶜ∥: 0.0004, log 𝓛: -28.7157 (+0.0165)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -28.7157 (+0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 

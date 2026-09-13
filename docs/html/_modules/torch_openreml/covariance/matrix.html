@@ -268,6 +268,13 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/example_data.html">Example Datasets</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/config.html">Configuration</a><input aria-label="Toggle navigation of Configuration" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.set_default_jacobian_method.html">torch_openreml.set_default_jacobian_method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.get_default_jacobian_method.html">torch_openreml.get_default_jacobian_method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.get_default_chunk_size.html">torch_openreml.get_default_chunk_size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.jacobian_method.html">torch_openreml.jacobian_method</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../change_log.html">Changelog</a></li>
@@ -320,6 +327,7 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_default_jacobian_method</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance.transform</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transform</span>
 
 <div class="viewcode-block" id="Matrix">
@@ -697,7 +705,9 @@
 <span class="sd">        Compute the Jacobian of :meth:`build` with respect to</span>
 <span class="sd">        free parameters using automatic differentiation.</span>
 
-<span class="sd">        Uses :func:`torch.func.jacrev` to compute the full Jacobian.</span>
+<span class="sd">        Uses the configured Jacobian method (see</span>
+<span class="sd">        :func:`~torch_openreml.config.set_default_jacobian_method`) to compute</span>
+<span class="sd">        the full Jacobian.</span>
 
 <span class="sd">        If all parameters are fixed, returns ``(None, [])``</span>
 
@@ -738,7 +748,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">reset_intermediates</span><span class="p">()</span>
 
-        <span class="n">jacobian</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span><span class="p">)(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="n">jacobian</span> <span class="o">=</span> <span class="n">get_default_jacobian_method</span><span class="p">()(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span><span class="p">)(</span><span class="n">free_params</span><span class="p">)</span>
         <span class="n">grad</span> <span class="o">=</span> <span class="n">jacobian</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">grad_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span>
 

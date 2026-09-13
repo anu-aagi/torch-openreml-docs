@@ -268,6 +268,13 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/example_data.html">Example Datasets</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/config.html">Configuration</a><input aria-label="Toggle navigation of Configuration" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.set_default_jacobian_method.html">torch_openreml.set_default_jacobian_method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.get_default_jacobian_method.html">torch_openreml.get_default_jacobian_method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.get_default_chunk_size.html">torch_openreml.get_default_chunk_size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.jacobian_method.html">torch_openreml.jacobian_method</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../change_log.html">Changelog</a></li>
@@ -309,21 +316,27 @@
 
 <span class="sd">Given fitted covariance parameters :math:`\boldsymbol{\theta}` and a</span>
 <span class="sd">marginal covariance matrix :math:`\symbf{V}(\boldsymbol{\theta})`,</span>
-<span class="sd">these functions compute quantities from a fitted model:</span>
-
-<span class="sd">- :func:`blue`: best linear unbiased estimator of the fixed effects</span>
-<span class="sd">  :math:`\boldsymbol{\beta}`;</span>
-<span class="sd">- :func:`blup`: best linear unbiased predictor of the random effects</span>
-<span class="sd">  :math:`\symbf{b}`, requiring the random-effect covariance</span>
-<span class="sd">  :math:`\symbf{G}` and design matrix :math:`\symbf{Z}`;</span>
-<span class="sd">- :func:`loglik`: restricted log-likelihood evaluated at given</span>
-<span class="sd">  covariance parameters;</span>
-<span class="sd">- :func:`marginal_predict`: fitted values from fixed effects only;</span>
-<span class="sd">- :func:`predict`: fitted values from fixed and random effects;</span>
-<span class="sd">- :func:`marginal_residual`: residuals after removing the fixed effects;</span>
-<span class="sd">- :func:`residual`: residuals after removing both fixed and random effects.</span>
-
+<span class="sd">these functions compute quantities from a fitted model.</span>
 <span class="sd">All inputs are ``torch.Tensor`` objects.</span>
+
+<span class="sd">Functions:</span>
+<span class="sd">    blue:</span>
+<span class="sd">        Best linear unbiased estimator of the fixed effects</span>
+<span class="sd">        :math:`\boldsymbol{\beta}`.</span>
+<span class="sd">    blup:</span>
+<span class="sd">        Best linear unbiased predictor of the random effects</span>
+<span class="sd">        :math:`\symbf{b}`, requiring the random-effect covariance</span>
+<span class="sd">        :math:`\symbf{G}` and design matrix :math:`\symbf{Z}`.</span>
+<span class="sd">    loglik:</span>
+<span class="sd">        Restricted log-likelihood evaluated at given covariance parameters.</span>
+<span class="sd">    marginal_predict:</span>
+<span class="sd">        Fitted values from fixed effects only.</span>
+<span class="sd">    predict:</span>
+<span class="sd">        Fitted values from fixed and random effects.</span>
+<span class="sd">    marginal_residual:</span>
+<span class="sd">        Residuals after removing the fixed effects.</span>
+<span class="sd">    residual:</span>
+<span class="sd">        Residuals after removing both fixed and random effects.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>

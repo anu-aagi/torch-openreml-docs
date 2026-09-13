@@ -268,6 +268,13 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/example_data.html">Example Datasets</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/config.html">Configuration</a><input aria-label="Toggle navigation of Configuration" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.set_default_jacobian_method.html">torch_openreml.set_default_jacobian_method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.get_default_jacobian_method.html">torch_openreml.get_default_jacobian_method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.get_default_chunk_size.html">torch_openreml.get_default_chunk_size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.jacobian_method.html">torch_openreml.jacobian_method</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../change_log.html">Changelog</a></li>
@@ -652,13 +659,23 @@
         <span class="k">return</span> <span class="n">grad_groups</span><span class="p">,</span> <span class="n">grad_name_groups</span></div>
 
 
-<div class="viewcode-block" id="Operator.auto_grad">
-<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.auto_grad">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">auto_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">operand</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operands</span><span class="p">:</span>
+<div class="viewcode-block" id="Operator.reset_intermediates">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.reset_intermediates">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset_intermediates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clear the intermediate caches of this operator and its operands.</span>
+
+<span class="sd">        Extends :meth:`~torch_openreml.covariance.matrix.Matrix.reset_intermediates`,</span>
+<span class="sd">        which clears this operator&#39;s own cache, by recursively clearing the</span>
+<span class="sd">        cache of every :class:`~torch_openreml.covariance.matrix.Matrix`</span>
+<span class="sd">        operand. Nested operators continue the descent through this same</span>
+<span class="sd">        override, so resetting a node resets everything below it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">reset_intermediates</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">operand</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operands</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">operand</span><span class="p">,</span> <span class="n">Matrix</span><span class="p">):</span>
-                <span class="n">operand</span><span class="o">.</span><span class="n">reset_intermediates</span><span class="p">()</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">auto_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span></div>
+                <span class="n">operand</span><span class="o">.</span><span class="n">reset_intermediates</span><span class="p">()</span></div>
 
         
     <span class="nd">@property</span>
