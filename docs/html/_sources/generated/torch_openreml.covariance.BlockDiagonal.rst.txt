@@ -52,5 +52,8 @@
       ~BlockDiagonal.param_trans
       ~BlockDiagonal.repr_dict
       ~BlockDiagonal.shape
+      ~BlockDiagonal.grad_mode
+      ~BlockDiagonal.jacobian_method
+      ~BlockDiagonal.jacobian_chunk_size
    
    

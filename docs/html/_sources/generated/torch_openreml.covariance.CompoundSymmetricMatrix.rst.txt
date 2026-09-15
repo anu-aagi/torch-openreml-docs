@@ -49,5 +49,8 @@
       ~CompoundSymmetricMatrix.param_trans
       ~CompoundSymmetricMatrix.repr_dict
       ~CompoundSymmetricMatrix.shape
+      ~CompoundSymmetricMatrix.grad_mode
+      ~CompoundSymmetricMatrix.jacobian_method
+      ~CompoundSymmetricMatrix.jacobian_chunk_size
    
    

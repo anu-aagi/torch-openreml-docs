@@ -49,5 +49,8 @@
       ~AR1Matrix.param_trans
       ~AR1Matrix.repr_dict
       ~AR1Matrix.shape
+      ~AR1Matrix.grad_mode
+      ~AR1Matrix.jacobian_method
+      ~AR1Matrix.jacobian_chunk_size
    
    

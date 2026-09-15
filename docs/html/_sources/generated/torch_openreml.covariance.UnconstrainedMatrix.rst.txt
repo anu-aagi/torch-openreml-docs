@@ -49,5 +49,8 @@
       ~UnconstrainedMatrix.param_trans
       ~UnconstrainedMatrix.repr_dict
       ~UnconstrainedMatrix.shape
+      ~UnconstrainedMatrix.grad_mode
+      ~UnconstrainedMatrix.jacobian_method
+      ~UnconstrainedMatrix.jacobian_chunk_size
    
    

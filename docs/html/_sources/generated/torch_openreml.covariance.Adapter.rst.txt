@@ -51,5 +51,8 @@
       ~Adapter.param_trans
       ~Adapter.repr_dict
       ~Adapter.shape
+      ~Adapter.grad_mode
+      ~Adapter.jacobian_method
+      ~Adapter.jacobian_chunk_size
    
    

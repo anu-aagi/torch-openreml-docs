@@ -269,13 +269,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api/example_data.html">Example Datasets</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/config.html">Configuration</a><input aria-label="Toggle navigation of Configuration" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.set_default_jacobian_method.html">torch_openreml.set_default_jacobian_method</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.get_default_jacobian_method.html">torch_openreml.get_default_jacobian_method</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.get_default_chunk_size.html">torch_openreml.get_default_chunk_size</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.jacobian_method.html">torch_openreml.jacobian_method</a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../change_log.html">Changelog</a></li>
@@ -361,8 +354,7 @@ dictionaries with keys <code class="docutils literal notranslate"><span class="p
 <li><p><strong>param_map</strong> (<em>callable</em>) – A function <code class="docutils literal notranslate"><span class="pre">f(params)</span> <span class="pre">-&gt;</span> <span class="pre">adaptee_params</span></code>
 that maps the adapter’s parameter tensor to the parameter
 tensor expected by <code class="docutils literal notranslate"><span class="pre">adaptee</span></code>.  Must be differentiable
-(compatible with the configured Jacobian method; see
-<code class="xref py py-func docutils literal notranslate"><span class="pre">set_default_jacobian_method()</span></code>).</p></li>
+(compatible with <code class="xref py py-attr docutils literal notranslate"><span class="pre">jacobian_method</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -500,6 +492,15 @@ tensor expected by <code class="docutils literal notranslate"><span class="pre">
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></p></td>
 <td><p>Output matrix shape.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad_mode</span></code></p></td>
+<td><p>Gradient computation mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian_method</span></code></p></td>
+<td><p>Jacobian method used by <a class="reference internal" href="#torch_openreml.covariance.Adapter.auto_grad" title="torch_openreml.covariance.Adapter.auto_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code></a>, one of <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;jacfwd&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;jacobian&quot;</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian_chunk_size</span></code></p></td>
+<td><p>Number of outputs held per batch when <a class="reference internal" href="#torch_openreml.covariance.Adapter.auto_grad" title="torch_openreml.covariance.Adapter.auto_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code></a> differentiates with <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to compute the Jacobian in a single batch.</p></td>
 </tr>
 </tbody>
 </table>

@@ -50,5 +50,8 @@
       ~DummyMatrix.param_trans
       ~DummyMatrix.repr_dict
       ~DummyMatrix.shape
+      ~DummyMatrix.grad_mode
+      ~DummyMatrix.jacobian_method
+      ~DummyMatrix.jacobian_chunk_size
    
    

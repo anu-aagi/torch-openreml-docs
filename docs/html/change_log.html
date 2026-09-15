@@ -3,13 +3,13 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="prev" title="torch_openreml.jacobian_method" href="generated/torch_openreml.jacobian_method.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="prev" title="Example Datasets" href="api/example_data.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>Changelog - torch-openreml 0.2.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=df86a2a8" />
@@ -269,13 +269,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/example_data.html">Example Datasets</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/config.html">Configuration</a><input aria-label="Toggle navigation of Configuration" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.set_default_jacobian_method.html">torch_openreml.set_default_jacobian_method</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.get_default_jacobian_method.html">torch_openreml.get_default_jacobian_method</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.get_default_chunk_size.html">torch_openreml.get_default_chunk_size</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.jacobian_method.html">torch_openreml.jacobian_method</a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Changelog</a></li>
@@ -323,6 +316,115 @@
         <article role="main" id="furo-main-content">
           <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">¶</a></h1>
+<section id="alpha-2026-09-15">
+<h2>0.2.0-alpha (2026-09-15)<a class="headerlink" href="#alpha-2026-09-15" title="Link to this heading">¶</a></h2>
+<section id="breaking-changes">
+<h3>Breaking changes<a class="headerlink" href="#breaking-changes" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Renamed the <code class="docutils literal notranslate"><span class="pre">REML</span></code> estimator to <code class="docutils literal notranslate"><span class="pre">MarginalREML</span></code>. The module
+<code class="docutils literal notranslate"><span class="pre">torch_openreml.reml</span></code> is now <code class="docutils literal notranslate"><span class="pre">torch_openreml.marginal_reml</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">torch_openreml.REML</span></code> is no longer available.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MarginalREML</span></code> now takes a single <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> instance as its only
+argument. The previous functional interface (<code class="docutils literal notranslate"><span class="pre">v_builder</span></code>,
+<code class="docutils literal notranslate"><span class="pre">map_theta_to_v</span></code>, <code class="docutils literal notranslate"><span class="pre">map_theta_to_g</span></code> and <code class="docutils literal notranslate"><span class="pre">map_theta_to_dv</span></code>) has been
+removed.</p></li>
+<li><p>Reworked the <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> parameter interface. The constructor now takes a
+single <code class="docutils literal notranslate"><span class="pre">param_specs</span></code> dictionary in place of <code class="docutils literal notranslate"><span class="pre">param_names</span></code>, <code class="docutils literal notranslate"><span class="pre">trans</span></code> and
+<code class="docutils literal notranslate"><span class="pre">no_grad_index</span></code>. Each parameter is specified by its own dictionary with the
+keys <code class="docutils literal notranslate"><span class="pre">&quot;fixed&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;default&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;trans&quot;</span></code>, so fixed and free parameters
+can be described together, each with an individual default and transform.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">Matrix.from_param_dict</span></code>, <code class="docutils literal notranslate"><span class="pre">Matrix.to_param_dict</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Matrix.map_theta_to_v</span></code>, <code class="docutils literal notranslate"><span class="pre">Matrix.map_theta_to_dv</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Matrix.set_no_grad</span></code> and <code class="docutils literal notranslate"><span class="pre">Matrix.check_params</span></code>. Use <code class="docutils literal notranslate"><span class="pre">build_params</span></code> and
+the <code class="docutils literal notranslate"><span class="pre">param_specs</span></code> accessors instead.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Matrix.__call__</span></code>, <code class="docutils literal notranslate"><span class="pre">grad</span></code>, <code class="docutils literal notranslate"><span class="pre">auto_grad</span></code>, <code class="docutils literal notranslate"><span class="pre">manual_grad</span></code> and
+<code class="docutils literal notranslate"><span class="pre">trans_grad</span></code> now take an optional <code class="docutils literal notranslate"><span class="pre">free_params</span></code> argument. When it is
+omitted, the default value of each free parameter is used, so a matrix can be
+evaluated without supplying parameters explicitly.</p></li>
+<li><p>Post-estimation methods <code class="docutils literal notranslate"><span class="pre">marginal_predict</span></code>, <code class="docutils literal notranslate"><span class="pre">marginal_residual</span></code> and
+<code class="docutils literal notranslate"><span class="pre">blup</span></code> were removed from the estimator. All post-estimation quantities are
+now computed by the module-level functions in <code class="docutils literal notranslate"><span class="pre">torch_openreml.post</span></code>.
+<code class="docutils literal notranslate"><span class="pre">MarginalREML</span></code> keeps <code class="docutils literal notranslate"><span class="pre">blue</span></code>, <code class="docutils literal notranslate"><span class="pre">predict</span></code>, <code class="docutils literal notranslate"><span class="pre">residual</span></code> and <code class="docutils literal notranslate"><span class="pre">loglik</span></code> as
+convenience methods.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">utils.categorical_to_design_matrix</span></code>. Categorical encoding is
+handled by <code class="docutils literal notranslate"><span class="pre">DummyMatrix</span></code>.</p></li>
+</ul>
+</section>
+<section id="new-features">
+<h3>New features<a class="headerlink" href="#new-features" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>New covariance matrices: <code class="docutils literal notranslate"><span class="pre">EqualEntryMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">UnconstrainedMatrix</span></code>,
+<code class="docutils literal notranslate"><span class="pre">LowerTriangularMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleMatrix</span></code>.</p></li>
+<li><p>New <code class="docutils literal notranslate"><span class="pre">Adapter</span></code> matrix, which reparameterises an existing matrix through a
+user-supplied mapping from the adapter’s parameters to the adaptee’s
+parameters, allowing parameters to be combined, split or constrained.</p></li>
+<li><p>New operators: <code class="docutils literal notranslate"><span class="pre">Gram</span></code>, computing <span class="math notranslate nohighlight">\(X^\top X\)</span> or <span class="math notranslate nohighlight">\(X X^\top\)</span>, and
+<code class="docutils literal notranslate"><span class="pre">Augment</span></code>, binding operands column-wise.</p></li>
+<li><p>New <code class="docutils literal notranslate"><span class="pre">torch_openreml.post</span></code> module with the post-estimation functions
+<code class="docutils literal notranslate"><span class="pre">blue</span></code>, <code class="docutils literal notranslate"><span class="pre">blup</span></code>, <code class="docutils literal notranslate"><span class="pre">marginal_predict</span></code>, <code class="docutils literal notranslate"><span class="pre">marginal_residual</span></code>, <code class="docutils literal notranslate"><span class="pre">predict</span></code>,
+<code class="docutils literal notranslate"><span class="pre">residual</span></code> and <code class="docutils literal notranslate"><span class="pre">loglik</span></code>, operating directly on tensors.</p></li>
+<li><p>New <code class="docutils literal notranslate"><span class="pre">simple_param_specs</span></code> helper for building parameter specifications with a
+common transform and default.</p></li>
+<li><p>Trace approximation in <code class="docutils literal notranslate"><span class="pre">MarginalREML</span></code>. <code class="docutils literal notranslate"><span class="pre">ai_step</span></code> and <code class="docutils literal notranslate"><span class="pre">optimize</span></code> accept
+<code class="docutils literal notranslate"><span class="pre">trace_approx</span></code> and <code class="docutils literal notranslate"><span class="pre">subspace_fraction</span></code>, which estimate the trace term of
+the score from a random subspace instead of computing it exactly.
+<code class="docutils literal notranslate"><span class="pre">optimize</span></code> also accepts <code class="docutils literal notranslate"><span class="pre">exact_score_threshold</span></code>, below which the exact
+score is used again so that convergence is not affected by the approximation.</p></li>
+<li><p>Configurable differentiation. <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> exposes a <code class="docutils literal notranslate"><span class="pre">grad_mode</span></code> attribute
+(<code class="docutils literal notranslate"><span class="pre">&quot;manual&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;default&quot;</span></code>) and a <code class="docutils literal notranslate"><span class="pre">jacobian_method</span></code>
+attribute, together with <code class="docutils literal notranslate"><span class="pre">jacobian_chunk_size</span></code>.</p></li>
+<li><p>The package now exposes <code class="docutils literal notranslate"><span class="pre">__version__</span></code>.</p></li>
+</ul>
+</section>
+<section id="changes">
+<h3>Changes<a class="headerlink" href="#changes" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>The default Jacobian method for automatic differentiation is now
+<code class="docutils literal notranslate"><span class="pre">&quot;jacfwd&quot;</span></code>, which avoids the memory blow-up that <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code> suffers as
+the matrix dimension grows.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">identity_matrix</span></code>, <code class="docutils literal notranslate"><span class="pre">scalar_matrix</span></code> and the operators were updated to the
+new <code class="docutils literal notranslate"><span class="pre">param_specs</span></code> parameter interface.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DummyMatrix</span></code> gained a <code class="docutils literal notranslate"><span class="pre">drop_empty_cols</span></code> option for dropping columns that
+contain no observations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TransformIdentity</span></code> now returns a result of the same length as its input.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CompoundSymmetricMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">EquicorrelationMatrix</span></code> now raise an error
+for <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">1</span></code>.</p></li>
+</ul>
+</section>
+<section id="bug-fixes">
+<h3>Bug fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fixed incorrect gradient computation in <code class="docutils literal notranslate"><span class="pre">DiagonalMatrix</span></code>, including the
+gradient masking and the selection of the manual gradient for all parameters.</p></li>
+<li><p>Fixed <code class="docutils literal notranslate"><span class="pre">BlockDiagonal</span></code> when <code class="docutils literal notranslate"><span class="pre">free_params</span></code> was passed as a dictionary.</p></li>
+<li><p>Fixed an empty-tensor concatenation bug in <code class="docutils literal notranslate"><span class="pre">Matrix</span></code>.</p></li>
+<li><p>Fixed the gradient and the inverse of <code class="docutils literal notranslate"><span class="pre">TransformPow</span></code>.</p></li>
+<li><p>Fixed <code class="docutils literal notranslate"><span class="pre">Operator</span></code> so that nested operators and matrices have their
+intermediates reset correctly during automatic differentiation.</p></li>
+<li><p>Fixed the operators so that free parameter defaults are used when
+<code class="docutils literal notranslate"><span class="pre">free_params</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</section>
+<section id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Added this changelog, a vignette on marginal REML, and a guide for using
+<code class="docutils literal notranslate"><span class="pre">torch-openreml</span></code> from R via <code class="docutils literal notranslate"><span class="pre">reticulate</span></code>.</p></li>
+<li><p>Restructured the API reference, adding pages for the adapter, post-estimation
+functions and the new matrices and operators.</p></li>
+<li><p>Rewrote the README with the package overview, features and installation
+instructions.</p></li>
+</ul>
+</section>
+<section id="testing">
+<h3>Testing<a class="headerlink" href="#testing" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Added a pytest suite under <code class="docutils literal notranslate"><span class="pre">tests/covariance</span></code> covering the matrices, the
+operators, the transforms, <code class="docutils literal notranslate"><span class="pre">utils</span></code> and the example data, and registered it
+as the default test path in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.</p></li>
+</ul>
+</section>
+</section>
 <section id="alpha-2026-05-08">
 <h2>0.1.0-alpha (2026-05-08)<a class="headerlink" href="#alpha-2026-05-08" title="Link to this heading">¶</a></h2>
 <ul class="simple">
@@ -337,14 +439,14 @@
         
         <div class="related-pages">
           
-          <a class="prev-page" href="generated/torch_openreml.jacobian_method.html">
+          <a class="prev-page" href="api/example_data.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">torch_openreml.jacobian_method</div>
+                <div class="title">Example Datasets</div>
                 
               </div>
             </a>
@@ -386,6 +488,15 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Changelog</a><ul>
+<li><a class="reference internal" href="#alpha-2026-09-15">0.2.0-alpha (2026-09-15)</a><ul>
+<li><a class="reference internal" href="#breaking-changes">Breaking changes</a></li>
+<li><a class="reference internal" href="#new-features">New features</a></li>
+<li><a class="reference internal" href="#changes">Changes</a></li>
+<li><a class="reference internal" href="#bug-fixes">Bug fixes</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#testing">Testing</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#alpha-2026-05-08">0.1.0-alpha (2026-05-08)</a></li>
 </ul>
 </li>
@@ -405,5 +516,6 @@
     <script src="_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     </body>
 </html>

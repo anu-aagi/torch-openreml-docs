@@ -52,5 +52,8 @@
       ~CovariancePropagation.param_trans
       ~CovariancePropagation.repr_dict
       ~CovariancePropagation.shape
+      ~CovariancePropagation.grad_mode
+      ~CovariancePropagation.jacobian_method
+      ~CovariancePropagation.jacobian_chunk_size
    
    

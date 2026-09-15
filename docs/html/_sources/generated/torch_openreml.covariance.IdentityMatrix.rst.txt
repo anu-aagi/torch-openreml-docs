@@ -49,5 +49,8 @@
       ~IdentityMatrix.param_trans
       ~IdentityMatrix.repr_dict
       ~IdentityMatrix.shape
+      ~IdentityMatrix.grad_mode
+      ~IdentityMatrix.jacobian_method
+      ~IdentityMatrix.jacobian_chunk_size
    
    

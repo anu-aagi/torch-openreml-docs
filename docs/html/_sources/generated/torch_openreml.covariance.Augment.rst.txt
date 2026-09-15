@@ -52,5 +52,8 @@
       ~Augment.param_trans
       ~Augment.repr_dict
       ~Augment.shape
+      ~Augment.grad_mode
+      ~Augment.jacobian_method
+      ~Augment.jacobian_chunk_size
    
    

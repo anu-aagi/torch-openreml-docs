@@ -49,5 +49,8 @@
       ~ScalarMatrix.param_trans
       ~ScalarMatrix.repr_dict
       ~ScalarMatrix.shape
+      ~ScalarMatrix.grad_mode
+      ~ScalarMatrix.jacobian_method
+      ~ScalarMatrix.jacobian_chunk_size
    
    

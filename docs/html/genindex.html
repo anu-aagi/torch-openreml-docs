@@ -7,7 +7,7 @@
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 --><title>Index - torch-openreml 0.2.0-alpha documentation</title>
 <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=df86a2a8" />
@@ -267,13 +267,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/example_data.html">Example Datasets</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/config.html">Configuration</a><input aria-label="Toggle navigation of Configuration" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.set_default_jacobian_method.html">torch_openreml.set_default_jacobian_method</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.get_default_jacobian_method.html">torch_openreml.get_default_jacobian_method</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.get_default_chunk_size.html">torch_openreml.get_default_chunk_size</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.jacobian_method.html">torch_openreml.jacobian_method</a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="change_log.html">Changelog</a></li>
@@ -558,10 +551,6 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.get_beta">get_beta() (torch_openreml.MarginalREML method)</a>
 </li>
-        <li><a href="generated/torch_openreml.get_default_chunk_size.html#torch_openreml.get_default_chunk_size">get_default_chunk_size() (in module torch_openreml)</a>
-</li>
-        <li><a href="generated/torch_openreml.get_default_jacobian_method.html#torch_openreml.get_default_jacobian_method">get_default_jacobian_method() (in module torch_openreml)</a>
-</li>
         <li><a href="generated/torch_openreml.utils.get_device.html#torch_openreml.utils.get_device">get_device() (in module torch_openreml.utils)</a>
 </li>
         <li><a href="generated/torch_openreml.utils.get_dtype.html#torch_openreml.utils.get_dtype">get_dtype() (in module torch_openreml.utils)</a>
@@ -596,6 +585,8 @@
         </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.grad_mode">grad_mode (torch_openreml.covariance.Matrix attribute)</a>
+</li>
         <li><a href="generated/torch_openreml.covariance.Gram.html#torch_openreml.covariance.Gram">Gram (class in torch_openreml.covariance)</a>
 </li>
         <li><a href="generated/torch_openreml.covariance.Gram.html#torch_openreml.covariance.Gram.gram_type">gram_type (torch_openreml.covariance.Gram property)</a>
@@ -656,7 +647,11 @@
   <h2>J</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="generated/torch_openreml.jacobian_method.html#torch_openreml.jacobian_method">jacobian_method() (in module torch_openreml)</a>
+        <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.jacobian_chunk_size">jacobian_chunk_size (torch_openreml.covariance.Matrix attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.jacobian_method">jacobian_method (torch_openreml.covariance.Matrix attribute)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -856,14 +851,12 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="generated/torch_openreml.covariance.ScalarMatrix.html#torch_openreml.covariance.ScalarMatrix">ScalarMatrix (class in torch_openreml.covariance)</a>
 </li>
-        <li><a href="generated/torch_openreml.set_default_jacobian_method.html#torch_openreml.set_default_jacobian_method">set_default_jacobian_method() (in module torch_openreml)</a>
-</li>
         <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.set_intermediates">set_intermediates() (torch_openreml.covariance.Matrix method)</a>
+</li>
+        <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.shape">shape (torch_openreml.covariance.Matrix property)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.shape">shape (torch_openreml.covariance.Matrix property)</a>
-</li>
         <li><a href="generated/torch_openreml.covariance.simple_param_specs.html#torch_openreml.covariance.simple_param_specs">simple_param_specs() (in module torch_openreml.covariance)</a>
 </li>
         <li><a href="generated/torch_openreml.covariance.SimpleMatrix.html#torch_openreml.covariance.SimpleMatrix">SimpleMatrix (class in torch_openreml.covariance)</a>

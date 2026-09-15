@@ -49,5 +49,8 @@
       ~SimpleMatrix.param_trans
       ~SimpleMatrix.repr_dict
       ~SimpleMatrix.shape
+      ~SimpleMatrix.grad_mode
+      ~SimpleMatrix.jacobian_method
+      ~SimpleMatrix.jacobian_chunk_size
    
    

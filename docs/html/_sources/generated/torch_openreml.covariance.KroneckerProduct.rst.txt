@@ -52,5 +52,8 @@
       ~KroneckerProduct.param_trans
       ~KroneckerProduct.repr_dict
       ~KroneckerProduct.shape
+      ~KroneckerProduct.grad_mode
+      ~KroneckerProduct.jacobian_method
+      ~KroneckerProduct.jacobian_chunk_size
    
    

@@ -268,13 +268,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/example_data.html">Example Datasets</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/config.html">Configuration</a><input aria-label="Toggle navigation of Configuration" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.set_default_jacobian_method.html">torch_openreml.set_default_jacobian_method</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.get_default_jacobian_method.html">torch_openreml.get_default_jacobian_method</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.get_default_chunk_size.html">torch_openreml.get_default_chunk_size</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.jacobian_method.html">torch_openreml.jacobian_method</a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../change_log.html">Changelog</a></li>
@@ -327,7 +320,6 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_default_jacobian_method</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance.matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">Matrix</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance.transform</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransformIdentity</span>
 
@@ -377,8 +369,7 @@
 <span class="sd">            param_map (callable): A function ``f(params) -&gt; adaptee_params``</span>
 <span class="sd">                that maps the adapter&#39;s parameter tensor to the parameter</span>
 <span class="sd">                tensor expected by ``adaptee``.  Must be differentiable</span>
-<span class="sd">                (compatible with the configured Jacobian method; see</span>
-<span class="sd">                :func:`~torch_openreml.config.set_default_jacobian_method`).</span>
+<span class="sd">                (compatible with :attr:`~torch_openreml.covariance.matrix.Matrix.jacobian_method`).</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: If any parameter specification uses a non-identity</span>
@@ -497,7 +488,16 @@
         <span class="n">adaptee_free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_map</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
         <span class="n">adaptee_grad</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adaptee</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">adaptee_free_params</span><span class="p">)</span>
 
-        <span class="n">jacobian</span> <span class="o">=</span> <span class="n">get_default_jacobian_method</span><span class="p">()(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_map</span><span class="p">)(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">chunk_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian_chunk_size</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian_method</span> <span class="o">==</span> <span class="s2">&quot;jacrev&quot;</span><span class="p">:</span>
+            <span class="n">jacobian</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_map</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">)(</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian_method</span> <span class="o">==</span> <span class="s2">&quot;jacfwd&quot;</span><span class="p">:</span>
+            <span class="n">jacobian</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacfwd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_map</span><span class="p">)(</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian_method</span> <span class="o">==</span> <span class="s2">&quot;jacobian&quot;</span><span class="p">:</span>
+            <span class="n">jacobian</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_map</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown Jacobian method </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">jacobian_method</span><span class="si">!r}</span><span class="s2">! Expected one of &#39;jacrev&#39;, &#39;jacfwd&#39;, &#39;jacobian&#39;.&quot;</span><span class="p">)</span>
 
         <span class="n">grad</span> <span class="o">=</span> <span class="p">(</span><span class="n">jacobian</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">adaptee_grad</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 

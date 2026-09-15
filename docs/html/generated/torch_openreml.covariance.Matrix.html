@@ -269,13 +269,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api/example_data.html">Example Datasets</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/config.html">Configuration</a><input aria-label="Toggle navigation of Configuration" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.set_default_jacobian_method.html">torch_openreml.set_default_jacobian_method</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.get_default_jacobian_method.html">torch_openreml.get_default_jacobian_method</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.get_default_chunk_size.html">torch_openreml.get_default_chunk_size</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.jacobian_method.html">torch_openreml.jacobian_method</a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../change_log.html">Changelog</a></li>
@@ -450,9 +443,58 @@ respectively.</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.shape" title="torch_openreml.covariance.Matrix.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
 <td><p>Output matrix shape.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.grad_mode" title="torch_openreml.covariance.Matrix.grad_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad_mode</span></code></a></p></td>
+<td><p>Gradient computation mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.jacobian_method" title="torch_openreml.covariance.Matrix.jacobian_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian_method</span></code></a></p></td>
+<td><p>Jacobian method used by <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_grad" title="torch_openreml.covariance.Matrix.auto_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code></a>, one of <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;jacfwd&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;jacobian&quot;</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.jacobian_chunk_size" title="torch_openreml.covariance.Matrix.jacobian_chunk_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian_chunk_size</span></code></a></p></td>
+<td><p>Number of outputs held per batch when <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_grad" title="torch_openreml.covariance.Matrix.auto_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code></a> differentiates with <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to compute the Jacobian in a single batch.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.grad_mode">
+<span class="sig-name descname"><span class="pre">grad_mode</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.grad_mode" title="Link to this definition">¶</a></dt>
+<dd><p>Gradient computation mode. <code class="docutils literal notranslate"><span class="pre">&quot;manual&quot;</span></code> uses a class-defined manual gradient,
+<code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code> uses automatic differentiation, and <code class="docutils literal notranslate"><span class="pre">&quot;default&quot;</span></code> uses the manual
+gradient if <a class="reference internal" href="#torch_openreml.covariance.Matrix.manual_grad" title="torch_openreml.covariance.Matrix.manual_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">manual_grad()</span></code></a> is defined, otherwise automatic differentiation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.jacobian_method">
+<span class="sig-name descname"><span class="pre">jacobian_method</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.jacobian_method" title="Link to this definition">¶</a></dt>
+<dd><p>Jacobian method used by <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_grad" title="torch_openreml.covariance.Matrix.auto_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code></a>, one of <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;jacfwd&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;jacobian&quot;</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.jacobian_chunk_size">
+<span class="sig-name descname"><span class="pre">jacobian_chunk_size</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.jacobian_chunk_size" title="Link to this definition">¶</a></dt>
+<dd><p>Number of outputs held per batch when <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_grad" title="torch_openreml.covariance.Matrix.auto_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code></a> differentiates
+with <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to compute the Jacobian in a single
+batch. Ignored by <code class="docutils literal notranslate"><span class="pre">&quot;jacfwd&quot;</span></code>, which takes no chunk size argument,
+and by <code class="docutils literal notranslate"><span class="pre">&quot;jacobian&quot;</span></code>, which already loops over the outputs one at a
+time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int or None</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.set_intermediates">
 <span class="sig-name descname"><span class="pre">set_intermediates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intermediates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.set_intermediates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.set_intermediates" title="Link to this definition">¶</a></dt>
@@ -763,8 +805,7 @@ of the same length as <code class="docutils literal notranslate"><span class="pr
 <span class="sig-name descname"><span class="pre">auto_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.auto_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.auto_grad" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the Jacobian of <code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code> with respect to
 free parameters using automatic differentiation.</p>
-<p>Uses the configured Jacobian method (see
-<code class="xref py py-func docutils literal notranslate"><span class="pre">set_default_jacobian_method()</span></code>) to compute
+<p>Uses <a class="reference internal" href="#torch_openreml.covariance.Matrix.jacobian_method" title="torch_openreml.covariance.Matrix.jacobian_method"><code class="xref py py-attr docutils literal notranslate"><span class="pre">jacobian_method</span></code></a> and <a class="reference internal" href="#torch_openreml.covariance.Matrix.jacobian_chunk_size" title="torch_openreml.covariance.Matrix.jacobian_chunk_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">jacobian_chunk_size</span></code></a> to compute
 the full Jacobian.</p>
 <p>If all parameters are fixed, returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code></p>
 <dl class="field-list simple">
@@ -885,7 +926,7 @@ Default: <code class="docutils literal notranslate"><span class="pre">None</span
 <dd><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.Matrix.__call__" title="torch_openreml.covariance.Matrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable
 parameters.</p>
 <p>Dispatches to <a class="reference internal" href="#torch_openreml.covariance.Matrix.manual_grad" title="torch_openreml.covariance.Matrix.manual_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">manual_grad()</span></code></a> or <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_grad" title="torch_openreml.covariance.Matrix.auto_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code></a> according to
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">grad_mode</span></code>:</p>
+<a class="reference internal" href="#torch_openreml.covariance.Matrix.grad_mode" title="torch_openreml.covariance.Matrix.grad_mode"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grad_mode</span></code></a>:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;default&quot;</span></code>: attempts <a class="reference internal" href="#torch_openreml.covariance.Matrix.manual_grad" title="torch_openreml.covariance.Matrix.manual_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">manual_grad()</span></code></a>, falling back to
 <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_grad" title="torch_openreml.covariance.Matrix.auto_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code></a> if not implemented.</p></li>
@@ -905,7 +946,7 @@ and <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_g
 <dd class="field-odd"><p>tuple</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>RuntimeError</strong> – If <code class="xref py py-attr docutils literal notranslate"><span class="pre">grad_mode</span></code> is not a recognised value.</p>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If <a class="reference internal" href="#torch_openreml.covariance.Matrix.grad_mode" title="torch_openreml.covariance.Matrix.grad_mode"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grad_mode</span></code></a> is not a recognised value.</p>
 </dd>
 </dl>
 <p>Example:</p>
@@ -923,9 +964,9 @@ and <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_g
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([[[2.0000, 0.0000],
-          [0.0000, 5.4366]],
+          [0.0000, 0.0000]],
  
-         [[2.0000, 0.0000],
+         [[0.0000, 0.0000],
           [0.0000, 5.4366]]]),
  [&#39;sigma^2_0&#39;, &#39;sigma^2_1&#39;])
 </pre></div>
@@ -1189,6 +1230,9 @@ and <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_g
             <ul>
 <li><a class="reference internal" href="#">torch_openreml.covariance.Matrix</a><ul>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix"><code class="docutils literal notranslate"><span class="pre">Matrix</span></code></a><ul>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.grad_mode"><code class="docutils literal notranslate"><span class="pre">Matrix.grad_mode</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.jacobian_method"><code class="docutils literal notranslate"><span class="pre">Matrix.jacobian_method</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.jacobian_chunk_size"><code class="docutils literal notranslate"><span class="pre">Matrix.jacobian_chunk_size</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_intermediates"><code class="docutils literal notranslate"><span class="pre">Matrix.set_intermediates()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.get_intermediates"><code class="docutils literal notranslate"><span class="pre">Matrix.get_intermediates()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.reset_intermediates"><code class="docutils literal notranslate"><span class="pre">Matrix.reset_intermediates()</span></code></a></li>

@@ -269,13 +269,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api/example_data.html">Example Datasets</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/config.html">Configuration</a><input aria-label="Toggle navigation of Configuration" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.set_default_jacobian_method.html">torch_openreml.set_default_jacobian_method</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.get_default_jacobian_method.html">torch_openreml.get_default_jacobian_method</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.get_default_chunk_size.html">torch_openreml.get_default_chunk_size</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.jacobian_method.html">torch_openreml.jacobian_method</a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../change_log.html">Changelog</a></li>
@@ -612,14 +605,15 @@ necessary.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:       3.7240, ∥Δ∥: 182.6029, η: 1.00, ∥Δᶜ∥: 182.6029, log 𝓛: -31.8959
-∥∇∥:       1.7600, ∥Δ∥: 0.0190, η: 1.00, ∥Δᶜ∥: 0.0190, log 𝓛: -28.7323 (+3.1636)
-∥∇∥:       0.0339, ∥Δ∥: 0.0004, η: 1.00, ∥Δᶜ∥: 0.0004, log 𝓛: -28.7157 (+0.0165)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -28.7157 (+0.0000)
+∥∇∥:      11.2951, ∥Δ∥: 10.0433, η: 1.00, ∥Δᶜ∥: 10.0433, log 𝓛: -24.5996
+∥∇∥:       3.3028, ∥Δ∥: 0.0322, η: 1.00, ∥Δᶜ∥: 0.0322, log 𝓛: -21.8991 (+2.7005)
+∥∇∥:       0.1041, ∥Δ∥: 0.0011, η: 1.00, ∥Δᶜ∥: 0.0011, log 𝓛: -21.8448 (+0.0543)
+∥∇∥:       0.0001, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -21.8447 (+0.0001)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -21.8447 (-0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 4
+✓ Converged at iteration 5
 </pre></div>
 </div>
 </div>

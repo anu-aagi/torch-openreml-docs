@@ -49,5 +49,8 @@
       ~DiagonalMatrix.param_trans
       ~DiagonalMatrix.repr_dict
       ~DiagonalMatrix.shape
+      ~DiagonalMatrix.grad_mode
+      ~DiagonalMatrix.jacobian_method
+      ~DiagonalMatrix.jacobian_chunk_size
    
    

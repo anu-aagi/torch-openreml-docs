@@ -49,5 +49,8 @@
       ~LowerTriangularMatrix.param_trans
       ~LowerTriangularMatrix.repr_dict
       ~LowerTriangularMatrix.shape
+      ~LowerTriangularMatrix.grad_mode
+      ~LowerTriangularMatrix.jacobian_method
+      ~LowerTriangularMatrix.jacobian_chunk_size
    
    

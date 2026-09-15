@@ -268,13 +268,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/example_data.html">Example Datasets</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/config.html">Configuration</a><input aria-label="Toggle navigation of Configuration" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.set_default_jacobian_method.html">torch_openreml.set_default_jacobian_method</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.get_default_jacobian_method.html">torch_openreml.get_default_jacobian_method</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.get_default_chunk_size.html">torch_openreml.get_default_chunk_size</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../generated/torch_openreml.jacobian_method.html">torch_openreml.jacobian_method</a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../change_log.html">Changelog</a></li>
@@ -327,7 +320,6 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_default_jacobian_method</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance.transform</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transform</span>
 
 <div class="viewcode-block" id="Matrix">
@@ -377,10 +369,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_param_specs</span><span class="p">(</span><span class="n">param_specs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_param_specs</span> <span class="o">=</span> <span class="n">param_specs</span>
 
-        <span class="c1">#: Gradient computation mode: ``&quot;manual&quot;`` uses a class-defined manual gradient,</span>
-        <span class="c1"># ``&quot;auto&quot;`` uses automatic differentiation, and ``&quot;default&quot;`` uses the manual</span>
-        <span class="c1"># gradient if :meth:`manual_grad` is defined, otherwise automatic differentiation.</span>
+        <span class="c1">#: str: Gradient computation mode. ``&quot;manual&quot;`` uses a class-defined manual gradient,</span>
+        <span class="c1">#: ``&quot;auto&quot;`` uses automatic differentiation, and ``&quot;default&quot;`` uses the manual</span>
+        <span class="c1">#: gradient if :meth:`manual_grad` is defined, otherwise automatic differentiation.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grad_mode</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
+
+        <span class="c1">#: str: Jacobian method used by :meth:`auto_grad`, one of ``&quot;jacrev&quot;``,</span>
+        <span class="c1">#: ``&quot;jacfwd&quot;``, or ``&quot;jacobian&quot;``.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jacobian_method</span> <span class="o">=</span> <span class="s2">&quot;jacfwd&quot;</span>
+
+        <span class="c1">#: int or None: Number of outputs held per batch when :meth:`auto_grad` differentiates</span>
+        <span class="c1">#: with ``&quot;jacrev&quot;``, or ``None`` to compute the Jacobian in a single</span>
+        <span class="c1">#: batch. Ignored by ``&quot;jacfwd&quot;``, which takes no chunk size argument,</span>
+        <span class="c1">#: and by ``&quot;jacobian&quot;``, which already loops over the outputs one at a</span>
+        <span class="c1">#: time.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jacobian_chunk_size</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">reset_intermediates</span><span class="p">()</span>
 
@@ -705,8 +708,7 @@
 <span class="sd">        Compute the Jacobian of :meth:`build` with respect to</span>
 <span class="sd">        free parameters using automatic differentiation.</span>
 
-<span class="sd">        Uses the configured Jacobian method (see</span>
-<span class="sd">        :func:`~torch_openreml.config.set_default_jacobian_method`) to compute</span>
+<span class="sd">        Uses :attr:`jacobian_method` and :attr:`jacobian_chunk_size` to compute</span>
 <span class="sd">        the full Jacobian.</span>
 
 <span class="sd">        If all parameters are fixed, returns ``(None, [])``</span>
@@ -748,7 +750,16 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">reset_intermediates</span><span class="p">()</span>
 
-        <span class="n">jacobian</span> <span class="o">=</span> <span class="n">get_default_jacobian_method</span><span class="p">()(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span><span class="p">)(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="n">chunk_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian_chunk_size</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian_method</span> <span class="o">==</span> <span class="s2">&quot;jacrev&quot;</span><span class="p">:</span>
+            <span class="n">jacobian</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">)(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian_method</span> <span class="o">==</span> <span class="s2">&quot;jacfwd&quot;</span><span class="p">:</span>
+            <span class="n">jacobian</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacfwd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span><span class="p">)(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian_method</span> <span class="o">==</span> <span class="s2">&quot;jacobian&quot;</span><span class="p">:</span>
+            <span class="n">jacobian</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span><span class="p">,</span> <span class="n">free_params</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown Jacobian method </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">jacobian_method</span><span class="si">!r}</span><span class="s2">! Expected one of &#39;jacrev&#39;, &#39;jacfwd&#39;, &#39;jacobian&#39;.&quot;</span><span class="p">)</span>
         <span class="n">grad</span> <span class="o">=</span> <span class="n">jacobian</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">grad_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span>
 
@@ -862,6 +873,8 @@
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">manual_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad_mode</span> <span class="o">==</span> <span class="s2">&quot;manual&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">manual_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad_mode</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1033,7 +1046,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">num_fixed_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;int: Total number of fixed parameters.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fixed_param_names</span><span class="p">)</span>
-    
+
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">param_defaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Dict of torch.Tensor: Parameter defaults.&quot;&quot;&quot;</span>
