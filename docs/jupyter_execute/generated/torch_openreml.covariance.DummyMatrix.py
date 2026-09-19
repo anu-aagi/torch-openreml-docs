@@ -45,3 +45,20 @@ mat = DummyMatrix(rep, block, levels=[["rep2", "rep1"], ["block1", "block2"]], l
 print(mat())
 print(mat.colnames)
 
+
+# In[6]:
+
+
+import torch
+from torch_openreml.covariance import DummyMatrix
+
+rep = ["rep1", "rep2", "rep2"]
+mat = DummyMatrix(rep)
+mat()
+
+
+# In[7]:
+
+
+mat(torch.tensor([], dtype=torch.float64))
+

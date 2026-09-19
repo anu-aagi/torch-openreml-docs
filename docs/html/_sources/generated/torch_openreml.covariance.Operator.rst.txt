@@ -18,6 +18,7 @@
       ~Operator.auto_grad
       ~Operator.build_operands
       ~Operator.build_params
+      ~Operator.get_default_dtype_device
       ~Operator.get_intermediates
       ~Operator.grad
       ~Operator.manual_grad

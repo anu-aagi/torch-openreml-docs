@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>torch_openreml.covariance.identity_matrix - torch-openreml 0.2.0-alpha documentation</title>
+        <title>torch_openreml.covariance.identity_matrix - torch-openreml 0.2.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
@@ -163,7 +163,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">torch-openreml 0.2.0-alpha documentation</div></a>
+      <a href="../../../index.html"><div class="brand">torch-openreml 0.2.1-alpha documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -184,7 +184,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">torch-openreml 0.2.0-alpha documentation</span>
+  <span class="sidebar-brand-text">torch-openreml 0.2.1-alpha documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -308,8 +308,9 @@
 <span class="sd">Identity covariance matrix.</span>
 
 <span class="sd">This module provides a fixed identity matrix for use as a covariance</span>
-<span class="sd">structure in linear mixed-effects models. It has no trainable parameters</span>
-<span class="sd">and always returns the same matrix regardless of input.</span>
+<span class="sd">structure in linear mixed-effects models. It has no trainable parameters,</span>
+<span class="sd">so it always returns the same matrix; only the dtype and the device of the</span>
+<span class="sd">input are followed.</span>
 
 <span class="sd">Classes:</span>
 <span class="sd">    IdentityMatrix:</span>
@@ -332,18 +333,17 @@
 <span class="sd">    This matrix has no trainable parameters, so :meth:`grad` always</span>
 <span class="sd">    returns ``(None, [])``. It is typically used to represent independent,</span>
 <span class="sd">    homoscedastic residuals.</span>
+
+<span class="sd">    :meth:`__call__` follows the dtype and the device of its input; when it</span>
+<span class="sd">    receives none, the PyTorch default dtype and device are used.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a fixed identity matrix of size ``n x n``.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            n (int): Matrix dimension.</span>
-<span class="sd">            dtype (torch.dtype, optional): Desired dtype of the matrix.</span>
-<span class="sd">                Defaults to the PyTorch default dtype.</span>
-<span class="sd">            device (torch.device, optional): Desired device of the matrix.</span>
-<span class="sd">                Defaults to the PyTorch default device.</span>
 
 <span class="sd">        Example:</span>
 
@@ -355,13 +355,49 @@
 <span class="sd">            mat = IdentityMatrix(3)</span>
 <span class="sd">            mat()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="p">{})</span>
 
 <div class="viewcode-block" id="IdentityMatrix.__call__">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.IdentityMatrix.html#torch_openreml.covariance.IdentityMatrix.__call__">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span></div>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the identity matrix, on the dtype and device of the input.</span>
+
+<span class="sd">        The identity matrix has no parameters, so ``free_params`` carries no</span>
+<span class="sd">        values: only its dtype and device are used. When it is omitted, the</span>
+<span class="sd">        PyTorch default dtype and device are used.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            free_params (torch.Tensor or dict, optional): Empty 1D parameter</span>
+<span class="sd">                tensor whose dtype and device are followed, or an empty</span>
+<span class="sd">                parameter dict. If omitted, the PyTorch default dtype and</span>
+<span class="sd">                device are used. Default: ``None``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: The ``n x n`` identity matrix.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If ``free_params`` is not a Torch tensor or a dict.</span>
+<span class="sd">            ValueError: If ``free_params`` is not empty, since the matrix has</span>
+<span class="sd">                no parameters to receive.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from torch_openreml.covariance import IdentityMatrix</span>
+
+<span class="sd">            mat = IdentityMatrix(3)</span>
+<span class="sd">            mat()</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            mat(torch.tensor([], dtype=torch.float64))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="n">include_fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span></div>
 </div>
 
 </pre></div>
@@ -403,7 +439,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=74c14a11"></script>
+</div><script src="../../../_static/documentation_options.js?v=648472df"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

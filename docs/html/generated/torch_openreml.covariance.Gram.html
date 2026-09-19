@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="torch_openreml.covariance.Sum" href="torch_openreml.covariance.Sum.html"><link rel="prev" title="torch_openreml.covariance.CovariancePropagation" href="torch_openreml.covariance.CovariancePropagation.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>torch_openreml.covariance.Gram - torch-openreml 0.2.0-alpha documentation</title>
+        <title>torch_openreml.covariance.Gram - torch-openreml 0.2.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
@@ -164,7 +164,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">torch-openreml 0.2.0-alpha documentation</div></a>
+      <a href="../index.html"><div class="brand">torch-openreml 0.2.1-alpha documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -185,7 +185,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
-  <span class="sidebar-brand-text">torch-openreml 0.2.0-alpha documentation</span>
+  <span class="sidebar-brand-text">torch-openreml 0.2.1-alpha documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -407,25 +407,28 @@ Default: <code class="docutils literal notranslate"><span class="pre">&quot;xtx&
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_params</span></code>([free_params, include_fixed, ...])</p></td>
 <td><p>Construct the full parameter tensor by delegating to each operand.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_intermediates</span></code>(params)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_dtype_device</span></code>()</p></td>
+<td><p>Get the dtype and the device of the parameter defaults.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_intermediates</span></code>(params)</p></td>
 <td><p>Retrieve cached intermediate computation results if still valid.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>([free_params])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>([free_params])</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.Gram.__call__" title="torch_openreml.covariance.Gram.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable parameters.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Gram.manual_grad" title="torch_openreml.covariance.Gram.manual_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code></a>([free_params])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Gram.manual_grad" title="torch_openreml.covariance.Gram.manual_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code></a>([free_params])</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.Gram.__call__" title="torch_openreml.covariance.Gram.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable parameters using the product rule.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">operands_grad</span></code>([free_params])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">operands_grad</span></code>([free_params])</p></td>
 <td><p>Compute the Jacobian of each operand with respect to its parameters.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code>()</p></td>
 <td><p>Clear the intermediate caches of this operator and its operands.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
-<td><p>Cache intermediate computation results keyed by parameter hash.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
+<td><p>Cache intermediate computation results keyed by the parameter values.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
 <td><p>Compute the element-wise derivative of the free parameter transforms.</p></td>
 </tr>
 </tbody>
@@ -481,7 +484,7 @@ Default: <code class="docutils literal notranslate"><span class="pre">&quot;xtx&
 <td><p>Parameter names.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_specs</span></code></p></td>
-<td><p>Parameter specifications.</p></td>
+<td><p>Parameter specifications, returned as stored rather than copied.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_trans</span></code></p></td>
 <td><p>Parameter transforms.</p></td>
@@ -750,7 +753,7 @@ Returns <code class="docutils literal notranslate"><span class="pre">(None,</spa
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=74c14a11"></script>
+</div><script src="../_static/documentation_options.js?v=648472df"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

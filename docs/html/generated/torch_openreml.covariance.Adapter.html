@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Transforms" href="../api/transforms.html"><link rel="prev" title="Adapter" href="../api/adapter.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>torch_openreml.covariance.Adapter - torch-openreml 0.2.0-alpha documentation</title>
+        <title>torch_openreml.covariance.Adapter - torch-openreml 0.2.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
@@ -164,7 +164,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">torch-openreml 0.2.0-alpha documentation</div></a>
+      <a href="../index.html"><div class="brand">torch-openreml 0.2.1-alpha documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -185,7 +185,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
-  <span class="sidebar-brand-text">torch-openreml 0.2.0-alpha documentation</span>
+  <span class="sidebar-brand-text">torch-openreml 0.2.1-alpha documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -334,22 +334,15 @@ adapter’s free parameters.</p>
 <p>Gradients are computed via the chain rule: the adaptee’s gradient with
 respect to its own parameters is pulled back through the Jacobian of
 <code class="docutils literal notranslate"><span class="pre">param_map</span></code>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>All adapter parameter transforms <strong>must</strong> be
-<a class="reference internal" href="torch_openreml.covariance.transform.TransformIdentity.html#torch_openreml.covariance.transform.TransformIdentity" title="torch_openreml.covariance.transform.TransformIdentity"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformIdentity</span></code></a>.
-Non-identity transforms should be applied inside <code class="docutils literal notranslate"><span class="pre">param_map</span></code> or
-on the adaptee directly.</p>
-</div>
 <p>Initialise an adapter wrapping an existing matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>adaptee</strong> (<a class="reference internal" href="torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix" title="torch_openreml.covariance.matrix.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a>) – The matrix to reparameterise.</p></li>
 <li><p><strong>param_specs</strong> (<em>dict</em>) – Parameter specifications for the adapter’s
-own parameters.  Keys are parameter names; values are
+own parameters. Keys are parameter names; values are
 dictionaries with keys <code class="docutils literal notranslate"><span class="pre">&quot;fixed&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;default&quot;</span></code>, and
-<code class="docutils literal notranslate"><span class="pre">&quot;trans&quot;</span></code>.  <strong>All transforms must be</strong>
+<code class="docutils literal notranslate"><span class="pre">&quot;trans&quot;</span></code>. All parameters should be free and use
 <a class="reference internal" href="torch_openreml.covariance.transform.TransformIdentity.html#torch_openreml.covariance.transform.TransformIdentity" title="torch_openreml.covariance.transform.TransformIdentity"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformIdentity</span></code></a>.</p></li>
 <li><p><strong>param_map</strong> (<em>callable</em>) – A function <code class="docutils literal notranslate"><span class="pre">f(params)</span> <span class="pre">-&gt;</span> <span class="pre">adaptee_params</span></code>
 that maps the adapter’s parameter tensor to the parameter
@@ -403,7 +396,7 @@ tensor expected by <code class="docutils literal notranslate"><span class="pre">
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Adapter.__call__" title="torch_openreml.covariance.Adapter.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a>([free_params])</p></td>
-<td><p>Construct the matrix from a flat parameter tensor.</p></td>
+<td><p>Build the covariance matrix from the adapter's parameters.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Adapter.auto_grad" title="torch_openreml.covariance.Adapter.auto_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_grad</span></code></a>([free_params])</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.Adapter.__call__" title="torch_openreml.covariance.Adapter.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> using automatic differentiation.</p></td>
@@ -411,22 +404,25 @@ tensor expected by <code class="docutils literal notranslate"><span class="pre">
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_params</span></code>([free_params, include_fixed, ...])</p></td>
 <td><p>Construct the full parameter tensor from free parameters.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_intermediates</span></code>(params)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_dtype_device</span></code>()</p></td>
+<td><p>Get the dtype and the device of the parameter defaults.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_intermediates</span></code>(params)</p></td>
 <td><p>Retrieve cached intermediate computation results if still valid.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>([free_params])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>([free_params])</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.Adapter.__call__" title="torch_openreml.covariance.Adapter.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable parameters.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Adapter.manual_grad" title="torch_openreml.covariance.Adapter.manual_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code></a>([free_params])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Adapter.manual_grad" title="torch_openreml.covariance.Adapter.manual_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code></a>([free_params])</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.Adapter.__call__" title="torch_openreml.covariance.Adapter.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> via the chain rule.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code>()</p></td>
 <td><p>Clear the intermediate computation cache.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
-<td><p>Cache intermediate computation results keyed by parameter hash.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
+<td><p>Cache intermediate computation results keyed by the parameter values.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
 <td><p>Compute the element-wise derivative of the free parameter transforms.</p></td>
 </tr>
 </tbody>
@@ -476,13 +472,13 @@ tensor expected by <code class="docutils literal notranslate"><span class="pre">
 <td><p>Parameter defaults.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Adapter.param_map" title="torch_openreml.covariance.Adapter.param_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_map</span></code></a></p></td>
-<td><p>The mapping function <code class="docutils literal notranslate"><span class="pre">f(params)</span> <span class="pre">-&gt;</span> <span class="pre">adaptee_params</span></code> that translates the adapter's parameter tensor to the adaptee's parameter tensor.</p></td>
+<td><p>The mapping function <code class="docutils literal notranslate"><span class="pre">f(params)</span> <span class="pre">-&gt;</span> <span class="pre">adaptee_params</span></code> that translates the adapter's free parameter tensor to the adaptee's parameter tensor.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_names</span></code></p></td>
 <td><p>Parameter names.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Adapter.param_specs" title="torch_openreml.covariance.Adapter.param_specs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_specs</span></code></a></p></td>
-<td><p>The adapter's parameter specifications.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_specs</span></code></p></td>
+<td><p>Parameter specifications, returned as stored rather than copied.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_trans</span></code></p></td>
 <td><p>Parameter transforms.</p></td>
@@ -508,21 +504,31 @@ tensor expected by <code class="docutils literal notranslate"><span class="pre">
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Adapter.__call__">
 <span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/adapter.html#Adapter.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Adapter.__call__" title="Link to this definition">¶</a></dt>
-<dd><p>Construct the matrix from a flat parameter tensor.</p>
-<p>Must be implemented by subclasses. Implementations should convert
-<code class="docutils literal notranslate"><span class="pre">free_params</span></code> via <code class="xref py py-meth docutils literal notranslate"><span class="pre">build_params()</span></code> to validate,
-include fixed parameters, and apply transforms before any computation.</p>
+<dd><p>Build the covariance matrix from the adapter’s parameters.</p>
+<p><code class="docutils literal notranslate"><span class="pre">free_params</span></code> is checked by
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">build_params()</span></code>, called
+with <code class="docutils literal notranslate"><span class="pre">include_fixed=False</span></code> and <code class="docutils literal notranslate"><span class="pre">trans=False</span></code>: only the free
+parameters are kept, and no transform is applied. Those free
+parameters are passed to <code class="docutils literal notranslate"><span class="pre">param_map</span></code>, and its output builds the
+adaptee’s matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
-parameter dictionary. If omitted, default values are used.
-Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – Flat 1D tensor of the
+adapter’s free parameters, or a parameter dictionary. If
+omitted, default values are used. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Constructed matrix of shape <code class="xref py py-attr docutils literal notranslate"><span class="pre">shape</span></code>.</p>
+<dd class="field-even"><p>The covariance matrix built by the adaptee.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is not a Torch tensor or a dict.</p></li>
+<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is not a 1D tensor or has the wrong
+    length, or if it is a dict with missing or unexpected keys.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -545,7 +551,7 @@ If omitted, default values are used. Default: <code class="docutils literal notr
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(grad,</span> <span class="pre">grad_names)</span></code>, where <code class="docutils literal notranslate"><span class="pre">grad</span></code> is a 3D tensor of
 shape <code class="docutils literal notranslate"><span class="pre">(num_free_params,</span> <span class="pre">*shape)</span></code> and
 <code class="docutils literal notranslate"><span class="pre">grad_names</span></code> is a list of the corresponding parameter names.
-Returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code> if all parameters are fixed.</p>
+Returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code> when the matrix has no free parameters.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
@@ -568,7 +574,10 @@ through the Jacobian of <code class="docutils literal notranslate"><span class="
 \frac{\partial \phi_k}{\partial \boldsymbol{\theta}}\]</div>
 </div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{\phi} = f(\boldsymbol{\theta})\)</span> are the
-adaptee’s parameters.</p>
+adaptee’s parameters. <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is checked by
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">build_params()</span></code>, called
+with <code class="docutils literal notranslate"><span class="pre">include_fixed=False</span></code> and <code class="docutils literal notranslate"><span class="pre">trans=False</span></code>, and the free
+parameters are then passed to <code class="docutils literal notranslate"><span class="pre">param_map</span></code> untransformed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
@@ -579,7 +588,9 @@ If omitted, default values are used. Default: <code class="docutils literal notr
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(grad,</span> <span class="pre">grad_names)</span></code>, where <code class="docutils literal notranslate"><span class="pre">grad</span></code> is a 3D tensor of
 shape <code class="docutils literal notranslate"><span class="pre">(num_free_params,</span> <span class="pre">*shape)</span></code> and
 <code class="docutils literal notranslate"><span class="pre">grad_names</span></code> is a list of the corresponding parameter names.
-Returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code> if all parameters are fixed.</p>
+Returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code> when the matrix has no free parameters,
+after <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is validated via
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">build_params()</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
@@ -588,24 +599,11 @@ Returns <code class="docutils literal notranslate"><span class="pre">(None,</spa
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="torch_openreml.covariance.Adapter.param_specs">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">param_specs</span></span><a class="headerlink" href="#torch_openreml.covariance.Adapter.param_specs" title="Link to this definition">¶</a></dt>
-<dd><p>The adapter’s parameter specifications.</p>
-<p>All transforms are forced to
-<a class="reference internal" href="torch_openreml.covariance.transform.TransformIdentity.html#torch_openreml.covariance.transform.TransformIdentity" title="torch_openreml.covariance.transform.TransformIdentity"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformIdentity</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Adapter.param_map">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">param_map</span></span><a class="headerlink" href="#torch_openreml.covariance.Adapter.param_map" title="Link to this definition">¶</a></dt>
 <dd><p>The mapping function <code class="docutils literal notranslate"><span class="pre">f(params)</span> <span class="pre">-&gt;</span> <span class="pre">adaptee_params</span></code> that
-translates the adapter’s parameter tensor to the adaptee’s parameter
-tensor.</p>
+translates the adapter’s free parameter tensor to the adaptee’s
+parameter tensor. The parameters are untransformed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>callable</p>
@@ -708,7 +706,6 @@ that this adapter reparameterises.</p>
 <li><a class="reference internal" href="#torch_openreml.covariance.Adapter.__call__"><code class="docutils literal notranslate"><span class="pre">Adapter.__call__()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Adapter.auto_grad"><code class="docutils literal notranslate"><span class="pre">Adapter.auto_grad()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Adapter.manual_grad"><code class="docutils literal notranslate"><span class="pre">Adapter.manual_grad()</span></code></a></li>
-<li><a class="reference internal" href="#torch_openreml.covariance.Adapter.param_specs"><code class="docutils literal notranslate"><span class="pre">Adapter.param_specs</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Adapter.param_map"><code class="docutils literal notranslate"><span class="pre">Adapter.param_map</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Adapter.adaptee"><code class="docutils literal notranslate"><span class="pre">Adapter.adaptee</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Adapter.repr_dict"><code class="docutils literal notranslate"><span class="pre">Adapter.repr_dict</span></code></a></li>
@@ -725,7 +722,7 @@ that this adapter reparameterises.</p>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=74c14a11"></script>
+</div><script src="../_static/documentation_options.js?v=648472df"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

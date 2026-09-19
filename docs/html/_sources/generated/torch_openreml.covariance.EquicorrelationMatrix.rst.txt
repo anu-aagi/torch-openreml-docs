@@ -17,6 +17,7 @@
       ~EquicorrelationMatrix.__call__
       ~EquicorrelationMatrix.auto_grad
       ~EquicorrelationMatrix.build_params
+      ~EquicorrelationMatrix.get_default_dtype_device
       ~EquicorrelationMatrix.get_intermediates
       ~EquicorrelationMatrix.grad
       ~EquicorrelationMatrix.manual_grad

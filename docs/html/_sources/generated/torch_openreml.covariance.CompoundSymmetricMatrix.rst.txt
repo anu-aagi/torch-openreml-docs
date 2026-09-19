@@ -17,6 +17,7 @@
       ~CompoundSymmetricMatrix.__call__
       ~CompoundSymmetricMatrix.auto_grad
       ~CompoundSymmetricMatrix.build_params
+      ~CompoundSymmetricMatrix.get_default_dtype_device
       ~CompoundSymmetricMatrix.get_intermediates
       ~CompoundSymmetricMatrix.grad
       ~CompoundSymmetricMatrix.manual_grad

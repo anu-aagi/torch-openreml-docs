@@ -18,6 +18,7 @@
       ~KroneckerProduct.auto_grad
       ~KroneckerProduct.build_operands
       ~KroneckerProduct.build_params
+      ~KroneckerProduct.get_default_dtype_device
       ~KroneckerProduct.get_intermediates
       ~KroneckerProduct.grad
       ~KroneckerProduct.manual_grad

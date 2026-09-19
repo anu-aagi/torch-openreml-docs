@@ -18,6 +18,7 @@
       ~BlockDiagonal.auto_grad
       ~BlockDiagonal.build_operands
       ~BlockDiagonal.build_params
+      ~BlockDiagonal.get_default_dtype_device
       ~BlockDiagonal.get_intermediates
       ~BlockDiagonal.grad
       ~BlockDiagonal.manual_grad

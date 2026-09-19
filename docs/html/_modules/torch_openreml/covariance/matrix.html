@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>torch_openreml.covariance.matrix - torch-openreml 0.2.0-alpha documentation</title>
+        <title>torch_openreml.covariance.matrix - torch-openreml 0.2.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
@@ -163,7 +163,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">torch-openreml 0.2.0-alpha documentation</div></a>
+      <a href="../../../index.html"><div class="brand">torch-openreml 0.2.1-alpha documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -184,7 +184,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">torch-openreml 0.2.0-alpha documentation</span>
+  <span class="sidebar-brand-text">torch-openreml 0.2.1-alpha documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -391,10 +391,10 @@
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.set_intermediates">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_intermediates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">intermediates</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Cache intermediate computation results keyed by parameter hash.</span>
+<span class="sd">        Cache intermediate computation results keyed by the parameter values.</span>
 
-<span class="sd">        Stores arbitrary intermediate values alongside a hash of the current</span>
-<span class="sd">        parameter tensor, dtype, and device. Cached values can be retrieved</span>
+<span class="sd">        Stores arbitrary intermediate values alongside the current parameter</span>
+<span class="sd">        tensor, its dtype, and its device. Cached values can be retrieved</span>
 <span class="sd">        via :meth:`get_intermediates` to avoid redundant computation across</span>
 <span class="sd">        multiple calls with identical parameters.</span>
 
@@ -409,6 +409,8 @@
 
 <span class="sd">        Note:</span>
 <span class="sd">            If ``params`` has length 0 (no free parameters), this is a no-op.</span>
+<span class="sd">            A copy of ``params`` is stored, so a later in-place edit of the</span>
+<span class="sd">            caller&#39;s tensor cannot change the key of an entry already cached.</span>
 
 <span class="sd">        Example:</span>
 
@@ -428,8 +430,7 @@
         <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="n">h</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">hash_tensor</span><span class="p">(</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span><span class="p">[</span><span class="s2">&quot;hash&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span><span class="p">[</span><span class="s2">&quot;dtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dtype</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">device</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span><span class="p">[</span><span class="s2">&quot;intermediates&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">intermediates</span></div>
@@ -441,10 +442,16 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve cached intermediate computation results if still valid.</span>
 
-<span class="sd">        Compares the hash, dtype, and device of ``params`` against the stored</span>
+<span class="sd">        Compares the values, dtype, and device of ``params`` against the stored</span>
 <span class="sd">        cache from the last :meth:`set_intermediates` call. Returns the cached</span>
 <span class="sd">        value only if all three match, ensuring stale results are never returned</span>
 <span class="sd">        after a parameter update, device transfer, or dtype cast.</span>
+
+<span class="sd">        Values are compared elementwise, so an entry is reused only when the</span>
+<span class="sd">        parameters agree in every position: the same values in a different</span>
+<span class="sd">        order, or the same values paired differently, are different models and</span>
+<span class="sd">        each gets its own entry. Parameter vectors are a handful of floats, so</span>
+<span class="sd">        the comparison is cheap.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            params (torch.Tensor): Current parameter tensor.</span>
@@ -475,13 +482,20 @@
         <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="n">h</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">hash_tensor</span><span class="p">(</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span><span class="p">[</span><span class="s2">&quot;hash&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">h</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span><span class="p">[</span><span class="s2">&quot;dtype&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">dtype</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">device</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span><span class="p">[</span><span class="s2">&quot;intermediates&quot;</span><span class="p">]</span>
+        <span class="n">cached_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">cached_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="c1"># Both guards are checked before the value comparison: torch.equal</span>
+        <span class="c1"># raises rather than returning False on a device mismatch.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span><span class="p">[</span><span class="s2">&quot;dtype&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">dtype</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">device</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">cached_params</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span><span class="p">[</span><span class="s2">&quot;intermediates&quot;</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="Matrix.reset_intermediates">
@@ -513,7 +527,46 @@
 <span class="sd">            mat.reset_intermediates()</span>
 <span class="sd">            print(mat.get_intermediates(free_params))</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;hash&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;intermediates&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;intermediates&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="Matrix.get_default_dtype_device">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.get_default_dtype_device">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_default_dtype_device</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the dtype and the device of the parameter defaults.</span>
+
+<span class="sd">        All parameter defaults are expected to share the same dtype and device,</span>
+<span class="sd">        so that they can be concatenated into a single tensor. When the matrix</span>
+<span class="sd">        has no parameters at all, the default dtype and device of Torch are</span>
+<span class="sd">        returned instead.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: ``(device, dtype)`` shared by the parameter defaults, or the</span>
+<span class="sd">            default device and dtype of Torch when the matrix has no parameters.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the parameter defaults do not all share the same</span>
+<span class="sd">                dtype and device.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            from torch_openreml.covariance import ScalarMatrix</span>
+
+<span class="sd">            mat = ScalarMatrix(3)</span>
+<span class="sd">            mat.get_default_dtype_device()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_params</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">get_default_device</span><span class="p">(),</span> <span class="n">torch</span><span class="o">.</span><span class="n">get_default_dtype</span><span class="p">()</span>
+
+        <span class="n">defaults</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_defaults</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">defaults</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">defaults</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">device</span> <span class="o">==</span> <span class="n">device</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">dtype</span> <span class="k">for</span> <span class="n">other</span> <span class="ow">in</span> <span class="n">defaults</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All parameter defaults must share the same dtype and device!&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span></div>
 
 
 <div class="viewcode-block" id="Matrix.build_params">
@@ -635,7 +688,16 @@
         <span class="k">if</span> <span class="n">extra</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected free parameters: </span><span class="si">{</span><span class="n">extra</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
         
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">free_param_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_free_params</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_default_dtype_device</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([],</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="n">free_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">free_param_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">]</span>
+        <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">free_params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">free_params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">device</span> <span class="o">==</span> <span class="n">device</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">dtype</span> <span class="k">for</span> <span class="n">other</span> <span class="ow">in</span> <span class="n">free_params</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All free parameters must share the same dtype and device!&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_to_free_param_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -644,7 +706,7 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">)</span><span class="si">}</span><span class="s2"> parameters, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
         
-        <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">tensor</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">tensor</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_names</span><span class="p">,</span> <span class="n">free_params</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">tensor</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">tensor</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">,</span> <span class="n">free_params</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))}</span>
 
 <div class="viewcode-block" id="Matrix.trans_grad">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.trans_grad">[docs]</a>
@@ -669,7 +731,8 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            torch.Tensor: 1D tensor of element-wise transform derivatives,</span>
-<span class="sd">            of the same length as ``free_params``.</span>
+<span class="sd">            of the same length as ``free_params``. An empty 1D tensor is</span>
+<span class="sd">            returned when the matrix has no free parameters.</span>
 
 <span class="sd">        Example:</span>
 
@@ -692,6 +755,9 @@
         <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_free_param_dict</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
         <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_param_tensor</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_free_params</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([],</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
         <span class="n">free_param_trans</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_param_trans</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
         <span class="n">ref_dict</span> <span class="o">=</span> <span class="n">free_param_trans</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span>
         <span class="n">ref_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">free_param_trans</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -711,7 +777,7 @@
 <span class="sd">        Uses :attr:`jacobian_method` and :attr:`jacobian_chunk_size` to compute</span>
 <span class="sd">        the full Jacobian.</span>
 
-<span class="sd">        If all parameters are fixed, returns ``(None, [])``</span>
+<span class="sd">        If the matrix has no free parameters, returns ``(None, [])``.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or dict.</span>
@@ -726,6 +792,7 @@
 <span class="sd">            tuple: ``(grad, grad_names)``, where ``grad`` is a 3D tensor of</span>
 <span class="sd">            shape ``(num_free_params, *shape)``, and</span>
 <span class="sd">            ``grad_names`` has the same length as ``grad``.</span>
+<span class="sd">            ``(None, [])`` is returned when the matrix has no free parameters.</span>
 
 <span class="sd">        Example:</span>
 
@@ -742,11 +809,11 @@
         <span class="k">if</span> <span class="n">free_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_defaults</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[]</span>
-
         <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_free_param_dict</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
         <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_param_tensor</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_free_params</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">reset_intermediates</span><span class="p">()</span>
 
@@ -781,7 +848,9 @@
 
 <span class="sd">        Implementations must satisfy the following contract:</span>
 
-<span class="sd">        - Return ``(None, [])`` if all parameters are fixed.</span>
+<span class="sd">        - Validate ``free_params`` via :meth:`build_params` first, so bad</span>
+<span class="sd">          input raises even when the matrix has no free parameters.</span>
+<span class="sd">        - Return ``(None, [])`` when the matrix has no free parameters.</span>
 <span class="sd">        - Return a 3D gradient tensor of shape</span>
 <span class="sd">          ``(num_free_params, *shape)`` and a matching list</span>
 <span class="sd">          of parameter names.</span>
@@ -798,7 +867,7 @@
 <span class="sd">            tuple: ``(grad, grad_names)``, where ``grad`` is a 3D tensor of</span>
 <span class="sd">            shape ``(num_free_params, *shape)`` and</span>
 <span class="sd">            ``grad_names`` is a list of the corresponding parameter names.</span>
-<span class="sd">            Returns ``(None, [])`` if all parameters are fixed.</span>
+<span class="sd">            Returns ``(None, [])`` when the matrix has no free parameters.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            NotImplementedError: If the subclass does not provide an analytic</span>
@@ -927,7 +996,7 @@
         <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameters must be a 1D tensor!&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">length</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">length</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameters must have length </span><span class="si">{</span><span class="n">length</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
 
@@ -1004,7 +1073,11 @@
     
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">param_specs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;dict: Parameter specifications.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;dict: Parameter specifications, returned as stored rather than copied.</span>
+
+<span class="sd">        A specification edited in place (for example setting ``&quot;fixed&quot;`` to</span>
+<span class="sd">        ``True``) therefore takes effect on the next call.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param_specs</span>
       
     <span class="nd">@property</span>  
@@ -1122,7 +1195,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=74c14a11"></script>
+</div><script src="../../../_static/documentation_options.js?v=648472df"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

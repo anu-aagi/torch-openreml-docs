@@ -18,6 +18,7 @@
       ~Sum.auto_grad
       ~Sum.build_operands
       ~Sum.build_params
+      ~Sum.get_default_dtype_device
       ~Sum.get_intermediates
       ~Sum.grad
       ~Sum.manual_grad

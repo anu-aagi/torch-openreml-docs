@@ -17,6 +17,7 @@
       ~DummyMatrix.__call__
       ~DummyMatrix.auto_grad
       ~DummyMatrix.build_params
+      ~DummyMatrix.get_default_dtype_device
       ~DummyMatrix.get_intermediates
       ~DummyMatrix.grad
       ~DummyMatrix.manual_grad

@@ -18,6 +18,7 @@
       ~Augment.auto_grad
       ~Augment.build_operands
       ~Augment.build_params
+      ~Augment.get_default_dtype_device
       ~Augment.get_intermediates
       ~Augment.grad
       ~Augment.manual_grad

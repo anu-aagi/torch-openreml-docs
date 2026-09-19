@@ -17,6 +17,7 @@
       ~IdentityMatrix.__call__
       ~IdentityMatrix.auto_grad
       ~IdentityMatrix.build_params
+      ~IdentityMatrix.get_default_dtype_device
       ~IdentityMatrix.get_intermediates
       ~IdentityMatrix.grad
       ~IdentityMatrix.manual_grad

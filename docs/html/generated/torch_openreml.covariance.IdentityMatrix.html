@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="torch_openreml.covariance.LowerTriangularMatrix" href="torch_openreml.covariance.LowerTriangularMatrix.html"><link rel="prev" title="torch_openreml.covariance.EquicorrelationMatrix" href="torch_openreml.covariance.EquicorrelationMatrix.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>torch_openreml.covariance.IdentityMatrix - torch-openreml 0.2.0-alpha documentation</title>
+        <title>torch_openreml.covariance.IdentityMatrix - torch-openreml 0.2.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
@@ -164,7 +164,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">torch-openreml 0.2.0-alpha documentation</div></a>
+      <a href="../index.html"><div class="brand">torch-openreml 0.2.1-alpha documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -185,7 +185,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
-  <span class="sidebar-brand-text">torch-openreml 0.2.0-alpha documentation</span>
+  <span class="sidebar-brand-text">torch-openreml 0.2.1-alpha documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -318,7 +318,7 @@
 <h1>torch_openreml.covariance.IdentityMatrix<a class="headerlink" href="#torch-openreml-covariance-identitymatrix" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_openreml.covariance.IdentityMatrix">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_openreml.covariance.</span></span><span class="sig-name descname"><span class="pre">IdentityMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/identity_matrix.html#IdentityMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.IdentityMatrix" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_openreml.covariance.</span></span><span class="sig-name descname"><span class="pre">IdentityMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/identity_matrix.html#IdentityMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.IdentityMatrix" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix" title="torch_openreml.covariance.matrix.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a></p>
 <p>Fixed <span class="math notranslate nohighlight">\(n \times n\)</span> identity covariance matrix.</p>
 <div class="math-wrapper docutils container">
@@ -328,16 +328,12 @@
 <p>This matrix has no trainable parameters, so <code class="xref py py-meth docutils literal notranslate"><span class="pre">grad()</span></code> always
 returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code>. It is typically used to represent independent,
 homoscedastic residuals.</p>
+<p><a class="reference internal" href="#torch_openreml.covariance.IdentityMatrix.__call__" title="torch_openreml.covariance.IdentityMatrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> follows the dtype and the device of its input; when it
+receives none, the PyTorch default dtype and device are used.</p>
 <p>Initialize a fixed identity matrix of size <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">x</span> <span class="pre">n</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<em>int</em>) – Matrix dimension.</p></li>
-<li><p><strong>dtype</strong> (<em>torch.dtype</em><em>, </em><em>optional</em>) – Desired dtype of the matrix.
-Defaults to the PyTorch default dtype.</p></li>
-<li><p><strong>device</strong> (<em>torch.device</em><em>, </em><em>optional</em>) – Desired device of the matrix.
-Defaults to the PyTorch default device.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – Matrix dimension.</p>
 </dd>
 </dl>
 <p>Example:</p>
@@ -363,8 +359,8 @@ Defaults to the PyTorch default device.</p></li>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.IdentityMatrix.__call__" title="torch_openreml.covariance.IdentityMatrix.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Construct the matrix from a flat parameter tensor.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.IdentityMatrix.__call__" title="torch_openreml.covariance.IdentityMatrix.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a>([free_params])</p></td>
+<td><p>Return the identity matrix, on the dtype and device of the input.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_grad</span></code>([free_params])</p></td>
 <td><p>Compute the Jacobian of <code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code> with respect to free parameters using automatic differentiation.</p></td>
@@ -372,22 +368,25 @@ Defaults to the PyTorch default device.</p></li>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_params</span></code>([free_params, include_fixed, ...])</p></td>
 <td><p>Construct the full parameter tensor from free parameters.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_intermediates</span></code>(params)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_dtype_device</span></code>()</p></td>
+<td><p>Get the dtype and the device of the parameter defaults.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_intermediates</span></code>(params)</p></td>
 <td><p>Retrieve cached intermediate computation results if still valid.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>([free_params])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>([free_params])</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.IdentityMatrix.__call__" title="torch_openreml.covariance.IdentityMatrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable parameters.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code>([free_params])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code>([free_params])</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.IdentityMatrix.__call__" title="torch_openreml.covariance.IdentityMatrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to free parameters using a closed-form analytic expression.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code>()</p></td>
 <td><p>Clear the intermediate computation cache.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
-<td><p>Cache intermediate computation results keyed by parameter hash.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
+<td><p>Cache intermediate computation results keyed by the parameter values.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
 <td><p>Compute the element-wise derivative of the free parameter transforms.</p></td>
 </tr>
 </tbody>
@@ -437,7 +436,7 @@ Defaults to the PyTorch default device.</p></li>
 <td><p>Parameter names.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_specs</span></code></p></td>
-<td><p>Parameter specifications.</p></td>
+<td><p>Parameter specifications, returned as stored rather than copied.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_trans</span></code></p></td>
 <td><p>Parameter transforms.</p></td>
@@ -462,24 +461,65 @@ Defaults to the PyTorch default device.</p></li>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.IdentityMatrix.__call__">
-<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/identity_matrix.html#IdentityMatrix.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.IdentityMatrix.__call__" title="Link to this definition">¶</a></dt>
-<dd><p>Construct the matrix from a flat parameter tensor.</p>
-<p>Must be implemented by subclasses. Implementations should convert
-<code class="docutils literal notranslate"><span class="pre">free_params</span></code> via <code class="xref py py-meth docutils literal notranslate"><span class="pre">build_params()</span></code> to validate,
-include fixed parameters, and apply transforms before any computation.</p>
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/identity_matrix.html#IdentityMatrix.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.IdentityMatrix.__call__" title="Link to this definition">¶</a></dt>
+<dd><p>Return the identity matrix, on the dtype and device of the input.</p>
+<p>The identity matrix has no parameters, so <code class="docutils literal notranslate"><span class="pre">free_params</span></code> carries no
+values: only its dtype and device are used. When it is omitted, the
+PyTorch default dtype and device are used.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
-parameter dictionary. If omitted, default values are used.
-Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – Empty 1D parameter
+tensor whose dtype and device are followed, or an empty
+parameter dict. If omitted, the PyTorch default dtype and
+device are used. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Constructed matrix of shape <code class="xref py py-attr docutils literal notranslate"><span class="pre">shape</span></code>.</p>
+<dd class="field-even"><p>The <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">x</span> <span class="pre">n</span></code> identity matrix.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch.Tensor</p>
 </dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is not a Torch tensor or a dict.</p></li>
+<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is not empty, since the matrix has
+    no parameters to receive.</p></li>
+</ul>
+</dd>
 </dl>
+<p>Example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">IdentityMatrix</span>
+
+<span class="n">mat</span> <span class="o">=</span> <span class="n">IdentityMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">mat</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[1., 0., 0.],
+        [0., 1., 0.],
+        [0., 0., 1.]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[1., 0., 0.],
+        [0., 1., 0.],
+        [0., 0., 1.]], dtype=torch.float64)
+</pre></div>
+</div>
+</div>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -564,7 +604,7 @@ Default: <code class="docutils literal notranslate"><span class="pre">None</span
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=74c14a11"></script>
+</div><script src="../_static/documentation_options.js?v=648472df"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

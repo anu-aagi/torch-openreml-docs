@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>torch_openreml.covariance.dummy_matrix - torch-openreml 0.2.0-alpha documentation</title>
+        <title>torch_openreml.covariance.dummy_matrix - torch-openreml 0.2.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
@@ -163,7 +163,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">torch-openreml 0.2.0-alpha documentation</div></a>
+      <a href="../../../index.html"><div class="brand">torch-openreml 0.2.1-alpha documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -184,7 +184,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">torch-openreml 0.2.0-alpha documentation</span>
+  <span class="sidebar-brand-text">torch-openreml 0.2.1-alpha documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -310,7 +310,8 @@
 <span class="sd">This module provides a fixed dummy matrix for use in linear</span>
 <span class="sd">mixed-effects models. The matrix is constructed</span>
 <span class="sd">from categorical input at initialisation and has no</span>
-<span class="sd">trainable parameters.</span>
+<span class="sd">trainable parameters, so only the dtype and the device of the input are</span>
+<span class="sd">followed.</span>
 
 <span class="sd">Classes:</span>
 <span class="sd">    DummyMatrix:</span>
@@ -335,9 +336,12 @@
 <span class="sd">    where :math:`\symbf{X}` is constructed from ``*args`` at initialisation</span>
 <span class="sd">    and remains fixed thereafter. This matrix has no trainable parameters,</span>
 <span class="sd">    so :meth:`grad` always returns ``(None, [])``.</span>
+
+<span class="sd">    :meth:`__call__` follows the dtype and the device of its input; when it</span>
+<span class="sd">    receives none, the PyTorch default dtype and device are used.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lex_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop_first</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">drop_empty_cols</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lex_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop_first</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">drop_empty_cols</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a fixed dummy matrix from numeric or categorical input.</span>
 
@@ -352,8 +356,6 @@
 <span class="sd">            drop_first (bool, optional): Whether to drop the first column.</span>
 <span class="sd">                Defaults to ``False``.</span>
 <span class="sd">            drop_empty_cols (bool, optional): Whether to drop empty columns.</span>
-<span class="sd">            dtype (torch.dtype, optional): Desired dtype of the matrix.</span>
-<span class="sd">            device (torch.device, optional): Desired device of the matrix.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            TypeError: If any ``args`` is not a :class: list or tuple.</span>
@@ -395,9 +397,6 @@
 <span class="sd">            print(mat())</span>
 <span class="sd">            print(mat.colnames)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span> <span class="ow">or</span> <span class="n">torch</span><span class="o">.</span><span class="n">get_default_dtype</span><span class="p">()</span>
-        <span class="n">device</span> <span class="o">=</span> <span class="n">device</span> <span class="ow">or</span> <span class="n">torch</span><span class="o">.</span><span class="n">get_default_device</span><span class="p">()</span>
-
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Argument </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> must be a list, a tuple or a pandas.Series!&quot;</span><span class="p">)</span>
@@ -434,14 +433,51 @@
             <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">(</span><span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_colnames</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">get_default_dtype</span><span class="p">())</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="p">{})</span>
 
 <div class="viewcode-block" id="DummyMatrix.__call__">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.DummyMatrix.html#torch_openreml.covariance.DummyMatrix.__call__">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span></div>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the dummy matrix, on the dtype and device of the input.</span>
+
+<span class="sd">        The dummy matrix has no parameters, so ``free_params`` carries no</span>
+<span class="sd">        values: only its dtype and device are used. When it is omitted, the</span>
+<span class="sd">        PyTorch default dtype and device are used.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            free_params (torch.Tensor or dict, optional): Empty 1D parameter</span>
+<span class="sd">                tensor whose dtype and device are followed, or an empty</span>
+<span class="sd">                parameter dict. If omitted, the PyTorch default dtype and</span>
+<span class="sd">                device are used. Default: ``None``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: The fixed dummy matrix.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If ``free_params`` is not a Torch tensor or a dict.</span>
+<span class="sd">            ValueError: If ``free_params`` is not empty, since the matrix has</span>
+<span class="sd">                no parameters to receive.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from torch_openreml.covariance import DummyMatrix</span>
+
+<span class="sd">            rep = [&quot;rep1&quot;, &quot;rep2&quot;, &quot;rep2&quot;]</span>
+<span class="sd">            mat = DummyMatrix(rep)</span>
+<span class="sd">            mat()</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            mat(torch.tensor([], dtype=torch.float64))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="n">include_fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span></div>
 
 
     <span class="nd">@property</span>
@@ -492,7 +528,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=74c14a11"></script>
+</div><script src="../../../_static/documentation_options.js?v=648472df"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

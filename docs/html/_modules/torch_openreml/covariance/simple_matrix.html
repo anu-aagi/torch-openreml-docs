@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>torch_openreml.covariance.simple_matrix - torch-openreml 0.2.0-alpha documentation</title>
+        <title>torch_openreml.covariance.simple_matrix - torch-openreml 0.2.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
@@ -163,7 +163,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">torch-openreml 0.2.0-alpha documentation</div></a>
+      <a href="../../../index.html"><div class="brand">torch-openreml 0.2.1-alpha documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -184,7 +184,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">torch-openreml 0.2.0-alpha documentation</span>
+  <span class="sidebar-brand-text">torch-openreml 0.2.1-alpha documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -347,7 +347,12 @@
 <span class="sd">            num_free_params (int): Number of free parameters.</span>
 <span class="sd">            call (callable): Function with signature</span>
 <span class="sd">                ``call(free_params) -&gt; torch.Tensor`` that constructs the</span>
-<span class="sd">                covariance matrix from a flat 1D parameter tensor.</span>
+<span class="sd">                covariance matrix from a flat 1D parameter tensor. It receives</span>
+<span class="sd">                the output of</span>
+<span class="sd">                :meth:`~torch_openreml.covariance.matrix.Matrix.build_params`</span>
+<span class="sd">                with ``include_fixed=False`` and ``trans=False``, so a parameter</span>
+<span class="sd">                dict or ``None`` is resolved to the free parameter tensor</span>
+<span class="sd">                itself, untransformed, before the call.</span>
 <span class="sd">            manual_grad (callable, optional): Function with signature</span>
 <span class="sd">                ``manual_grad(free_params) -&gt; (grad, grad_names)`` for a</span>
 <span class="sd">                closed-form Jacobian. If ``None`` (default), automatic</span>
@@ -366,8 +371,20 @@
 <span class="sd">            def my_v(free_params):</span>
 <span class="sd">                return torch.diag(free_params)</span>
 
-<span class="sd">            mat = SimpleMatrix(num_free_params=3, call=my_v)</span>
+<span class="sd">            mat = SimpleMatrix(num_free_params=3, call=my_v, default=1.0)</span>
 <span class="sd">            mat(torch.tensor([1.0, 2.0, 3.0]))</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            mat()</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            mat({</span>
+<span class="sd">                &quot;theta_0&quot;: torch.tensor([2.0]),</span>
+<span class="sd">                &quot;theta_1&quot;: torch.tensor([3.0]),</span>
+<span class="sd">                &quot;theta_2&quot;: torch.tensor([4.0]),</span>
+<span class="sd">            })</span>
 
 <span class="sd">        .. jupyter-execute::</span>
 
@@ -384,9 +401,8 @@
 <div class="viewcode-block" id="SimpleMatrix.__call__">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.SimpleMatrix.html#torch_openreml.covariance.SimpleMatrix.__call__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">free_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_defaults</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="n">include_fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
@@ -396,9 +412,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">manual_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manual_grad</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-        <span class="k">if</span> <span class="n">free_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_defaults</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manual_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span></div>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="n">include_fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manual_grad</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></div>
 </div>
 
 </pre></div>
@@ -440,7 +455,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=74c14a11"></script>
+</div><script src="../../../_static/documentation_options.js?v=648472df"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

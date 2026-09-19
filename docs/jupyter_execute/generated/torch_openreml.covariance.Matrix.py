@@ -50,6 +50,15 @@ print(mat.get_intermediates(free_params))
 # In[5]:
 
 
+from torch_openreml.covariance import ScalarMatrix
+
+mat = ScalarMatrix(3)
+mat.get_default_dtype_device()
+
+
+# In[6]:
+
+
 import torch
 from torch_openreml.covariance import DiagonalMatrix
 
@@ -58,32 +67,32 @@ free_params = torch.tensor([0.0, 0.5, 1.0])
 mat.build_params(free_params)
 
 
-# In[6]:
+# In[7]:
 
 
 mat.build_params()
 
 
-# In[7]:
+# In[8]:
 
 
 mat.param_specs["sigma^2_2"]["fixed"] = True
 mat.build_params(free_params[0:2])
 
 
-# In[8]:
+# In[9]:
 
 
 mat.build_params(free_params[0:2], include_fixed=False)
 
 
-# In[9]:
+# In[10]:
 
 
 mat.build_params(free_params[0:2], include_fixed=False, trans=False)
 
 
-# In[10]:
+# In[11]:
 
 
 import torch
@@ -94,13 +103,13 @@ free_params = torch.tensor([0.0, 0.5, 1.0])
 mat.trans_grad(free_params)
 
 
-# In[11]:
+# In[12]:
 
 
 mat.trans_grad()
 
 
-# In[12]:
+# In[13]:
 
 
 import torch
@@ -112,7 +121,7 @@ grad, grad_names = mat.auto_grad(free_params)
 grad, grad_names
 
 
-# In[13]:
+# In[14]:
 
 
 import torch

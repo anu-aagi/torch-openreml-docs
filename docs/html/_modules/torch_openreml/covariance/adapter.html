@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>torch_openreml.covariance.adapter - torch-openreml 0.2.0-alpha documentation</title>
+        <title>torch_openreml.covariance.adapter - torch-openreml 0.2.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
@@ -163,7 +163,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">torch-openreml 0.2.0-alpha documentation</div></a>
+      <a href="../../../index.html"><div class="brand">torch-openreml 0.2.1-alpha documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -184,7 +184,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">torch-openreml 0.2.0-alpha documentation</span>
+  <span class="sidebar-brand-text">torch-openreml 0.2.1-alpha documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -344,12 +344,6 @@
 <span class="sd">    Gradients are computed via the chain rule: the adaptee&#39;s gradient with</span>
 <span class="sd">    respect to its own parameters is pulled back through the Jacobian of</span>
 <span class="sd">    ``param_map``.</span>
-
-<span class="sd">    .. note::</span>
-<span class="sd">        All adapter parameter transforms **must** be</span>
-<span class="sd">        :class:`~torch_openreml.covariance.transform.TransformIdentity`.</span>
-<span class="sd">        Non-identity transforms should be applied inside ``param_map`` or</span>
-<span class="sd">        on the adaptee directly.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_repr_single_line</span> <span class="o">=</span> <span class="kc">False</span>
@@ -362,9 +356,9 @@
 <span class="sd">            adaptee (:class:`~torch_openreml.covariance.matrix.Matrix`):</span>
 <span class="sd">                The matrix to reparameterise.</span>
 <span class="sd">            param_specs (dict): Parameter specifications for the adapter&#39;s</span>
-<span class="sd">                own parameters.  Keys are parameter names; values are</span>
+<span class="sd">                own parameters. Keys are parameter names; values are</span>
 <span class="sd">                dictionaries with keys ``&quot;fixed&quot;``, ``&quot;default&quot;``, and</span>
-<span class="sd">                ``&quot;trans&quot;``.  **All transforms must be**</span>
+<span class="sd">                ``&quot;trans&quot;``. All parameters should be free and use</span>
 <span class="sd">                :class:`~torch_openreml.covariance.transform.TransformIdentity`.</span>
 <span class="sd">            param_map (callable): A function ``f(params) -&gt; adaptee_params``</span>
 <span class="sd">                that maps the adapter&#39;s parameter tensor to the parameter</span>
@@ -415,9 +409,32 @@
 <div class="viewcode-block" id="Adapter.__call__">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Adapter.html#torch_openreml.covariance.Adapter.__call__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build the covariance matrix from the adapter&#39;s parameters.</span>
+
+<span class="sd">        ``free_params`` is checked by</span>
+<span class="sd">        :meth:`~torch_openreml.covariance.matrix.Matrix.build_params`, called</span>
+<span class="sd">        with ``include_fixed=False`` and ``trans=False``: only the free</span>
+<span class="sd">        parameters are kept, and no transform is applied. Those free</span>
+<span class="sd">        parameters are passed to ``param_map``, and its output builds the</span>
+<span class="sd">        adaptee&#39;s matrix.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            free_params (torch.Tensor or dict, optional): Flat 1D tensor of the</span>
+<span class="sd">                adapter&#39;s free parameters, or a parameter dictionary. If</span>
+<span class="sd">                omitted, default values are used. Default: ``None``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: The covariance matrix built by the adaptee.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If ``free_params`` is not a Torch tensor or a dict.</span>
+<span class="sd">            ValueError: If ``free_params`` is not a 1D tensor or has the wrong</span>
+<span class="sd">                length, or if it is a dict with missing or unexpected keys.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">free_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_defaults</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="n">include_fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">adaptee_free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_map</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">adaptee</span><span class="p">(</span><span class="n">adaptee_free_params</span><span class="p">)</span></div>
 
@@ -442,7 +459,7 @@
 <span class="sd">            tuple: ``(grad, grad_names)``, where ``grad`` is a 3D tensor of</span>
 <span class="sd">            shape ``(num_free_params, *shape)`` and</span>
 <span class="sd">            ``grad_names`` is a list of the corresponding parameter names.</span>
-<span class="sd">            Returns ``(None, [])`` if all parameters are fixed.</span>
+<span class="sd">            Returns ``(None, [])`` when the matrix has no free parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">adaptee</span><span class="o">.</span><span class="n">reset_intermediates</span><span class="p">()</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">auto_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span></div>
@@ -465,7 +482,10 @@
 <span class="sd">            \\frac{\\partial \\phi_k}{\\partial \\boldsymbol{\\theta}}</span>
 
 <span class="sd">        where :math:`\\boldsymbol{\\phi} = f(\\boldsymbol{\\theta})` are the</span>
-<span class="sd">        adaptee&#39;s parameters.</span>
+<span class="sd">        adaptee&#39;s parameters. ``free_params`` is checked by</span>
+<span class="sd">        :meth:`~torch_openreml.covariance.matrix.Matrix.build_params`, called</span>
+<span class="sd">        with ``include_fixed=False`` and ``trans=False``, and the free</span>
+<span class="sd">        parameters are then passed to ``param_map`` untransformed.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
@@ -476,15 +496,17 @@
 <span class="sd">            tuple: ``(grad, grad_names)``, where ``grad`` is a 3D tensor of</span>
 <span class="sd">            shape ``(num_free_params, *shape)`` and</span>
 <span class="sd">            ``grad_names`` is a list of the corresponding parameter names.</span>
-<span class="sd">            Returns ``(None, [])`` if all parameters are fixed.</span>
+<span class="sd">            Returns ``(None, [])`` when the matrix has no free parameters,</span>
+<span class="sd">            after ``free_params`` is validated via</span>
+<span class="sd">            :meth:`~torch_openreml.covariance.matrix.Matrix.build_params`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">free_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_defaults</span>
 
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="n">include_fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_free_params</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[]</span>
 
-        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
         <span class="n">adaptee_free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_map</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
         <span class="n">adaptee_grad</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adaptee</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">adaptee_free_params</span><span class="p">)</span>
 
@@ -505,27 +527,11 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">param_specs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        dict: The adapter&#39;s parameter specifications.</span>
-
-<span class="sd">        All transforms are forced to</span>
-<span class="sd">        :class:`~torch_openreml.covariance.transform.TransformIdentity`.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="n">param_name</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;fixed&quot;</span><span class="p">:</span> <span class="n">param_spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">],</span>
-                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="n">param_spec</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">],</span>
-                <span class="s2">&quot;trans&quot;</span><span class="p">:</span> <span class="n">TransformIdentity</span><span class="p">()</span>
-            <span class="p">}</span> <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">param_spec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param_specs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="p">}</span>
-
-    <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">param_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        callable: The mapping function ``f(params) -&gt; adaptee_params`` that</span>
-<span class="sd">        translates the adapter&#39;s parameter tensor to the adaptee&#39;s parameter</span>
-<span class="sd">        tensor.</span>
+<span class="sd">        translates the adapter&#39;s free parameter tensor to the adaptee&#39;s</span>
+<span class="sd">        parameter tensor. The parameters are untransformed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param_map</span>
 
@@ -584,7 +590,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=74c14a11"></script>
+</div><script src="../../../_static/documentation_options.js?v=648472df"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

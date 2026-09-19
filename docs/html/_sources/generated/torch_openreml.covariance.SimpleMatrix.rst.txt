@@ -17,6 +17,7 @@
       ~SimpleMatrix.__call__
       ~SimpleMatrix.auto_grad
       ~SimpleMatrix.build_params
+      ~SimpleMatrix.get_default_dtype_device
       ~SimpleMatrix.get_intermediates
       ~SimpleMatrix.grad
       ~SimpleMatrix.manual_grad
