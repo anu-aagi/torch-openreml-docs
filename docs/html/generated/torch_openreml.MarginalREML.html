@@ -9,7 +9,7 @@
         <title>torch_openreml.MarginalREML - torch-openreml 0.2.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -376,17 +376,17 @@ and its Jacobian.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:       5.6434, ∥Δ∥: 0.0526, η: 1.00, ∥Δᶜ∥: 0.0526, log 𝓛: -30.9937
-∥∇∥:       0.2867, ∥Δ∥: 0.0030, η: 1.00, ∥Δᶜ∥: 0.0030, log 𝓛: -30.8402 (+0.1535)
-∥∇∥:       0.0008, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -30.8398 (+0.0004)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -30.8398 (+0.0000)
+∥∇∥:      10.3691, ∥Δ∥: 0.0888, η: 1.00, ∥Δᶜ∥: 0.0888, log 𝓛: -33.2811
+∥∇∥:       0.8688, ∥Δ∥: 0.0089, η: 1.00, ∥Δᶜ∥: 0.0089, log 𝓛: -32.7945 (+0.4866)
+∥∇∥:       0.0077, ∥Δ∥: 0.0001, η: 1.00, ∥Δᶜ∥: 0.0001, log 𝓛: -32.7906 (+0.0039)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -32.7906 (+0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
 ✓ Converged at iteration 4
 </pre></div>
 </div>
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0.0556]), tensor([0.0289, 0.0232]))
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0.0978]), tensor([-0.0870, -0.1025]))
 </pre></div>
 </div>
 </div>
@@ -404,10 +404,10 @@ and its Jacobian.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.compute_v_dv" title="torch_openreml.MarginalREML.compute_v_dv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_v_dv</span></code></a>(theta)</p></td>
 <td><p>Compute the covariance matrix and its Jacobian.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.get_beta" title="torch_openreml.MarginalREML.get_beta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_beta</span></code></a>([select, history])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.get_beta" title="torch_openreml.MarginalREML.get_beta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_beta</span></code></a>([select])</p></td>
 <td><p>Retrieve a coefficient estimate from the optimisation history.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.get_theta" title="torch_openreml.MarginalREML.get_theta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_theta</span></code></a>([select, history])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.get_theta" title="torch_openreml.MarginalREML.get_theta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_theta</span></code></a>([select])</p></td>
 <td><p>Retrieve a covariance parameter estimate from the optimisation history.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.is_converged" title="torch_openreml.MarginalREML.is_converged"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_converged</span></code></a>([check_score, check_delta, ...])</p></td>
@@ -552,7 +552,7 @@ Jacobian <span class="math notranslate nohighlight">\(\partial\symbf{V}(\boldsym
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(v,</span> <span class="pre">dv)</span></code>, where <code class="docutils literal notranslate"><span class="pre">v</span></code> is the covariance matrix of
 shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">n)</span></code> and <code class="docutils literal notranslate"><span class="pre">dv</span></code> is the Jacobian of shape
-<code class="docutils literal notranslate"><span class="pre">(num_params,</span> <span class="pre">n,</span> <span class="pre">n)</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">(num_free_params,</span> <span class="pre">n,</span> <span class="pre">n)</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
@@ -660,8 +660,8 @@ accuracy of the approximate score. Only used when
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">(beta,</span> <span class="pre">score,</span> <span class="pre">ai,</span> <span class="pre">loglik)</span></code>, where <code class="docutils literal notranslate"><span class="pre">beta</span></code> is of shape
-<code class="docutils literal notranslate"><span class="pre">(p,)</span></code>, <code class="docutils literal notranslate"><span class="pre">score</span></code> is of shape <code class="docutils literal notranslate"><span class="pre">(num_params,)</span></code>, <code class="docutils literal notranslate"><span class="pre">ai</span></code> is of
-shape <code class="docutils literal notranslate"><span class="pre">(num_params,</span> <span class="pre">num_params)</span></code>, and <code class="docutils literal notranslate"><span class="pre">loglik</span></code> is a scalar
+<code class="docutils literal notranslate"><span class="pre">(p,)</span></code>, <code class="docutils literal notranslate"><span class="pre">score</span></code> is of shape <code class="docutils literal notranslate"><span class="pre">(num_free_params,)</span></code>, <code class="docutils literal notranslate"><span class="pre">ai</span></code> is of
+shape <code class="docutils literal notranslate"><span class="pre">(num_free_params,</span> <span class="pre">num_free_params)</span></code>, and <code class="docutils literal notranslate"><span class="pre">loglik</span></code> is a scalar
 tensor. <code class="docutils literal notranslate"><span class="pre">beta</span></code> and <code class="docutils literal notranslate"><span class="pre">loglik</span></code> are <code class="docutils literal notranslate"><span class="pre">torch.nan</span></code> if their
 respective <code class="docutils literal notranslate"><span class="pre">require_*</span></code> flag is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 </dd>
@@ -673,17 +673,13 @@ respective <code class="docutils literal notranslate"><span class="pre">require_
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.MarginalREML.get_theta">
-<span class="sig-name descname"><span class="pre">get_theta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">select</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.get_theta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.get_theta" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_theta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">select</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.get_theta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.get_theta" title="Link to this definition">¶</a></dt>
 <dd><p>Retrieve a covariance parameter estimate from the optimisation history.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>select</strong> (<em>str</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code> returns the final iterate;
+<dd class="field-odd"><p><strong>select</strong> (<em>str</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code> returns the final iterate;
 any other value returns the iterate with the highest
-log-likelihood. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code>.</p></li>
-<li><p><strong>history</strong> (<em>dict</em><em>, </em><em>optional</em>) – History dictionary to query. Defaults
-to <code class="xref py py-attr docutils literal notranslate"><span class="pre">history</span></code> populated by <a class="reference internal" href="#torch_openreml.MarginalREML.optimize" title="torch_openreml.MarginalREML.optimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optimize()</span></code></a>.</p></li>
-</ul>
+log-likelihood. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code>.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Selected covariance parameter tensor
@@ -697,17 +693,13 @@ to <code class="xref py py-attr docutils literal notranslate"><span class="pre">
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.MarginalREML.get_beta">
-<span class="sig-name descname"><span class="pre">get_beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">select</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.get_beta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.get_beta" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">select</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.get_beta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.get_beta" title="Link to this definition">¶</a></dt>
 <dd><p>Retrieve a coefficient estimate from the optimisation history.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>select</strong> (<em>str</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code> returns the final iterate;
+<dd class="field-odd"><p><strong>select</strong> (<em>str</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code> returns the final iterate;
 any other value returns the iterate with the highest
-log-likelihood. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code>.</p></li>
-<li><p><strong>history</strong> (<em>dict</em><em>, </em><em>optional</em>) – History dictionary to query. Defaults
-to <code class="xref py py-attr docutils literal notranslate"><span class="pre">history</span></code> populated by <a class="reference internal" href="#torch_openreml.MarginalREML.optimize" title="torch_openreml.MarginalREML.optimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optimize()</span></code></a>.</p></li>
-</ul>
+log-likelihood. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code>.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Selected coefficient estimate
