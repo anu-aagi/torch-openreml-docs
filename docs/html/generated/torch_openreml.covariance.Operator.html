@@ -467,14 +467,20 @@ and treated as a named operand mapping.</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Operator.build_params" title="torch_openreml.covariance.Operator.build_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_params</span></code></a>([free_params, include_fixed, ...])</p></td>
 <td><p>Construct the full parameter tensor by delegating to each operand.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_dtype_device</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Operator.call_tree" title="torch_openreml.covariance.Operator.call_tree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">call_tree</span></code></a>([free_params])</p></td>
+<td><p>Evaluate this operator and every nested operand, returning each result keyed by its path.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_dtype_device</span></code>()</p></td>
 <td><p>Get the dtype and the device of the parameter defaults.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_intermediates</span></code>(params)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_intermediates</span></code>(params)</p></td>
 <td><p>Retrieve cached intermediate computation results if still valid.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>([free_params])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>([free_params])</p></td>
 <td><p>Compute the Jacobian of <code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code> with respect to trainable parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Operator.grad_tree" title="torch_openreml.covariance.Operator.grad_tree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad_tree</span></code></a>([free_params])</p></td>
+<td><p>Compute the gradient of this operator and of every nested operand, returning each keyed by its path.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code>([free_params])</p></td>
 <td><p>Compute the Jacobian of <code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code> with respect to free parameters using a closed-form analytic expression.</p></td>
@@ -714,6 +720,255 @@ tensor([[54.5982,  0.0000],
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Operator.call_tree">
+<span class="sig-name descname"><span class="pre">call_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/operator.html#Operator.call_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Operator.call_tree" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate this operator and every nested operand, returning each result
+keyed by its path.</p>
+<p>Descends the operand structure, calling <a class="reference internal" href="#torch_openreml.covariance.Operator.call_tree" title="torch_openreml.covariance.Operator.call_tree"><code class="xref py py-meth docutils literal notranslate"><span class="pre">call_tree()</span></code></a> on nested
+<a class="reference internal" href="#torch_openreml.covariance.Operator" title="torch_openreml.covariance.operator.Operator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operator</span></code></a> operands.
+Paths join the operand names leading to a node with <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code>
+is the root. Both dictionaries returned share one key set:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">results</span></code> maps each path to the matrix the node evaluated to;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">free_params_by_path</span></code> maps each path to the free parameter slice
+the node received, or to <code class="docutils literal notranslate"><span class="pre">None</span></code> for fixed tensor operands.</p></li>
+</ul>
+<p>The root result is the same matrix <code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code> returns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D joint parameter tensor or
+parameter dictionary of length <code class="xref py py-attr docutils literal notranslate"><span class="pre">num_free_params</span></code>.
+If omitted, default values are used. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(results,</span> <span class="pre">free_params_by_path)</span></code>, where <code class="docutils literal notranslate"><span class="pre">results</span></code> maps
+paths to evaluated matrices and <code class="docutils literal notranslate"><span class="pre">free_params_by_path</span></code> maps the
+same paths to the free parameter slices the corresponding operands
+received.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is not a Torch tensor.</p></li>
+<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is not a 1D tensor or has the wrong
+    length, or if <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is a dict with missing or
+    unexpected keys.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only nested <a class="reference internal" href="#torch_openreml.covariance.Operator" title="torch_openreml.covariance.operator.Operator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operator</span></code></a>
+operands are descended into. Every other
+<a class="reference internal" href="torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix" title="torch_openreml.covariance.matrix.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a> appears as a leaf,
+including <a class="reference internal" href="torch_openreml.covariance.Adapter.html#torch_openreml.covariance.Adapter" title="torch_openreml.covariance.adapter.Adapter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Adapter</span></code></a> with
+its adaptee.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Cost: a node’s own result comes from its <code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code> while its
+operands are evaluated separately, so every node below the root is
+entered twice — once while its parent composes its result, once by
+the descent. The root is entered once. An operator that caches
+intermediates serves the second entry from its cache and
+re-evaluates nothing below it; one that does not cache propagates
+the re-evaluation down. A preceding <code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code> therefore
+lowers the leaf count under caching operators and changes no value.</p>
+</div>
+<p class="rubric">Example</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">BlockDiagonal</span><span class="p">,</span> <span class="n">DiagonalMatrix</span><span class="p">,</span> <span class="n">ScalarMatrix</span><span class="p">,</span> <span class="n">Sum</span>
+
+<span class="n">op</span> <span class="o">=</span> <span class="n">Sum</span><span class="p">(</span><span class="n">inner</span><span class="o">=</span><span class="n">BlockDiagonal</span><span class="p">(</span><span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span>
+         <span class="n">extra</span><span class="o">=</span><span class="n">ScalarMatrix</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">results</span><span class="p">,</span> <span class="n">free_params_by_path</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">call_tree</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;/&#39;: tensor([[ 3.7183,  0.0000,  0.0000,  0.0000],
+         [ 0.0000,  5.4366,  0.0000,  0.0000],
+         [ 0.0000,  0.0000, 10.1073,  0.0000],
+         [ 0.0000,  0.0000,  0.0000, 10.1073]]),
+ &#39;inner&#39;: tensor([[1.0000, 0.0000, 0.0000, 0.0000],
+         [0.0000, 2.7183, 0.0000, 0.0000],
+         [0.0000, 0.0000, 7.3891, 0.0000],
+         [0.0000, 0.0000, 0.0000, 7.3891]]),
+ &#39;inner/op_0&#39;: tensor([[1.0000, 0.0000],
+         [0.0000, 2.7183]]),
+ &#39;inner/op_1&#39;: tensor([[7.3891, 0.0000],
+         [0.0000, 7.3891]]),
+ &#39;extra&#39;: tensor([[2.7183, 0.0000, 0.0000, 0.0000],
+         [0.0000, 2.7183, 0.0000, 0.0000],
+         [0.0000, 0.0000, 2.7183, 0.0000],
+         [0.0000, 0.0000, 0.0000, 2.7183]])}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;inner/op_0&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[1.0000, 0.0000],
+        [0.0000, 2.7183]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">free_params_by_path</span><span class="p">[</span><span class="s2">&quot;inner&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([0.0000, 0.5000, 1.0000])
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Operator.grad_tree">
+<span class="sig-name descname"><span class="pre">grad_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/operator.html#Operator.grad_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Operator.grad_tree" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the gradient of this operator and of every nested operand,
+returning each keyed by its path.</p>
+<p>Descends the operand structure, calling <a class="reference internal" href="#torch_openreml.covariance.Operator.grad_tree" title="torch_openreml.covariance.Operator.grad_tree"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grad_tree()</span></code></a> on nested
+<a class="reference internal" href="#torch_openreml.covariance.Operator" title="torch_openreml.covariance.operator.Operator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operator</span></code></a> operands. Paths
+join the operand names leading to a node with <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code> is
+the root — the same keys <a class="reference internal" href="#torch_openreml.covariance.Operator.call_tree" title="torch_openreml.covariance.Operator.call_tree"><code class="xref py py-meth docutils literal notranslate"><span class="pre">call_tree()</span></code></a> produces, in the same order.
+Both dictionaries returned share one key set:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">grads</span></code> maps each path to the <code class="docutils literal notranslate"><span class="pre">(grad,</span> <span class="pre">grad_names)</span></code> pair
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">grad()</span></code> returns for that
+node, or to <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code> when the node has no free parameters;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">free_params_by_path</span></code> maps each path to the free parameter slice
+the node received, or to <code class="docutils literal notranslate"><span class="pre">None</span></code> for fixed tensor operands.</p></li>
+</ul>
+<p>Each node’s <code class="docutils literal notranslate"><span class="pre">grad</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(num_free_params,</span> <span class="pre">*shape)</span></code> for that
+node’s own free parameters and its own matrix shape, so a nested node’s
+Jacobian is not embedded in its parent’s shape. The root entry is the
+same pair <code class="xref py py-meth docutils literal notranslate"><span class="pre">grad()</span></code> returns
+for the whole composite.</p>
+<p><code class="docutils literal notranslate"><span class="pre">grad_names</span></code> are namespaced from the node that produced them, as
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">grad()</span></code> returns them: at
+the root they are the composite’s full names, and below it joining the
+path to a name with <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code> gives the name the root exposes in
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">free_param_names</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D joint parameter tensor or
+parameter dictionary of length <code class="xref py py-attr docutils literal notranslate"><span class="pre">num_free_params</span></code>.
+If omitted, default values are used. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(grads,</span> <span class="pre">free_params_by_path)</span></code>, where <code class="docutils literal notranslate"><span class="pre">grads</span></code> maps paths
+to <code class="docutils literal notranslate"><span class="pre">(grad,</span> <span class="pre">grad_names)</span></code> pairs and <code class="docutils literal notranslate"><span class="pre">free_params_by_path</span></code> maps the
+same paths to the free parameter slices the corresponding operands
+received.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is not a Torch tensor.</p></li>
+<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is not a 1D tensor or has the wrong
+    length, or if <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is a dict with missing or
+    unexpected keys.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only nested <a class="reference internal" href="#torch_openreml.covariance.Operator" title="torch_openreml.covariance.operator.Operator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operator</span></code></a>
+operands are descended into. Every other
+<a class="reference internal" href="torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix" title="torch_openreml.covariance.matrix.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a> appears as a leaf,
+including <a class="reference internal" href="torch_openreml.covariance.Adapter.html#torch_openreml.covariance.Adapter" title="torch_openreml.covariance.adapter.Adapter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Adapter</span></code></a> with
+its adaptee.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Cost: every Jacobian is computed independently, so a node at depth
+<code class="docutils literal notranslate"><span class="pre">d</span></code> is evaluated <code class="docutils literal notranslate"><span class="pre">d</span> <span class="pre">+</span> <span class="pre">1</span></code> times — once for the root’s Jacobian and
+once for each intermediate ancestor’s, plus once for its own entry.
+No Jacobian is cached, so a preceding
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">grad()</span></code> changes
+nothing. Viewing a deep composite in full is correspondingly
+expensive.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A node’s Jacobian is in that node’s own shape, so the tree does not
+show how a child’s Jacobian is placed into its parent’s — how
+<code class="docutils literal notranslate"><span class="pre">BlockDiagonal</span></code> pads it into a block, for instance. Only the root
+entry carries the composite’s full shape.</p>
+</div>
+<p class="rubric">Example</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">BlockDiagonal</span><span class="p">,</span> <span class="n">DiagonalMatrix</span><span class="p">,</span> <span class="n">ScalarMatrix</span><span class="p">,</span> <span class="n">Sum</span>
+
+<span class="n">op</span> <span class="o">=</span> <span class="n">Sum</span><span class="p">(</span><span class="n">inner</span><span class="o">=</span><span class="n">BlockDiagonal</span><span class="p">(</span><span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span>
+         <span class="n">extra</span><span class="o">=</span><span class="n">ScalarMatrix</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">grads</span><span class="p">,</span> <span class="n">free_params_by_path</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">grad_tree</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grads</span><span class="p">[</span><span class="s2">&quot;inner/op_0&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([[[2.0000, 0.0000],
+          [0.0000, 0.0000]],
+ 
+         [[0.0000, 0.0000],
+          [0.0000, 5.4366]]]),
+ [&#39;sigma^2_0&#39;, &#39;sigma^2_1&#39;])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grads</span><span class="p">[</span><span class="s2">&quot;inner&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;op_0/sigma^2_0&#39;, &#39;op_0/sigma^2_1&#39;, &#39;op_1/sigma^2&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Operator.operands_grad">
 <span class="sig-name descname"><span class="pre">operands_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/operator.html#Operator.operands_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Operator.operands_grad" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the Jacobian of each operand with respect to its parameters.</p>
@@ -882,6 +1137,8 @@ override, so resetting a node resets everything below it.</p>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator"><code class="docutils literal notranslate"><span class="pre">Operator</span></code></a><ul>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.build_params"><code class="docutils literal notranslate"><span class="pre">Operator.build_params()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.build_operands"><code class="docutils literal notranslate"><span class="pre">Operator.build_operands()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Operator.call_tree"><code class="docutils literal notranslate"><span class="pre">Operator.call_tree()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Operator.grad_tree"><code class="docutils literal notranslate"><span class="pre">Operator.grad_tree()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.operands_grad"><code class="docutils literal notranslate"><span class="pre">Operator.operands_grad()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.reset_intermediates"><code class="docutils literal notranslate"><span class="pre">Operator.reset_intermediates()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.operands"><code class="docutils literal notranslate"><span class="pre">Operator.operands</span></code></a></li>

@@ -603,6 +603,228 @@
         <span class="k">return</span> <span class="n">v_groups</span></div>
 
 
+<div class="viewcode-block" id="Operator.call_tree">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.call_tree">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">call_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate this operator and every nested operand, returning each result</span>
+<span class="sd">        keyed by its path.</span>
+
+<span class="sd">        Descends the operand structure, calling :meth:`call_tree` on nested</span>
+<span class="sd">        :class:`~torch_openreml.covariance.operator.Operator` operands.</span>
+<span class="sd">        Paths join the operand names leading to a node with ``&quot;/&quot;``, and ``&quot;/&quot;``</span>
+<span class="sd">        is the root. Both dictionaries returned share one key set:</span>
+
+<span class="sd">        - ``results`` maps each path to the matrix the node evaluated to;</span>
+<span class="sd">        - ``free_params_by_path`` maps each path to the free parameter slice</span>
+<span class="sd">          the node received, or to ``None`` for fixed tensor operands.</span>
+
+<span class="sd">        The root result is the same matrix :meth:`__call__` returns.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            free_params (torch.Tensor or dict): Flat 1D joint parameter tensor or</span>
+<span class="sd">                parameter dictionary of length :attr:`num_free_params`.</span>
+<span class="sd">                If omitted, default values are used. Default: ``None``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: ``(results, free_params_by_path)``, where ``results`` maps</span>
+<span class="sd">            paths to evaluated matrices and ``free_params_by_path`` maps the</span>
+<span class="sd">            same paths to the free parameter slices the corresponding operands</span>
+<span class="sd">            received.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If ``free_params`` is not a Torch tensor.</span>
+<span class="sd">            ValueError: If ``free_params`` is not a 1D tensor or has the wrong</span>
+<span class="sd">                length, or if ``free_params`` is a dict with missing or</span>
+<span class="sd">                unexpected keys.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Only nested :class:`~torch_openreml.covariance.operator.Operator`</span>
+<span class="sd">            operands are descended into. Every other</span>
+<span class="sd">            :class:`~torch_openreml.covariance.matrix.Matrix` appears as a leaf,</span>
+<span class="sd">            including :class:`~torch_openreml.covariance.adapter.Adapter` with</span>
+<span class="sd">            its adaptee.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Cost: a node&#39;s own result comes from its :meth:`__call__` while its</span>
+<span class="sd">            operands are evaluated separately, so every node below the root is</span>
+<span class="sd">            entered twice — once while its parent composes its result, once by</span>
+<span class="sd">            the descent. The root is entered once. An operator that caches</span>
+<span class="sd">            intermediates serves the second entry from its cache and</span>
+<span class="sd">            re-evaluates nothing below it; one that does not cache propagates</span>
+<span class="sd">            the re-evaluation down. A preceding :meth:`__call__` therefore</span>
+<span class="sd">            lowers the leaf count under caching operators and changes no value.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            .. jupyter-execute::</span>
+
+<span class="sd">                import torch</span>
+<span class="sd">                from torch_openreml.covariance import BlockDiagonal, DiagonalMatrix, ScalarMatrix, Sum</span>
+
+<span class="sd">                op = Sum(inner=BlockDiagonal(DiagonalMatrix(2), ScalarMatrix(2)),</span>
+<span class="sd">                         extra=ScalarMatrix(4))</span>
+<span class="sd">                results, free_params_by_path = op.call_tree(torch.tensor([0.0, 0.5, 1.0, 0.5]))</span>
+
+<span class="sd">            .. jupyter-execute::</span>
+
+<span class="sd">                results</span>
+
+<span class="sd">            .. jupyter-execute::</span>
+
+<span class="sd">                results[&quot;inner/op_0&quot;]</span>
+
+<span class="sd">            .. jupyter-execute::</span>
+
+<span class="sd">                free_params_by_path[&quot;inner&quot;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">free_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_defaults</span>
+        <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_free_param_dict</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_param_tensor</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_free_params</span><span class="p">)</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="p">(</span><span class="n">free_params</span><span class="p">)}</span>
+        <span class="n">free_params_by_path</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="n">free_params</span><span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">operand</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operands</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">operand</span><span class="p">,</span> <span class="n">Matrix</span><span class="p">):</span>
+                <span class="n">operand_params</span> <span class="o">=</span> <span class="n">free_params</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">operand</span><span class="o">.</span><span class="n">num_free_params</span><span class="p">]</span>
+                <span class="n">free_params</span> <span class="o">=</span> <span class="n">free_params</span><span class="p">[</span><span class="n">operand</span><span class="o">.</span><span class="n">num_free_params</span><span class="p">:]</span>
+
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">operand</span><span class="p">,</span> <span class="n">Operator</span><span class="p">):</span>
+                    <span class="n">child_results</span><span class="p">,</span> <span class="n">child_params</span> <span class="o">=</span> <span class="n">operand</span><span class="o">.</span><span class="n">call_tree</span><span class="p">(</span><span class="n">operand_params</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">child_results</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="n">operand</span><span class="p">(</span><span class="n">operand_params</span><span class="p">)}</span>
+                    <span class="n">child_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="n">operand_params</span><span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">child_results</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="n">operand</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)}</span>
+                <span class="n">child_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+            <span class="k">for</span> <span class="n">child_path</span> <span class="ow">in</span> <span class="n">child_results</span><span class="p">:</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">name</span> <span class="k">if</span> <span class="n">child_path</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">child_path</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">results</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">child_results</span><span class="p">[</span><span class="n">child_path</span><span class="p">]</span>
+                <span class="n">free_params_by_path</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">child_params</span><span class="p">[</span><span class="n">child_path</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">free_params_by_path</span></div>
+
+
+<div class="viewcode-block" id="Operator.grad_tree">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.grad_tree">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">grad_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the gradient of this operator and of every nested operand,</span>
+<span class="sd">        returning each keyed by its path.</span>
+
+<span class="sd">        Descends the operand structure, calling :meth:`grad_tree` on nested</span>
+<span class="sd">        :class:`~torch_openreml.covariance.operator.Operator` operands. Paths</span>
+<span class="sd">        join the operand names leading to a node with ``&quot;/&quot;``, and ``&quot;/&quot;`` is</span>
+<span class="sd">        the root — the same keys :meth:`call_tree` produces, in the same order.</span>
+<span class="sd">        Both dictionaries returned share one key set:</span>
+
+<span class="sd">        - ``grads`` maps each path to the ``(grad, grad_names)`` pair</span>
+<span class="sd">          :meth:`~torch_openreml.covariance.matrix.Matrix.grad` returns for that</span>
+<span class="sd">          node, or to ``(None, [])`` when the node has no free parameters;</span>
+<span class="sd">        - ``free_params_by_path`` maps each path to the free parameter slice</span>
+<span class="sd">          the node received, or to ``None`` for fixed tensor operands.</span>
+
+<span class="sd">        Each node&#39;s ``grad`` has shape ``(num_free_params, *shape)`` for that</span>
+<span class="sd">        node&#39;s own free parameters and its own matrix shape, so a nested node&#39;s</span>
+<span class="sd">        Jacobian is not embedded in its parent&#39;s shape. The root entry is the</span>
+<span class="sd">        same pair :meth:`~torch_openreml.covariance.matrix.Matrix.grad` returns</span>
+<span class="sd">        for the whole composite.</span>
+
+<span class="sd">        ``grad_names`` are namespaced from the node that produced them, as</span>
+<span class="sd">        :meth:`~torch_openreml.covariance.matrix.Matrix.grad` returns them: at</span>
+<span class="sd">        the root they are the composite&#39;s full names, and below it joining the</span>
+<span class="sd">        path to a name with ``&quot;/&quot;`` gives the name the root exposes in</span>
+<span class="sd">        :attr:`~torch_openreml.covariance.matrix.Matrix.free_param_names`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            free_params (torch.Tensor or dict): Flat 1D joint parameter tensor or</span>
+<span class="sd">                parameter dictionary of length :attr:`num_free_params`.</span>
+<span class="sd">                If omitted, default values are used. Default: ``None``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: ``(grads, free_params_by_path)``, where ``grads`` maps paths</span>
+<span class="sd">            to ``(grad, grad_names)`` pairs and ``free_params_by_path`` maps the</span>
+<span class="sd">            same paths to the free parameter slices the corresponding operands</span>
+<span class="sd">            received.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If ``free_params`` is not a Torch tensor.</span>
+<span class="sd">            ValueError: If ``free_params`` is not a 1D tensor or has the wrong</span>
+<span class="sd">                length, or if ``free_params`` is a dict with missing or</span>
+<span class="sd">                unexpected keys.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Only nested :class:`~torch_openreml.covariance.operator.Operator`</span>
+<span class="sd">            operands are descended into. Every other</span>
+<span class="sd">            :class:`~torch_openreml.covariance.matrix.Matrix` appears as a leaf,</span>
+<span class="sd">            including :class:`~torch_openreml.covariance.adapter.Adapter` with</span>
+<span class="sd">            its adaptee.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Cost: every Jacobian is computed independently, so a node at depth</span>
+<span class="sd">            ``d`` is evaluated ``d + 1`` times — once for the root&#39;s Jacobian and</span>
+<span class="sd">            once for each intermediate ancestor&#39;s, plus once for its own entry.</span>
+<span class="sd">            No Jacobian is cached, so a preceding</span>
+<span class="sd">            :meth:`~torch_openreml.covariance.matrix.Matrix.grad` changes</span>
+<span class="sd">            nothing. Viewing a deep composite in full is correspondingly</span>
+<span class="sd">            expensive.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            A node&#39;s Jacobian is in that node&#39;s own shape, so the tree does not</span>
+<span class="sd">            show how a child&#39;s Jacobian is placed into its parent&#39;s — how</span>
+<span class="sd">            ``BlockDiagonal`` pads it into a block, for instance. Only the root</span>
+<span class="sd">            entry carries the composite&#39;s full shape.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            .. jupyter-execute::</span>
+
+<span class="sd">                import torch</span>
+<span class="sd">                from torch_openreml.covariance import BlockDiagonal, DiagonalMatrix, ScalarMatrix, Sum</span>
+
+<span class="sd">                op = Sum(inner=BlockDiagonal(DiagonalMatrix(2), ScalarMatrix(2)),</span>
+<span class="sd">                         extra=ScalarMatrix(4))</span>
+<span class="sd">                grads, free_params_by_path = op.grad_tree(torch.tensor([0.0, 0.5, 1.0, 0.5]))</span>
+
+<span class="sd">            .. jupyter-execute::</span>
+
+<span class="sd">                grads[&quot;inner/op_0&quot;]</span>
+
+<span class="sd">            .. jupyter-execute::</span>
+
+<span class="sd">                grads[&quot;inner&quot;][1]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">free_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_defaults</span>
+        <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_free_param_dict</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_param_tensor</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_free_params</span><span class="p">)</span>
+
+        <span class="n">grads</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)}</span>
+        <span class="n">free_params_by_path</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="n">free_params</span><span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">operand</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operands</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">operand</span><span class="p">,</span> <span class="n">Matrix</span><span class="p">):</span>
+                <span class="n">operand_params</span> <span class="o">=</span> <span class="n">free_params</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">operand</span><span class="o">.</span><span class="n">num_free_params</span><span class="p">]</span>
+                <span class="n">free_params</span> <span class="o">=</span> <span class="n">free_params</span><span class="p">[</span><span class="n">operand</span><span class="o">.</span><span class="n">num_free_params</span><span class="p">:]</span>
+
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">operand</span><span class="p">,</span> <span class="n">Operator</span><span class="p">):</span>
+                    <span class="n">child_grads</span><span class="p">,</span> <span class="n">child_params</span> <span class="o">=</span> <span class="n">operand</span><span class="o">.</span><span class="n">grad_tree</span><span class="p">(</span><span class="n">operand_params</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">child_grads</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="n">operand</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">operand_params</span><span class="p">)}</span>
+                    <span class="n">child_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="n">operand_params</span><span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">child_grads</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[])}</span>
+                <span class="n">child_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+            <span class="k">for</span> <span class="n">child_path</span> <span class="ow">in</span> <span class="n">child_grads</span><span class="p">:</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">name</span> <span class="k">if</span> <span class="n">child_path</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">child_path</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">grads</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">child_grads</span><span class="p">[</span><span class="n">child_path</span><span class="p">]</span>
+                <span class="n">free_params_by_path</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">child_params</span><span class="p">[</span><span class="n">child_path</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">grads</span><span class="p">,</span> <span class="n">free_params_by_path</span></div>
+
+
 <div class="viewcode-block" id="Operator.operands_grad">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.operands_grad">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">operands_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

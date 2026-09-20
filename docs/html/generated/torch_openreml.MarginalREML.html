@@ -9,7 +9,7 @@
         <title>torch_openreml.MarginalREML - torch-openreml 0.2.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -376,17 +376,18 @@ and its Jacobian.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:      10.3691, ∥Δ∥: 0.0888, η: 1.00, ∥Δᶜ∥: 0.0888, log 𝓛: -33.2811
-∥∇∥:       0.8688, ∥Δ∥: 0.0089, η: 1.00, ∥Δᶜ∥: 0.0089, log 𝓛: -32.7945 (+0.4866)
-∥∇∥:       0.0077, ∥Δ∥: 0.0001, η: 1.00, ∥Δᶜ∥: 0.0001, log 𝓛: -32.7906 (+0.0039)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -32.7906 (+0.0000)
+∥∇∥:      14.4864, ∥Δ∥: 0.2161, η: 1.00, ∥Δᶜ∥: 0.2161, log 𝓛: -20.7919
+∥∇∥:       3.6353, ∥Δ∥: 0.0352, η: 1.00, ∥Δᶜ∥: 0.0352, log 𝓛: -19.4786 (+1.3133)
+∥∇∥:       0.1250, ∥Δ∥: 0.0013, η: 1.00, ∥Δᶜ∥: 0.0013, log 𝓛: -19.4131 (+0.0655)
+∥∇∥:       0.0002, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -19.4131 (+0.0001)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -19.4131 (+0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 4
+✓ Converged at iteration 5
 </pre></div>
 </div>
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0.0978]), tensor([-0.0870, -0.1025]))
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([-0.1796]), tensor([0.0189, 0.0916]))
 </pre></div>
 </div>
 </div>

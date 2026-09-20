@@ -381,14 +381,20 @@ dict. The first is <span class="math notranslate nohighlight">\(\symbf{A}\)</spa
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_params</span></code>([free_params, include_fixed, ...])</p></td>
 <td><p>Construct the full parameter tensor by delegating to each operand.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_dtype_device</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">call_tree</span></code>([free_params])</p></td>
+<td><p>Evaluate this operator and every nested operand, returning each result keyed by its path.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_dtype_device</span></code>()</p></td>
 <td><p>Get the dtype and the device of the parameter defaults.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_intermediates</span></code>(params)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_intermediates</span></code>(params)</p></td>
 <td><p>Retrieve cached intermediate computation results if still valid.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>([free_params])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>([free_params])</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.KroneckerProduct.__call__" title="torch_openreml.covariance.KroneckerProduct.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad_tree</span></code>([free_params])</p></td>
+<td><p>Compute the gradient of this operator and of every nested operand, returning each keyed by its path.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.KroneckerProduct.manual_grad" title="torch_openreml.covariance.KroneckerProduct.manual_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code></a>([free_params])</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.KroneckerProduct.__call__" title="torch_openreml.covariance.KroneckerProduct.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable parameters using a closed-form analytic expression.</p></td>

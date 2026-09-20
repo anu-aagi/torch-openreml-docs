@@ -82,6 +82,58 @@ print(v_groups[1])
 
 
 import torch
+from torch_openreml.covariance import BlockDiagonal, DiagonalMatrix, ScalarMatrix, Sum
+
+op = Sum(inner=BlockDiagonal(DiagonalMatrix(2), ScalarMatrix(2)),
+         extra=ScalarMatrix(4))
+results, free_params_by_path = op.call_tree(torch.tensor([0.0, 0.5, 1.0, 0.5]))
+
+
+# In[12]:
+
+
+results
+
+
+# In[13]:
+
+
+results["inner/op_0"]
+
+
+# In[14]:
+
+
+free_params_by_path["inner"]
+
+
+# In[15]:
+
+
+import torch
+from torch_openreml.covariance import BlockDiagonal, DiagonalMatrix, ScalarMatrix, Sum
+
+op = Sum(inner=BlockDiagonal(DiagonalMatrix(2), ScalarMatrix(2)),
+         extra=ScalarMatrix(4))
+grads, free_params_by_path = op.grad_tree(torch.tensor([0.0, 0.5, 1.0, 0.5]))
+
+
+# In[16]:
+
+
+grads["inner/op_0"]
+
+
+# In[17]:
+
+
+grads["inner"][1]
+
+
+# In[18]:
+
+
+import torch
 from torch_openreml.covariance import Sum, ScalarMatrix
 
 x = Sum(ScalarMatrix(2), ScalarMatrix(2))
