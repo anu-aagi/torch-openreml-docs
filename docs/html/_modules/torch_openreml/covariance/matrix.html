@@ -8,7 +8,7 @@
         <title>torch_openreml.covariance.matrix - torch-openreml 0.3.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df86a2a8" />
@@ -707,6 +707,69 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">)</span><span class="si">}</span><span class="s2"> parameters, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">tensor</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">tensor</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">,</span> <span class="n">free_params</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))}</span>
+
+<div class="viewcode-block" id="Matrix.set_param_specs">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.set_param_specs">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_param_specs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the fields of a parameter specification in place.</span>
+
+<span class="sd">        ``key`` is resolved against :attr:`param_specs`, and each field passed</span>
+<span class="sd">        as something other than ``None`` replaces that field of the resolved</span>
+<span class="sd">        specification. Fields left as ``None`` are kept unchanged, so a call</span>
+<span class="sd">        without fields changes nothing. Values are assigned as given, without</span>
+<span class="sd">        validation or copying, and take effect on the next call.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            key (str): Key of the parameter specification, as :attr:`param_specs`</span>
+<span class="sd">                exposes it. Composites namespace their operands&#39; parameters, so</span>
+<span class="sd">                ``&quot;A/sigma^2&quot;`` addresses the parameter ``&quot;sigma^2&quot;`` of the</span>
+<span class="sd">                operand ``&quot;A&quot;``.</span>
+<span class="sd">            fixed (bool, optional): New value for the ``&quot;fixed&quot;`` field.</span>
+<span class="sd">                Default: ``None``.</span>
+<span class="sd">            default (torch.Tensor, optional): New value for the ``&quot;default&quot;``</span>
+<span class="sd">                field. Default: ``None``.</span>
+<span class="sd">            trans (Transform, optional): New value for the ``&quot;trans&quot;`` field.</span>
+<span class="sd">                Default: ``None``.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If ``key`` is not a str.</span>
+<span class="sd">            ValueError: If ``key`` is not a parameter of this matrix.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from torch_openreml.covariance import DiagonalMatrix</span>
+
+<span class="sd">            mat = DiagonalMatrix(3)</span>
+<span class="sd">            mat.set_param_specs(&quot;sigma^2_1&quot;, fixed=True, default=torch.tensor([7.5]))</span>
+<span class="sd">            mat.free_param_names</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            mat.build_params(torch.tensor([1.0, 3.0]), trans=False)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;key&#39; must be a str, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+        <span class="n">param_specs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_specs</span>
+
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">param_specs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot resolve key &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39;!&quot;</span><span class="p">)</span>
+
+        <span class="n">spec</span> <span class="o">=</span> <span class="n">param_specs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">fixed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fixed</span>
+
+        <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">default</span>
+
+        <span class="k">if</span> <span class="n">trans</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;trans&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trans</span></div>
+
 
 <div class="viewcode-block" id="Matrix.trans_grad">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.trans_grad">[docs]</a>

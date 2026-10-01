@@ -99,17 +99,34 @@ import torch
 from torch_openreml.covariance import DiagonalMatrix
 
 mat = DiagonalMatrix(3)
-free_params = torch.tensor([0.0, 0.5, 1.0])
-mat.trans_grad(free_params)
+mat.set_param_specs("sigma^2_1", fixed=True, default=torch.tensor([7.5]))
+mat.free_param_names
 
 
 # In[12]:
 
 
-mat.trans_grad()
+mat.build_params(torch.tensor([1.0, 3.0]), trans=False)
 
 
 # In[13]:
+
+
+import torch
+from torch_openreml.covariance import DiagonalMatrix
+
+mat = DiagonalMatrix(3)
+free_params = torch.tensor([0.0, 0.5, 1.0])
+mat.trans_grad(free_params)
+
+
+# In[14]:
+
+
+mat.trans_grad()
+
+
+# In[15]:
 
 
 import torch
@@ -121,7 +138,7 @@ grad, grad_names = mat.auto_grad(free_params)
 grad, grad_names
 
 
-# In[14]:
+# In[16]:
 
 
 import torch

@@ -9,7 +9,7 @@
         <title>torch_openreml.covariance.Matrix - torch-openreml 0.3.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -385,7 +385,10 @@ respectively.</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_intermediates" title="torch_openreml.covariance.Matrix.set_intermediates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code></a>(params, intermediates)</p></td>
 <td><p>Cache intermediate computation results keyed by the parameter values.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.trans_grad" title="torch_openreml.covariance.Matrix.trans_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code></a>([free_params])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_param_specs" title="torch_openreml.covariance.Matrix.set_param_specs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_param_specs</span></code></a>(key, *[, fixed, default, trans])</p></td>
+<td><p>Update the fields of a parameter specification in place.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.trans_grad" title="torch_openreml.covariance.Matrix.trans_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code></a>([free_params])</p></td>
 <td><p>Compute the element-wise derivative of the free parameter transforms.</p></td>
 </tr>
 </tbody>
@@ -782,6 +785,69 @@ dictionary mapping parameter names to value tensors.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([0.0000, 0.5000])
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.set_param_specs">
+<span class="sig-name descname"><span class="pre">set_param_specs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.set_param_specs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.set_param_specs" title="Link to this definition">¶</a></dt>
+<dd><p>Update the fields of a parameter specification in place.</p>
+<p><code class="docutils literal notranslate"><span class="pre">key</span></code> is resolved against <a class="reference internal" href="#torch_openreml.covariance.Matrix.param_specs" title="torch_openreml.covariance.Matrix.param_specs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">param_specs</span></code></a>, and each field passed
+as something other than <code class="docutils literal notranslate"><span class="pre">None</span></code> replaces that field of the resolved
+specification. Fields left as <code class="docutils literal notranslate"><span class="pre">None</span></code> are kept unchanged, so a call
+without fields changes nothing. Values are assigned as given, without
+validation or copying, and take effect on the next call.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – Key of the parameter specification, as <a class="reference internal" href="#torch_openreml.covariance.Matrix.param_specs" title="torch_openreml.covariance.Matrix.param_specs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">param_specs</span></code></a>
+exposes it. Composites namespace their operands’ parameters, so
+<code class="docutils literal notranslate"><span class="pre">&quot;A/sigma^2&quot;</span></code> addresses the parameter <code class="docutils literal notranslate"><span class="pre">&quot;sigma^2&quot;</span></code> of the
+operand <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>.</p></li>
+<li><p><strong>fixed</strong> (<em>bool</em><em>, </em><em>optional</em>) – New value for the <code class="docutils literal notranslate"><span class="pre">&quot;fixed&quot;</span></code> field.
+Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>default</strong> (<em>torch.Tensor</em><em>, </em><em>optional</em>) – New value for the <code class="docutils literal notranslate"><span class="pre">&quot;default&quot;</span></code>
+field. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>trans</strong> (<a class="reference internal" href="torch_openreml.covariance.transform.Transform.html#torch_openreml.covariance.transform.Transform" title="torch_openreml.covariance.transform.Transform"><em>Transform</em></a><em>, </em><em>optional</em>) – New value for the <code class="docutils literal notranslate"><span class="pre">&quot;trans&quot;</span></code> field.
+Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">key</span></code> is not a str.</p></li>
+<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">key</span></code> is not a parameter of this matrix.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiagonalMatrix</span>
+
+<span class="n">mat</span> <span class="o">=</span> <span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">set_param_specs</span><span class="p">(</span><span class="s2">&quot;sigma^2_1&quot;</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">7.5</span><span class="p">]))</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">free_param_names</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;sigma^2_0&#39;, &#39;sigma^2_2&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">]),</span> <span class="n">trans</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([1.0000, 7.5000, 3.0000])
 </pre></div>
 </div>
 </div>
@@ -1293,6 +1359,7 @@ and <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_g
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.reset_intermediates"><code class="docutils literal notranslate"><span class="pre">Matrix.reset_intermediates()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.get_default_dtype_device"><code class="docutils literal notranslate"><span class="pre">Matrix.get_default_dtype_device()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.build_params"><code class="docutils literal notranslate"><span class="pre">Matrix.build_params()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_param_specs"><code class="docutils literal notranslate"><span class="pre">Matrix.set_param_specs()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.trans_grad"><code class="docutils literal notranslate"><span class="pre">Matrix.trans_grad()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_grad"><code class="docutils literal notranslate"><span class="pre">Matrix.auto_grad()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.manual_grad"><code class="docutils literal notranslate"><span class="pre">Matrix.manual_grad()</span></code></a></li>

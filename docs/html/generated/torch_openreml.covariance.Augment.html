@@ -9,7 +9,7 @@
         <title>torch_openreml.covariance.Augment - torch-openreml 0.3.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -405,7 +405,10 @@ dict mapping names to operands.</p></li>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
 <td><p>Cache intermediate computation results keyed by the parameter values.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_param_specs</span></code>(key, *[, fixed, default, trans])</p></td>
+<td><p>Update the fields of a parameter specification in place.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
 <td><p>Compute the element-wise derivative of the free parameter transforms.</p></td>
 </tr>
 </tbody>
