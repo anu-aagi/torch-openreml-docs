@@ -398,11 +398,17 @@ tensor expected by <code class="docutils literal notranslate"><span class="pre">
 <tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Adapter.__call__" title="torch_openreml.covariance.Adapter.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a>([free_params])</p></td>
 <td><p>Build the covariance matrix from the adapter's parameters.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Adapter.auto_grad" title="torch_openreml.covariance.Adapter.auto_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_grad</span></code></a>([free_params])</p></td>
-<td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.Adapter.__call__" title="torch_openreml.covariance.Adapter.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> using automatic differentiation.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_grad</span></code>([free_params])</p></td>
+<td><p>Compute the Jacobian of <code class="xref py py-meth docutils literal notranslate"><span class="pre">build()</span></code> with respect to free parameters using automatic differentiation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_params</span></code>([free_params, include_fixed, ...])</p></td>
 <td><p>Construct the full parameter tensor from free parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Adapter.disable_cache" title="torch_openreml.covariance.Adapter.disable_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">disable_cache</span></code></a>()</p></td>
+<td><p>Disable intermediate caching on this adapter and its adaptee.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Adapter.enable_cache" title="torch_openreml.covariance.Adapter.enable_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_cache</span></code></a>()</p></td>
+<td><p>Enable intermediate caching on this adapter and its adaptee.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_dtype_device</span></code>()</p></td>
 <td><p>Get the dtype and the device of the parameter defaults.</p></td>
@@ -416,14 +422,14 @@ tensor expected by <code class="docutils literal notranslate"><span class="pre">
 <tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Adapter.manual_grad" title="torch_openreml.covariance.Adapter.manual_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code></a>([free_params])</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.Adapter.__call__" title="torch_openreml.covariance.Adapter.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> via the chain rule.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code>()</p></td>
-<td><p>Clear the intermediate computation cache.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Adapter.reset_intermediates" title="torch_openreml.covariance.Adapter.reset_intermediates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code></a>()</p></td>
+<td><p>Clear the intermediate caches of this adapter and its adaptee.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
 <td><p>Cache intermediate computation results keyed by the parameter values.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_param_specs</span></code>(key, *[, fixed, default, trans])</p></td>
-<td><p>Update the fields of a parameter specification in place.</p></td>
+<td><p>Update the fields of one or more parameter specifications in place.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
 <td><p>Compute the element-wise derivative of the free parameter transforms.</p></td>
@@ -496,13 +502,13 @@ tensor expected by <code class="docutils literal notranslate"><span class="pre">
 <td><p>Gradient computation mode.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian_method</span></code></p></td>
-<td><p>Jacobian method used by <a class="reference internal" href="#torch_openreml.covariance.Adapter.auto_grad" title="torch_openreml.covariance.Adapter.auto_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code></a>, one of <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;jacfwd&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;jacobian&quot;</span></code>.</p></td>
+<td><p>Jacobian method used by <code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code>, one of <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;jacfwd&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;jacobian&quot;</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian_chunk_size</span></code></p></td>
-<td><p>Number of outputs held per batch when <a class="reference internal" href="#torch_openreml.covariance.Adapter.auto_grad" title="torch_openreml.covariance.Adapter.auto_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code></a> differentiates with <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to compute the Jacobian in a single batch.</p></td>
+<td><p>Number of outputs held per batch when <code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code> differentiates with <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to compute the Jacobian in a single batch.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache</span></code></p></td>
-<td><p>Whether intermediate computation results are cached.</p></td>
+<td><p>Whether intermediate computation results are cached, toggled by <a class="reference internal" href="#torch_openreml.covariance.Adapter.enable_cache" title="torch_openreml.covariance.Adapter.enable_cache"><code class="xref py py-meth docutils literal notranslate"><span class="pre">enable_cache()</span></code></a> and <a class="reference internal" href="#torch_openreml.covariance.Adapter.disable_cache" title="torch_openreml.covariance.Adapter.disable_cache"><code class="xref py py-meth docutils literal notranslate"><span class="pre">disable_cache()</span></code></a>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -540,29 +546,33 @@ omitted, default values are used. Default: <code class="docutils literal notrans
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="torch_openreml.covariance.Adapter.auto_grad">
-<span class="sig-name descname"><span class="pre">auto_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/adapter.html#Adapter.auto_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Adapter.auto_grad" title="Link to this definition">¶</a></dt>
-<dd><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.Adapter.__call__" title="torch_openreml.covariance.Adapter.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> using automatic
-differentiation.</p>
-<p>Resets the adaptee’s intermediate cache before calling the parent
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code>, which
-uses the configured Jacobian method.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
-parameter dictionary.
-If omitted, default values are used. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(grad,</span> <span class="pre">grad_names)</span></code>, where <code class="docutils literal notranslate"><span class="pre">grad</span></code> is a 3D tensor of
-shape <code class="docutils literal notranslate"><span class="pre">(num_free_params,</span> <span class="pre">*shape)</span></code> and
-<code class="docutils literal notranslate"><span class="pre">grad_names</span></code> is a list of the corresponding parameter names.
-Returns <code class="docutils literal notranslate"><span class="pre">(None,</span> <span class="pre">[])</span></code> when the matrix has no free parameters.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
-</dd>
-</dl>
+<dt class="sig sig-object py" id="torch_openreml.covariance.Adapter.reset_intermediates">
+<span class="sig-name descname"><span class="pre">reset_intermediates</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/adapter.html#Adapter.reset_intermediates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Adapter.reset_intermediates" title="Link to this definition">¶</a></dt>
+<dd><p>Clear the intermediate caches of this adapter and its adaptee.</p>
+<p>Extends <code class="xref py py-meth docutils literal notranslate"><span class="pre">reset_intermediates()</span></code>,
+which clears this adapter’s own cache, by clearing the cache of the
+wrapped adaptee, whose intermediate results the adapter’s calls
+produce.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Adapter.enable_cache">
+<span class="sig-name descname"><span class="pre">enable_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/adapter.html#Adapter.enable_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Adapter.enable_cache" title="Link to this definition">¶</a></dt>
+<dd><p>Enable intermediate caching on this adapter and its adaptee.</p>
+<p>Extends <code class="xref py py-meth docutils literal notranslate"><span class="pre">enable_cache()</span></code>,
+which enables caching on this adapter, by enabling it on the wrapped
+adaptee. A nested adaptee continues the propagation through this same
+override.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Adapter.disable_cache">
+<span class="sig-name descname"><span class="pre">disable_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/adapter.html#Adapter.disable_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Adapter.disable_cache" title="Link to this definition">¶</a></dt>
+<dd><p>Disable intermediate caching on this adapter and its adaptee.</p>
+<p>Extends <code class="xref py py-meth docutils literal notranslate"><span class="pre">disable_cache()</span></code>,
+which disables caching on this adapter and clears its cache, by
+disabling caching on the wrapped adaptee and clearing its cache. A
+nested adaptee continues the propagation through this same override.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -710,7 +720,9 @@ that this adapter reparameterises.</p>
 <li><a class="reference internal" href="#">torch_openreml.covariance.Adapter</a><ul>
 <li><a class="reference internal" href="#torch_openreml.covariance.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a><ul>
 <li><a class="reference internal" href="#torch_openreml.covariance.Adapter.__call__"><code class="docutils literal notranslate"><span class="pre">Adapter.__call__()</span></code></a></li>
-<li><a class="reference internal" href="#torch_openreml.covariance.Adapter.auto_grad"><code class="docutils literal notranslate"><span class="pre">Adapter.auto_grad()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Adapter.reset_intermediates"><code class="docutils literal notranslate"><span class="pre">Adapter.reset_intermediates()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Adapter.enable_cache"><code class="docutils literal notranslate"><span class="pre">Adapter.enable_cache()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Adapter.disable_cache"><code class="docutils literal notranslate"><span class="pre">Adapter.disable_cache()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Adapter.manual_grad"><code class="docutils literal notranslate"><span class="pre">Adapter.manual_grad()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Adapter.param_map"><code class="docutils literal notranslate"><span class="pre">Adapter.param_map</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Adapter.adaptee"><code class="docutils literal notranslate"><span class="pre">Adapter.adaptee</span></code></a></li>

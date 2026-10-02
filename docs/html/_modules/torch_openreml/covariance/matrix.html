@@ -349,8 +349,9 @@
 <span class="sd">        Args:</span>
 <span class="sd">            shape (tuple or None): Expected output dimensions of the constructed matrix.</span>
 <span class="sd">                Used for validation; the actual shape may be set by subclasses.</span>
-<span class="sd">            param_specs (dict): Parameter specifications. Keys should be strings</span>
-<span class="sd">                representing parameter names. Values should be dictionaries</span>
+<span class="sd">            param_specs (dict): Parameter specifications. Keys should be non-empty</span>
+<span class="sd">                strings representing parameter names, which must not contain ``&quot;/&quot;``.</span>
+<span class="sd">                Values should be dictionaries</span>
 <span class="sd">                containing the specification for each parameter. Each specification</span>
 <span class="sd">                dictionary should contain the keys ``&quot;fixed&quot;``, ``&quot;default&quot;``, and ``&quot;trans&quot;``,</span>
 <span class="sd">                representing whether the parameter is fixed or free (bool), the</span>
@@ -360,7 +361,8 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            TypeError: If ``param_specs`` does not follow any of the requirements</span>
 <span class="sd">                listed in the argument description, or if ``shape`` is not a tuple or torch.Size.</span>
-<span class="sd">            ValueError: If ``shape`` values are non-negative.</span>
+<span class="sd">            ValueError: If ``shape`` values are non-negative, or if a parameter</span>
+<span class="sd">                name is empty or contains ``&quot;/&quot;``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
@@ -385,7 +387,8 @@
         <span class="c1">#: time.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">jacobian_chunk_size</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="c1">#: bool: Whether intermediate computation results are cached. When ``False``,</span>
+        <span class="c1">#: bool: Whether intermediate computation results are cached, toggled by</span>
+        <span class="c1">#: :meth:`enable_cache` and :meth:`disable_cache`. When ``False``,</span>
         <span class="c1">#: :meth:`set_intermediates` does nothing and :meth:`get_intermediates` always</span>
         <span class="c1">#: returns ``None``, both before validating their arguments.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="kc">True</span>
@@ -550,6 +553,60 @@
 <span class="sd">            print(mat.get_intermediates(free_params))</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_intermediates</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;intermediates&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="Matrix.enable_cache">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.enable_cache">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">enable_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Enable caching of intermediate computation results.</span>
+
+<span class="sd">        Sets :attr:`cache` to ``True``, so :meth:`set_intermediates` stores</span>
+<span class="sd">        entries again and :meth:`get_intermediates` can return them. Nothing</span>
+<span class="sd">        is cached until the next :meth:`set_intermediates` call, so entries</span>
+<span class="sd">        cleared by an earlier :meth:`disable_cache` do not come back.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            from torch_openreml.covariance import ScalarMatrix</span>
+
+<span class="sd">            mat = ScalarMatrix(3)</span>
+<span class="sd">            mat.disable_cache()</span>
+<span class="sd">            mat.enable_cache()</span>
+<span class="sd">            mat.cache</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="Matrix.disable_cache">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.disable_cache">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disable_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Disable caching of intermediate computation results.</span>
+
+<span class="sd">        Sets :attr:`cache` to ``False`` and clears the cache via</span>
+<span class="sd">        :meth:`reset_intermediates`, so an entry stored while caching was</span>
+<span class="sd">        enabled cannot be returned if caching is turned back on. While</span>
+<span class="sd">        disabled, :meth:`set_intermediates` does nothing and</span>
+<span class="sd">        :meth:`get_intermediates` always returns ``None``.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from torch_openreml.covariance import ScalarMatrix</span>
+
+<span class="sd">            mat = ScalarMatrix(3)</span>
+<span class="sd">            params = mat.build_params(torch.tensor([0.5]))</span>
+<span class="sd">            mat.set_intermediates(params, &quot;value&quot;)</span>
+<span class="sd">            mat.disable_cache()</span>
+<span class="sd">            print(mat.get_intermediates(params))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_intermediates</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Matrix.get_default_dtype_device">
@@ -734,19 +791,27 @@
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.set_param_specs">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_param_specs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Update the fields of a parameter specification in place.</span>
+<span class="sd">        Update the fields of one or more parameter specifications in place.</span>
 
 <span class="sd">        ``key`` is resolved against :attr:`param_specs`, and each field passed</span>
-<span class="sd">        as something other than ``None`` replaces that field of the resolved</span>
+<span class="sd">        as something other than ``None`` replaces that field of every resolved</span>
 <span class="sd">        specification. Fields left as ``None`` are kept unchanged, so a call</span>
 <span class="sd">        without fields changes nothing. Values are assigned as given, without</span>
 <span class="sd">        validation or copying, and take effect on the next call.</span>
 
+<span class="sd">        A ``key`` that does not end with ``&quot;/&quot;`` addresses one specification</span>
+<span class="sd">        exactly. A ``key`` that ends with ``&quot;/&quot;`` addresses a subtree instead:</span>
+<span class="sd">        every parameter whose key has ``key`` as a leading path, including the</span>
+<span class="sd">        node itself. ``&quot;A/&quot;`` therefore addresses every parameter of the</span>
+<span class="sd">        operand ``&quot;A&quot;``, nested operands below it included, and ``&quot;/&quot;``</span>
+<span class="sd">        addresses every parameter of the matrix.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            key (str): Key of the parameter specification, as :attr:`param_specs`</span>
-<span class="sd">                exposes it. Composites namespace their operands&#39; parameters, so</span>
-<span class="sd">                ``&quot;A/sigma^2&quot;`` addresses the parameter ``&quot;sigma^2&quot;`` of the</span>
-<span class="sd">                operand ``&quot;A&quot;``.</span>
+<span class="sd">                exposes it, or a subtree path ending with ``&quot;/&quot;``. Composites</span>
+<span class="sd">                namespace their operands&#39; parameters, so ``&quot;A/sigma^2&quot;``</span>
+<span class="sd">                addresses the parameter ``&quot;sigma^2&quot;`` of the operand ``&quot;A&quot;``,</span>
+<span class="sd">                and ``&quot;A/&quot;`` addresses every parameter under it.</span>
 <span class="sd">            fixed (bool, optional): New value for the ``&quot;fixed&quot;`` field.</span>
 <span class="sd">                Default: ``None``.</span>
 <span class="sd">            default (torch.Tensor, optional): New value for the ``&quot;default&quot;``</span>
@@ -756,7 +821,8 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            TypeError: If ``key`` is not a str.</span>
-<span class="sd">            ValueError: If ``key`` is not a parameter of this matrix.</span>
+<span class="sd">            ValueError: If ``key`` is not a parameter of this matrix, and not a</span>
+<span class="sd">                subtree path that resolves to at least one.</span>
 
 <span class="sd">        Example:</span>
 
@@ -772,25 +838,47 @@
 <span class="sd">        .. jupyter-execute::</span>
 
 <span class="sd">            mat.build_params(torch.tensor([1.0, 3.0]), trans=False)</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            from torch_openreml.covariance import BlockDiagonal, ScalarMatrix</span>
+
+<span class="sd">            op = BlockDiagonal(subject=DiagonalMatrix(2), noise=ScalarMatrix(2))</span>
+<span class="sd">            op.set_param_specs(&quot;subject/&quot;, fixed=True)</span>
+<span class="sd">            op.free_param_names</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            op.set_param_specs(&quot;/&quot;, fixed=True)</span>
+<span class="sd">            op.free_param_names</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;key&#39; must be a str, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
 
         <span class="n">param_specs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_specs</span>
 
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">param_specs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">):</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="n">key</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">segments</span> <span class="o">=</span> <span class="n">prefix</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">prefix</span> <span class="k">else</span> <span class="p">[]</span>
+            <span class="n">specs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">spec</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">param_specs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[:</span><span class="nb">len</span><span class="p">(</span><span class="n">segments</span><span class="p">)]</span> <span class="o">==</span> <span class="n">segments</span>
+            <span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">specs</span> <span class="o">=</span> <span class="p">[</span><span class="n">param_specs</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">param_specs</span> <span class="k">else</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">specs</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot resolve key &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39;!&quot;</span><span class="p">)</span>
 
-        <span class="n">spec</span> <span class="o">=</span> <span class="n">param_specs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">specs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">fixed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fixed</span>
 
-        <span class="k">if</span> <span class="n">fixed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fixed</span>
+            <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">default</span>
 
-        <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">default</span>
-
-        <span class="k">if</span> <span class="n">trans</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;trans&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trans</span></div>
+            <span class="k">if</span> <span class="n">trans</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;trans&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trans</span></div>
 
 
 <div class="viewcode-block" id="Matrix.trans_grad">
@@ -1055,6 +1143,12 @@
         <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">param_specs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter name must be a str, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">param_name</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">param_name</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameter name must not be empty!&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">param_name</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid parameter name &#39;</span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s2">&#39;: &#39;/&#39; is not allowed!&quot;</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Individual parameter specification must be a dict, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>

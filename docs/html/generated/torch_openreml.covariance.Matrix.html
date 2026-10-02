@@ -337,8 +337,9 @@ structure from the provided parameters.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>shape</strong> (<em>tuple</em><em> or </em><em>None</em>) – Expected output dimensions of the constructed matrix.
 Used for validation; the actual shape may be set by subclasses.</p></li>
-<li><p><strong>param_specs</strong> (<em>dict</em>) – Parameter specifications. Keys should be strings
-representing parameter names. Values should be dictionaries
+<li><p><strong>param_specs</strong> (<em>dict</em>) – Parameter specifications. Keys should be non-empty
+strings representing parameter names, which must not contain <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code>.
+Values should be dictionaries
 containing the specification for each parameter. Each specification
 dictionary should contain the keys <code class="docutils literal notranslate"><span class="pre">&quot;fixed&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;default&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;trans&quot;</span></code>,
 representing whether the parameter is fixed or free (bool), the
@@ -350,7 +351,8 @@ respectively.</p></li>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">param_specs</span></code> does not follow any of the requirements
     listed in the argument description, or if <code class="docutils literal notranslate"><span class="pre">shape</span></code> is not a tuple or torch.Size.</p></li>
-<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">shape</span></code> values are non-negative.</p></li>
+<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">shape</span></code> values are non-negative, or if a parameter
+    name is empty or contains <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -366,6 +368,12 @@ respectively.</p></li>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.build_params" title="torch_openreml.covariance.Matrix.build_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_params</span></code></a>([free_params, include_fixed, ...])</p></td>
 <td><p>Construct the full parameter tensor from free parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.disable_cache" title="torch_openreml.covariance.Matrix.disable_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">disable_cache</span></code></a>()</p></td>
+<td><p>Disable caching of intermediate computation results.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.enable_cache" title="torch_openreml.covariance.Matrix.enable_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_cache</span></code></a>()</p></td>
+<td><p>Enable caching of intermediate computation results.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.get_default_dtype_device" title="torch_openreml.covariance.Matrix.get_default_dtype_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_dtype_device</span></code></a>()</p></td>
 <td><p>Get the dtype and the device of the parameter defaults.</p></td>
@@ -386,7 +394,7 @@ respectively.</p></li>
 <td><p>Cache intermediate computation results keyed by the parameter values.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_param_specs" title="torch_openreml.covariance.Matrix.set_param_specs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_param_specs</span></code></a>(key, *[, fixed, default, trans])</p></td>
-<td><p>Update the fields of a parameter specification in place.</p></td>
+<td><p>Update the fields of one or more parameter specifications in place.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.trans_grad" title="torch_openreml.covariance.Matrix.trans_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code></a>([free_params])</p></td>
 <td><p>Compute the element-wise derivative of the free parameter transforms.</p></td>
@@ -459,7 +467,7 @@ respectively.</p></li>
 <td><p>Number of outputs held per batch when <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_grad" title="torch_openreml.covariance.Matrix.auto_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code></a> differentiates with <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to compute the Jacobian in a single batch.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.cache" title="torch_openreml.covariance.Matrix.cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache</span></code></a></p></td>
-<td><p>Whether intermediate computation results are cached.</p></td>
+<td><p>Whether intermediate computation results are cached, toggled by <a class="reference internal" href="#torch_openreml.covariance.Matrix.enable_cache" title="torch_openreml.covariance.Matrix.enable_cache"><code class="xref py py-meth docutils literal notranslate"><span class="pre">enable_cache()</span></code></a> and <a class="reference internal" href="#torch_openreml.covariance.Matrix.disable_cache" title="torch_openreml.covariance.Matrix.disable_cache"><code class="xref py py-meth docutils literal notranslate"><span class="pre">disable_cache()</span></code></a>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -507,7 +515,8 @@ time.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.cache">
 <span class="sig-name descname"><span class="pre">cache</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.cache" title="Link to this definition">¶</a></dt>
-<dd><p>Whether intermediate computation results are cached. When <code class="docutils literal notranslate"><span class="pre">False</span></code>,
+<dd><p>Whether intermediate computation results are cached, toggled by
+<a class="reference internal" href="#torch_openreml.covariance.Matrix.enable_cache" title="torch_openreml.covariance.Matrix.enable_cache"><code class="xref py py-meth docutils literal notranslate"><span class="pre">enable_cache()</span></code></a> and <a class="reference internal" href="#torch_openreml.covariance.Matrix.disable_cache" title="torch_openreml.covariance.Matrix.disable_cache"><code class="xref py py-meth docutils literal notranslate"><span class="pre">disable_cache()</span></code></a>. When <code class="docutils literal notranslate"><span class="pre">False</span></code>,
 <a class="reference internal" href="#torch_openreml.covariance.Matrix.set_intermediates" title="torch_openreml.covariance.Matrix.set_intermediates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_intermediates()</span></code></a> does nothing and <a class="reference internal" href="#torch_openreml.covariance.Matrix.get_intermediates" title="torch_openreml.covariance.Matrix.get_intermediates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_intermediates()</span></code></a> always
 returns <code class="docutils literal notranslate"><span class="pre">None</span></code>, both before validating their arguments.</p>
 <dl class="field-list simple">
@@ -671,6 +680,65 @@ and within <a class="reference internal" href="#torch_openreml.covariance.Matrix
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.enable_cache">
+<span class="sig-name descname"><span class="pre">enable_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.enable_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.enable_cache" title="Link to this definition">¶</a></dt>
+<dd><p>Enable caching of intermediate computation results.</p>
+<p>Sets <a class="reference internal" href="#torch_openreml.covariance.Matrix.cache" title="torch_openreml.covariance.Matrix.cache"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cache</span></code></a> to <code class="docutils literal notranslate"><span class="pre">True</span></code>, so <a class="reference internal" href="#torch_openreml.covariance.Matrix.set_intermediates" title="torch_openreml.covariance.Matrix.set_intermediates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_intermediates()</span></code></a> stores
+entries again and <a class="reference internal" href="#torch_openreml.covariance.Matrix.get_intermediates" title="torch_openreml.covariance.Matrix.get_intermediates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_intermediates()</span></code></a> can return them. Nothing
+is cached until the next <a class="reference internal" href="#torch_openreml.covariance.Matrix.set_intermediates" title="torch_openreml.covariance.Matrix.set_intermediates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_intermediates()</span></code></a> call, so entries
+cleared by an earlier <a class="reference internal" href="#torch_openreml.covariance.Matrix.disable_cache" title="torch_openreml.covariance.Matrix.disable_cache"><code class="xref py py-meth docutils literal notranslate"><span class="pre">disable_cache()</span></code></a> do not come back.</p>
+<p>Example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarMatrix</span>
+
+<span class="n">mat</span> <span class="o">=</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">disable_cache</span><span class="p">()</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">enable_cache</span><span class="p">()</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">cache</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.disable_cache">
+<span class="sig-name descname"><span class="pre">disable_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.disable_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.disable_cache" title="Link to this definition">¶</a></dt>
+<dd><p>Disable caching of intermediate computation results.</p>
+<p>Sets <a class="reference internal" href="#torch_openreml.covariance.Matrix.cache" title="torch_openreml.covariance.Matrix.cache"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cache</span></code></a> to <code class="docutils literal notranslate"><span class="pre">False</span></code> and clears the cache via
+<a class="reference internal" href="#torch_openreml.covariance.Matrix.reset_intermediates" title="torch_openreml.covariance.Matrix.reset_intermediates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset_intermediates()</span></code></a>, so an entry stored while caching was
+enabled cannot be returned if caching is turned back on. While
+disabled, <a class="reference internal" href="#torch_openreml.covariance.Matrix.set_intermediates" title="torch_openreml.covariance.Matrix.set_intermediates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_intermediates()</span></code></a> does nothing and
+<a class="reference internal" href="#torch_openreml.covariance.Matrix.get_intermediates" title="torch_openreml.covariance.Matrix.get_intermediates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_intermediates()</span></code></a> always returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<p>Example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarMatrix</span>
+
+<span class="n">mat</span> <span class="o">=</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.5</span><span class="p">]))</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">set_intermediates</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">disable_cache</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">get_intermediates</span><span class="p">(</span><span class="n">params</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>None
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.get_default_dtype_device">
 <span class="sig-name descname"><span class="pre">get_default_dtype_device</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.get_default_dtype_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.get_default_dtype_device" title="Link to this definition">¶</a></dt>
 <dd><p>Get the dtype and the device of the parameter defaults.</p>
@@ -819,19 +887,26 @@ dictionary mapping parameter names to value tensors.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.set_param_specs">
 <span class="sig-name descname"><span class="pre">set_param_specs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.set_param_specs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.set_param_specs" title="Link to this definition">¶</a></dt>
-<dd><p>Update the fields of a parameter specification in place.</p>
+<dd><p>Update the fields of one or more parameter specifications in place.</p>
 <p><code class="docutils literal notranslate"><span class="pre">key</span></code> is resolved against <a class="reference internal" href="#torch_openreml.covariance.Matrix.param_specs" title="torch_openreml.covariance.Matrix.param_specs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">param_specs</span></code></a>, and each field passed
-as something other than <code class="docutils literal notranslate"><span class="pre">None</span></code> replaces that field of the resolved
+as something other than <code class="docutils literal notranslate"><span class="pre">None</span></code> replaces that field of every resolved
 specification. Fields left as <code class="docutils literal notranslate"><span class="pre">None</span></code> are kept unchanged, so a call
 without fields changes nothing. Values are assigned as given, without
 validation or copying, and take effect on the next call.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">key</span></code> that does not end with <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code> addresses one specification
+exactly. A <code class="docutils literal notranslate"><span class="pre">key</span></code> that ends with <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code> addresses a subtree instead:
+every parameter whose key has <code class="docutils literal notranslate"><span class="pre">key</span></code> as a leading path, including the
+node itself. <code class="docutils literal notranslate"><span class="pre">&quot;A/&quot;</span></code> therefore addresses every parameter of the
+operand <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>, nested operands below it included, and <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code>
+addresses every parameter of the matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>key</strong> (<em>str</em>) – Key of the parameter specification, as <a class="reference internal" href="#torch_openreml.covariance.Matrix.param_specs" title="torch_openreml.covariance.Matrix.param_specs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">param_specs</span></code></a>
-exposes it. Composites namespace their operands’ parameters, so
-<code class="docutils literal notranslate"><span class="pre">&quot;A/sigma^2&quot;</span></code> addresses the parameter <code class="docutils literal notranslate"><span class="pre">&quot;sigma^2&quot;</span></code> of the
-operand <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>.</p></li>
+exposes it, or a subtree path ending with <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code>. Composites
+namespace their operands’ parameters, so <code class="docutils literal notranslate"><span class="pre">&quot;A/sigma^2&quot;</span></code>
+addresses the parameter <code class="docutils literal notranslate"><span class="pre">&quot;sigma^2&quot;</span></code> of the operand <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">&quot;A/&quot;</span></code> addresses every parameter under it.</p></li>
 <li><p><strong>fixed</strong> (<em>bool</em><em>, </em><em>optional</em>) – New value for the <code class="docutils literal notranslate"><span class="pre">&quot;fixed&quot;</span></code> field.
 Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 <li><p><strong>default</strong> (<em>torch.Tensor</em><em>, </em><em>optional</em>) – New value for the <code class="docutils literal notranslate"><span class="pre">&quot;default&quot;</span></code>
@@ -843,7 +918,8 @@ Default: <code class="docutils literal notranslate"><span class="pre">None</span
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">key</span></code> is not a str.</p></li>
-<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">key</span></code> is not a parameter of this matrix.</p></li>
+<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">key</span></code> is not a parameter of this matrix, and not a
+    subtree path that resolves to at least one.</p></li>
 </ul>
 </dd>
 </dl>
@@ -873,6 +949,35 @@ Default: <code class="docutils literal notranslate"><span class="pre">None</span
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([1.0000, 7.5000, 3.0000])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">BlockDiagonal</span><span class="p">,</span> <span class="n">ScalarMatrix</span>
+
+<span class="n">op</span> <span class="o">=</span> <span class="n">BlockDiagonal</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">noise</span><span class="o">=</span><span class="n">ScalarMatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">op</span><span class="o">.</span><span class="n">set_param_specs</span><span class="p">(</span><span class="s2">&quot;subject/&quot;</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">op</span><span class="o">.</span><span class="n">free_param_names</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;noise/sigma^2&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">op</span><span class="o">.</span><span class="n">set_param_specs</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">op</span><span class="o">.</span><span class="n">free_param_names</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[]
 </pre></div>
 </div>
 </div>
@@ -1383,6 +1488,8 @@ and <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_g
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_intermediates"><code class="docutils literal notranslate"><span class="pre">Matrix.set_intermediates()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.get_intermediates"><code class="docutils literal notranslate"><span class="pre">Matrix.get_intermediates()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.reset_intermediates"><code class="docutils literal notranslate"><span class="pre">Matrix.reset_intermediates()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.enable_cache"><code class="docutils literal notranslate"><span class="pre">Matrix.enable_cache()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.disable_cache"><code class="docutils literal notranslate"><span class="pre">Matrix.disable_cache()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.get_default_dtype_device"><code class="docutils literal notranslate"><span class="pre">Matrix.get_default_dtype_device()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.build_params"><code class="docutils literal notranslate"><span class="pre">Matrix.build_params()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_param_specs"><code class="docutils literal notranslate"><span class="pre">Matrix.set_param_specs()</span></code></a></li>

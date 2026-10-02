@@ -404,6 +404,12 @@ respectively.</p></li>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_params</span></code>([free_params, include_fixed, ...])</p></td>
 <td><p>Construct the full parameter tensor from free parameters.</p></td>
 </tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">disable_cache</span></code>()</p></td>
+<td><p>Disable caching of intermediate computation results.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_cache</span></code>()</p></td>
+<td><p>Enable caching of intermediate computation results.</p></td>
+</tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_dtype_device</span></code>()</p></td>
 <td><p>Get the dtype and the device of the parameter defaults.</p></td>
 </tr>
@@ -423,7 +429,7 @@ respectively.</p></li>
 <td><p>Cache intermediate computation results keyed by the parameter values.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_param_specs</span></code>(key, *[, fixed, default, trans])</p></td>
-<td><p>Update the fields of a parameter specification in place.</p></td>
+<td><p>Update the fields of one or more parameter specifications in place.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
 <td><p>Compute the element-wise derivative of the free parameter transforms.</p></td>
@@ -496,7 +502,7 @@ respectively.</p></li>
 <td><p>Number of outputs held per batch when <code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code> differentiates with <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to compute the Jacobian in a single batch.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache</span></code></p></td>
-<td><p>Whether intermediate computation results are cached.</p></td>
+<td><p>Whether intermediate computation results are cached, toggled by <code class="xref py py-meth docutils literal notranslate"><span class="pre">enable_cache()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">disable_cache()</span></code>.</p></td>
 </tr>
 </tbody>
 </table>

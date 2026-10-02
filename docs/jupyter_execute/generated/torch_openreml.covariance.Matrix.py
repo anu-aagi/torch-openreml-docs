@@ -53,10 +53,34 @@ print(mat.get_intermediates(free_params))
 from torch_openreml.covariance import ScalarMatrix
 
 mat = ScalarMatrix(3)
-mat.get_default_dtype_device()
+mat.disable_cache()
+mat.enable_cache()
+mat.cache
 
 
 # In[6]:
+
+
+import torch
+from torch_openreml.covariance import ScalarMatrix
+
+mat = ScalarMatrix(3)
+params = mat.build_params(torch.tensor([0.5]))
+mat.set_intermediates(params, "value")
+mat.disable_cache()
+print(mat.get_intermediates(params))
+
+
+# In[7]:
+
+
+from torch_openreml.covariance import ScalarMatrix
+
+mat = ScalarMatrix(3)
+mat.get_default_dtype_device()
+
+
+# In[8]:
 
 
 import torch
@@ -67,32 +91,32 @@ free_params = torch.tensor([0.0, 0.5, 1.0])
 mat.build_params(free_params)
 
 
-# In[7]:
+# In[9]:
 
 
 mat.build_params()
 
 
-# In[8]:
+# In[10]:
 
 
 mat.param_specs["sigma^2_2"]["fixed"] = True
 mat.build_params(free_params[0:2])
 
 
-# In[9]:
+# In[11]:
 
 
 mat.build_params(free_params[0:2], include_fixed=False)
 
 
-# In[10]:
+# In[12]:
 
 
 mat.build_params(free_params[0:2], include_fixed=False, trans=False)
 
 
-# In[11]:
+# In[13]:
 
 
 import torch
@@ -103,13 +127,30 @@ mat.set_param_specs("sigma^2_1", fixed=True, default=torch.tensor([7.5]))
 mat.free_param_names
 
 
-# In[12]:
+# In[14]:
 
 
 mat.build_params(torch.tensor([1.0, 3.0]), trans=False)
 
 
-# In[13]:
+# In[15]:
+
+
+from torch_openreml.covariance import BlockDiagonal, ScalarMatrix
+
+op = BlockDiagonal(subject=DiagonalMatrix(2), noise=ScalarMatrix(2))
+op.set_param_specs("subject/", fixed=True)
+op.free_param_names
+
+
+# In[16]:
+
+
+op.set_param_specs("/", fixed=True)
+op.free_param_names
+
+
+# In[17]:
 
 
 import torch
@@ -120,13 +161,13 @@ free_params = torch.tensor([0.0, 0.5, 1.0])
 mat.trans_grad(free_params)
 
 
-# In[14]:
+# In[18]:
 
 
 mat.trans_grad()
 
 
-# In[15]:
+# In[19]:
 
 
 import torch
@@ -138,7 +179,7 @@ grad, grad_names = mat.auto_grad(free_params)
 grad, grad_names
 
 
-# In[16]:
+# In[20]:
 
 
 import torch

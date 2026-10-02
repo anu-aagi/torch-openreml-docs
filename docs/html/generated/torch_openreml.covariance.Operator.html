@@ -357,14 +357,14 @@ fixed tensor operands are cast to it.</p>
 and treated as a named operand mapping.</p></li>
 <li><p><strong>**kwargs</strong> – Operands as keyword arguments, mapping operand names to
 <a class="reference internal" href="torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix" title="torch_openreml.covariance.matrix.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a> or
-<code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code> instances. Operand names must not contain
-<code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code>.</p></li>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code> instances. Operand names must be non-empty
+and must not contain <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>ValueError</strong> – If both positional and keyword arguments are provided,
-    or if any operand name contains <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code>.</p></li>
+    or if any operand name is empty or contains <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code>.</p></li>
 <li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">operands</span></code> is not a dict, if any operand name is not
     a string, if any operand is not a
     <a class="reference internal" href="torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix" title="torch_openreml.covariance.matrix.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a> or
@@ -470,6 +470,12 @@ and treated as a named operand mapping.</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Operator.call_tree" title="torch_openreml.covariance.Operator.call_tree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">call_tree</span></code></a>([free_params])</p></td>
 <td><p>Evaluate this operator and every nested operand, returning each result keyed by its path.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Operator.disable_cache" title="torch_openreml.covariance.Operator.disable_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">disable_cache</span></code></a>()</p></td>
+<td><p>Disable intermediate caching on this operator and its operands.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Operator.enable_cache" title="torch_openreml.covariance.Operator.enable_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_cache</span></code></a>()</p></td>
+<td><p>Enable intermediate caching on this operator and its operands.</p></td>
+</tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_dtype_device</span></code>()</p></td>
 <td><p>Get the dtype and the device of the parameter defaults.</p></td>
 </tr>
@@ -495,7 +501,7 @@ and treated as a named operand mapping.</p></li>
 <td><p>Cache intermediate computation results keyed by the parameter values.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_param_specs</span></code>(key, *[, fixed, default, trans])</p></td>
-<td><p>Update the fields of a parameter specification in place.</p></td>
+<td><p>Update the fields of one or more parameter specifications in place.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
 <td><p>Compute the element-wise derivative of the free parameter transforms.</p></td>
@@ -571,7 +577,7 @@ and treated as a named operand mapping.</p></li>
 <td><p>Number of outputs held per batch when <code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code> differentiates with <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to compute the Jacobian in a single batch.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache</span></code></p></td>
-<td><p>Whether intermediate computation results are cached.</p></td>
+<td><p>Whether intermediate computation results are cached, toggled by <a class="reference internal" href="#torch_openreml.covariance.Operator.enable_cache" title="torch_openreml.covariance.Operator.enable_cache"><code class="xref py py-meth docutils literal notranslate"><span class="pre">enable_cache()</span></code></a> and <a class="reference internal" href="#torch_openreml.covariance.Operator.disable_cache" title="torch_openreml.covariance.Operator.disable_cache"><code class="xref py py-meth docutils literal notranslate"><span class="pre">disable_cache()</span></code></a>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1038,6 +1044,29 @@ operand. Nested operators continue the descent through this same
 override, so resetting a node resets everything below it.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Operator.enable_cache">
+<span class="sig-name descname"><span class="pre">enable_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/operator.html#Operator.enable_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Operator.enable_cache" title="Link to this definition">¶</a></dt>
+<dd><p>Enable intermediate caching on this operator and its operands.</p>
+<p>Extends <code class="xref py py-meth docutils literal notranslate"><span class="pre">enable_cache()</span></code>,
+which enables caching on this operator, by recursively enabling it on
+every <a class="reference internal" href="torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix" title="torch_openreml.covariance.matrix.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a> operand. Nested
+operators continue the descent through this same override, so enabling
+a node enables everything below it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Operator.disable_cache">
+<span class="sig-name descname"><span class="pre">disable_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/operator.html#Operator.disable_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Operator.disable_cache" title="Link to this definition">¶</a></dt>
+<dd><p>Disable intermediate caching on this operator and its operands.</p>
+<p>Extends <code class="xref py py-meth docutils literal notranslate"><span class="pre">disable_cache()</span></code>,
+which disables caching on this operator and clears its cache, by
+recursively disabling caching on every
+<a class="reference internal" href="torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix" title="torch_openreml.covariance.matrix.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a> operand and clearing
+their caches. Nested operators continue the descent through this same
+override, so disabling a node disables everything below it.</p>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Operator.operands">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">operands</span></span><a class="headerlink" href="#torch_openreml.covariance.Operator.operands" title="Link to this definition">¶</a></dt>
@@ -1147,6 +1176,8 @@ override, so resetting a node resets everything below it.</p>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.grad_tree"><code class="docutils literal notranslate"><span class="pre">Operator.grad_tree()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.operands_grad"><code class="docutils literal notranslate"><span class="pre">Operator.operands_grad()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.reset_intermediates"><code class="docutils literal notranslate"><span class="pre">Operator.reset_intermediates()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Operator.enable_cache"><code class="docutils literal notranslate"><span class="pre">Operator.enable_cache()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Operator.disable_cache"><code class="docutils literal notranslate"><span class="pre">Operator.disable_cache()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.operands"><code class="docutils literal notranslate"><span class="pre">Operator.operands</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.param_specs"><code class="docutils literal notranslate"><span class="pre">Operator.param_specs</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Operator.repr_dict"><code class="docutils literal notranslate"><span class="pre">Operator.repr_dict</span></code></a></li>

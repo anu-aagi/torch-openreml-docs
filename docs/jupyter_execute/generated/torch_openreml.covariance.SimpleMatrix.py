@@ -10,7 +10,7 @@ from torch_openreml.covariance import SimpleMatrix
 def my_v(free_params):
     return torch.diag(free_params)
 
-mat = SimpleMatrix(num_free_params=3, call=my_v, default=1.0)
+mat = SimpleMatrix(num_free_params=3, call=my_v, default=torch.tensor([1.0]))
 mat(torch.tensor([1.0, 2.0, 3.0]))
 
 

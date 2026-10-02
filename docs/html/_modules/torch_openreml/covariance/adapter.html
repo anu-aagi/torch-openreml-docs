@@ -8,7 +8,7 @@
         <title>torch_openreml.covariance.adapter - torch-openreml 0.3.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df86a2a8" />
@@ -398,13 +398,13 @@
 <span class="sd">            adapter(torch.tensor([0.0]))</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_adaptee</span> <span class="o">=</span> <span class="n">adaptee</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_param_map</span> <span class="o">=</span> <span class="n">param_map</span>
+
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">adaptee</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">param_specs</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">trans</span><span class="p">,</span> <span class="n">TransformIdentity</span><span class="p">)</span> <span class="k">for</span> <span class="n">trans</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_trans</span><span class="o">.</span><span class="n">values</span><span class="p">()]):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Adapter preprocessing does not support parameter transformations other than TransformIdentity!&quot;</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_adaptee</span> <span class="o">=</span> <span class="n">adaptee</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_param_map</span> <span class="o">=</span> <span class="n">param_map</span>
 
 <div class="viewcode-block" id="Adapter.__call__">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Adapter.html#torch_openreml.covariance.Adapter.__call__">[docs]</a>
@@ -439,30 +439,49 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">adaptee</span><span class="p">(</span><span class="n">adaptee_free_params</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Adapter.auto_grad">
-<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Adapter.html#torch_openreml.covariance.Adapter.auto_grad">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">auto_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Adapter.reset_intermediates">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Adapter.html#torch_openreml.covariance.Adapter.reset_intermediates">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset_intermediates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute the Jacobian of :meth:`__call__` using automatic</span>
-<span class="sd">        differentiation.</span>
+<span class="sd">        Clear the intermediate caches of this adapter and its adaptee.</span>
 
-<span class="sd">        Resets the adaptee&#39;s intermediate cache before calling the parent</span>
-<span class="sd">        :meth:`~torch_openreml.covariance.matrix.Matrix.auto_grad`, which</span>
-<span class="sd">        uses the configured Jacobian method.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
-<span class="sd">                parameter dictionary.</span>
-<span class="sd">                If omitted, default values are used. Default: ``None``.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            tuple: ``(grad, grad_names)``, where ``grad`` is a 3D tensor of</span>
-<span class="sd">            shape ``(num_free_params, *shape)`` and</span>
-<span class="sd">            ``grad_names`` is a list of the corresponding parameter names.</span>
-<span class="sd">            Returns ``(None, [])`` when the matrix has no free parameters.</span>
+<span class="sd">        Extends :meth:`~torch_openreml.covariance.matrix.Matrix.reset_intermediates`,</span>
+<span class="sd">        which clears this adapter&#39;s own cache, by clearing the cache of the</span>
+<span class="sd">        wrapped adaptee, whose intermediate results the adapter&#39;s calls</span>
+<span class="sd">        produce.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">adaptee</span><span class="o">.</span><span class="n">reset_intermediates</span><span class="p">()</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">auto_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">reset_intermediates</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adaptee</span><span class="o">.</span><span class="n">reset_intermediates</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Adapter.enable_cache">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Adapter.html#torch_openreml.covariance.Adapter.enable_cache">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">enable_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Enable intermediate caching on this adapter and its adaptee.</span>
+
+<span class="sd">        Extends :meth:`~torch_openreml.covariance.matrix.Matrix.enable_cache`,</span>
+<span class="sd">        which enables caching on this adapter, by enabling it on the wrapped</span>
+<span class="sd">        adaptee. A nested adaptee continues the propagation through this same</span>
+<span class="sd">        override.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">enable_cache</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adaptee</span><span class="o">.</span><span class="n">enable_cache</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Adapter.disable_cache">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Adapter.html#torch_openreml.covariance.Adapter.disable_cache">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disable_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Disable intermediate caching on this adapter and its adaptee.</span>
+
+<span class="sd">        Extends :meth:`~torch_openreml.covariance.matrix.Matrix.disable_cache`,</span>
+<span class="sd">        which disables caching on this adapter and clears its cache, by</span>
+<span class="sd">        disabling caching on the wrapped adaptee and clearing its cache. A</span>
+<span class="sd">        nested adaptee continues the propagation through this same override.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">disable_cache</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adaptee</span><span class="o">.</span><span class="n">disable_cache</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Adapter.manual_grad">

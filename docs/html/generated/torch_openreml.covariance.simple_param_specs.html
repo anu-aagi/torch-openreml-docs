@@ -9,7 +9,7 @@
         <title>torch_openreml.covariance.simple_param_specs - torch-openreml 0.3.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -318,18 +318,18 @@
 <h1>torch_openreml.covariance.simple_param_specs<a class="headerlink" href="#torch-openreml-covariance-simple-param-specs" title="Link to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_openreml.covariance.simple_param_specs">
-<span class="sig-prename descclassname"><span class="pre">torch_openreml.covariance.</span></span><span class="sig-name descname"><span class="pre">simple_param_specs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/param.html#simple_param_specs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.simple_param_specs" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">torch_openreml.covariance.</span></span><span class="sig-name descname"><span class="pre">simple_param_specs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/param.html#simple_param_specs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.simple_param_specs" title="Link to this definition">¶</a></dt>
 <dd><p>Create a parameter specification dictionary with <code class="docutils literal notranslate"><span class="pre">n</span></code> parameters.</p>
 <p>Each parameter is named <code class="docutils literal notranslate"><span class="pre">&quot;theta_0&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;theta_1&quot;</span></code>, …, is not fixed,
-and uses a common transform for all parameters. An optional scalar default
-value can be provided.</p>
+and uses a common transform for all parameters. All parameters share the
+same default value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n</strong> (<em>int</em>) – Number of parameters to create.</p></li>
-<li><p><strong>default</strong> (<em>float</em><em> or </em><em>torch.Tensor</em><em>, </em><em>optional</em>) – Default value for each
-parameter. If a tensor, it must be 1D with shape <code class="docutils literal notranslate"><span class="pre">(1,)</span></code>.
-Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+<li><p><strong>default</strong> (<em>torch.Tensor</em><em>, </em><em>optional</em>) – Default value for each parameter,
+given as a 1D tensor of shape <code class="docutils literal notranslate"><span class="pre">(1,)</span></code>. Defaults to
+<code class="docutils literal notranslate"><span class="pre">torch.tensor([0.0])</span></code>.</p></li>
 <li><p><strong>trans</strong> (<a class="reference internal" href="torch_openreml.covariance.transform.Transform.html#torch_openreml.covariance.transform.Transform" title="torch_openreml.covariance.transform.Transform"><em>Transform</em></a><em>, </em><em>optional</em>) – Transform to apply to all parameters.
 Defaults to <code class="xref py py-class docutils literal notranslate"><span class="pre">TransformIdentity</span></code> (unconstrained).</p></li>
 </ul>
@@ -343,8 +343,8 @@ of the form <code class="docutils literal notranslate"><span class="pre">{&quot;
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">default</span></code> is a tensor without shape <code class="docutils literal notranslate"><span class="pre">(1,)</span></code>.</p></li>
-<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">default</span></code> is not a float, int, or 1D tensor.</p></li>
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">default</span></code> is not a Torch tensor.</p></li>
+<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">default</span></code> does not have shape <code class="docutils literal notranslate"><span class="pre">(1,)</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -366,6 +366,25 @@ of the form <code class="docutils literal notranslate"><span class="pre">{&quot;
   &#39;trans&#39;: TransformIdentity()},
  &#39;theta_2&#39;: {&#39;fixed&#39;: False,
   &#39;default&#39;: tensor([0.]),
+  &#39;trans&#39;: TransformIdentity()}}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="n">simple_param_specs</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.5</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;theta_0&#39;: {&#39;fixed&#39;: False,
+  &#39;default&#39;: tensor([1.5000]),
+  &#39;trans&#39;: TransformIdentity()},
+ &#39;theta_1&#39;: {&#39;fixed&#39;: False,
+  &#39;default&#39;: tensor([1.5000]),
   &#39;trans&#39;: TransformIdentity()}}
 </pre></div>
 </div>

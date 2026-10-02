@@ -8,7 +8,7 @@
         <title>torch_openreml.covariance.operator - torch-openreml 0.3.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df86a2a8" />
@@ -373,12 +373,12 @@
 <span class="sd">                and treated as a named operand mapping.</span>
 <span class="sd">            **kwargs: Operands as keyword arguments, mapping operand names to</span>
 <span class="sd">                :class:`~torch_openreml.covariance.matrix.Matrix` or</span>
-<span class="sd">                :class:`torch.Tensor` instances. Operand names must not contain</span>
-<span class="sd">                ``&quot;/&quot;``.</span>
+<span class="sd">                :class:`torch.Tensor` instances. Operand names must be non-empty</span>
+<span class="sd">                and must not contain ``&quot;/&quot;``.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: If both positional and keyword arguments are provided,</span>
-<span class="sd">                or if any operand name contains ``&quot;/&quot;``.</span>
+<span class="sd">                or if any operand name is empty or contains ``&quot;/&quot;``.</span>
 <span class="sd">            TypeError: If ``operands`` is not a dict, if any operand name is not</span>
 <span class="sd">                a string, if any operand is not a</span>
 <span class="sd">                :class:`~torch_openreml.covariance.matrix.Matrix` or</span>
@@ -433,7 +433,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Validate the operand dictionary.</span>
 
-<span class="sd">        Ensures that all keys are strings without ``&quot;/&quot;``, all values are</span>
+<span class="sd">        Ensures that all keys are non-empty strings without ``&quot;/&quot;``, all values are</span>
 <span class="sd">        :class:`~torch_openreml.covariance.matrix.Matrix` or</span>
 <span class="sd">        :class:`torch.Tensor` instances, and that at least one value is a</span>
 <span class="sd">        :class:`~torch_openreml.covariance.matrix.Matrix`.</span>
@@ -447,7 +447,7 @@
 <span class="sd">                :class:`~torch_openreml.covariance.matrix.Matrix` or</span>
 <span class="sd">                :class:`torch.Tensor`, or if no value is a</span>
 <span class="sd">                :class:`~torch_openreml.covariance.matrix.Matrix`.</span>
-<span class="sd">            ValueError: If any key contains ``&quot;/&quot;``.</span>
+<span class="sd">            ValueError: If any key is empty or contains ``&quot;/&quot;``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">operands</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;operands must be a dict, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">operands</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
@@ -456,7 +456,10 @@
     
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Operand name must be a string, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
-    
+
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Operand name must not be empty!&quot;</span><span class="p">)</span>
+
             <span class="k">if</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid operand name &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39;: &#39;/&#39; is not allowed!&quot;</span><span class="p">)</span>
     
@@ -907,7 +910,46 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">operand</span><span class="p">,</span> <span class="n">Matrix</span><span class="p">):</span>
                 <span class="n">operand</span><span class="o">.</span><span class="n">reset_intermediates</span><span class="p">()</span></div>
 
-        
+
+<div class="viewcode-block" id="Operator.enable_cache">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.enable_cache">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">enable_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Enable intermediate caching on this operator and its operands.</span>
+
+<span class="sd">        Extends :meth:`~torch_openreml.covariance.matrix.Matrix.enable_cache`,</span>
+<span class="sd">        which enables caching on this operator, by recursively enabling it on</span>
+<span class="sd">        every :class:`~torch_openreml.covariance.matrix.Matrix` operand. Nested</span>
+<span class="sd">        operators continue the descent through this same override, so enabling</span>
+<span class="sd">        a node enables everything below it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">enable_cache</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">operand</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operands</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">operand</span><span class="p">,</span> <span class="n">Matrix</span><span class="p">):</span>
+                <span class="n">operand</span><span class="o">.</span><span class="n">enable_cache</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Operator.disable_cache">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.disable_cache">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disable_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Disable intermediate caching on this operator and its operands.</span>
+
+<span class="sd">        Extends :meth:`~torch_openreml.covariance.matrix.Matrix.disable_cache`,</span>
+<span class="sd">        which disables caching on this operator and clears its cache, by</span>
+<span class="sd">        recursively disabling caching on every</span>
+<span class="sd">        :class:`~torch_openreml.covariance.matrix.Matrix` operand and clearing</span>
+<span class="sd">        their caches. Nested operators continue the descent through this same</span>
+<span class="sd">        override, so disabling a node disables everything below it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">disable_cache</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">operand</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operands</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">operand</span><span class="p">,</span> <span class="n">Matrix</span><span class="p">):</span>
+                <span class="n">operand</span><span class="o">.</span><span class="n">disable_cache</span><span class="p">()</span></div>
+
+
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">operands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;dict: Mapping from operand names to operand matrices or tensors.&quot;&quot;&quot;</span>

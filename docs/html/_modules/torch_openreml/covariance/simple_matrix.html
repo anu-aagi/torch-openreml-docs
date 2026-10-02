@@ -8,7 +8,7 @@
         <title>torch_openreml.covariance.simple_matrix - torch-openreml 0.3.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df86a2a8" />
@@ -339,7 +339,7 @@
 <span class="sd">    directly.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_free_params</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">manual_grad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_free_params</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">manual_grad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a simple covariance matrix.</span>
 
@@ -357,9 +357,10 @@
 <span class="sd">                ``manual_grad(free_params) -&gt; (grad, grad_names)`` for a</span>
 <span class="sd">                closed-form Jacobian. If ``None`` (default), automatic</span>
 <span class="sd">                differentiation is used.</span>
-<span class="sd">            default (float or torch.Tensor, optional): Default value for each</span>
-<span class="sd">                parameter. Passed to :func:`simple_param_specs`. Defaults to</span>
-<span class="sd">                ``0.0``.</span>
+<span class="sd">            default (torch.Tensor, optional): Default value for each</span>
+<span class="sd">                parameter, given as a 1D tensor of shape ``(1,)``. Passed to</span>
+<span class="sd">                :func:`simple_param_specs`. Defaults to</span>
+<span class="sd">                ``torch.tensor([0.0])``.</span>
 
 <span class="sd">        Example:</span>
 
@@ -371,7 +372,7 @@
 <span class="sd">            def my_v(free_params):</span>
 <span class="sd">                return torch.diag(free_params)</span>
 
-<span class="sd">            mat = SimpleMatrix(num_free_params=3, call=my_v, default=1.0)</span>
+<span class="sd">            mat = SimpleMatrix(num_free_params=3, call=my_v, default=torch.tensor([1.0]))</span>
 <span class="sd">            mat(torch.tensor([1.0, 2.0, 3.0]))</span>
 
 <span class="sd">        .. jupyter-execute::</span>

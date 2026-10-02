@@ -8,7 +8,7 @@
         <title>torch_openreml.covariance.param - torch-openreml 0.3.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df86a2a8" />
@@ -321,19 +321,19 @@
 
 <div class="viewcode-block" id="simple_param_specs">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.simple_param_specs.html#torch_openreml.covariance.simple_param_specs">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">simple_param_specs</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">simple_param_specs</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a parameter specification dictionary with ``n`` parameters.</span>
 
 <span class="sd">    Each parameter is named ``&quot;theta_0&quot;``, ``&quot;theta_1&quot;``, ..., is not fixed,</span>
-<span class="sd">    and uses a common transform for all parameters. An optional scalar default</span>
-<span class="sd">    value can be provided.</span>
+<span class="sd">    and uses a common transform for all parameters. All parameters share the</span>
+<span class="sd">    same default value.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        n (int): Number of parameters to create.</span>
-<span class="sd">        default (float or torch.Tensor, optional): Default value for each</span>
-<span class="sd">            parameter. If a tensor, it must be 1D with shape ``(1,)``.</span>
-<span class="sd">            Defaults to ``0.0``.</span>
+<span class="sd">        default (torch.Tensor, optional): Default value for each parameter,</span>
+<span class="sd">            given as a 1D tensor of shape ``(1,)``. Defaults to</span>
+<span class="sd">            ``torch.tensor([0.0])``.</span>
 <span class="sd">        trans (Transform, optional): Transform to apply to all parameters.</span>
 <span class="sd">            Defaults to :class:`TransformIdentity` (unconstrained).</span>
 
@@ -342,8 +342,8 @@
 <span class="sd">        of the form ``{&quot;fixed&quot;: False, &quot;default&quot;: tensor, &quot;trans&quot;: trans}``.</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        ValueError: If ``default`` is a tensor without shape ``(1,)``.</span>
-<span class="sd">        TypeError: If ``default`` is not a float, int, or 1D tensor.</span>
+<span class="sd">        TypeError: If ``default`` is not a Torch tensor.</span>
+<span class="sd">        ValueError: If ``default`` does not have shape ``(1,)``.</span>
 
 <span class="sd">    Example:</span>
 
@@ -352,23 +352,29 @@
 <span class="sd">        from torch_openreml.covariance.param import simple_param_specs</span>
 
 <span class="sd">        simple_param_specs(3)</span>
+
+<span class="sd">    .. jupyter-execute::</span>
+
+<span class="sd">        import torch</span>
+
+<span class="sd">        simple_param_specs(2, default=torch.tensor([1.5]))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">trans</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">trans</span> <span class="o">=</span> <span class="n">TransformIdentity</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">(</span><span class="n">default</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">default</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">default</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Tensor default must be 1D with shape (1).&quot;</span><span class="p">)</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">default</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">default</span><span class="p">)])</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;default must be a float/int or a 1D torch tensor of shape (1).&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">default</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">(</span><span class="n">default</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;default must be a 1D torch tensor of shape (1).&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">default</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">default</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Default must be a 1D tensor with shape (1).&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="p">{</span>
         <span class="sa">f</span><span class="s2">&quot;theta_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;fixed&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
+            <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="n">default</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span>
             <span class="s2">&quot;trans&quot;</span><span class="p">:</span> <span class="n">trans</span>
         <span class="p">}</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
