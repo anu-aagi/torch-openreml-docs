@@ -385,6 +385,11 @@
         <span class="c1">#: time.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">jacobian_chunk_size</span> <span class="o">=</span> <span class="kc">None</span>
 
+        <span class="c1">#: bool: Whether intermediate computation results are cached. When ``False``,</span>
+        <span class="c1">#: :meth:`set_intermediates` does nothing and :meth:`get_intermediates` always</span>
+        <span class="c1">#: returns ``None``, both before validating their arguments.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="kc">True</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">reset_intermediates</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Matrix.set_intermediates">
@@ -398,14 +403,20 @@
 <span class="sd">        via :meth:`get_intermediates` to avoid redundant computation across</span>
 <span class="sd">        multiple calls with identical parameters.</span>
 
+<span class="sd">        When :attr:`cache` is ``False`` the request is ignored: nothing is</span>
+<span class="sd">        stored and ``params`` is not validated, so a malformed argument is</span>
+<span class="sd">        silently accepted.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            params (torch.Tensor): Current parameter tensor.</span>
 <span class="sd">            intermediates: Arbitrary object to cache (e.g. Cholesky factors,</span>
 <span class="sd">                eigendecompositions, or any reusable computation).</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            TypeError: If ``params`` is not a Torch tensor.</span>
-<span class="sd">            ValueError: If ``params`` is not a 1D tensor.</span>
+<span class="sd">            TypeError: If ``params`` is not a Torch tensor and :attr:`cache`</span>
+<span class="sd">                is ``True``.</span>
+<span class="sd">            ValueError: If ``params`` is not a 1D tensor and :attr:`cache`</span>
+<span class="sd">                is ``True``.</span>
 
 <span class="sd">        Note:</span>
 <span class="sd">            If ``params`` has length 0 (no free parameters), this is a no-op.</span>
@@ -425,6 +436,9 @@
 <span class="sd">            mat.set_intermediates(params, {&quot;log(sigma^2)/2&quot;: torch.log(params) / 2})</span>
 <span class="sd">            mat.get_intermediates(params)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
         <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_param_tensor</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -453,16 +467,21 @@
 <span class="sd">        each gets its own entry. Parameter vectors are a handful of floats, so</span>
 <span class="sd">        the comparison is cheap.</span>
 
+<span class="sd">        When :attr:`cache` is ``False``, ``None`` is returned without</span>
+<span class="sd">        validating ``params``, so a malformed argument is silently ignored.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            params (torch.Tensor): Current parameter tensor.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            TypeError: If ``params`` is not a Torch tensor.</span>
-<span class="sd">            ValueError: If ``params`` is not a 1D tensor.</span>
+<span class="sd">            TypeError: If ``params`` is not a Torch tensor and :attr:`cache`</span>
+<span class="sd">                is ``True``.</span>
+<span class="sd">            ValueError: If ``params`` is not a 1D tensor and :attr:`cache`</span>
+<span class="sd">                is ``True``.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The cached intermediate object if the cache is valid, or ``None`` if</span>
-<span class="sd">            the cache is missing, stale, or ``params`` has length 0.</span>
+<span class="sd">            the cache is missing, stale, disabled, or ``params`` has length 0.</span>
 
 <span class="sd">        Example:</span>
 
@@ -477,6 +496,9 @@
 <span class="sd">            mat.set_intermediates(params, {&quot;log(sigma^2)/2&quot;: torch.log(params) / 2})</span>
 <span class="sd">            mat.get_intermediates(params)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
         <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_param_tensor</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>

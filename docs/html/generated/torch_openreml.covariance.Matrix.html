@@ -458,6 +458,9 @@ respectively.</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.jacobian_chunk_size" title="torch_openreml.covariance.Matrix.jacobian_chunk_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian_chunk_size</span></code></a></p></td>
 <td><p>Number of outputs held per batch when <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_grad" title="torch_openreml.covariance.Matrix.auto_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">auto_grad()</span></code></a> differentiates with <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to compute the Jacobian in a single batch.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.cache" title="torch_openreml.covariance.Matrix.cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache</span></code></a></p></td>
+<td><p>Whether intermediate computation results are cached.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -501,6 +504,19 @@ time.</p>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.cache">
+<span class="sig-name descname"><span class="pre">cache</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.cache" title="Link to this definition">¶</a></dt>
+<dd><p>Whether intermediate computation results are cached. When <code class="docutils literal notranslate"><span class="pre">False</span></code>,
+<a class="reference internal" href="#torch_openreml.covariance.Matrix.set_intermediates" title="torch_openreml.covariance.Matrix.set_intermediates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_intermediates()</span></code></a> does nothing and <a class="reference internal" href="#torch_openreml.covariance.Matrix.get_intermediates" title="torch_openreml.covariance.Matrix.get_intermediates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_intermediates()</span></code></a> always
+returns <code class="docutils literal notranslate"><span class="pre">None</span></code>, both before validating their arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.set_intermediates">
 <span class="sig-name descname"><span class="pre">set_intermediates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intermediates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.set_intermediates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.set_intermediates" title="Link to this definition">¶</a></dt>
@@ -509,6 +525,9 @@ time.</p>
 tensor, its dtype, and its device. Cached values can be retrieved
 via <a class="reference internal" href="#torch_openreml.covariance.Matrix.get_intermediates" title="torch_openreml.covariance.Matrix.get_intermediates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_intermediates()</span></code></a> to avoid redundant computation across
 multiple calls with identical parameters.</p>
+<p>When <a class="reference internal" href="#torch_openreml.covariance.Matrix.cache" title="torch_openreml.covariance.Matrix.cache"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cache</span></code></a> is <code class="docutils literal notranslate"><span class="pre">False</span></code> the request is ignored: nothing is
+stored and <code class="docutils literal notranslate"><span class="pre">params</span></code> is not validated, so a malformed argument is
+silently accepted.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -519,8 +538,10 @@ eigendecompositions, or any reusable computation).</p></li>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">params</span></code> is not a Torch tensor.</p></li>
-<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">params</span></code> is not a 1D tensor.</p></li>
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">params</span></code> is not a Torch tensor and <a class="reference internal" href="#torch_openreml.covariance.Matrix.cache" title="torch_openreml.covariance.Matrix.cache"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cache</span></code></a>
+    is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">params</span></code> is not a 1D tensor and <a class="reference internal" href="#torch_openreml.covariance.Matrix.cache" title="torch_openreml.covariance.Matrix.cache"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cache</span></code></a>
+    is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -565,19 +586,23 @@ parameters agree in every position: the same values in a different
 order, or the same values paired differently, are different models and
 each gets its own entry. Parameter vectors are a handful of floats, so
 the comparison is cheap.</p>
+<p>When <a class="reference internal" href="#torch_openreml.covariance.Matrix.cache" title="torch_openreml.covariance.Matrix.cache"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cache</span></code></a> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code> is returned without
+validating <code class="docutils literal notranslate"><span class="pre">params</span></code>, so a malformed argument is silently ignored.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>params</strong> (<em>torch.Tensor</em>) – Current parameter tensor.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">params</span></code> is not a Torch tensor.</p></li>
-<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">params</span></code> is not a 1D tensor.</p></li>
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">params</span></code> is not a Torch tensor and <a class="reference internal" href="#torch_openreml.covariance.Matrix.cache" title="torch_openreml.covariance.Matrix.cache"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cache</span></code></a>
+    is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">params</span></code> is not a 1D tensor and <a class="reference internal" href="#torch_openreml.covariance.Matrix.cache" title="torch_openreml.covariance.Matrix.cache"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cache</span></code></a>
+    is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The cached intermediate object if the cache is valid, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if
-the cache is missing, stale, or <code class="docutils literal notranslate"><span class="pre">params</span></code> has length 0.</p>
+the cache is missing, stale, disabled, or <code class="docutils literal notranslate"><span class="pre">params</span></code> has length 0.</p>
 </dd>
 </dl>
 <p>Example:</p>
@@ -1354,6 +1379,7 @@ and <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_g
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.grad_mode"><code class="docutils literal notranslate"><span class="pre">Matrix.grad_mode</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.jacobian_method"><code class="docutils literal notranslate"><span class="pre">Matrix.jacobian_method</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.jacobian_chunk_size"><code class="docutils literal notranslate"><span class="pre">Matrix.jacobian_chunk_size</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.cache"><code class="docutils literal notranslate"><span class="pre">Matrix.cache</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_intermediates"><code class="docutils literal notranslate"><span class="pre">Matrix.set_intermediates()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.get_intermediates"><code class="docutils literal notranslate"><span class="pre">Matrix.get_intermediates()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.reset_intermediates"><code class="docutils literal notranslate"><span class="pre">Matrix.reset_intermediates()</span></code></a></li>
