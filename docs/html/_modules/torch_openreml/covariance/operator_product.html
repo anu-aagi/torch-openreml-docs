@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>torch_openreml.covariance.scalar_matrix - torch-openreml 0.3.0-alpha documentation</title>
+        <title>torch_openreml.covariance.operator_product - torch-openreml 0.3.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
@@ -304,129 +304,172 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for torch_openreml.covariance.scalar_matrix</h1><div class="highlight"><pre>
+          <h1>Source code for torch_openreml.covariance.operator_product</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Scalar covariance matrix.</span>
+<span class="sd">Matrix product covariance operator.</span>
 
-<span class="sd">This module provides a scaled identity covariance matrix with a single</span>
-<span class="sd">shared variance parameter, for use in linear mixed-effects models.</span>
+<span class="sd">This module provides a matrix product operator for combining two</span>
+<span class="sd">covariance matrices, for use in linear mixed-effects models.</span>
 
 <span class="sd">Classes:</span>
-<span class="sd">    ScalarMatrix:</span>
-<span class="sd">        A scaled identity covariance matrix :math:`V = \\sigma^2 I_n`.</span>
+<span class="sd">    Product:</span>
+<span class="sd">        A matrix product covariance operator :math:`V = A B`.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance.matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">Matrix</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance.transform</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransformExpPow2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance.operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Operator</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
-<div class="viewcode-block" id="ScalarMatrix">
-<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.ScalarMatrix.html#torch_openreml.covariance.ScalarMatrix">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ScalarMatrix</span><span class="p">(</span><span class="n">Matrix</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Product">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Product.html#torch_openreml.covariance.Product">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">(</span><span class="n">Operator</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Scaled identity covariance matrix with a single shared variance parameter.</span>
+<span class="sd">    Matrix product of two covariance matrices.</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        \symbf{V} = \sigma^2 \symbf{I}_n</span>
+<span class="sd">        \symbf{V} = \symbf{A} \symbf{B}</span>
 
-<span class="sd">    A single unconstrained scalar parameter is transformed to a positive</span>
-<span class="sd">    variance via :class:`~torch_openreml.covariance.transform.TransformExpPow2`</span>
-<span class="sd">    by default and then broadcast across all diagonal entries. This</span>
-<span class="sd">    structure assumes equal, independent variances across all observations.</span>
+<span class="sd">    If :math:`\symbf{A}` is :math:`m \times n` and :math:`\symbf{B}` is</span>
+<span class="sd">    :math:`n \times p`, the result is an :math:`m \times p` matrix. Either</span>
+<span class="sd">    or both operands may be trainable</span>
+<span class="sd">    :class:`~torch_openreml.covariance.matrix.Matrix` instances or fixed</span>
+<span class="sd">    :class:`torch.Tensor` values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-  
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">param_specs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a scaled identity covariance matrix of size ``n x n``.</span>
+<span class="sd">        Initialize a matrix product operator from exactly two operands.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            n (int): Matrix dimension.</span>
-<span class="sd">            param_specs (dict): Parameter specifications. Keys should be strings</span>
-<span class="sd">                representing parameter names. Values should be dictionaries</span>
-<span class="sd">                containing the specification for each parameter. Each specification</span>
-<span class="sd">                dictionary should contain the keys ``&quot;fixed&quot;``, ``&quot;default&quot;``, and ``&quot;trans&quot;``,</span>
-<span class="sd">                representing whether the parameter is fixed or free (bool), the</span>
-<span class="sd">                default value (1D torch.Tensor), and the transform (:class:`~torch_openreml.covariance.transform.Transform`),</span>
-<span class="sd">                respectively.</span>
+<span class="sd">            *args: Exactly two operands as positional arguments or a single</span>
+<span class="sd">                dict. The first is :math:`\\symbf{A}`, the second</span>
+<span class="sd">                :math:`\\symbf{B}`.</span>
+<span class="sd">            **kwargs: Exactly two operands as keyword arguments.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the number of operands is not exactly two.</span>
 
 <span class="sd">        Example:</span>
 
 <span class="sd">        .. jupyter-execute::</span>
 
 <span class="sd">            import torch</span>
-<span class="sd">            from torch_openreml.covariance import ScalarMatrix</span>
+<span class="sd">            from torch_openreml.covariance import DummyMatrix, Product, ScalarMatrix</span>
 
-<span class="sd">            mat = ScalarMatrix(3)</span>
-<span class="sd">            mat</span>
-
-<span class="sd">        .. jupyter-execute::</span>
-
-<span class="sd">            free_params = torch.tensor([0.5])</span>
-<span class="sd">            mat(free_params)</span>
-
-<span class="sd">        .. jupyter-execute::</span>
-
-<span class="sd">            mat.grad(free_params)</span>
+<span class="sd">            op = Product(a=DummyMatrix([&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;a&quot;]), b=ScalarMatrix(3))</span>
+<span class="sd">            free_params = torch.tensor([1.0])</span>
+<span class="sd">            op(free_params)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">param_specs</span> <span class="o">=</span> <span class="n">param_specs</span> <span class="ow">or</span> <span class="p">{</span>
-            <span class="s2">&quot;sigma^2&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;fixed&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]),</span>
-                <span class="s2">&quot;trans&quot;</span><span class="p">:</span> <span class="n">TransformExpPow2</span><span class="p">()</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">param_specs</span><span class="p">)</span>
-        
-<div class="viewcode-block" id="ScalarMatrix.__call__">
-<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.ScalarMatrix.html#torch_openreml.covariance.ScalarMatrix.__call__">[docs]</a>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operands</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Two operands are required&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_or_build_intermediates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="p">):</span>
+        <span class="n">built_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_intermediates</span><span class="p">(</span><span class="n">built_params</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cache</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">v_groups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_operands</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+
+            <span class="n">a</span> <span class="o">=</span> <span class="n">v_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">v_groups</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">a</span> <span class="o">@</span> <span class="n">b</span>
+
+            <span class="n">cache</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">b</span><span class="p">,</span> <span class="s2">&quot;v&quot;</span><span class="p">:</span> <span class="n">v</span><span class="p">}</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_intermediates</span><span class="p">(</span><span class="n">built_params</span><span class="p">,</span> <span class="n">cache</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cache</span>
+
+<div class="viewcode-block" id="Product.__call__">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Product.html#torch_openreml.covariance.Product.__call__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">free_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_defaults</span>
-        <span class="n">sigma2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
-        <span class="n">device</span> <span class="o">=</span> <span class="n">sigma2</span><span class="o">.</span><span class="n">device</span>
-        <span class="n">dtype</span> <span class="o">=</span> <span class="n">sigma2</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_or_build_intermediates</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span><span class="s2">&quot;v&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-        <span class="n">i_n</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
-        <span class="n">v</span> <span class="o">=</span> <span class="n">sigma2</span> <span class="o">*</span> <span class="n">i_n</span>
-        
         <span class="k">return</span> <span class="n">v</span></div>
 
 
-<div class="viewcode-block" id="ScalarMatrix.manual_grad">
-<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.ScalarMatrix.html#torch_openreml.covariance.ScalarMatrix.manual_grad">[docs]</a>
+<div class="viewcode-block" id="Product.manual_grad">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Product.html#torch_openreml.covariance.Product.manual_grad">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">manual_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the Jacobian of :meth:`__call__` with respect to trainable</span>
 <span class="sd">        parameters using a closed-form analytic expression.</span>
 
+<span class="sd">        Applies the product rule: if :math:`\\symbf{V} = \\symbf{A} \\symbf{B}`</span>
+<span class="sd">        then the gradient with respect to :math:`\\theta_{\\symbf{A}}` is</span>
+<span class="sd">        :math:`\\frac{\\partial \\symbf{A}}{\\partial \\theta_{\\symbf{A}}} \\symbf{B}`,</span>
+<span class="sd">        and with respect to :math:`\\theta_{\\symbf{B}}` it is</span>
+<span class="sd">        :math:`\\symbf{A} \\frac{\\partial \\symbf{B}}{\\partial \\theta_{\\symbf{B}}}`.</span>
+<span class="sd">        Per-operand Jacobians from</span>
+<span class="sd">        :meth:`~torch_openreml.covariance.operator.Operator.operands_grad`</span>
+<span class="sd">        are multiplied by the other operand&#39;s value.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
-<span class="sd">                parameter dictionary. If omitted, default values are used.</span>
-<span class="sd">                Default: ``None``.</span>
+<span class="sd">                parameter dictionary.</span>
+<span class="sd">                If omitted, default values are used. Default: ``None``.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            tuple: ``(grad, grad_names)``, where ``grad`` is a 3D tensor of</span>
-<span class="sd">            shape ``(num_free_params, *shape)`` and</span>
-<span class="sd">            ``grad_names`` is a list of the corresponding parameter names.</span>
-<span class="sd">            Returns ``(None, [])`` when the matrix has no free parameters,</span>
-<span class="sd">            after ``free_params`` is validated via</span>
-<span class="sd">            :meth:`~torch_openreml.covariance.matrix.Matrix.build_params`.</span>
+<span class="sd">            shape ``(num_free_params, *shape)`` and ``grad_names`` is a list</span>
+<span class="sd">            of the corresponding parameter names. Returns ``(None, [])`` if</span>
+<span class="sd">            all parameters are fixed.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If ``free_params`` is not a Torch tensor.</span>
+<span class="sd">            ValueError: If ``free_params`` is not a 1D tensor or has the</span>
+<span class="sd">                wrong length, or if ``free_params`` is a dict with missing</span>
+<span class="sd">                or unexpected keys.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from torch_openreml.covariance import DummyMatrix, Product, ScalarMatrix</span>
+
+<span class="sd">            op = Product(a=DummyMatrix([&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;a&quot;]), b=ScalarMatrix(3))</span>
+<span class="sd">            free_params = torch.tensor([1.0])</span>
+<span class="sd">            grad, grad_names = op.manual_grad(free_params)</span>
+<span class="sd">            grad</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            grad_names</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">free_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_defaults</span>
+        <span class="n">grad_groups</span><span class="p">,</span> <span class="n">grad_name_groups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operands_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
 
-        <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="n">include_fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">out_format</span><span class="o">=</span><span class="s2">&quot;tensor&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[]</span>
+        <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_or_build_intermediates</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]</span>
 
-        <span class="n">device</span> <span class="o">=</span> <span class="n">free_params</span><span class="o">.</span><span class="n">device</span>
-        <span class="n">dtype</span> <span class="o">=</span> <span class="n">free_params</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="n">grad</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">grad_names</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="n">i_n</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
-        <span class="n">grad</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trans_grad</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span> <span class="o">*</span> <span class="n">i_n</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">da</span> <span class="o">=</span> <span class="n">grad_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">da</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">grad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">da</span> <span class="o">@</span> <span class="n">b</span><span class="p">)</span>
+            <span class="n">grad_names</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">grad_name_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">grad</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span></div>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">grad_groups</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">db</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">grad</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span> <span class="o">@</span> <span class="n">db</span><span class="p">)</span>
+            <span class="n">grad_names</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">grad_name_groups</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">grad</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">grad</span><span class="p">,</span> <span class="n">grad_names</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[]</span></div>
 </div>
 
 </pre></div>
