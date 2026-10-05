@@ -227,10 +227,13 @@
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.HadamardProduct.html">torch_openreml.covariance.HadamardProduct</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.KroneckerProduct.html">torch_openreml.covariance.KroneckerProduct</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Product.html">torch_openreml.covariance.Product</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Transpose.html">torch_openreml.covariance.Transpose</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Inverse.html">torch_openreml.covariance.Inverse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.CovariancePropagation.html">torch_openreml.covariance.CovariancePropagation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Gram.html">torch_openreml.covariance.Gram</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Sum.html">torch_openreml.covariance.Sum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Augment.html">torch_openreml.covariance.Augment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Stack.html">torch_openreml.covariance.Stack</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/adapter.html">Adapter</a><input aria-label="Toggle navigation of Adapter" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -606,10 +609,10 @@ necessary.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:       8.5393, ∥Δ∥: 41.8085, η: 1.00, ∥Δᶜ∥: 41.8085, log 𝓛: -34.3131
-∥∇∥:       0.8477, ∥Δ∥: 0.0090, η: 1.00, ∥Δᶜ∥: 0.0090, log 𝓛: -31.1710 (+3.1421)
-∥∇∥:       0.0077, ∥Δ∥: 0.0001, η: 1.00, ∥Δᶜ∥: 0.0001, log 𝓛: -31.1672 (+0.0038)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -31.1672 (-0.0000)
+∥∇∥:       2.3025, ∥Δ∥: 16.9433, η: 1.00, ∥Δᶜ∥: 16.9433, log 𝓛: -29.5038
+∥∇∥:       0.4356, ∥Δ∥: 0.0046, η: 1.00, ∥Δᶜ∥: 0.0046, log 𝓛: -27.0494 (+2.4545)
+∥∇∥:       0.0020, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -27.0484 (+0.0010)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -27.0484 (-0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
