@@ -9,7 +9,7 @@
         <title>Introduction to Marginal REML Estimation - torch-openreml 0.4.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -609,15 +609,14 @@ necessary.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:      15.1471, ∥Δ∥: 15.2730, η: 1.00, ∥Δᶜ∥: 15.2730, log 𝓛: -22.4540
-∥∇∥:       4.9440, ∥Δ∥: 0.0467, η: 1.00, ∥Δᶜ∥: 0.0467, log 𝓛: -18.5759 (+3.8780)
-∥∇∥:       0.2238, ∥Δ∥: 0.0023, η: 1.00, ∥Δᶜ∥: 0.0023, log 𝓛: -18.4570 (+0.1189)
-∥∇∥:       0.0005, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -18.4567 (+0.0003)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -18.4567 (-0.0000)
+∥∇∥:       2.0273, ∥Δ∥: 15.6089, η: 1.00, ∥Δᶜ∥: 15.6089, log 𝓛: -30.7311
+∥∇∥:       0.5238, ∥Δ∥: 0.0055, η: 1.00, ∥Δᶜ∥: 0.0055, log 𝓛: -28.2557 (+2.4754)
+∥∇∥:       0.0029, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -28.2543 (+0.0014)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -28.2543 (+0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 5
+✓ Converged at iteration 4
 </pre></div>
 </div>
 </div>
@@ -959,9 +958,10 @@ or oscillates near convergence.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml</span><span class="w"> </span><span class="kn">import</span> <span class="n">MarginalREML</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">augment</span><span class="p">,</span> <span class="n">n_distinct</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Augment</span><span class="p">,</span>
+    <span class="n">BlockDiagonal</span><span class="p">,</span>
     <span class="n">DummyMatrix</span><span class="p">,</span>
     <span class="n">IdentityMatrix</span><span class="p">,</span>
     <span class="n">ScalarMatrix</span><span class="p">,</span>
@@ -976,30 +976,33 @@ or oscillates near convergence.</p>
 <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;yield&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 
 <span class="c1"># --- fixed effects ---</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">augment</span><span class="p">(</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">Augment</span><span class="p">(</span>
     <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;rep&quot;</span><span class="p">],</span> <span class="n">drop_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)()</span>
-<span class="p">)</span>
+    <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;rep&quot;</span><span class="p">],</span> <span class="n">drop_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="p">)()</span>
 
-<span class="c1"># --- random effect design matrices ---</span>
-<span class="n">Z_gen</span> <span class="o">=</span> <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">])</span>
-<span class="n">Z_rep_block</span> <span class="o">=</span> <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;rep&quot;</span><span class="p">],</span> <span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;block&quot;</span><span class="p">])</span>
-
-<span class="c1"># --- covariance components ---</span>
-<span class="n">G_gen</span> <span class="o">=</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">n_distinct</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">]))</span>
-<span class="n">G_rep</span> <span class="o">=</span> <span class="n">IdentityMatrix</span><span class="p">(</span><span class="n">n_distinct</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;rep&quot;</span><span class="p">]))</span>
-<span class="n">G_block</span> <span class="o">=</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">n_distinct</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;block&quot;</span><span class="p">]))</span>
-
-<span class="n">R</span> <span class="o">=</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">))</span>
+<span class="c1"># --- random effects ---</span>
+<span class="n">gen</span> <span class="o">=</span> <span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">]</span>
+<span class="n">rep</span> <span class="o">=</span> <span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;rep&quot;</span><span class="p">]</span>
+<span class="n">block</span> <span class="o">=</span> <span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;block&quot;</span><span class="p">]</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">)</span>
 
 <span class="c1"># --- marginal covariance ---</span>
 <span class="n">V</span> <span class="o">=</span> <span class="n">Sum</span><span class="p">(</span>
-    <span class="n">CovariancePropagation</span><span class="p">(</span><span class="n">Z_gen</span><span class="p">,</span> <span class="n">G_gen</span><span class="p">),</span>
     <span class="n">CovariancePropagation</span><span class="p">(</span>
-        <span class="n">Z_rep_block</span><span class="p">,</span>
-        <span class="n">KroneckerProduct</span><span class="p">(</span><span class="n">G_rep</span><span class="p">,</span> <span class="n">G_block</span><span class="p">)</span>
+        <span class="n">Augment</span><span class="p">(</span>
+            <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">gen</span><span class="p">),</span>
+            <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">rep</span><span class="p">,</span> <span class="n">block</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">BlockDiagonal</span><span class="p">(</span>
+            <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">gen</span><span class="p">),</span>
+            <span class="n">KroneckerProduct</span><span class="p">(</span>
+                <span class="n">IdentityMatrix</span><span class="p">(</span><span class="n">rep</span><span class="p">),</span>
+                <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">block</span><span class="p">),</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
     <span class="p">),</span>
-    <span class="n">R</span>
+    <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">n</span><span class="p">),</span>
 <span class="p">)</span>
 
 <span class="c1"># --- REML fit ---</span>

@@ -395,6 +395,8 @@
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;v&#39; must be a Matrix instance!&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nn_optimizers</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="MarginalREML.blue">
 <a class="viewcode-back" href="../../generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.blue">[docs]</a>
@@ -800,34 +802,13 @@
 
 <div class="viewcode-block" id="MarginalREML.is_converged">
 <a class="viewcode-back" href="../../generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.is_converged">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">is_converged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                     <span class="n">check_score</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                     <span class="n">check_delta</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                     <span class="n">check_loglik</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                     <span class="n">tol_score</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
-                     <span class="n">tol_delta</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
-                     <span class="n">tol_loglik</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_converged</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check whether the optimisation has converged.</span>
 
 <span class="sd">        Convergence is declared when all enabled criteria fall below their</span>
 <span class="sd">        respective tolerances. At least two iterations must have completed</span>
 <span class="sd">        before any criterion can be satisfied.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            check_score (bool, optional): Check the norm of the score vector.</span>
-<span class="sd">                Defaults to ``True``.</span>
-<span class="sd">            check_delta (bool, optional): Check the norm of the covariance</span>
-<span class="sd">                parameter update :math:`\\Delta`. Defaults to ``True``.</span>
-<span class="sd">            check_loglik (bool, optional): Check the absolute change in</span>
-<span class="sd">                log-likelihood between successive iterates. Defaults to</span>
-<span class="sd">                ``True``.</span>
-<span class="sd">            tol_score (float, optional): Score norm tolerance. Defaults to</span>
-<span class="sd">                ``1e-4``.</span>
-<span class="sd">            tol_delta (float, optional): Covariance parameter update norm</span>
-<span class="sd">                tolerance. Defaults to ``1e-4``.</span>
-<span class="sd">            tol_loglik (float, optional): Log-likelihood change tolerance.</span>
-<span class="sd">                Defaults to ``1e-4``.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: ``True`` if all enabled criteria are satisfied, ``False``</span>
@@ -837,19 +818,19 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
           
-        <span class="k">if</span> <span class="n">check_score</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_score</span><span class="p">:</span>
             <span class="n">score_norm</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">score_norm</span> <span class="o">&gt;=</span> <span class="n">tol_score</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">score_norm</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tol_score</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
         
-        <span class="k">if</span> <span class="n">check_delta</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_delta</span><span class="p">:</span>
             <span class="n">delta_norm</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">delta_norm</span> <span class="o">&gt;=</span> <span class="n">tol_delta</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">delta_norm</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tol_delta</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
               
-        <span class="k">if</span> <span class="n">check_loglik</span> <span class="ow">and</span> <span class="n">torch</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;loglik&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_loglik</span> <span class="ow">and</span> <span class="n">torch</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;loglik&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">loglik_diff</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;loglik&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;loglik&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">loglik_diff</span> <span class="o">&gt;=</span> <span class="n">tol_loglik</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">loglik_diff</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tol_loglik</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
         
         <span class="k">return</span> <span class="kc">True</span></div>
@@ -978,6 +959,12 @@
         <span class="k">if</span> <span class="n">theta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">include_fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">device</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;theta&quot;</span><span class="p">:</span> <span class="p">[],</span>
                         <span class="s2">&quot;beta&quot;</span><span class="p">:</span> <span class="p">[],</span> 
                         <span class="s2">&quot;loglik&quot;</span><span class="p">:</span> <span class="p">[],</span> 
@@ -985,6 +972,13 @@
                         <span class="s2">&quot;ai&quot;</span><span class="p">:</span> <span class="p">[],</span> 
                         <span class="s2">&quot;delta&quot;</span><span class="p">:</span> <span class="p">[],</span>
                         <span class="s2">&quot;update&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_score</span> <span class="o">=</span> <span class="n">check_score</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_delta</span> <span class="o">=</span> <span class="n">check_delta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_loglik</span> <span class="o">=</span> <span class="n">check_loglik</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tol_score</span> <span class="o">=</span> <span class="n">tol_score</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tol_delta</span> <span class="o">=</span> <span class="n">tol_delta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tol_loglik</span> <span class="o">=</span> <span class="n">tol_loglik</span>
         
         <span class="n">pb</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">disable</span><span class="o">=</span><span class="ow">not</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">bar_format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{desc}</span><span class="s2"> </span><span class="se">\u23F1</span><span class="s2"> </span><span class="si">{elapsed}</span><span class="s2"> | </span><span class="se">\u26A1</span><span class="s2"> </span><span class="si">{rate_fmt}</span><span class="s2">&quot;</span><span class="p">)</span>
         
@@ -1027,7 +1021,7 @@
                             <span class="n">tqdm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
                         <span class="n">tqdm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">write_str</span><span class="p">)</span>
                 
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_converged</span><span class="p">(</span><span class="n">check_score</span><span class="p">,</span> <span class="n">check_delta</span><span class="p">,</span> <span class="n">check_loglik</span><span class="p">,</span> <span class="n">tol_score</span><span class="p">,</span> <span class="n">tol_delta</span><span class="p">,</span> <span class="n">tol_loglik</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_converged</span><span class="p">():</span>
                     <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                             <span class="n">tqdm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[</span><span class="se">\u2207</span><span class="s2">: score, </span><span class="se">\u0394</span><span class="s2">: </span><span class="se">\U0001D409\u207B\u00B9\u2207</span><span class="s2">, </span><span class="se">\u03B7</span><span class="s2">: learning rate, </span><span class="se">\u0394\u1D9C</span><span class="s2">: clip(</span><span class="se">\U0001D6C9</span><span class="s2"> + </span><span class="se">\u03B7\u0394</span><span class="s2">, lb, ub) - </span><span class="se">\U0001D6C9</span><span class="s2">, </span><span class="se">\U0001D4DB</span><span class="s2">: restricted likelihood]&quot;</span><span class="p">)</span>
@@ -1039,7 +1033,6 @@
         <span class="k">return</span> <span class="n">theta</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span></div>
 </div>
 
-  
 </pre></div>
         </article>
       </div>

@@ -9,7 +9,7 @@
         <title>torch_openreml.covariance.LowerTriangularMatrix - torch-openreml 0.4.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -344,8 +344,10 @@ the diagonal, all using <a class="reference internal" href="torch_openreml.covar
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<em>int</em>) – Number of rows.</p></li>
-<li><p><strong>m</strong> (<em>int</em>) – Number of columns.</p></li>
+<li><p><strong>n</strong> (<em>int</em><em>, </em><em>list</em><em>, </em><em>tuple</em><em> or </em><em>pandas.Series</em>) – Number of rows, or a vector
+of levels whose distinct elements define it.</p></li>
+<li><p><strong>m</strong> (<em>int</em><em>, </em><em>list</em><em>, </em><em>tuple</em><em> or </em><em>pandas.Series</em>) – Number of columns, or a
+vector of levels whose distinct elements define it.</p></li>
 <li><p><strong>param_specs</strong> (<em>dict</em>) – Parameter specifications. Keys should be strings
 representing parameter names. Values should be dictionaries
 containing the specification for each parameter. Each specification
@@ -453,13 +455,16 @@ respectively.</p></li>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code>()</p></td>
 <td><p>Clear the intermediate computation cache.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolve_dim</span></code>(n)</p></td>
+<td><p>Resolve a matrix dimension from an integer or a vector of levels.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
 <td><p>Cache intermediate computation results keyed by the parameter values.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_param_specs</span></code>(key, *[, fixed, default, trans])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_param_specs</span></code>(key, *[, fixed, default, trans])</p></td>
 <td><p>Update the fields of one or more parameter specifications in place.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
 <td><p>Compute the element-wise derivative of the free parameter transforms.</p></td>
 </tr>
 </tbody>

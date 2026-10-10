@@ -380,17 +380,17 @@ and its Jacobian.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:       5.3658, ∥Δ∥: 0.0629, η: 1.00, ∥Δᶜ∥: 0.0629, log 𝓛: -25.1872
-∥∇∥:       0.3523, ∥Δ∥: 0.0036, η: 1.00, ∥Δᶜ∥: 0.0036, log 𝓛: -25.0257 (+0.1615)
-∥∇∥:       0.0013, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -25.0250 (+0.0006)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -25.0250 (+0.0000)
+∥∇∥:       4.3594, ∥Δ∥: 0.0416, η: 1.00, ∥Δᶜ∥: 0.0416, log 𝓛: -30.0218
+∥∇∥:       0.1766, ∥Δ∥: 0.0018, η: 1.00, ∥Δᶜ∥: 0.0018, log 𝓛: -29.9286 (+0.0932)
+∥∇∥:       0.0003, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -29.9284 (+0.0002)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -29.9284 (-0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
 ✓ Converged at iteration 4
 </pre></div>
 </div>
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([-0.0593]), tensor([0.0274, 0.0844]))
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0.0435]), tensor([0.0630, 0.0761]))
 </pre></div>
 </div>
 </div>
@@ -414,7 +414,7 @@ and its Jacobian.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.get_theta" title="torch_openreml.MarginalREML.get_theta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_theta</span></code></a>([select])</p></td>
 <td><p>Retrieve a covariance parameter estimate from the optimisation history.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.is_converged" title="torch_openreml.MarginalREML.is_converged"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_converged</span></code></a>([check_score, check_delta, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.is_converged" title="torch_openreml.MarginalREML.is_converged"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_converged</span></code></a>()</p></td>
 <td><p>Check whether the optimisation has converged.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.loglik" title="torch_openreml.MarginalREML.loglik"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loglik</span></code></a>(y, x, theta)</p></td>
@@ -717,35 +717,18 @@ log-likelihood. Defaults to <code class="docutils literal notranslate"><span cla
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.MarginalREML.is_converged">
-<span class="sig-name descname"><span class="pre">is_converged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">check_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.is_converged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.is_converged" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">is_converged</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.is_converged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.is_converged" title="Link to this definition">¶</a></dt>
 <dd><p>Check whether the optimisation has converged.</p>
 <p>Convergence is declared when all enabled criteria fall below their
 respective tolerances. At least two iterations must have completed
 before any criterion can be satisfied.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>check_score</strong> (<em>bool</em><em>, </em><em>optional</em>) – Check the norm of the score vector.
-Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p><strong>check_delta</strong> (<em>bool</em><em>, </em><em>optional</em>) – Check the norm of the covariance
-parameter update <span class="math notranslate nohighlight">\(\Delta\)</span>. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p><strong>check_loglik</strong> (<em>bool</em><em>, </em><em>optional</em>) – Check the absolute change in
-log-likelihood between successive iterates. Defaults to
-<code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p><strong>tol_score</strong> (<em>float</em><em>, </em><em>optional</em>) – Score norm tolerance. Defaults to
-<code class="docutils literal notranslate"><span class="pre">1e-4</span></code>.</p></li>
-<li><p><strong>tol_delta</strong> (<em>float</em><em>, </em><em>optional</em>) – Covariance parameter update norm
-tolerance. Defaults to <code class="docutils literal notranslate"><span class="pre">1e-4</span></code>.</p></li>
-<li><p><strong>tol_loglik</strong> (<em>float</em><em>, </em><em>optional</em>) – Log-likelihood change tolerance.
-Defaults to <code class="docutils literal notranslate"><span class="pre">1e-4</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if all enabled criteria are satisfied, <code class="docutils literal notranslate"><span class="pre">False</span></code>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if all enabled criteria are satisfied, <code class="docutils literal notranslate"><span class="pre">False</span></code>
 otherwise.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>

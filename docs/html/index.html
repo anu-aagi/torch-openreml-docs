@@ -9,7 +9,7 @@
         <title>torch-openreml 0.4.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=df86a2a8" />
@@ -400,8 +400,7 @@ backend rather than model specification syntax.</p>
 </section>
 <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO: replace with actual install command when packaging is set up</span>
-pip<span class="w"> </span>install<span class="w"> </span>torch-openreml
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>torch-openreml
 </pre></div>
 </div>
 <p><strong>Dependencies:</strong> <code class="docutils literal notranslate"><span class="pre">torch</span></code>, <code class="docutils literal notranslate"><span class="pre">pandas</span></code>, <code class="docutils literal notranslate"><span class="pre">tqdm</span></code> (Python 3.12).</p>
@@ -453,7 +452,7 @@ and <code class="docutils literal notranslate"><span class="pre">gen</span></cod
 <p>and distributional assumptions:</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
-\[\mathbf{u} \sim \mathcal{N}(\mathbf{0}, \mathbf{G}), \quad
+\[\mathbf{b} \sim \mathcal{N}(\mathbf{0}, \mathbf{G}), \quad
 \boldsymbol{\varepsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{R})\]</div>
 </div>
 <p>For the present model, which includes two random intercept components and their interaction, the covariance contribution from the random effects is expressed as:</p>
@@ -473,9 +472,9 @@ and <code class="docutils literal notranslate"><span class="pre">gen</span></cod
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml</span><span class="w"> </span><span class="kn">import</span> <span class="n">MarginalREML</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">augment</span><span class="p">,</span> <span class="n">n_distinct</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DummyMatrix</span><span class="p">,</span> <span class="n">IdentityMatrix</span><span class="p">,</span> <span class="n">ScalarMatrix</span><span class="p">,</span> <span class="n">Sum</span><span class="p">,</span> <span class="n">CovariancePropagation</span><span class="p">,</span> <span class="n">KroneckerProduct</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml</span><span class="w"> </span><span class="kn">import</span> <span class="n">MarginalREML</span><span class="p">,</span> <span class="n">blup</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DummyMatrix</span><span class="p">,</span> <span class="n">IdentityMatrix</span><span class="p">,</span> <span class="n">ScalarMatrix</span><span class="p">,</span> <span class="n">Sum</span><span class="p">,</span> <span class="n">CovariancePropagation</span><span class="p">,</span> <span class="n">KroneckerProduct</span><span class="p">,</span> <span class="n">Augment</span><span class="p">,</span> <span class="n">BlockDiagonal</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.example_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">john_alpha</span>
 </pre></div>
 </div>
@@ -487,21 +486,28 @@ and <code class="docutils literal notranslate"><span class="pre">gen</span></cod
 <section id="covariance-builder">
 <h2>Covariance Builder<a class="headerlink" href="#covariance-builder" title="Link to this heading">¶</a></h2>
 <p>Next, we construct <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, and the components required to define <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>. Both <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> are represented as torch tensors. The <a class="reference internal" href="generated/torch_openreml.covariance.DummyMatrix.html#torch_openreml.covariance.DummyMatrix" title="torch_openreml.covariance.DummyMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">DummyMatrix</span></code></a> class serves as a matrix builder: it constructs the dummy matrix upon evaluation and accepts either <cite>pandas.Series</cite> or lists of strings as input. The argument <code class="docutils literal notranslate"><span class="pre">drop_first=True</span></code> removes the first column of the dummy matrix to avoid redundancy, as an intercept term is already included.</p>
-<p>The classes <a class="reference internal" href="generated/torch_openreml.covariance.ScalarMatrix.html#torch_openreml.covariance.ScalarMatrix" title="torch_openreml.covariance.ScalarMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScalarMatrix</span></code></a> and <a class="reference internal" href="generated/torch_openreml.covariance.IdentityMatrix.html#torch_openreml.covariance.IdentityMatrix" title="torch_openreml.covariance.IdentityMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">IdentityMatrix</span></code></a> are also matrix builders, parameterized by the required matrix dimension.</p>
-<p>We then assemble the covariance structure using composable operators. The <a class="reference internal" href="generated/torch_openreml.covariance.CovariancePropagation.html#torch_openreml.covariance.CovariancePropagation" title="torch_openreml.covariance.CovariancePropagation"><code class="xref py py-class docutils literal notranslate"><span class="pre">CovariancePropagation</span></code></a> operator represents the transformation <span class="math notranslate nohighlight">\(\mathbf{Z}\mathbf{G}\mathbf{Z}^\top\)</span>. The <a class="reference internal" href="generated/torch_openreml.covariance.KroneckerProduct.html#torch_openreml.covariance.KroneckerProduct" title="torch_openreml.covariance.KroneckerProduct"><code class="xref py py-class docutils literal notranslate"><span class="pre">KroneckerProduct</span></code></a> operator computes the direct (Kronecker) product of two matrices, and <a class="reference internal" href="generated/torch_openreml.covariance.Sum.html#torch_openreml.covariance.Sum" title="torch_openreml.covariance.Sum"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sum</span></code></a> aggregates multiple matrix components.</p>
+<p>The classes <a class="reference internal" href="generated/torch_openreml.covariance.ScalarMatrix.html#torch_openreml.covariance.ScalarMatrix" title="torch_openreml.covariance.ScalarMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScalarMatrix</span></code></a> and <a class="reference internal" href="generated/torch_openreml.covariance.IdentityMatrix.html#torch_openreml.covariance.IdentityMatrix" title="torch_openreml.covariance.IdentityMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">IdentityMatrix</span></code></a> are also matrix builders, parameterized by the required matrix dimension. The dimension may be given as an integer, or directly as the grouping factor itself, in which case the number of distinct values defines the dimension.</p>
+<p>We then assemble the covariance structure using composable operators. The <a class="reference internal" href="generated/torch_openreml.covariance.Augment.html#torch_openreml.covariance.Augment" title="torch_openreml.covariance.Augment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Augment</span></code></a> operator binds its operands side by side, forming the joint design matrix <span class="math notranslate nohighlight">\(\mathbf{Z} = [\mathbf{Z}_{gen}\ \mathbf{Z}_{rep:block}]\)</span>, and <a class="reference internal" href="generated/torch_openreml.covariance.BlockDiagonal.html#torch_openreml.covariance.BlockDiagonal" title="torch_openreml.covariance.BlockDiagonal"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockDiagonal</span></code></a> places <span class="math notranslate nohighlight">\(\mathbf{G}_{gen}\)</span> and the Kronecker product <span class="math notranslate nohighlight">\(\mathbf{G}_{rep} \otimes \mathbf{G}_{block}\)</span> on the diagonal of the joint <span class="math notranslate nohighlight">\(\mathbf{G}\)</span>. The <a class="reference internal" href="generated/torch_openreml.covariance.CovariancePropagation.html#torch_openreml.covariance.CovariancePropagation" title="torch_openreml.covariance.CovariancePropagation"><code class="xref py py-class docutils literal notranslate"><span class="pre">CovariancePropagation</span></code></a> operator then represents the transformation <span class="math notranslate nohighlight">\(\mathbf{Z}\mathbf{G}\mathbf{Z}^\top\)</span>. The <a class="reference internal" href="generated/torch_openreml.covariance.KroneckerProduct.html#torch_openreml.covariance.KroneckerProduct" title="torch_openreml.covariance.KroneckerProduct"><code class="xref py py-class docutils literal notranslate"><span class="pre">KroneckerProduct</span></code></a> operator computes the direct (Kronecker) product of two matrices, and <a class="reference internal" href="generated/torch_openreml.covariance.Sum.html#torch_openreml.covariance.Sum" title="torch_openreml.covariance.Sum"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sum</span></code></a> adds the residual covariance <span class="math notranslate nohighlight">\(\mathbf{R}\)</span>.</p>
 <p>Altogether, the covariance structure can be written as:</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
-\[\mathbf{V} =
-\mathbf{Z}_{gen}\mathbf{G}_{gen}\mathbf{Z}_{gen}^\top +
-\mathbf{Z}_{rep:block}
-\left(\mathbf{G}_{rep} \otimes \mathbf{G}_{block}\right)
-\mathbf{Z}_{rep:block}^\top +
-\sigma^2_{\varepsilon}\mathbf{I}\]</div>
+\[\begin{split}\mathbf{V} = \mathbf{Z}\mathbf{G}\mathbf{Z}^\top + \mathbf{R},
+\qquad
+\mathbf{Z} =
+\begin{bmatrix}
+\mathbf{Z}_{gen} &amp; \mathbf{Z}_{rep:block}
+\end{bmatrix},
+\qquad
+\mathbf{G} =
+\begin{bmatrix}
+\mathbf{G}_{gen} &amp; \mathbf{0} \\
+\mathbf{0} &amp; \mathbf{G}_{rep} \otimes \mathbf{G}_{block}
+\end{bmatrix}\end{split}\]</div>
 </div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{G}_{rep} = \mathbf{I}\)</span>,
+<p>with <span class="math notranslate nohighlight">\(\mathbf{G}_{rep} = \mathbf{I}\)</span>,
 <span class="math notranslate nohighlight">\(\mathbf{G}_{gen} = \sigma^2_{gen}\mathbf{I}\)</span>,
-and <span class="math notranslate nohighlight">\(\mathbf{G}_{block} = \sigma^2_{block}\mathbf{I}\)</span>.</p>
+<span class="math notranslate nohighlight">\(\mathbf{G}_{block} = \sigma^2_{block}\mathbf{I}\)</span>,
+and <span class="math notranslate nohighlight">\(\mathbf{R} = \sigma^2_{\varepsilon}\mathbf{I}\)</span>.</p>
 <p>The model parameters are defined as:</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -515,26 +521,29 @@ and <span class="math notranslate nohighlight">\(\mathbf{G}_{block} = \sigma^2_{
 <p>The logarithmic parameterization ensures that the variance components remain positive during optimization.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;yield&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">augment</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span>
-            <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;rep&quot;</span><span class="p">],</span> <span class="n">drop_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)())</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rep</span> <span class="o">=</span> <span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;rep&quot;</span><span class="p">]</span>
+<span class="n">block</span> <span class="o">=</span> <span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;block&quot;</span><span class="p">]</span>
+<span class="n">gen</span> <span class="o">=</span> <span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">]</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">)</span>
 
-<span class="n">Z_gen</span> <span class="o">=</span> <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">])</span>
-<span class="n">Z_rep_block</span> <span class="o">=</span> <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;rep&quot;</span><span class="p">],</span> <span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;block&quot;</span><span class="p">])</span>
-
-<span class="n">G_gen</span> <span class="o">=</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">n_distinct</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">]))</span>
-<span class="n">G_rep</span> <span class="o">=</span> <span class="n">IdentityMatrix</span><span class="p">(</span><span class="n">n_distinct</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;rep&quot;</span><span class="p">]))</span>
-<span class="n">G_block</span> <span class="o">=</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">n_distinct</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;block&quot;</span><span class="p">]))</span>
-
-<span class="n">R</span> <span class="o">=</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">))</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;yield&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">Augment</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">rep</span><span class="p">,</span> <span class="n">drop_first</span><span class="o">=</span><span class="kc">True</span><span class="p">))()</span>
 
 <span class="n">V</span> <span class="o">=</span> <span class="n">Sum</span><span class="p">(</span>
-    <span class="n">CovariancePropagation</span><span class="p">(</span><span class="n">Z_gen</span><span class="p">,</span> <span class="n">G_gen</span><span class="p">),</span>
-    <span class="n">CovariancePropagation</span><span class="p">(</span>
-        <span class="n">Z_rep_block</span><span class="p">,</span>
-        <span class="n">KroneckerProduct</span><span class="p">(</span><span class="n">G_rep</span><span class="p">,</span> <span class="n">G_block</span><span class="p">)</span>
+    <span class="n">random</span> <span class="o">=</span> <span class="n">CovariancePropagation</span><span class="p">(</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="n">Augment</span><span class="p">(</span>
+            <span class="n">Z_gen</span> <span class="o">=</span> <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">gen</span><span class="p">),</span>
+            <span class="n">Z_rep_block</span> <span class="o">=</span> <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">rep</span><span class="p">,</span> <span class="n">block</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">BlockDiagonal</span><span class="p">(</span>
+            <span class="n">G_gen</span> <span class="o">=</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">gen</span><span class="p">),</span>
+            <span class="n">G_rep_block</span> <span class="o">=</span> <span class="n">KroneckerProduct</span><span class="p">(</span>
+                <span class="n">G_rep</span> <span class="o">=</span> <span class="n">IdentityMatrix</span><span class="p">(</span><span class="n">rep</span><span class="p">),</span>
+                <span class="n">G_block</span> <span class="o">=</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">block</span><span class="p">),</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
     <span class="p">),</span>
-    <span class="n">R</span>
+    <span class="n">residual</span> <span class="o">=</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">n</span><span class="p">),</span>
 <span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
@@ -544,24 +553,28 @@ and <span class="math notranslate nohighlight">\(\mathbf{G}_{block} = \sigma^2_{
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Sum(
   operands={
-    &#39;op_0&#39;: CovariancePropagation(
+    &#39;random&#39;: CovariancePropagation(
       operands={
-        &#39;op_0&#39;: DummyMatrix(shape=(72, 24)),
-        &#39;op_1&#39;: ScalarMatrix(shape=(24, 24), param_specs={&#39;sigma^2&#39;: {&#39;fixed&#39;: False, &#39;default&#39;: tensor([0.]), &#39;trans&#39;: TransformExpPow2()}})
-      }
-    ),
-    &#39;op_1&#39;: CovariancePropagation(
-      operands={
-        &#39;op_0&#39;: DummyMatrix(shape=(72, 18)),
-        &#39;op_1&#39;: KroneckerProduct(
+        &#39;Z&#39;: Augment(
           operands={
-            &#39;op_0&#39;: IdentityMatrix(shape=(3, 3)),
-            &#39;op_1&#39;: ScalarMatrix(shape=(6, 6), param_specs={&#39;sigma^2&#39;: {&#39;fixed&#39;: False, &#39;default&#39;: tensor([0.]), &#39;trans&#39;: TransformExpPow2()}})
+            &#39;Z_gen&#39;: DummyMatrix(shape=(72, 24)),
+            &#39;Z_rep_block&#39;: DummyMatrix(shape=(72, 18))
+          }
+        ),
+        &#39;G&#39;: BlockDiagonal(
+          operands={
+            &#39;G_gen&#39;: ScalarMatrix(shape=(24, 24), param_specs={&#39;sigma^2&#39;: {&#39;fixed&#39;: False, &#39;default&#39;: tensor([0.]), &#39;trans&#39;: TransformExpPow2()}}),
+            &#39;G_rep_block&#39;: KroneckerProduct(
+              operands={
+                &#39;G_rep&#39;: IdentityMatrix(shape=(3, 3)),
+                &#39;G_block&#39;: ScalarMatrix(shape=(6, 6), param_specs={&#39;sigma^2&#39;: {&#39;fixed&#39;: False, &#39;default&#39;: tensor([0.]), &#39;trans&#39;: TransformExpPow2()}})
+              }
+            )
           }
         )
       }
     ),
-    &#39;op_2&#39;: ScalarMatrix(shape=(72, 72), param_specs={&#39;sigma^2&#39;: {&#39;fixed&#39;: False, &#39;default&#39;: tensor([0.]), &#39;trans&#39;: TransformExpPow2()}})
+    &#39;residual&#39;: ScalarMatrix(shape=(72, 72), param_specs={&#39;sigma^2&#39;: {&#39;fixed&#39;: False, &#39;default&#39;: tensor([0.]), &#39;trans&#39;: TransformExpPow2()}})
   }
 )
 </pre></div>
@@ -609,8 +622,85 @@ and <span class="math notranslate nohighlight">\(\mathbf{G}_{block} = \sigma^2_{
 
 ✓ Converged at iteration 19
 tensor([-0.9728, -1.3281, -1.2529]) tensor([0.1429, 0.0702, 0.0816])
-[&#39;op_0/op_1/sigma^2&#39;, &#39;op_1/op_1/op_1/sigma^2&#39;, &#39;op_2/sigma^2&#39;]
+[&#39;random/G/G_gen/sigma^2&#39;, &#39;random/G/G_rep_block/G_block/sigma^2&#39;, &#39;residual/sigma^2&#39;]
 tensor([ 4.5183,  0.2978, -0.4140])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="blup">
+<h2>BLUP<a class="headerlink" href="#blup" title="Link to this heading">¶</a></h2>
+<p>Once the variance components have been estimated, the random effects can be predicted using the best linear unbiased predictor (BLUP):</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\hat{\mathbf{b}} = \mathbf{G}\mathbf{Z}^\top\mathbf{V}^{-1}\hat{\mathbf{e}},
+\qquad
+\hat{\mathbf{e}} = \mathbf{y} - \mathbf{X}\hat{\boldsymbol{\beta}}\]</div>
+</div>
+<p>Here, <span class="math notranslate nohighlight">\(\mathbf{Z}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{G}\)</span> are the joint design and covariance matrices defined above, represented by the <a class="reference internal" href="generated/torch_openreml.covariance.Augment.html#torch_openreml.covariance.Augment" title="torch_openreml.covariance.Augment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Augment</span></code></a> and <a class="reference internal" href="generated/torch_openreml.covariance.BlockDiagonal.html#torch_openreml.covariance.BlockDiagonal" title="torch_openreml.covariance.BlockDiagonal"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockDiagonal</span></code></a> operands nested within the <a class="reference internal" href="generated/torch_openreml.covariance.CovariancePropagation.html#torch_openreml.covariance.CovariancePropagation" title="torch_openreml.covariance.CovariancePropagation"><code class="xref py py-class docutils literal notranslate"><span class="pre">CovariancePropagation</span></code></a> operator. These matrices can be retrieved directly from the covariance structure rather than reconstructed manually. Calling <a class="reference internal" href="generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.tree" title="torch_openreml.covariance.Operator.tree"><code class="xref py py-meth docutils literal notranslate"><span class="pre">V.tree</span></code></a> at <code class="docutils literal notranslate"><span class="pre">theta_hat</span></code> evaluates the structure and returns the evaluated nodes, including the root <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code> for <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> and <code class="docutils literal notranslate"><span class="pre">&quot;random/Z&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;random/G&quot;</span></code> for the random-effects design and covariance matrices.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">tree</span><span class="p">(</span><span class="n">theta_hat</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The <a class="reference internal" href="generated/torch_openreml.blup.html#torch_openreml.blup" title="torch_openreml.blup"><code class="xref py py-func docutils literal notranslate"><span class="pre">blup</span></code></a> function takes <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{Z}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{G}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> as inputs and returns a prediction for each random-effect level. In this example, the predictions correspond to the 24 genotypes followed by the 18 replicate-by-block combinations:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b_hat</span> <span class="o">=</span> <span class="n">blup</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tree</span><span class="p">[</span><span class="s2">&quot;random/Z&quot;</span><span class="p">],</span> <span class="n">tree</span><span class="p">[</span><span class="s2">&quot;random/G&quot;</span><span class="p">],</span> <span class="n">tree</span><span class="p">[</span><span class="s2">&quot;/&quot;</span><span class="p">])</span>
+<span class="n">b_hat</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 0.5012,  0.0050, -0.7846,  0.0061,  0.4750,  0.0446, -0.3089,  0.0622,
+        -0.8099, -0.0894, -0.1964,  0.2258,  0.2317,  0.2434,  0.4247,  0.2010,
+         0.0781, -0.1102,  0.2896, -0.3390,  0.2561,  0.0241, -0.1770, -0.2531,
+         0.1231, -0.1412, -0.1504, -0.1068,  0.0737,  0.2015, -0.5326, -0.3012,
+         0.2432,  0.1349,  0.2753,  0.1804,  0.0506, -0.0478,  0.1511,  0.0538,
+        -0.0080, -0.1996])
+</pre></div>
+</div>
+</div>
+</div>
+<p>BLUPs for an individual random-effect component can be obtained in the same way by extracting its corresponding design and covariance matrices. For example, the random intercepts for <code class="docutils literal notranslate"><span class="pre">gen</span></code> are defined by <code class="docutils literal notranslate"><span class="pre">&quot;random/Z/Z_gen&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;random/G/G_gen&quot;</span></code>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gen_blup</span> <span class="o">=</span> <span class="n">blup</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tree</span><span class="p">[</span><span class="s2">&quot;random/Z/Z_gen&quot;</span><span class="p">],</span> <span class="n">tree</span><span class="p">[</span><span class="s2">&quot;random/G/G_gen&quot;</span><span class="p">],</span> <span class="n">tree</span><span class="p">[</span><span class="s2">&quot;/&quot;</span><span class="p">])</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">gen_blup</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">gen</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>G01    0.501184
+G02    0.004963
+G03   -0.784562
+G04    0.006126
+G05    0.474950
+G06    0.044641
+G07   -0.308947
+G08    0.062230
+G09   -0.809931
+G10   -0.089373
+G11   -0.196434
+G12    0.225759
+G13    0.231665
+G14    0.243400
+G15    0.424700
+G16    0.200965
+G17    0.078078
+G18   -0.110180
+G19    0.289576
+G20   -0.338969
+G21    0.256132
+G22    0.024089
+G23   -0.176997
+G24   -0.253057
+dtype: float32
 </pre></div>
 </div>
 </div>

@@ -8,7 +8,7 @@
         <title>torch_openreml.covariance.matrix - torch-openreml 0.4.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df86a2a8" />
@@ -323,8 +323,10 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance.transform</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transform</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">n_distinct</span>
 
 <div class="viewcode-block" id="Matrix">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix">[docs]</a>
@@ -1128,6 +1130,39 @@
 
       
           
+<div class="viewcode-block" id="Matrix.resolve_dim">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.resolve_dim">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resolve_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resolve a matrix dimension from an integer or a vector of levels.</span>
+
+<span class="sd">        The resolved dimension is the number of distinct elements of ``n``</span>
+<span class="sd">        (see :func:`~torch_openreml.utils.n_distinct`) when ``n`` is a</span>
+<span class="sd">        ``list``, a ``tuple`` or a ``pandas.Series``, and ``n`` itself</span>
+<span class="sd">        otherwise.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            n (int, list, tuple or pandas.Series): Matrix dimension, or a</span>
+<span class="sd">                vector of levels whose distinct elements define it.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: The resolved matrix dimension.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            from torch_openreml.covariance import ScalarMatrix</span>
+
+<span class="sd">            mat = ScalarMatrix(3)</span>
+<span class="sd">            mat.resolve_dim([&quot;a&quot;, &quot;b&quot;, &quot;a&quot;, &quot;c&quot;])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">n_distinct</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">n</span></div>
+
+
     <span class="k">def</span><span class="w"> </span><span class="nf">_check_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>

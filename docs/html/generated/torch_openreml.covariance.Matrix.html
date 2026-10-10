@@ -9,7 +9,7 @@
         <title>torch_openreml.covariance.Matrix - torch-openreml 0.4.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -394,13 +394,16 @@ respectively.</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.reset_intermediates" title="torch_openreml.covariance.Matrix.reset_intermediates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code></a>()</p></td>
 <td><p>Clear the intermediate computation cache.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_intermediates" title="torch_openreml.covariance.Matrix.set_intermediates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code></a>(params, intermediates)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.resolve_dim" title="torch_openreml.covariance.Matrix.resolve_dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolve_dim</span></code></a>(n)</p></td>
+<td><p>Resolve a matrix dimension from an integer or a vector of levels.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_intermediates" title="torch_openreml.covariance.Matrix.set_intermediates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code></a>(params, intermediates)</p></td>
 <td><p>Cache intermediate computation results keyed by the parameter values.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_param_specs" title="torch_openreml.covariance.Matrix.set_param_specs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_param_specs</span></code></a>(key, *[, fixed, default, trans])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.set_param_specs" title="torch_openreml.covariance.Matrix.set_param_specs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_param_specs</span></code></a>(key, *[, fixed, default, trans])</p></td>
 <td><p>Update the fields of one or more parameter specifications in place.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.trans_grad" title="torch_openreml.covariance.Matrix.trans_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code></a>([free_params])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Matrix.trans_grad" title="torch_openreml.covariance.Matrix.trans_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code></a>([free_params])</p></td>
 <td><p>Compute the element-wise derivative of the free parameter transforms.</p></td>
 </tr>
 </tbody>
@@ -1228,6 +1231,44 @@ and <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_g
 </div>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.resolve_dim">
+<span class="sig-name descname"><span class="pre">resolve_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/matrix.html#Matrix.resolve_dim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Matrix.resolve_dim" title="Link to this definition">¶</a></dt>
+<dd><p>Resolve a matrix dimension from an integer or a vector of levels.</p>
+<p>The resolved dimension is the number of distinct elements of <code class="docutils literal notranslate"><span class="pre">n</span></code>
+(see <a class="reference internal" href="torch_openreml.utils.n_distinct.html#torch_openreml.utils.n_distinct" title="torch_openreml.utils.n_distinct"><code class="xref py py-func docutils literal notranslate"><span class="pre">n_distinct()</span></code></a>) when <code class="docutils literal notranslate"><span class="pre">n</span></code> is a
+<code class="docutils literal notranslate"><span class="pre">list</span></code>, a <code class="docutils literal notranslate"><span class="pre">tuple</span></code> or a <code class="docutils literal notranslate"><span class="pre">pandas.Series</span></code>, and <code class="docutils literal notranslate"><span class="pre">n</span></code> itself
+otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em><em>, </em><em>list</em><em>, </em><em>tuple</em><em> or </em><em>pandas.Series</em>) – Matrix dimension, or a
+vector of levels whose distinct elements define it.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The resolved matrix dimension.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarMatrix</span>
+
+<span class="n">mat</span> <span class="o">=</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">resolve_dim</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>3
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="torch_openreml.covariance.Matrix.shape">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#torch_openreml.covariance.Matrix.shape" title="Link to this definition">¶</a></dt>
@@ -1502,6 +1543,7 @@ and <a class="reference internal" href="#torch_openreml.covariance.Matrix.auto_g
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.manual_grad"><code class="docutils literal notranslate"><span class="pre">Matrix.manual_grad()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.__call__"><code class="docutils literal notranslate"><span class="pre">Matrix.__call__()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.grad"><code class="docutils literal notranslate"><span class="pre">Matrix.grad()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Matrix.resolve_dim"><code class="docutils literal notranslate"><span class="pre">Matrix.resolve_dim()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.shape"><code class="docutils literal notranslate"><span class="pre">Matrix.shape</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.param_specs"><code class="docutils literal notranslate"><span class="pre">Matrix.param_specs</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Matrix.param_names"><code class="docutils literal notranslate"><span class="pre">Matrix.param_names</span></code></a></li>

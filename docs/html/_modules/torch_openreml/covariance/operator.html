@@ -8,7 +8,7 @@
         <title>torch_openreml.covariance.operator - torch-openreml 0.4.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df86a2a8" />
@@ -610,14 +610,14 @@
         <span class="k">return</span> <span class="n">v_groups</span></div>
 
 
-<div class="viewcode-block" id="Operator.call_tree">
-<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.call_tree">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">call_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Operator.tree">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.tree">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluate this operator and every nested operand, returning each result</span>
 <span class="sd">        keyed by its path.</span>
 
-<span class="sd">        Descends the operand structure, calling :meth:`call_tree` on nested</span>
+<span class="sd">        Descends the operand structure, calling :meth:`tree` on nested</span>
 <span class="sd">        :class:`~torch_openreml.covariance.operator.Operator` operands.</span>
 <span class="sd">        Paths join the operand names leading to a node with ``&quot;/&quot;``, and ``&quot;/&quot;``</span>
 <span class="sd">        is the root. Both dictionaries returned share one key set:</span>
@@ -670,7 +670,7 @@
 
 <span class="sd">                op = Sum(inner=BlockDiagonal(DiagonalMatrix(2), ScalarMatrix(2)),</span>
 <span class="sd">                         extra=ScalarMatrix(4))</span>
-<span class="sd">                results, free_params_by_path = op.call_tree(torch.tensor([0.0, 0.5, 1.0, 0.5]))</span>
+<span class="sd">                results, free_params_by_path = op.tree(torch.tensor([0.0, 0.5, 1.0, 0.5]))</span>
 
 <span class="sd">            .. jupyter-execute::</span>
 
@@ -698,7 +698,7 @@
                 <span class="n">free_params</span> <span class="o">=</span> <span class="n">free_params</span><span class="p">[</span><span class="n">operand</span><span class="o">.</span><span class="n">num_free_params</span><span class="p">:]</span>
 
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">operand</span><span class="p">,</span> <span class="n">Operator</span><span class="p">):</span>
-                    <span class="n">child_results</span><span class="p">,</span> <span class="n">child_params</span> <span class="o">=</span> <span class="n">operand</span><span class="o">.</span><span class="n">call_tree</span><span class="p">(</span><span class="n">operand_params</span><span class="p">)</span>
+                    <span class="n">child_results</span><span class="p">,</span> <span class="n">child_params</span> <span class="o">=</span> <span class="n">operand</span><span class="o">.</span><span class="n">tree</span><span class="p">(</span><span class="n">operand_params</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">child_results</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="n">operand</span><span class="p">(</span><span class="n">operand_params</span><span class="p">)}</span>
                     <span class="n">child_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="n">operand_params</span><span class="p">}</span>
@@ -724,7 +724,7 @@
 <span class="sd">        Descends the operand structure, calling :meth:`grad_tree` on nested</span>
 <span class="sd">        :class:`~torch_openreml.covariance.operator.Operator` operands. Paths</span>
 <span class="sd">        join the operand names leading to a node with ``&quot;/&quot;``, and ``&quot;/&quot;`` is</span>
-<span class="sd">        the root — the same keys :meth:`call_tree` produces, in the same order.</span>
+<span class="sd">        the root — the same keys :meth:`tree` produces, in the same order.</span>
 <span class="sd">        Both dictionaries returned share one key set:</span>
 
 <span class="sd">        - ``grads`` maps each path to the ``(grad, grad_names)`` pair</span>

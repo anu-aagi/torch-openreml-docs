@@ -8,7 +8,7 @@
         <title>torch_openreml.covariance.equal_entry_matrix - torch-openreml 0.4.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df86a2a8" />
@@ -355,9 +355,12 @@
 <span class="sd">        Initialize an equal-entry matrix of size ``n x m``.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            n (int): Number of rows. Matrix dimension when ``m`` is omitted.</span>
-<span class="sd">            m (int, optional): Number of columns. Defaults to ``n`` when</span>
-<span class="sd">                omitted or ``None``. Default: ``None``.</span>
+<span class="sd">            n (int, list, tuple or pandas.Series): Number of rows, or a vector</span>
+<span class="sd">                of levels whose distinct elements define it. Matrix dimension</span>
+<span class="sd">                when ``m`` is omitted.</span>
+<span class="sd">            m (int, list, tuple or pandas.Series, optional): Number of columns,</span>
+<span class="sd">                or a vector of levels whose distinct elements define it.</span>
+<span class="sd">                Defaults to ``n`` when omitted or ``None``. Default: ``None``.</span>
 <span class="sd">            param_specs (dict): Parameter specifications. Keys should be strings</span>
 <span class="sd">                representing parameter names. Values should be dictionaries</span>
 <span class="sd">                containing the specification for each parameter. Each specification</span>
@@ -390,8 +393,10 @@
 
 <span class="sd">            mat.grad(free_params)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolve_dim</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 
         <span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">m</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolve_dim</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
         <span class="n">param_specs</span> <span class="o">=</span> <span class="n">param_specs</span> <span class="ow">or</span> <span class="p">{</span>
             <span class="s2">&quot;sigma^2&quot;</span><span class="p">:</span> <span class="p">{</span>

@@ -9,7 +9,7 @@
         <title>For R Users - torch-openreml 0.4.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=df86a2a8" />
@@ -357,13 +357,16 @@ We recommend installing torch-openreml inside a dedicated conda environment.</p>
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h2>
 <p>The following example mirrors the Getting Started example.
 In R, it is often more convenient to construct design matrices directly
-using <code class="docutils literal notranslate"><span class="pre">model.matrix()</span></code>.</p>
+using <code class="docutils literal notranslate"><span class="pre">model.matrix()</span></code>.
+As in Python, a matrix dimension may be given as the grouping factor itself,
+whose distinct values define the dimension.</p>
 <div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">reticulate</span><span class="p">)</span>
 <span class="nf">use_condaenv</span><span class="p">(</span><span class="s">&quot;torch-openreml&quot;</span><span class="p">)</span>
 
 <span class="n">openreml</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">import</span><span class="p">(</span><span class="s">&quot;torch_openreml&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">convert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
 <span class="n">torch</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">import</span><span class="p">(</span><span class="s">&quot;torch&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">convert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
 
+<span class="n">BlockDiagonal</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">covariance</span><span class="o">$</span><span class="n">BlockDiagonal</span>
 <span class="n">ScalarMatrix</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">covariance</span><span class="o">$</span><span class="n">ScalarMatrix</span>
 <span class="n">IdentityMatrix</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">covariance</span><span class="o">$</span><span class="n">IdentityMatrix</span>
 <span class="n">KroneckerProduct</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">covariance</span><span class="o">$</span><span class="n">KroneckerProduct</span>
@@ -372,22 +375,28 @@ using <code class="docutils literal notranslate"><span class="pre">model.matrix(
 <span class="n">MarginalREML</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">MarginalREML</span>
 
 <span class="n">data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">agridat</span><span class="o">::</span><span class="n">john.alpha</span>
+<span class="n">n</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">nrow</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
 <span class="n">y</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">torch</span><span class="o">$</span><span class="nf">tensor</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">yield</span><span class="p">,</span><span class="w"> </span><span class="n">dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">torch</span><span class="o">$</span><span class="n">float32</span><span class="p">)</span>
 <span class="n">X</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">model.matrix</span><span class="p">(</span><span class="o">~</span><span class="w"> </span><span class="n">rep</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">    </span><span class="n">torch</span><span class="o">$</span><span class="nf">tensor</span><span class="p">(</span><span class="n">dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">torch</span><span class="o">$</span><span class="n">float32</span><span class="p">)</span>
 
-<span class="n">Z_gen</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">model.matrix</span><span class="p">(</span><span class="o">~</span><span class="w"> </span><span class="n">gen</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
-<span class="w">    </span><span class="n">torch</span><span class="o">$</span><span class="nf">tensor</span><span class="p">(</span><span class="n">dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">torch</span><span class="o">$</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">Z_rep_block</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">model.matrix</span><span class="p">(</span><span class="o">~</span><span class="w"> </span><span class="nf">interaction</span><span class="p">(</span><span class="n">rep</span><span class="p">,</span><span class="w"> </span><span class="n">block</span><span class="p">,</span><span class="w"> </span><span class="n">lex.order</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="n">Z</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">model.matrix</span><span class="p">(</span><span class="o">~</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">gen</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">block</span><span class="o">:</span><span class="n">rep</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">    </span><span class="n">torch</span><span class="o">$</span><span class="nf">tensor</span><span class="p">(</span><span class="n">dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">torch</span><span class="o">$</span><span class="n">float32</span><span class="p">)</span>
 
-<span class="n">G_gen</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ScalarMatrix</span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">gen</span><span class="p">)))</span>
-<span class="n">G_rep_block</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">KroneckerProduct</span><span class="p">(</span><span class="nf">IdentityMatrix</span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">rep</span><span class="p">))),</span>
-<span class="w">                                </span><span class="nf">ScalarMatrix</span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">block</span><span class="p">))))</span>
-<span class="n">V</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">Sum</span><span class="p">(</span><span class="nf">CovariancePropagation</span><span class="p">(</span><span class="n">Z_gen</span><span class="p">,</span><span class="w"> </span><span class="n">G_gen</span><span class="p">),</span>
-<span class="w">         </span><span class="nf">CovariancePropagation</span><span class="p">(</span><span class="n">Z_rep_block</span><span class="p">,</span><span class="w"> </span><span class="n">G_rep_block</span><span class="p">),</span>
-<span class="w">         </span><span class="nf">ScalarMatrix</span><span class="p">(</span><span class="nf">nrow</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
+<span class="n">V</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">Sum</span><span class="p">(</span>
+<span class="w">    </span><span class="n">random</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">CovariancePropagation</span><span class="p">(</span>
+<span class="w">        </span><span class="n">Z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Z</span><span class="p">,</span>
+<span class="w">        </span><span class="n">G</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">BlockDiagonal</span><span class="p">(</span>
+<span class="w">            </span><span class="n">G_gen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ScalarMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">gen</span><span class="p">),</span>
+<span class="w">            </span><span class="n">G_rep_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">KroneckerProduct</span><span class="p">(</span>
+<span class="w">                </span><span class="n">G_rep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">IdentityMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">rep</span><span class="p">),</span>
+<span class="w">                </span><span class="n">G_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ScalarMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">block</span><span class="p">)</span>
+<span class="w">            </span><span class="p">)</span>
+<span class="w">        </span><span class="p">)</span>
+<span class="w">    </span><span class="p">),</span>
+<span class="w">    </span><span class="n">residual</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ScalarMatrix</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="p">)</span>
 
 <span class="n">fit_openreml</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">MarginalREML</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
 <span class="n">result</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">torch</span><span class="o">$</span><span class="nf">zeros</span><span class="p">(</span><span class="m">3L</span><span class="p">),</span><span class="w"> </span><span class="n">verbose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2L</span><span class="p">)</span>
@@ -395,6 +404,29 @@ using <code class="docutils literal notranslate"><span class="pre">model.matrix(
 <span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">get_theta</span><span class="p">()</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
 <span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">V</span><span class="o">$</span><span class="nf">build_params</span><span class="p">(</span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">get_theta</span><span class="p">())</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
 <span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">get_beta</span><span class="p">()</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
+</pre></div>
+</div>
+<p>Random effects are predicted with the same best linear unbiased predictor (BLUP) as in the
+Python example. The joint design and covariance matrices are read back from the fitted
+covariance structure with <a class="reference internal" href="generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.tree" title="torch_openreml.covariance.Operator.tree"><code class="xref py py-meth docutils literal notranslate"><span class="pre">V.tree</span></code></a>, which
+evaluates the structure at the estimated parameters and returns each node under its path:
+<code class="docutils literal notranslate"><span class="pre">&quot;random/Z&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;random/G&quot;</span></code> hold <span class="math notranslate nohighlight">\(\mathbf{Z}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{G}\)</span>, and the root
+<code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code> holds <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>. Note that reticulate indexes Python objects from zero, so
+<code class="docutils literal notranslate"><span class="pre">[[0]]</span></code> selects the results from the <code class="docutils literal notranslate"><span class="pre">(results,</span> <span class="pre">free_params_by_path)</span></code> pair that <code class="docutils literal notranslate"><span class="pre">tree()</span></code>
+returns.</p>
+<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">V</span><span class="o">$</span><span class="nf">tree</span><span class="p">(</span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">get_theta</span><span class="p">())[[</span><span class="m">0</span><span class="p">]]</span>
+
+<span class="n">b_hat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="nf">blup</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">tree</span><span class="p">[[</span><span class="s">&quot;random/Z&quot;</span><span class="p">]],</span><span class="w"> </span><span class="n">tree</span><span class="p">[[</span><span class="s">&quot;random/G&quot;</span><span class="p">]],</span><span class="w"> </span><span class="n">tree</span><span class="p">[[</span><span class="s">&quot;/&quot;</span><span class="p">]])</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">b_hat</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
+</pre></div>
+</div>
+<p>The BLUPs of a single random-effect component follow the same pattern. Here the design matrix is
+a plain tensor built by <code class="docutils literal notranslate"><span class="pre">model.matrix()</span></code>, so the columns of the <code class="docutils literal notranslate"><span class="pre">gen</span></code> term are built on their
+own, while its covariance is the <code class="docutils literal notranslate"><span class="pre">&quot;random/G/G_gen&quot;</span></code> node of the tree.</p>
+<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="n">Z_gen</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">model.matrix</span><span class="p">(</span><span class="o">~</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">gen</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">    </span><span class="n">torch</span><span class="o">$</span><span class="nf">tensor</span><span class="p">(</span><span class="n">dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">torch</span><span class="o">$</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">gen_blup</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="nf">blup</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">Z_gen</span><span class="p">,</span><span class="w"> </span><span class="n">tree</span><span class="p">[[</span><span class="s">&quot;random/G/G_gen&quot;</span><span class="p">]],</span><span class="w"> </span><span class="n">tree</span><span class="p">[[</span><span class="s">&quot;/&quot;</span><span class="p">]])</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">setNames</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">gen_blup</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()),</span><span class="w"> </span><span class="nf">levels</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">gen</span><span class="p">)))</span>
 </pre></div>
 </div>
 <div class="jupyter_cell docutils container">
@@ -431,6 +463,23 @@ using <code class="docutils literal notranslate"><span class="pre">model.matrix(
 [1] -0.9727983 -1.3280730 -1.2528642
 [1] 0.14290193 0.07021832 0.08161612
 [1]  4.5182486  0.2978466 -0.4140441
+ [1]  0.501183033  0.004962160 -0.784563184  0.006125156  0.474949241
+ [6]  0.044639699 -0.308948159  0.062228836 -0.809932053 -0.089373551
+[11] -0.196435124  0.225757748  0.231664374  0.243399158  0.424699038
+[16]  0.200964108  0.078077391 -0.110181324  0.289575398 -0.338969529
+[21]  0.256131411  0.024088217 -0.176998153 -0.253058344  0.123135120
+[26] -0.141226426 -0.150395423 -0.106756583  0.073703296  0.201533794
+[31] -0.532640934 -0.301233232  0.243239060  0.134878263  0.275336683
+[36]  0.180418730  0.050569884 -0.047783885  0.151079014  0.053760849
+[41] -0.008047517 -0.199577749
+         G01          G02          G03          G04          G05          G06 
+ 0.501183033  0.004962160 -0.784563184  0.006125156  0.474949241  0.044639699 
+         G07          G08          G09          G10          G11          G12 
+-0.308948159  0.062228836 -0.809932053 -0.089373551 -0.196435124  0.225757748 
+         G13          G14          G15          G16          G17          G18 
+ 0.231664374  0.243399158  0.424699038  0.200964108  0.078077391 -0.110181324 
+         G19          G20          G21          G22          G23          G24 
+ 0.289575398 -0.338969529  0.256131411  0.024088217 -0.176998153 -0.253058344 
 </pre></div>
 </div>
 </div>
@@ -526,5 +575,6 @@ using <code class="docutils literal notranslate"><span class="pre">model.matrix(
     <script src="_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     </body>
 </html>

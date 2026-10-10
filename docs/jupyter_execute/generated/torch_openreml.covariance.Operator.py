@@ -86,7 +86,7 @@ from torch_openreml.covariance import BlockDiagonal, DiagonalMatrix, ScalarMatri
 
 op = Sum(inner=BlockDiagonal(DiagonalMatrix(2), ScalarMatrix(2)),
          extra=ScalarMatrix(4))
-results, free_params_by_path = op.call_tree(torch.tensor([0.0, 0.5, 1.0, 0.5]))
+results, free_params_by_path = op.tree(torch.tensor([0.0, 0.5, 1.0, 0.5]))
 
 
 # In[12]:

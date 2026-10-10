@@ -8,7 +8,7 @@
         <title>torch_openreml.covariance.compound_symmetric_matrix - torch-openreml 0.4.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df86a2a8" />
@@ -349,7 +349,8 @@
 <span class="sd">        Initialize a compound symmetric covariance matrix of size ``n x n``.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            n (int): Matrix dimension.</span>
+<span class="sd">            n (int, list, tuple or pandas.Series): Matrix dimension, or a</span>
+<span class="sd">                vector of levels whose distinct elements define it.</span>
 <span class="sd">            param_specs (dict): Parameter specifications. Keys should be strings</span>
 <span class="sd">                representing parameter names. Values should be dictionaries</span>
 <span class="sd">                containing the specification for each parameter. Each specification</span>
@@ -377,6 +378,8 @@
 
 <span class="sd">            mat.grad(free_params)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolve_dim</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;n&#39; must be greater than 1!&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rho_min</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>

@@ -190,3 +190,12 @@ free_params = torch.tensor([0.0, 0.5])
 grad, grad_names = mat.grad(free_params)
 grad, grad_names
 
+
+# In[21]:
+
+
+from torch_openreml.covariance import ScalarMatrix
+
+mat = ScalarMatrix(3)
+mat.resolve_dim(["a", "b", "a", "c"])
+
