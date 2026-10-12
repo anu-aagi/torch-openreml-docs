@@ -21,6 +21,20 @@ block(free_params)
 import torch
 from torch_openreml.covariance import ScalarMatrix, DiagonalMatrix, BlockDiagonal
 
+op = BlockDiagonal(
+    residual=ScalarMatrix(3),
+    random=DiagonalMatrix(2)
+)
+free_params = torch.tensor([0.5, 0.0, 1.0])
+op.inverse(free_params)
+
+
+# In[3]:
+
+
+import torch
+from torch_openreml.covariance import ScalarMatrix, DiagonalMatrix, BlockDiagonal
+
 block = BlockDiagonal(
     A=ScalarMatrix(3),
     B=DiagonalMatrix(2)
@@ -30,7 +44,7 @@ grad, grad_names = block.manual_grad(free_params)
 grad
 
 
-# In[3]:
+# In[4]:
 
 
 grad_names

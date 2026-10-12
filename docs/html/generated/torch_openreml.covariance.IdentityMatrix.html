@@ -388,22 +388,25 @@ vector of levels whose distinct elements define it.</p>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>([free_params])</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.IdentityMatrix.__call__" title="torch_openreml.covariance.IdentityMatrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable parameters.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code>([free_params])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.IdentityMatrix.inverse" title="torch_openreml.covariance.IdentityMatrix.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a>([free_params])</p></td>
+<td><p>Return the inverse of the identity matrix, which is the identity.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code>([free_params])</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.IdentityMatrix.__call__" title="torch_openreml.covariance.IdentityMatrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to free parameters using a closed-form analytic expression.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code>()</p></td>
 <td><p>Clear the intermediate computation cache.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolve_dim</span></code>(n)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolve_dim</span></code>(n)</p></td>
 <td><p>Resolve a matrix dimension from an integer or a vector of levels.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
 <td><p>Cache intermediate computation results keyed by the parameter values.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_param_specs</span></code>(key, *[, fixed, default, trans])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_param_specs</span></code>(key, *[, fixed, default, trans])</p></td>
 <td><p>Update the fields of one or more parameter specifications in place.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
 <td><p>Compute the element-wise derivative of the free parameter transforms.</p></td>
 </tr>
 </tbody>
@@ -542,6 +545,68 @@ device are used. Default: <code class="docutils literal notranslate"><span class
 </div>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_openreml.covariance.IdentityMatrix.inverse">
+<span class="sig-name descname"><span class="pre">inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/identity_matrix.html#IdentityMatrix.inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.IdentityMatrix.inverse" title="Link to this definition">¶</a></dt>
+<dd><p>Return the inverse of the identity matrix, which is the identity.</p>
+<p><span class="math notranslate nohighlight">\(\symbf{I}_n^{-1} = \symbf{I}_n\)</span>, so the matrix is returned
+unchanged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – Empty 1D parameter
+tensor whose dtype and device are followed, or an empty
+parameter dict. If omitted, the PyTorch default dtype and
+device are used. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">x</span> <span class="pre">n</span></code> identity matrix.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is not a Torch tensor or a dict.</p></li>
+<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is not empty, since the matrix has
+    no parameters to receive.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">IdentityMatrix</span>
+
+<span class="n">mat</span> <span class="o">=</span> <span class="n">IdentityMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">inverse</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[1., 0., 0.],
+        [0., 1., 0.],
+        [0., 0., 1.]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[1., 0., 0.],
+        [0., 1., 0.],
+        [0., 0., 1.]], dtype=torch.float64)
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -611,6 +676,7 @@ device are used. Default: <code class="docutils literal notranslate"><span class
 <li><a class="reference internal" href="#">torch_openreml.covariance.IdentityMatrix</a><ul>
 <li><a class="reference internal" href="#torch_openreml.covariance.IdentityMatrix"><code class="docutils literal notranslate"><span class="pre">IdentityMatrix</span></code></a><ul>
 <li><a class="reference internal" href="#torch_openreml.covariance.IdentityMatrix.__call__"><code class="docutils literal notranslate"><span class="pre">IdentityMatrix.__call__()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.IdentityMatrix.inverse"><code class="docutils literal notranslate"><span class="pre">IdentityMatrix.inverse()</span></code></a></li>
 </ul>
 </li>
 </ul>

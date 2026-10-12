@@ -410,8 +410,58 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_or_build_intermediates</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span><span class="s2">&quot;sigma2&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">cache</span><span class="p">[</span><span class="s2">&quot;rho_power&quot;</span><span class="p">]</span>
-            
+
         <span class="k">return</span> <span class="n">v</span></div>
+
+
+<div class="viewcode-block" id="AR1Matrix.inverse">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.AR1Matrix.html#torch_openreml.covariance.AR1Matrix.inverse">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the inverse of the matrix from its closed form.</span>
+
+<span class="sd">        The inverse of an AR(1) covariance matrix is tridiagonal: the two</span>
+<span class="sd">        corner entries of the diagonal are :math:`1`, the interior diagonal</span>
+<span class="sd">        entries are :math:`1 + \\rho^2`, the off-diagonal entries are</span>
+<span class="sd">        :math:`-\\rho`, and the whole matrix is scaled by</span>
+<span class="sd">        :math:`1 / (\\sigma^2 (1 - \\rho^2))`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
+<span class="sd">                parameter dictionary. If omitted, default values are used.</span>
+<span class="sd">                Default: ``None``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: The ``n x n`` inverse of the constructed matrix.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from torch_openreml.covariance import AR1Matrix</span>
+
+<span class="sd">            mat = AR1Matrix(4)</span>
+<span class="sd">            free_params = torch.tensor([0.5, 1.0])</span>
+<span class="sd">            mat.inverse(free_params)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_or_build_intermediates</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="n">sigma2</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span><span class="s2">&quot;sigma2&quot;</span><span class="p">]</span>
+        <span class="n">rho</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span><span class="s2">&quot;rho&quot;</span><span class="p">]</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">sigma2</span><span class="o">.</span><span class="n">device</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">sigma2</span><span class="o">.</span><span class="n">dtype</span>
+
+        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma2</span>
+
+        <span class="n">ones</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">diag</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">idx</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">idx</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ones</span> <span class="o">+</span> <span class="n">rho</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ones</span><span class="p">)</span>
+        <span class="n">off_diag</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">ones</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">ones</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">diag</span><span class="p">)</span> <span class="o">-</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">off_diag</span>
+
+        <span class="k">return</span> <span class="n">v</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">rho</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="AR1Matrix.manual_grad">

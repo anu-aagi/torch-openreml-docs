@@ -380,17 +380,17 @@ and its Jacobian.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:       4.3594, ∥Δ∥: 0.0416, η: 1.00, ∥Δᶜ∥: 0.0416, log 𝓛: -30.0218
-∥∇∥:       0.1766, ∥Δ∥: 0.0018, η: 1.00, ∥Δᶜ∥: 0.0018, log 𝓛: -29.9286 (+0.0932)
-∥∇∥:       0.0003, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -29.9284 (+0.0002)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -29.9284 (-0.0000)
+∥∇∥:      15.3452, ∥Δ∥: 0.1211, η: 1.00, ∥Δᶜ∥: 0.1211, log 𝓛: -35.3466
+∥∇∥:       1.7172, ∥Δ∥: 0.0173, η: 1.00, ∥Δᶜ∥: 0.0173, log 𝓛: -34.3466 (+1.0000)
+∥∇∥:       0.0293, ∥Δ∥: 0.0003, η: 1.00, ∥Δᶜ∥: 0.0003, log 𝓛: -34.3316 (+0.0150)
+∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -34.3316 (+0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
 ✓ Converged at iteration 4
 </pre></div>
 </div>
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0.0435]), tensor([0.0630, 0.0761]))
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0.1387]), tensor([-0.2695,  0.1882]))
 </pre></div>
 </div>
 </div>
@@ -778,7 +778,9 @@ and <a class="reference internal" href="#torch_openreml.MarginalREML.get_beta" t
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>y</strong> (<em>torch.Tensor</em>) – Response vector of shape <code class="docutils literal notranslate"><span class="pre">(n,)</span></code>.</p></li>
 <li><p><strong>x</strong> (<em>torch.Tensor</em>) – Design matrix of shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">p)</span></code>.</p></li>
-<li><p><strong>theta</strong> (<em>torch.Tensor</em>) – Initial covariance parameter tensor.</p></li>
+<li><p><strong>theta</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Initial covariance parameter tensor,
+or a dictionary mapping free parameter names to value tensors.
+If omitted, default values are used. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 <li><p><strong>max_iter</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum number of iterations. Defaults
 to <code class="docutils literal notranslate"><span class="pre">200</span></code>.</p></li>
 <li><p><strong>eta</strong> (<em>float</em><em>, </em><em>optional</em>) – Step size applied to each AI update.

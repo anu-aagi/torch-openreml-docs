@@ -23,3 +23,14 @@ mat(free_params)
 
 mat.grad(free_params)
 
+
+# In[4]:
+
+
+import torch
+from torch_openreml.covariance import DiagonalMatrix
+
+mat = DiagonalMatrix(3)
+free_params = torch.tensor([0.0, 0.5, 1.0])
+mat.inverse(free_params)
+

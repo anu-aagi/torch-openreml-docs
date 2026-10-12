@@ -405,6 +405,46 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="n">include_fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="IdentityMatrix.inverse">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.IdentityMatrix.html#torch_openreml.covariance.IdentityMatrix.inverse">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the inverse of the identity matrix, which is the identity.</span>
+
+<span class="sd">        :math:`\\symbf{I}_n^{-1} = \\symbf{I}_n`, so the matrix is returned</span>
+<span class="sd">        unchanged.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            free_params (torch.Tensor or dict, optional): Empty 1D parameter</span>
+<span class="sd">                tensor whose dtype and device are followed, or an empty</span>
+<span class="sd">                parameter dict. If omitted, the PyTorch default dtype and</span>
+<span class="sd">                device are used. Default: ``None``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: The ``n x n`` identity matrix.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If ``free_params`` is not a Torch tensor or a dict.</span>
+<span class="sd">            ValueError: If ``free_params`` is not empty, since the matrix has</span>
+<span class="sd">                no parameters to receive.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from torch_openreml.covariance import IdentityMatrix</span>
+
+<span class="sd">            mat = IdentityMatrix(3)</span>
+<span class="sd">            mat.inverse()</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            mat.inverse(torch.tensor([], dtype=torch.float64))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

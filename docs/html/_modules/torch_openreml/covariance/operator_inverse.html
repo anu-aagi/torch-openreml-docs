@@ -391,6 +391,44 @@
         <span class="k">return</span> <span class="n">v</span></div>
 
 
+<div class="viewcode-block" id="Inverse.inverse">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Inverse.html#torch_openreml.covariance.Inverse.inverse">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the inverse of the composite matrix from its closed form.</span>
+
+<span class="sd">        The composite is :math:`\\symbf{V} = \\symbf{A}^{-1}`, so its inverse</span>
+<span class="sd">        is :math:`\\symbf{V}^{-1} = \\symbf{A}`: the operand is built and</span>
+<span class="sd">        returned as it is, so no matrix inversion is performed.</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            The operand must be square. The operand is returned without its</span>
+<span class="sd">            shape being checked, so a non-square operand produces a</span>
+<span class="sd">            meaningless result instead of an error.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
+<span class="sd">                parameter dictionary. If omitted, default values are used.</span>
+<span class="sd">                Default: ``None``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: The ``n x n`` inverse of the composite matrix.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from torch_openreml.covariance import Inverse, ScalarMatrix</span>
+
+<span class="sd">            op = Inverse(a=ScalarMatrix(3))</span>
+<span class="sd">            free_params = torch.tensor([0.5])</span>
+<span class="sd">            op.inverse(free_params)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_operands</span><span class="p">(</span><span class="n">free_params</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
 <div class="viewcode-block" id="Inverse.manual_grad">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Inverse.html#torch_openreml.covariance.Inverse.manual_grad">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">manual_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

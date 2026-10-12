@@ -392,8 +392,45 @@
 
         <span class="n">i_n</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">sigma2</span> <span class="o">*</span> <span class="n">i_n</span>
-        
+
         <span class="k">return</span> <span class="n">v</span></div>
+
+
+<div class="viewcode-block" id="ScalarMatrix.inverse">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.ScalarMatrix.html#torch_openreml.covariance.ScalarMatrix.inverse">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the inverse of the matrix from its closed form.</span>
+
+<span class="sd">        The matrix is :math:`\\symbf{V} = \\sigma^2 \\symbf{I}_n`, so its</span>
+<span class="sd">        inverse is :math:`\\symbf{V}^{-1} = (1 / \\sigma^2) \\symbf{I}_n`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
+<span class="sd">                parameter dictionary. If omitted, default values are used.</span>
+<span class="sd">                Default: ``None``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: The ``n x n`` inverse of the constructed matrix.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from torch_openreml.covariance import ScalarMatrix</span>
+
+<span class="sd">            mat = ScalarMatrix(3)</span>
+<span class="sd">            free_params = torch.tensor([0.5])</span>
+<span class="sd">            mat.inverse(free_params)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sigma2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">sigma2</span><span class="o">.</span><span class="n">device</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">sigma2</span><span class="o">.</span><span class="n">dtype</span>
+
+        <span class="n">i_n</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">i_n</span> <span class="o">/</span> <span class="n">sigma2</span></div>
 
 
 <div class="viewcode-block" id="ScalarMatrix.manual_grad">

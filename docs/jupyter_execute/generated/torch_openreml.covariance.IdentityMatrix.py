@@ -26,3 +26,19 @@ mat()
 
 mat(torch.tensor([], dtype=torch.float64))
 
+
+# In[4]:
+
+
+import torch
+from torch_openreml.covariance import IdentityMatrix
+
+mat = IdentityMatrix(3)
+mat.inverse()
+
+
+# In[5]:
+
+
+mat.inverse(torch.tensor([], dtype=torch.float64))
+

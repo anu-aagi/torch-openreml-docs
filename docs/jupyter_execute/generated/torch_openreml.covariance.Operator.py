@@ -143,3 +143,15 @@ print(grad_groups[1])
 print(grad_name_groups[0])
 print(grad_name_groups[1])
 
+
+# In[19]:
+
+
+import torch
+from torch_openreml.covariance import ScalarMatrix, Sum
+
+x = Sum(ScalarMatrix(2), ScalarMatrix(2))
+inverses = x.operands_inverse(torch.tensor([1.0, 2.0]))
+print(inverses[0])
+print(inverses[1])
+

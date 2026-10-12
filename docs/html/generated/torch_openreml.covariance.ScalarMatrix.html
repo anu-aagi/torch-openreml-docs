@@ -424,22 +424,25 @@ respectively.</p></li>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>([free_params])</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.ScalarMatrix.__call__" title="torch_openreml.covariance.ScalarMatrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable parameters.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.ScalarMatrix.manual_grad" title="torch_openreml.covariance.ScalarMatrix.manual_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code></a>([free_params])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.ScalarMatrix.inverse" title="torch_openreml.covariance.ScalarMatrix.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a>([free_params])</p></td>
+<td><p>Return the inverse of the matrix from its closed form.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.ScalarMatrix.manual_grad" title="torch_openreml.covariance.ScalarMatrix.manual_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code></a>([free_params])</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.ScalarMatrix.__call__" title="torch_openreml.covariance.ScalarMatrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable parameters using a closed-form analytic expression.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code>()</p></td>
 <td><p>Clear the intermediate computation cache.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolve_dim</span></code>(n)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolve_dim</span></code>(n)</p></td>
 <td><p>Resolve a matrix dimension from an integer or a vector of levels.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_intermediates</span></code>(params, intermediates)</p></td>
 <td><p>Cache intermediate computation results keyed by the parameter values.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_param_specs</span></code>(key, *[, fixed, default, trans])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_param_specs</span></code>(key, *[, fixed, default, trans])</p></td>
 <td><p>Update the fields of one or more parameter specifications in place.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trans_grad</span></code>([free_params])</p></td>
 <td><p>Compute the element-wise derivative of the free parameter transforms.</p></td>
 </tr>
 </tbody>
@@ -538,6 +541,47 @@ Default: <code class="docutils literal notranslate"><span class="pre">None</span
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="torch_openreml.covariance.ScalarMatrix.inverse">
+<span class="sig-name descname"><span class="pre">inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/scalar_matrix.html#ScalarMatrix.inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.ScalarMatrix.inverse" title="Link to this definition">¶</a></dt>
+<dd><p>Return the inverse of the matrix from its closed form.</p>
+<p>The matrix is <span class="math notranslate nohighlight">\(\symbf{V} = \sigma^2 \symbf{I}_n\)</span>, so its
+inverse is <span class="math notranslate nohighlight">\(\symbf{V}^{-1} = (1 / \sigma^2) \symbf{I}_n\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
+parameter dictionary. If omitted, default values are used.
+Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">x</span> <span class="pre">n</span></code> inverse of the constructed matrix.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarMatrix</span>
+
+<span class="n">mat</span> <span class="o">=</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">free_params</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.5</span><span class="p">])</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[0.3679, 0.0000, 0.0000],
+        [0.0000, 0.3679, 0.0000],
+        [0.0000, 0.0000, 0.3679]])
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.covariance.ScalarMatrix.manual_grad">
 <span class="sig-name descname"><span class="pre">manual_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/scalar_matrix.html#ScalarMatrix.manual_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.ScalarMatrix.manual_grad" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.ScalarMatrix.__call__" title="torch_openreml.covariance.ScalarMatrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable
@@ -631,6 +675,7 @@ after <code class="docutils literal notranslate"><span class="pre">free_params</
 <li><a class="reference internal" href="#">torch_openreml.covariance.ScalarMatrix</a><ul>
 <li><a class="reference internal" href="#torch_openreml.covariance.ScalarMatrix"><code class="docutils literal notranslate"><span class="pre">ScalarMatrix</span></code></a><ul>
 <li><a class="reference internal" href="#torch_openreml.covariance.ScalarMatrix.__call__"><code class="docutils literal notranslate"><span class="pre">ScalarMatrix.__call__()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.ScalarMatrix.inverse"><code class="docutils literal notranslate"><span class="pre">ScalarMatrix.inverse()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.ScalarMatrix.manual_grad"><code class="docutils literal notranslate"><span class="pre">ScalarMatrix.manual_grad()</span></code></a></li>
 </ul>
 </li>

@@ -387,8 +387,43 @@
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.DiagonalMatrix.html#torch_openreml.covariance.DiagonalMatrix.__call__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">sigma2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
-        
+
         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">sigma2</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DiagonalMatrix.inverse">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.DiagonalMatrix.html#torch_openreml.covariance.DiagonalMatrix.inverse">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the inverse of the matrix from its closed form.</span>
+
+<span class="sd">        The matrix is</span>
+<span class="sd">        :math:`\\symbf{V} = \\mathrm{diag}(\\sigma^2_0, \\ldots, \\sigma^2_{n-1})`,</span>
+<span class="sd">        so its inverse is</span>
+<span class="sd">        :math:`\\symbf{V}^{-1} = \\mathrm{diag}(1 / \\sigma^2_0, \\ldots, 1 / \\sigma^2_{n-1})`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
+<span class="sd">                parameter dictionary. If omitted, default values are used.</span>
+<span class="sd">                Default: ``None``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: The ``n x n`` inverse of the constructed matrix.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from torch_openreml.covariance import DiagonalMatrix</span>
+
+<span class="sd">            mat = DiagonalMatrix(3)</span>
+<span class="sd">            free_params = torch.tensor([0.0, 0.5, 1.0])</span>
+<span class="sd">            mat.inverse(free_params)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sigma2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">sigma2</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DiagonalMatrix.manual_grad">

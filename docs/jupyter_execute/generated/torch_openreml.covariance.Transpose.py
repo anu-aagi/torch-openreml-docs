@@ -15,6 +15,17 @@ op(torch.tensor([]))
 
 
 import torch
+from torch_openreml.covariance import AR1Matrix, Transpose
+
+op = Transpose(a=AR1Matrix(3))
+free_params = torch.tensor([0.0, 0.5])
+op.inverse(free_params)
+
+
+# In[3]:
+
+
+import torch
 from torch_openreml.covariance import LowerTriangularMatrix, Transpose
 
 op = Transpose(a=LowerTriangularMatrix(3, 2))
@@ -23,7 +34,7 @@ grad, grad_names = op.manual_grad(free_params)
 grad
 
 
-# In[3]:
+# In[4]:
 
 
 grad_names

@@ -898,7 +898,9 @@
 <span class="sd">        Args:</span>
 <span class="sd">            y (torch.Tensor): Response vector of shape ``(n,)``.</span>
 <span class="sd">            x (torch.Tensor): Design matrix of shape ``(n, p)``.</span>
-<span class="sd">            theta (torch.Tensor): Initial covariance parameter tensor.</span>
+<span class="sd">            theta (torch.Tensor or dict): Initial covariance parameter tensor,</span>
+<span class="sd">                or a dictionary mapping free parameter names to value tensors.</span>
+<span class="sd">                If omitted, default values are used. Defaults to ``None``.</span>
 <span class="sd">            max_iter (int, optional): Maximum number of iterations. Defaults</span>
 <span class="sd">                to ``200``.</span>
 <span class="sd">            eta (float, optional): Step size applied to each AI update.</span>
@@ -956,9 +958,7 @@
 <span class="sd">            covariance parameter estimate, ``beta`` is the corresponding coefficient</span>
 <span class="sd">            estimate, and ``n_iter`` is the number of iterations completed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">theta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">include_fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
+        <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">include_fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
         <span class="n">device</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">device</span>
         <span class="n">dtype</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">dtype</span>

@@ -396,6 +396,49 @@
         <span class="k">return</span> <span class="n">v</span></div>
 
 
+<div class="viewcode-block" id="Product.inverse">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Product.html#torch_openreml.covariance.Product.inverse">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the inverse of the composite matrix from its closed form.</span>
+
+<span class="sd">        The composite is :math:`\\symbf{V} = \\symbf{A} \\symbf{B}`, so its</span>
+<span class="sd">        inverse is</span>
+<span class="sd">        :math:`\\symbf{V}^{-1} = \\symbf{B}^{-1} \\symbf{A}^{-1}`, with the</span>
+<span class="sd">        operands inverted in reverse order through their own</span>
+<span class="sd">        :meth:`~torch_openreml.covariance.matrix.Matrix.inverse`, so the</span>
+<span class="sd">        composite is never inverted densely.</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            Both operands must be square, otherwise the composite has no</span>
+<span class="sd">            inverse and raises, including when two rectangular operands</span>
+<span class="sd">            multiply to a square product.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
+<span class="sd">                parameter dictionary. If omitted, default values are used.</span>
+<span class="sd">                Default: ``None``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: The ``n x n`` inverse of the composite matrix.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from torch_openreml.covariance import AR1Matrix, DiagonalMatrix, Product</span>
+
+<span class="sd">            op = Product(a=DiagonalMatrix(2), b=AR1Matrix(2))</span>
+<span class="sd">            free_params = torch.tensor([0.0, 0.5, 0.0, 0.5])</span>
+<span class="sd">            op.inverse(free_params)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inverses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operands_inverse</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">inverses</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">@</span> <span class="n">inverses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
 <div class="viewcode-block" id="Product.manual_grad">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Product.html#torch_openreml.covariance.Product.manual_grad">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">manual_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

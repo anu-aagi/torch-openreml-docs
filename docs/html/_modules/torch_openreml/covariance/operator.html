@@ -504,8 +504,10 @@
 <span class="sd">                ``&quot;dict&quot;``. Default: ``&quot;tensor&quot;``.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            torch.Tensor or dict: Concatenated parameter tensor or dictionary</span>
-<span class="sd">                mapping namespaced parameter names to value tensors.</span>
+<span class="sd">            torch.Tensor or dict: Concatenated parameter tensor of length</span>
+<span class="sd">            :attr:`num_params` (or :attr:`num_free_params` when</span>
+<span class="sd">            ``include_fixed=False``), or a dictionary mapping namespaced</span>
+<span class="sd">            parameter names to value tensors.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            TypeError: If ``free_params`` is not a Torch tensor.</span>
@@ -555,7 +557,11 @@
         <span class="k">if</span> <span class="n">out_format</span> <span class="o">==</span> <span class="s2">&quot;tensor&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">result</span>
         <span class="k">elif</span> <span class="n">out_format</span> <span class="o">==</span> <span class="s2">&quot;dict&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">,</span> <span class="n">result</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">include_fixed</span><span class="p">:</span>
+                <span class="n">param_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_names</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">param_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_names</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">param_names</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected &#39;out_format&#39;: </span><span class="si">{</span><span class="n">out_format</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span></div>
 
@@ -894,6 +900,66 @@
                 <span class="n">grad_name_groups</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
 
         <span class="k">return</span> <span class="n">grad_groups</span><span class="p">,</span> <span class="n">grad_name_groups</span></div>
+
+
+<div class="viewcode-block" id="Operator.operands_inverse">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.operands_inverse">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">operands_inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the inverse of each operand at the current free parameters.</span>
+
+<span class="sd">        Splits ``free_params`` into per-operand slices, calls</span>
+<span class="sd">        :meth:`~torch_openreml.covariance.matrix.Matrix.inverse` on each</span>
+<span class="sd">        :class:`~torch_openreml.covariance.matrix.Matrix` operand, and casts</span>
+<span class="sd">        and inverts each fixed tensor operand. A</span>
+<span class="sd">        :class:`~torch_openreml.covariance.matrix.Matrix` operand is never</span>
+<span class="sd">        built here, so an analytic inverse — or a nested operator&#39;s own</span>
+<span class="sd">        structured inverse — is used instead of inverting the operand</span>
+<span class="sd">        densely.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
+<span class="sd">                parameter dictionary.</span>
+<span class="sd">                If omitted, default values are used. Default: ``None``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list of torch.Tensor: Each operand&#39;s inverse, in the order of</span>
+<span class="sd">            :attr:`operands`.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If ``free_params`` is not a Torch tensor.</span>
+<span class="sd">            ValueError: If ``free_params`` is not a 1D tensor or has the</span>
+<span class="sd">                wrong length, or if ``free_params`` is a dict with missing</span>
+<span class="sd">                or unexpected keys.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            .. jupyter-execute::</span>
+
+<span class="sd">                import torch</span>
+<span class="sd">                from torch_openreml.covariance import ScalarMatrix, Sum</span>
+
+<span class="sd">                x = Sum(ScalarMatrix(2), ScalarMatrix(2))</span>
+<span class="sd">                inverses = x.operands_inverse(torch.tensor([1.0, 2.0]))</span>
+<span class="sd">                print(inverses[0])</span>
+<span class="sd">                print(inverses[1])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">free_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_param_defaults</span>
+        <span class="n">free_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_free_param_dict</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+        <span class="n">device</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_param_tensor</span><span class="p">(</span><span class="n">free_params</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_free_params</span><span class="p">)</span>
+
+        <span class="n">inverses</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">operand</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operands</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">operand</span><span class="p">,</span> <span class="n">Matrix</span><span class="p">):</span>
+                <span class="n">operand_params</span> <span class="o">=</span> <span class="n">free_params</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">operand</span><span class="o">.</span><span class="n">num_free_params</span><span class="p">]</span>
+                <span class="n">free_params</span> <span class="o">=</span> <span class="n">free_params</span><span class="p">[</span><span class="n">operand</span><span class="o">.</span><span class="n">num_free_params</span><span class="p">:]</span>
+
+                <span class="n">inverses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">operand</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">operand_params</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">inverses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">operand</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)))</span>
+
+        <span class="k">return</span> <span class="n">inverses</span></div>
 
 
 <div class="viewcode-block" id="Operator.reset_intermediates">

@@ -392,6 +392,48 @@
         <span class="k">return</span> <span class="n">v</span></div>
 
 
+<div class="viewcode-block" id="Transpose.inverse">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Transpose.html#torch_openreml.covariance.Transpose.inverse">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the inverse of the composite matrix from its closed form.</span>
+
+<span class="sd">        The composite is :math:`\\symbf{V} = \\symbf{A}^\\top`, so its inverse</span>
+<span class="sd">        is</span>
+<span class="sd">        :math:`\\symbf{V}^{-1} = (\\symbf{A}^{-1})^\\top`: the operand is</span>
+<span class="sd">        inverted through its own</span>
+<span class="sd">        :meth:`~torch_openreml.covariance.matrix.Matrix.inverse` and the</span>
+<span class="sd">        result is transposed, so the composite is never inverted densely.</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            The operand must be square, otherwise the composite has no</span>
+<span class="sd">            inverse and raises.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
+<span class="sd">                parameter dictionary. If omitted, default values are used.</span>
+<span class="sd">                Default: ``None``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: The ``n x n`` inverse of the composite matrix.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from torch_openreml.covariance import AR1Matrix, Transpose</span>
+
+<span class="sd">            op = Transpose(a=AR1Matrix(3))</span>
+<span class="sd">            free_params = torch.tensor([0.0, 0.5])</span>
+<span class="sd">            op.inverse(free_params)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inverses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operands_inverse</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">inverses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span></div>
+
+
 <div class="viewcode-block" id="Transpose.manual_grad">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Transpose.html#torch_openreml.covariance.Transpose.manual_grad">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">manual_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

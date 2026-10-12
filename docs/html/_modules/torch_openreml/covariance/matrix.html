@@ -8,7 +8,7 @@
         <title>torch_openreml.covariance.matrix - torch-openreml 0.4.0-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css?v=572af1d6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=df86a2a8" />
@@ -1128,8 +1128,34 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown grad mode &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">grad_mode</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span></div>
 
-      
-          
+
+<div class="viewcode-block" id="Matrix.inverse">
+<a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.inverse">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct the matrix and return its inverse.</span>
+
+<span class="sd">        This is the default implementation: it builds :math:`\\symbf{V}` via</span>
+<span class="sd">        :meth:`__call__` and inverts the result directly. Subclasses should</span>
+<span class="sd">        override it with a cheaper analytic inverse where one is available.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            free_params (torch.Tensor or dict): Flat 1D parameter tensor or</span>
+<span class="sd">                parameter dictionary. If omitted, default values are used.</span>
+<span class="sd">                Default: ``None``.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If ``free_params`` is not a Torch tensor.</span>
+<span class="sd">            ValueError: If ``free_params`` is not a 1D tensor or has the wrong length,</span>
+<span class="sd">                or if ``free_params`` is a dict with missing or unexpected keys.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: Inverse of the constructed matrix, of shape</span>
+<span class="sd">            :attr:`shape`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">(</span><span class="n">free_params</span><span class="p">)</span><span class="o">.</span><span class="n">inverse</span><span class="p">()</span></div>
+
+
 <div class="viewcode-block" id="Matrix.resolve_dim">
 <a class="viewcode-back" href="../../../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.resolve_dim">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">resolve_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
