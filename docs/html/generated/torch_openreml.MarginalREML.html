@@ -373,24 +373,24 @@ and its Jacobian.</p>
 
 <span class="n">mat</span> <span class="o">=</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 <span class="n">reml</span> <span class="o">=</span> <span class="n">MarginalREML</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
-<span class="n">theta_hat</span><span class="p">,</span> <span class="n">beta_hat</span><span class="p">,</span> <span class="n">n_iter</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">theta_hat</span><span class="p">,</span> <span class="n">beta_hat</span><span class="p">,</span> <span class="n">n_iter</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">theta_hat</span><span class="p">,</span> <span class="n">beta_hat</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:      15.3452, ∥Δ∥: 0.1211, η: 1.00, ∥Δᶜ∥: 0.1211, log 𝓛: -35.3466
-∥∇∥:       1.7172, ∥Δ∥: 0.0173, η: 1.00, ∥Δᶜ∥: 0.0173, log 𝓛: -34.3466 (+1.0000)
-∥∇∥:       0.0293, ∥Δ∥: 0.0003, η: 1.00, ∥Δᶜ∥: 0.0003, log 𝓛: -34.3316 (+0.0150)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -34.3316 (+0.0000)
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1] ∥∇∥:       9.9403, ∥Δ∥: 0.1306, η: 1.00, ∥Δᶜ∥: 0.1306, log 𝓛: -22.9222
+[  2] ∥∇∥:       1.4189, ∥Δ∥: 0.0144, η: 1.00, ∥Δᶜ∥: 0.0144, log 𝓛: -22.3336 (+0.5887)
+[  3] ∥∇∥:       0.0202, ∥Δ∥: 0.0002, η: 1.00, ∥Δᶜ∥: 0.0002, log 𝓛: -22.3233 (+0.0103)
+[  4] ∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -22.3233 (+0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 4
+✓ Converged at iteration 4, total time: 0.00s
+
 </pre></div>
 </div>
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0.1387]), tensor([-0.2695,  0.1882]))
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([-0.1160]), tensor([-0.0768, -0.1107]))
 </pre></div>
 </div>
 </div>
@@ -792,8 +792,9 @@ to <code class="docutils literal notranslate"><span class="pre">-inf</span></cod
 <li><p><strong>ub</strong> (<em>float</em><em>, </em><em>optional</em>) – Upper bound for covariance parameter clipping. Defaults
 to <code class="docutils literal notranslate"><span class="pre">inf</span></code>.</p></li>
 <li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Verbosity level. <code class="docutils literal notranslate"><span class="pre">0</span></code> suppresses all
-output, <code class="docutils literal notranslate"><span class="pre">1</span></code> shows a progress bar, <code class="docutils literal notranslate"><span class="pre">2</span></code> additionally prints
-per-iteration diagnostics. Defaults to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+output; <code class="docutils literal notranslate"><span class="pre">1</span></code> prints per-iteration diagnostics, whether the
+optimisation converged or hit <code class="docutils literal notranslate"><span class="pre">max_iter</span></code>, and the total
+optimisation time. Defaults to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
 <li><p><strong>check_score</strong> (<em>bool</em><em>, </em><em>optional</em>) – Include score norm in convergence
 check. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 <li><p><strong>check_delta</strong> (<em>bool</em><em>, </em><em>optional</em>) – Include covariance parameter update

@@ -589,7 +589,7 @@ and <span class="math notranslate nohighlight">\(\mathbf{R} = \sigma^2_{\varepsi
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reml</span> <span class="o">=</span> <span class="n">MarginalREML</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
-<span class="n">theta_hat</span><span class="p">,</span> <span class="n">beta_hat</span><span class="p">,</span> <span class="n">n_iter</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">theta_hat</span><span class="p">,</span> <span class="n">beta_hat</span><span class="p">,</span> <span class="n">n_iter</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">theta_hat</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">theta_hat</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">free_param_names</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">beta_hat</span><span class="p">)</span>
@@ -597,30 +597,30 @@ and <span class="math notranslate nohighlight">\(\mathbf{R} = \sigma^2_{\varepsi
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>
-∥∇∥:      41.8197, ∥Δ∥: 8.9438, η: 1.00, ∥Δᶜ∥: 8.9438, log 𝓛: -34.3129
-∥∇∥:  315227.4375, ∥Δ∥: 0.8838, η: 1.00, ∥Δᶜ∥: 0.8838, log 𝓛: -201185.3906 (-201151.0777)
-∥∇∥:  119230.2656, ∥Δ∥: 0.8519, η: 1.00, ∥Δᶜ∥: 0.8519, log 𝓛: -71844.5469 (+129340.8438)
-∥∇∥:   44273.9336, ∥Δ∥: 0.8143, η: 1.00, ∥Δᶜ∥: 0.8143, log 𝓛: -26065.6270 (+45778.9199)
-∥∇∥:   16331.3926, ∥Δ∥: 0.7587, η: 1.00, ∥Δᶜ∥: 0.7587, log 𝓛: -9457.4141 (+16608.2129)
-∥∇∥:    6001.7085, ∥Δ∥: 0.7142, η: 1.00, ∥Δᶜ∥: 0.7142, log 𝓛: -3393.0168 (+6064.3972)
-∥∇∥:    2194.9878, ∥Δ∥: 0.7031, η: 1.00, ∥Δᶜ∥: 0.7031, log 𝓛: -1181.3339 (+2211.6830)
-∥∇∥:     793.8170, ∥Δ∥: 0.6952, η: 1.00, ∥Δᶜ∥: 0.6952, log 𝓛: -382.5103 (+798.8235)
-∥∇∥:     278.6989, ∥Δ∥: 0.6715, η: 1.00, ∥Δᶜ∥: 0.6715, log 𝓛: -102.3058 (+280.2045)
-∥∇∥:      90.4160, ∥Δ∥: 0.5957, η: 1.00, ∥Δᶜ∥: 0.5957, log 𝓛: -11.4295 (+90.8763)
-∥∇∥:      23.9232, ∥Δ∥: 0.4006, η: 1.00, ∥Δᶜ∥: 0.4006, log 𝓛:  12.6788 (+24.1083)
-∥∇∥:       3.8678, ∥Δ∥: 0.1392, η: 1.00, ∥Δᶜ∥: 0.1392, log 𝓛:  16.5908 (+3.9120)
-∥∇∥:       0.2448, ∥Δ∥: 0.0157, η: 1.00, ∥Δᶜ∥: 0.0157, log 𝓛:  16.8077 (+0.2169)
-∥∇∥:       0.0104, ∥Δ∥: 0.0007, η: 1.00, ∥Δᶜ∥: 0.0007, log 𝓛:  16.8099 (+0.0021)
-∥∇∥:       0.0005, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8097 (-0.0002)
-∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8101 (+0.0004)
-∥∇∥:       0.0001, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8098 (-0.0002)
-∥∇∥:       0.0001, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8101 (+0.0002)
-∥∇∥:       0.0001, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8101 (+0.0000)
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1] ∥∇∥:      41.8197, ∥Δ∥: 8.9438, η: 1.00, ∥Δᶜ∥: 8.9438, log 𝓛: -34.3129
+[  2] ∥∇∥:  315227.4375, ∥Δ∥: 0.8838, η: 1.00, ∥Δᶜ∥: 0.8838, log 𝓛: -201185.3906 (-201151.0777)
+[  3] ∥∇∥:  119230.2656, ∥Δ∥: 0.8519, η: 1.00, ∥Δᶜ∥: 0.8519, log 𝓛: -71844.5469 (+129340.8438)
+[  4] ∥∇∥:   44273.9336, ∥Δ∥: 0.8143, η: 1.00, ∥Δᶜ∥: 0.8143, log 𝓛: -26065.6270 (+45778.9199)
+[  5] ∥∇∥:   16331.3926, ∥Δ∥: 0.7587, η: 1.00, ∥Δᶜ∥: 0.7587, log 𝓛: -9457.4141 (+16608.2129)
+[  6] ∥∇∥:    6001.7085, ∥Δ∥: 0.7142, η: 1.00, ∥Δᶜ∥: 0.7142, log 𝓛: -3393.0168 (+6064.3972)
+[  7] ∥∇∥:    2194.9878, ∥Δ∥: 0.7031, η: 1.00, ∥Δᶜ∥: 0.7031, log 𝓛: -1181.3339 (+2211.6830)
+[  8] ∥∇∥:     793.8170, ∥Δ∥: 0.6952, η: 1.00, ∥Δᶜ∥: 0.6952, log 𝓛: -382.5103 (+798.8235)
+[  9] ∥∇∥:     278.6989, ∥Δ∥: 0.6715, η: 1.00, ∥Δᶜ∥: 0.6715, log 𝓛: -102.3058 (+280.2045)
+[ 10] ∥∇∥:      90.4160, ∥Δ∥: 0.5957, η: 1.00, ∥Δᶜ∥: 0.5957, log 𝓛: -11.4295 (+90.8763)
+[ 11] ∥∇∥:      23.9232, ∥Δ∥: 0.4006, η: 1.00, ∥Δᶜ∥: 0.4006, log 𝓛:  12.6788 (+24.1083)
+[ 12] ∥∇∥:       3.8678, ∥Δ∥: 0.1392, η: 1.00, ∥Δᶜ∥: 0.1392, log 𝓛:  16.5908 (+3.9120)
+[ 13] ∥∇∥:       0.2448, ∥Δ∥: 0.0157, η: 1.00, ∥Δᶜ∥: 0.0157, log 𝓛:  16.8077 (+0.2169)
+[ 14] ∥∇∥:       0.0104, ∥Δ∥: 0.0007, η: 1.00, ∥Δᶜ∥: 0.0007, log 𝓛:  16.8099 (+0.0021)
+[ 15] ∥∇∥:       0.0005, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8097 (-0.0002)
+[ 16] ∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8101 (+0.0004)
+[ 17] ∥∇∥:       0.0001, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8098 (-0.0002)
+[ 18] ∥∇∥:       0.0001, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8101 (+0.0002)
+[ 19] ∥∇∥:       0.0001, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8101 (+0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 19
+✓ Converged at iteration 19, total time: 0.02s
+
 tensor([-0.9728, -1.3281, -1.2529]) tensor([0.1429, 0.0702, 0.0816])
 [&#39;random/G/G_gen/sigma^2&#39;, &#39;random/G/G_rep_block/G_block/sigma^2&#39;, &#39;residual/sigma^2&#39;]
 tensor([ 4.5183,  0.2978, -0.4140])

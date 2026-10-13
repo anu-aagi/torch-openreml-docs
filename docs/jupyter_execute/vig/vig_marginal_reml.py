@@ -32,7 +32,7 @@ theta_hat, beta_hat, n_iter = reml.optimize(
     y,
     X,
     theta_start,
-    verbose=2,
+    verbose=1,
 )
 
 
@@ -140,7 +140,7 @@ theta_hat, beta_hat, n_iter = reml.optimize(
     y,
     X,
     theta_start,
-    verbose=2,
+    verbose=1,
 )
 
 # --- results ---
