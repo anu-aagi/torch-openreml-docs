@@ -20,6 +20,7 @@
       ~KroneckerProduct.build_params
       ~KroneckerProduct.disable_cache
       ~KroneckerProduct.enable_cache
+      ~KroneckerProduct.free_param_tree
       ~KroneckerProduct.get_default_dtype_device
       ~KroneckerProduct.get_intermediates
       ~KroneckerProduct.grad
@@ -34,6 +35,7 @@
       ~KroneckerProduct.set_param_specs
       ~KroneckerProduct.trans_grad
       ~KroneckerProduct.tree
+      ~KroneckerProduct.walk
    
    
 

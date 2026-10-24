@@ -20,6 +20,7 @@
       ~Gram.build_params
       ~Gram.disable_cache
       ~Gram.enable_cache
+      ~Gram.free_param_tree
       ~Gram.get_default_dtype_device
       ~Gram.get_intermediates
       ~Gram.grad
@@ -34,6 +35,7 @@
       ~Gram.set_param_specs
       ~Gram.trans_grad
       ~Gram.tree
+      ~Gram.walk
    
    
 

@@ -20,6 +20,7 @@
       ~Operator.build_params
       ~Operator.disable_cache
       ~Operator.enable_cache
+      ~Operator.free_param_tree
       ~Operator.get_default_dtype_device
       ~Operator.get_intermediates
       ~Operator.grad
@@ -34,6 +35,7 @@
       ~Operator.set_param_specs
       ~Operator.trans_grad
       ~Operator.tree
+      ~Operator.walk
    
    
 

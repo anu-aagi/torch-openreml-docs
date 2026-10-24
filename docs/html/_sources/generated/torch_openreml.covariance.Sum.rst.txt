@@ -20,6 +20,7 @@
       ~Sum.build_params
       ~Sum.disable_cache
       ~Sum.enable_cache
+      ~Sum.free_param_tree
       ~Sum.get_default_dtype_device
       ~Sum.get_intermediates
       ~Sum.grad
@@ -34,6 +35,7 @@
       ~Sum.set_param_specs
       ~Sum.trans_grad
       ~Sum.tree
+      ~Sum.walk
    
    
 

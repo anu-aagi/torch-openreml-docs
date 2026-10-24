@@ -86,28 +86,16 @@ from torch_openreml.covariance import BlockDiagonal, DiagonalMatrix, ScalarMatri
 
 op = Sum(inner=BlockDiagonal(DiagonalMatrix(2), ScalarMatrix(2)),
          extra=ScalarMatrix(4))
-results, free_params_by_path = op.tree(torch.tensor([0.0, 0.5, 1.0, 0.5]))
+nodes = op.walk(torch.tensor([0.0, 0.5, 1.0, 0.5]))
 
 
 # In[12]:
 
 
-results
+[(path, operand, free_params) for path, operand, free_params in nodes]
 
 
 # In[13]:
-
-
-results["inner/op_0"]
-
-
-# In[14]:
-
-
-free_params_by_path["inner"]
-
-
-# In[15]:
 
 
 import torch
@@ -115,22 +103,68 @@ from torch_openreml.covariance import BlockDiagonal, DiagonalMatrix, ScalarMatri
 
 op = Sum(inner=BlockDiagonal(DiagonalMatrix(2), ScalarMatrix(2)),
          extra=ScalarMatrix(4))
-grads, free_params_by_path = op.grad_tree(torch.tensor([0.0, 0.5, 1.0, 0.5]))
+results = op.tree(torch.tensor([0.0, 0.5, 1.0, 0.5]))
+
+
+# In[14]:
+
+
+results
+
+
+# In[15]:
+
+
+results["inner/op_0"]
 
 
 # In[16]:
 
 
-grads["inner/op_0"]
+op.free_param_tree(torch.tensor([0.0, 0.5, 1.0, 0.5]))
 
 
 # In[17]:
 
 
-grads["inner"][1]
+import torch
+from torch_openreml.covariance import BlockDiagonal, DiagonalMatrix, ScalarMatrix, Sum
+
+op = Sum(inner=BlockDiagonal(DiagonalMatrix(2), ScalarMatrix(2)),
+         extra=ScalarMatrix(4))
+free_params_by_path = op.free_param_tree(torch.tensor([0.0, 0.5, 1.0, 0.5]))
 
 
 # In[18]:
+
+
+free_params_by_path["inner"]
+
+
+# In[19]:
+
+
+import torch
+from torch_openreml.covariance import BlockDiagonal, DiagonalMatrix, ScalarMatrix, Sum
+
+op = Sum(inner=BlockDiagonal(DiagonalMatrix(2), ScalarMatrix(2)),
+         extra=ScalarMatrix(4))
+grads = op.grad_tree(torch.tensor([0.0, 0.5, 1.0, 0.5]))
+
+
+# In[20]:
+
+
+grads["inner/op_0"]
+
+
+# In[21]:
+
+
+grads["inner"][1]
+
+
+# In[22]:
 
 
 import torch
@@ -144,7 +178,7 @@ print(grad_name_groups[0])
 print(grad_name_groups[1])
 
 
-# In[19]:
+# In[23]:
 
 
 import torch

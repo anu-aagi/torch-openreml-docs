@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="torch_openreml.covariance.AR1Matrix" href="torch_openreml.covariance.AR1Matrix.html"><link rel="prev" title="Covariance" href="../api/covariance.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>torch_openreml.covariance.Matrix - torch-openreml 0.4.0-alpha documentation</title>
+        <title>torch_openreml.covariance.Matrix - torch-openreml 0.4.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
@@ -164,7 +164,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">torch-openreml 0.4.0-alpha documentation</div></a>
+      <a href="../index.html"><div class="brand">torch-openreml 0.4.1-alpha documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -185,7 +185,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
-  <span class="sidebar-brand-text">torch-openreml 0.4.0-alpha documentation</span>
+  <span class="sidebar-brand-text">torch-openreml 0.4.1-alpha documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -901,8 +901,16 @@ dictionary mapping parameter names to value tensors.</p>
 <p><code class="docutils literal notranslate"><span class="pre">key</span></code> is resolved against <a class="reference internal" href="#torch_openreml.covariance.Matrix.param_specs" title="torch_openreml.covariance.Matrix.param_specs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">param_specs</span></code></a>, and each field passed
 as something other than <code class="docutils literal notranslate"><span class="pre">None</span></code> replaces that field of every resolved
 specification. Fields left as <code class="docutils literal notranslate"><span class="pre">None</span></code> are kept unchanged, so a call
-without fields changes nothing. Values are assigned as given, without
-validation or copying, and take effect on the next call.</p>
+without fields changes nothing. Values are assigned without copying and
+take effect on the next call.</p>
+<p>Every field is distributed the same way: a single value — a <code class="docutils literal notranslate"><span class="pre">bool</span></code>
+for <code class="docutils literal notranslate"><span class="pre">fixed</span></code>, a <code class="docutils literal notranslate"><span class="pre">Transform</span></code> for <code class="docutils literal notranslate"><span class="pre">trans</span></code>, a length-1 tensor for
+<code class="docutils literal notranslate"><span class="pre">default</span></code> — is broadcast to every resolved specification, while a
+value with as many entries as there are resolved specifications is
+split element-wise, one entry per specification. The multi-value form
+is a <code class="docutils literal notranslate"><span class="pre">list</span></code> or a <code class="docutils literal notranslate"><span class="pre">tuple</span></code> for <code class="docutils literal notranslate"><span class="pre">fixed</span></code> and <code class="docutils literal notranslate"><span class="pre">trans</span></code>, and a tensor
+for <code class="docutils literal notranslate"><span class="pre">default</span></code>. Any other length raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> before anything
+is written, so a rejected call leaves every specification untouched.</p>
 <p>A <code class="docutils literal notranslate"><span class="pre">key</span></code> that does not end with <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code> addresses one specification
 exactly. A <code class="docutils literal notranslate"><span class="pre">key</span></code> that ends with <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code> addresses a subtree instead:
 every parameter whose key has <code class="docutils literal notranslate"><span class="pre">key</span></code> as a leading path, including the
@@ -917,19 +925,31 @@ exposes it, or a subtree path ending with <code class="docutils literal notransl
 namespace their operands’ parameters, so <code class="docutils literal notranslate"><span class="pre">&quot;A/sigma^2&quot;</span></code>
 addresses the parameter <code class="docutils literal notranslate"><span class="pre">&quot;sigma^2&quot;</span></code> of the operand <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>,
 and <code class="docutils literal notranslate"><span class="pre">&quot;A/&quot;</span></code> addresses every parameter under it.</p></li>
-<li><p><strong>fixed</strong> (<em>bool</em><em>, </em><em>optional</em>) – New value for the <code class="docutils literal notranslate"><span class="pre">&quot;fixed&quot;</span></code> field.
-Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>fixed</strong> (<em>bool</em><em> or </em><em>list</em><em> or </em><em>tuple</em><em> of </em><em>bools</em><em>, </em><em>optional</em>) – New value for the
+<code class="docutils literal notranslate"><span class="pre">&quot;fixed&quot;</span></code> field, given either as one bool to broadcast to
+every resolved specification or as one bool per resolved
+specification. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 <li><p><strong>default</strong> (<em>torch.Tensor</em><em>, </em><em>optional</em>) – New value for the <code class="docutils literal notranslate"><span class="pre">&quot;default&quot;</span></code>
-field. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>trans</strong> (<a class="reference internal" href="torch_openreml.covariance.transform.Transform.html#torch_openreml.covariance.transform.Transform" title="torch_openreml.covariance.transform.Transform"><em>Transform</em></a><em>, </em><em>optional</em>) – New value for the <code class="docutils literal notranslate"><span class="pre">&quot;trans&quot;</span></code> field.
-Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+field, given as a 1D tensor of shape <code class="docutils literal notranslate"><span class="pre">(1,)</span></code> to broadcast to
+every resolved specification, or of shape
+<code class="docutils literal notranslate"><span class="pre">(len(specs),)</span></code> to give one value per resolved
+specification. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>trans</strong> (<a class="reference internal" href="torch_openreml.covariance.transform.Transform.html#torch_openreml.covariance.transform.Transform" title="torch_openreml.covariance.transform.Transform"><em>Transform</em></a><em> or </em><em>list</em><em> or </em><em>tuple</em><em> of </em><em>Transforms</em><em>, </em><em>optional</em>) – New
+value for the <code class="docutils literal notranslate"><span class="pre">&quot;trans&quot;</span></code> field, given either as one transform
+to broadcast to every resolved specification or as one
+transform per resolved specification. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">key</span></code> is not a str.</p></li>
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">key</span></code> is not a str; or <code class="docutils literal notranslate"><span class="pre">fixed</span></code> is not a bool, a
+    list or a tuple of bools; or <code class="docutils literal notranslate"><span class="pre">default</span></code> is not a
+    <code class="docutils literal notranslate"><span class="pre">torch.Tensor</span></code>; or <code class="docutils literal notranslate"><span class="pre">trans</span></code> is not a <code class="docutils literal notranslate"><span class="pre">Transform</span></code>, a list
+    or a tuple of transforms.</p></li>
 <li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">key</span></code> is not a parameter of this matrix, and not a
-    subtree path that resolves to at least one.</p></li>
+    subtree path that resolves to at least one; or <code class="docutils literal notranslate"><span class="pre">default</span></code> is
+    not 1D; or <code class="docutils literal notranslate"><span class="pre">fixed</span></code>, <code class="docutils literal notranslate"><span class="pre">default</span></code> or <code class="docutils literal notranslate"><span class="pre">trans</span></code> has a length
+    other than 1 and the number of resolved specifications.</p></li>
 </ul>
 </dd>
 </dl>
@@ -988,6 +1008,47 @@ Default: <code class="docutils literal notranslate"><span class="pre">None</span
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat</span> <span class="o">=</span> <span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">set_param_specs</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">]))</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">param_defaults</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;sigma^2_0&#39;: tensor([1.]),
+ &#39;sigma^2_1&#39;: tensor([2.]),
+ &#39;sigma^2_2&#39;: tensor([3.])}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat</span><span class="o">.</span><span class="n">set_param_specs</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">])</span>
+<span class="n">mat</span><span class="o">.</span><span class="n">free_param_names</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;sigma^2_1&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="n">trans</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([1., 2., 3.])
 </pre></div>
 </div>
 </div>
@@ -1608,7 +1669,7 @@ vector of levels whose distinct elements define it.</p>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=a0aba00a"></script>
+</div><script src="../_static/documentation_options.js?v=b0ee98c4"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

@@ -18,3 +18,19 @@ reml = MarginalREML(mat)
 theta_hat, beta_hat, n_iter = reml.optimize(y, x, theta, verbose=1)
 theta_hat, beta_hat
 
+
+# In[2]:
+
+
+import torch
+from torch_openreml import MarginalREML
+from torch_openreml.covariance import ScalarMatrix
+
+n = 50
+y = torch.randn(n)
+x = torch.randn(n, 2)
+
+reml = MarginalREML(ScalarMatrix(n))
+reml.optimize(y, x, torch.tensor([0.0]), verbose=0)
+sorted(reml.tree())
+

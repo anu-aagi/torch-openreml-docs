@@ -153,6 +153,27 @@ op.free_param_names
 # In[17]:
 
 
+mat = DiagonalMatrix(3)
+mat.set_param_specs("/", default=torch.tensor([1.0, 2.0, 3.0]))
+mat.param_defaults
+
+
+# In[18]:
+
+
+mat.set_param_specs("/", fixed=[True, False, True])
+mat.free_param_names
+
+
+# In[19]:
+
+
+mat.build_params(trans=False)
+
+
+# In[20]:
+
+
 import torch
 from torch_openreml.covariance import DiagonalMatrix
 
@@ -161,13 +182,13 @@ free_params = torch.tensor([0.0, 0.5, 1.0])
 mat.trans_grad(free_params)
 
 
-# In[18]:
+# In[21]:
 
 
 mat.trans_grad()
 
 
-# In[19]:
+# In[22]:
 
 
 import torch
@@ -179,7 +200,7 @@ grad, grad_names = mat.auto_grad(free_params)
 grad, grad_names
 
 
-# In[20]:
+# In[23]:
 
 
 import torch
@@ -191,7 +212,7 @@ grad, grad_names = mat.grad(free_params)
 grad, grad_names
 
 
-# In[21]:
+# In[24]:
 
 
 from torch_openreml.covariance import ScalarMatrix

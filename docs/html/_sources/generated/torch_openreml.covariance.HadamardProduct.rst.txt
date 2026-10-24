@@ -20,6 +20,7 @@
       ~HadamardProduct.build_params
       ~HadamardProduct.disable_cache
       ~HadamardProduct.enable_cache
+      ~HadamardProduct.free_param_tree
       ~HadamardProduct.get_default_dtype_device
       ~HadamardProduct.get_intermediates
       ~HadamardProduct.grad
@@ -34,6 +35,7 @@
       ~HadamardProduct.set_param_specs
       ~HadamardProduct.trans_grad
       ~HadamardProduct.tree
+      ~HadamardProduct.walk
    
    
 

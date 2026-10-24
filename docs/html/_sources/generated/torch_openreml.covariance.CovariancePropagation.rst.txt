@@ -20,6 +20,7 @@
       ~CovariancePropagation.build_params
       ~CovariancePropagation.disable_cache
       ~CovariancePropagation.enable_cache
+      ~CovariancePropagation.free_param_tree
       ~CovariancePropagation.get_default_dtype_device
       ~CovariancePropagation.get_intermediates
       ~CovariancePropagation.grad
@@ -34,6 +35,7 @@
       ~CovariancePropagation.set_param_specs
       ~CovariancePropagation.trans_grad
       ~CovariancePropagation.tree
+      ~CovariancePropagation.walk
    
    
 

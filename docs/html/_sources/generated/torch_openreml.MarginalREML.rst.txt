@@ -24,6 +24,7 @@
       ~MarginalREML.optimize
       ~MarginalREML.predict
       ~MarginalREML.residual
+      ~MarginalREML.tree
       ~MarginalREML.update
    
    

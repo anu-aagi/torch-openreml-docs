@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Covariance" href="../api/covariance.html"><link rel="prev" title="MarginalREML" href="../api/reml.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>torch_openreml.MarginalREML - torch-openreml 0.4.0-alpha documentation</title>
+        <title>torch_openreml.MarginalREML - torch-openreml 0.4.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
@@ -164,7 +164,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">torch-openreml 0.4.0-alpha documentation</div></a>
+      <a href="../index.html"><div class="brand">torch-openreml 0.4.1-alpha documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -185,7 +185,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
-  <span class="sidebar-brand-text">torch-openreml 0.4.0-alpha documentation</span>
+  <span class="sidebar-brand-text">torch-openreml 0.4.1-alpha documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -379,18 +379,17 @@ and its Jacobian.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1] ∥∇∥:       9.9403, ∥Δ∥: 0.1306, η: 1.00, ∥Δᶜ∥: 0.1306, log 𝓛: -22.9222
-[  2] ∥∇∥:       1.4189, ∥Δ∥: 0.0144, η: 1.00, ∥Δᶜ∥: 0.0144, log 𝓛: -22.3336 (+0.5887)
-[  3] ∥∇∥:       0.0202, ∥Δ∥: 0.0002, η: 1.00, ∥Δᶜ∥: 0.0002, log 𝓛: -22.3233 (+0.0103)
-[  4] ∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -22.3233 (+0.0000)
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1] ∥∇∥:       2.3678, ∥Δ∥: 0.0235, η: 1.00, ∥Δᶜ∥: 0.0235, log 𝓛: -29.1144
+[  2] ∥∇∥:       0.0548, ∥Δ∥: 0.0006, η: 1.00, ∥Δᶜ∥: 0.0006, log 𝓛: -29.0861 (+0.0283)
+[  3] ∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -29.0861 (+0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 4, total time: 0.00s
+✓ Converged at iteration 3, total time: 0.02s
 
 </pre></div>
 </div>
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([-0.1160]), tensor([-0.0768, -0.1107]))
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0.0241]), tensor([0.2619, 0.0876]))
 </pre></div>
 </div>
 </div>
@@ -429,7 +428,10 @@ and its Jacobian.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.residual" title="torch_openreml.MarginalREML.residual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">residual</span></code></a>(y, x, theta)</p></td>
 <td><p>Compute residuals.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.update" title="torch_openreml.MarginalREML.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(theta, delta, eta[, lb, ub])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.tree" title="torch_openreml.MarginalREML.tree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tree</span></code></a>([theta])</p></td>
+<td><p>Evaluate the covariance structure and return each node keyed by its path.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.update" title="torch_openreml.MarginalREML.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(theta, delta, eta[, lb, ub])</p></td>
 <td><p>Apply a damped AI step and clip covariance parameters to bounds.</p></td>
 </tr>
 </tbody>
@@ -716,6 +718,68 @@ log-likelihood. Defaults to <code class="docutils literal notranslate"><span cla
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="torch_openreml.MarginalREML.tree">
+<span class="sig-name descname"><span class="pre">tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.tree" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the covariance structure and return each node keyed by its path.</p>
+<p>Evaluates <code class="xref py py-attr docutils literal notranslate"><span class="pre">v</span></code> at <code class="docutils literal notranslate"><span class="pre">theta</span></code> and returns the same path-keyed dict
+<a class="reference internal" href="torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.tree" title="torch_openreml.covariance.Operator.tree"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Operator.tree</span></code></a> returns,
+with the marginal covariance matrix <span class="math notranslate nohighlight">\(V(\theta)\)</span> under the root
+<code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code>. When <code class="docutils literal notranslate"><span class="pre">v</span></code> is not an
+<a class="reference internal" href="torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator" title="torch_openreml.covariance.Operator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operator</span></code></a>, the tree is the
+root entry alone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>theta</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – Flat covariance
+parameter tensor or parameter dictionary to evaluate at;
+<code class="docutils literal notranslate"><span class="pre">None</span></code> evaluates at the free-parameter defaults. A string is
+passed to <a class="reference internal" href="#torch_openreml.MarginalREML.get_theta" title="torch_openreml.MarginalREML.get_theta"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_theta()</span></code></a>, so <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code> selects the final
+iterate and any other value the iterate with the highest
+log-likelihood — useful straight after <a class="reference internal" href="#torch_openreml.MarginalREML.optimize" title="torch_openreml.MarginalREML.optimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optimize()</span></code></a>.
+Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Maps each path to the evaluated matrix.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">theta</span></code> is a selector but no optimisation history
+    exists yet.</p></li>
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">theta</span></code> is neither a Torch tensor, a dict, nor a
+    selector.</p></li>
+<li><p><strong>ValueError</strong> – If the parameter tensor is not 1D or has the wrong
+    length.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml</span><span class="w"> </span><span class="kn">import</span> <span class="n">MarginalREML</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarMatrix</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">reml</span> <span class="o">=</span> <span class="n">MarginalREML</span><span class="p">(</span><span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="n">reml</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]),</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">sorted</span><span class="p">(</span><span class="n">reml</span><span class="o">.</span><span class="n">tree</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;/&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.MarginalREML.is_converged">
 <span class="sig-name descname"><span class="pre">is_converged</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.is_converged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.is_converged" title="Link to this definition">¶</a></dt>
 <dd><p>Check whether the optimisation has converged.</p>
@@ -922,6 +986,7 @@ estimate, and <code class="docutils literal notranslate"><span class="pre">n_ite
 <li><a class="reference internal" href="#torch_openreml.MarginalREML.ai_step"><code class="docutils literal notranslate"><span class="pre">MarginalREML.ai_step()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.MarginalREML.get_theta"><code class="docutils literal notranslate"><span class="pre">MarginalREML.get_theta()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.MarginalREML.get_beta"><code class="docutils literal notranslate"><span class="pre">MarginalREML.get_beta()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.MarginalREML.tree"><code class="docutils literal notranslate"><span class="pre">MarginalREML.tree()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.MarginalREML.is_converged"><code class="docutils literal notranslate"><span class="pre">MarginalREML.is_converged()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.MarginalREML.update"><code class="docutils literal notranslate"><span class="pre">MarginalREML.update()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.MarginalREML.optimize"><code class="docutils literal notranslate"><span class="pre">MarginalREML.optimize()</span></code></a></li>
@@ -938,7 +1003,7 @@ estimate, and <code class="docutils literal notranslate"><span class="pre">n_ite
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=a0aba00a"></script>
+</div><script src="../_static/documentation_options.js?v=b0ee98c4"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

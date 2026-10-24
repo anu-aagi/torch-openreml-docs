@@ -20,6 +20,7 @@
       ~Inverse.build_params
       ~Inverse.disable_cache
       ~Inverse.enable_cache
+      ~Inverse.free_param_tree
       ~Inverse.get_default_dtype_device
       ~Inverse.get_intermediates
       ~Inverse.grad
@@ -34,6 +35,7 @@
       ~Inverse.set_param_specs
       ~Inverse.trans_grad
       ~Inverse.tree
+      ~Inverse.walk
    
    
 

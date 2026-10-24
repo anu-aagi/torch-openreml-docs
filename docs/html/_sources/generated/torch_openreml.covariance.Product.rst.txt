@@ -20,6 +20,7 @@
       ~Product.build_params
       ~Product.disable_cache
       ~Product.enable_cache
+      ~Product.free_param_tree
       ~Product.get_default_dtype_device
       ~Product.get_intermediates
       ~Product.grad
@@ -34,6 +35,7 @@
       ~Product.set_param_specs
       ~Product.trans_grad
       ~Product.tree
+      ~Product.walk
    
    
 

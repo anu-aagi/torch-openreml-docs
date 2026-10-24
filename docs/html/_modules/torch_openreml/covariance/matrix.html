@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>torch_openreml.covariance.matrix - torch-openreml 0.4.0-alpha documentation</title>
+        <title>torch_openreml.covariance.matrix - torch-openreml 0.4.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/jupyter-sphinx.css" />
@@ -163,7 +163,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">torch-openreml 0.4.0-alpha documentation</div></a>
+      <a href="../../../index.html"><div class="brand">torch-openreml 0.4.1-alpha documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -184,7 +184,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">torch-openreml 0.4.0-alpha documentation</span>
+  <span class="sidebar-brand-text">torch-openreml 0.4.1-alpha documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -802,8 +802,17 @@
 <span class="sd">        ``key`` is resolved against :attr:`param_specs`, and each field passed</span>
 <span class="sd">        as something other than ``None`` replaces that field of every resolved</span>
 <span class="sd">        specification. Fields left as ``None`` are kept unchanged, so a call</span>
-<span class="sd">        without fields changes nothing. Values are assigned as given, without</span>
-<span class="sd">        validation or copying, and take effect on the next call.</span>
+<span class="sd">        without fields changes nothing. Values are assigned without copying and</span>
+<span class="sd">        take effect on the next call.</span>
+
+<span class="sd">        Every field is distributed the same way: a single value — a ``bool``</span>
+<span class="sd">        for ``fixed``, a ``Transform`` for ``trans``, a length-1 tensor for</span>
+<span class="sd">        ``default`` — is broadcast to every resolved specification, while a</span>
+<span class="sd">        value with as many entries as there are resolved specifications is</span>
+<span class="sd">        split element-wise, one entry per specification. The multi-value form</span>
+<span class="sd">        is a ``list`` or a ``tuple`` for ``fixed`` and ``trans``, and a tensor</span>
+<span class="sd">        for ``default``. Any other length raises ``ValueError`` before anything</span>
+<span class="sd">        is written, so a rejected call leaves every specification untouched.</span>
 
 <span class="sd">        A ``key`` that does not end with ``&quot;/&quot;`` addresses one specification</span>
 <span class="sd">        exactly. A ``key`` that ends with ``&quot;/&quot;`` addresses a subtree instead:</span>
@@ -818,17 +827,29 @@
 <span class="sd">                namespace their operands&#39; parameters, so ``&quot;A/sigma^2&quot;``</span>
 <span class="sd">                addresses the parameter ``&quot;sigma^2&quot;`` of the operand ``&quot;A&quot;``,</span>
 <span class="sd">                and ``&quot;A/&quot;`` addresses every parameter under it.</span>
-<span class="sd">            fixed (bool, optional): New value for the ``&quot;fixed&quot;`` field.</span>
-<span class="sd">                Default: ``None``.</span>
+<span class="sd">            fixed (bool or list or tuple of bools, optional): New value for the</span>
+<span class="sd">                ``&quot;fixed&quot;`` field, given either as one bool to broadcast to</span>
+<span class="sd">                every resolved specification or as one bool per resolved</span>
+<span class="sd">                specification. Default: ``None``.</span>
 <span class="sd">            default (torch.Tensor, optional): New value for the ``&quot;default&quot;``</span>
-<span class="sd">                field. Default: ``None``.</span>
-<span class="sd">            trans (Transform, optional): New value for the ``&quot;trans&quot;`` field.</span>
-<span class="sd">                Default: ``None``.</span>
+<span class="sd">                field, given as a 1D tensor of shape ``(1,)`` to broadcast to</span>
+<span class="sd">                every resolved specification, or of shape</span>
+<span class="sd">                ``(len(specs),)`` to give one value per resolved</span>
+<span class="sd">                specification. Default: ``None``.</span>
+<span class="sd">            trans (Transform or list or tuple of Transforms, optional): New</span>
+<span class="sd">                value for the ``&quot;trans&quot;`` field, given either as one transform</span>
+<span class="sd">                to broadcast to every resolved specification or as one</span>
+<span class="sd">                transform per resolved specification. Default: ``None``.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            TypeError: If ``key`` is not a str.</span>
+<span class="sd">            TypeError: If ``key`` is not a str; or ``fixed`` is not a bool, a</span>
+<span class="sd">                list or a tuple of bools; or ``default`` is not a</span>
+<span class="sd">                ``torch.Tensor``; or ``trans`` is not a ``Transform``, a list</span>
+<span class="sd">                or a tuple of transforms.</span>
 <span class="sd">            ValueError: If ``key`` is not a parameter of this matrix, and not a</span>
-<span class="sd">                subtree path that resolves to at least one.</span>
+<span class="sd">                subtree path that resolves to at least one; or ``default`` is</span>
+<span class="sd">                not 1D; or ``fixed``, ``default`` or ``trans`` has a length</span>
+<span class="sd">                other than 1 and the number of resolved specifications.</span>
 
 <span class="sd">        Example:</span>
 
@@ -857,6 +878,21 @@
 
 <span class="sd">            op.set_param_specs(&quot;/&quot;, fixed=True)</span>
 <span class="sd">            op.free_param_names</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            mat = DiagonalMatrix(3)</span>
+<span class="sd">            mat.set_param_specs(&quot;/&quot;, default=torch.tensor([1.0, 2.0, 3.0]))</span>
+<span class="sd">            mat.param_defaults</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            mat.set_param_specs(&quot;/&quot;, fixed=[True, False, True])</span>
+<span class="sd">            mat.free_param_names</span>
+
+<span class="sd">        .. jupyter-execute::</span>
+
+<span class="sd">            mat.build_params(trans=False)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;key&#39; must be a str, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
@@ -876,15 +912,49 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">specs</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot resolve key &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39;!&quot;</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">specs</span><span class="p">:</span>
+        <span class="n">noun</span> <span class="o">=</span> <span class="s2">&quot;parameter&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">specs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;parameters&quot;</span>
+
+        <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;default&#39; must be a torch.Tensor, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">default</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">default</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;default&#39; must be a 1D tensor, got shape </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">default</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">default</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">specs</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;default&#39; has </span><span class="si">{</span><span class="n">default</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> values, but &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; resolves to </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">specs</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">noun</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">fixed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fixed</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fixed</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;fixed&#39; must be a bool or a list or a tuple of bools, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">fixed</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fixed</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">specs</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;fixed&#39; has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">fixed</span><span class="p">)</span><span class="si">}</span><span class="s2"> values, but &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; resolves to </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">specs</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">noun</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fixed</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;fixed&#39; must contain only bools, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> at index </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">trans</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trans</span><span class="p">,</span> <span class="n">Transform</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trans</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;trans&#39; must be a Transform or a list or a tuple of Transforms, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">specs</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;trans&#39; has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span><span class="si">}</span><span class="s2"> values, but &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; resolves to </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">specs</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">noun</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">trans</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Transform</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;trans&#39; must contain only Transforms, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> at index </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">specs</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">fixed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fixed</span>
+                <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;fixed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fixed</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fixed</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="n">fixed</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fixed</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">fixed</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
             <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">default</span>
+                <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">default</span> <span class="k">if</span> <span class="n">default</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">default</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">trans</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;trans&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trans</span></div>
+                <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;trans&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trans</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trans</span><span class="p">,</span> <span class="n">Transform</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="n">trans</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">trans</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="Matrix.trans_grad">
@@ -1439,7 +1509,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=a0aba00a"></script>
+</div><script src="../../../_static/documentation_options.js?v=b0ee98c4"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

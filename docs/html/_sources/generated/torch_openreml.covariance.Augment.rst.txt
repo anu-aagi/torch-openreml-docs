@@ -20,6 +20,7 @@
       ~Augment.build_params
       ~Augment.disable_cache
       ~Augment.enable_cache
+      ~Augment.free_param_tree
       ~Augment.get_default_dtype_device
       ~Augment.get_intermediates
       ~Augment.grad
@@ -34,6 +35,7 @@
       ~Augment.set_param_specs
       ~Augment.trans_grad
       ~Augment.tree
+      ~Augment.walk
    
    
 

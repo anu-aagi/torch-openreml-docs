@@ -20,6 +20,7 @@
       ~Transpose.build_params
       ~Transpose.disable_cache
       ~Transpose.enable_cache
+      ~Transpose.free_param_tree
       ~Transpose.get_default_dtype_device
       ~Transpose.get_intermediates
       ~Transpose.grad
@@ -34,6 +35,7 @@
       ~Transpose.set_param_specs
       ~Transpose.trans_grad
       ~Transpose.tree
+      ~Transpose.walk
    
    
 

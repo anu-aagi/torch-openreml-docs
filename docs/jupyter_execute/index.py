@@ -62,7 +62,7 @@ print(beta_hat)
 # In[5]:
 
 
-tree, _ = V.tree(theta_hat)
+tree = reml.tree()
 
 
 # In[6]:
