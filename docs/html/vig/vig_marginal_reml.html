@@ -608,15 +608,14 @@ necessary.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1] ∥∇∥:      17.3593, ∥Δ∥: 7.1602, η: 1.00, ∥Δᶜ∥: 7.1602, log 𝓛: -21.7135
-[  2] ∥∇∥:      10.6130, ∥Δ∥: 0.0905, η: 1.00, ∥Δᶜ∥: 0.0905, log 𝓛: -18.9849 (+2.7286)
-[  3] ∥∇∥:       0.9054, ∥Δ∥: 0.0093, η: 1.00, ∥Δᶜ∥: 0.0093, log 𝓛: -18.4767 (+0.5082)
-[  4] ∥∇∥:       0.0083, ∥Δ∥: 0.0001, η: 1.00, ∥Δᶜ∥: 0.0001, log 𝓛: -18.4725 (+0.0042)
-[  5] ∥∇∥:       0.0001, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -18.4725 (+0.0000)
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1] ∥∇∥:       8.5191, ∥Δ∥: 13.7202, η: 1.00, ∥Δᶜ∥: 13.7202, log 𝓛: -34.3180
+[  2] ∥∇∥:       0.1432, ∥Δ∥: 0.0015, η: 1.00, ∥Δᶜ∥: 0.0015, log 𝓛: -31.6590 (+2.6590)
+[  3] ∥∇∥:       0.0002, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -31.6589 (+0.0001)
+[  4] ∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -31.6589 (+0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 5, total time: 0.00s
+✓ Converged at iteration 4, total time: 0.00s
 
 </pre></div>
 </div>
@@ -828,11 +827,11 @@ extracting estimates and predictions.</p>
 <h3>Retrieving parameter estimates<a class="headerlink" href="#retrieving-parameter-estimates" title="Link to this heading">¶</a></h3>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">theta_last</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">get_theta</span><span class="p">(</span><span class="n">select</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">)</span>
-<span class="n">theta_best</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">get_theta</span><span class="p">(</span><span class="n">select</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">theta_last</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">get_free_params</span><span class="p">(</span><span class="n">select</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">)</span>
+<span class="n">theta_best</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">get_free_params</span><span class="p">(</span><span class="n">select</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">)</span>
 
-<span class="n">beta_last</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">get_beta</span><span class="p">(</span><span class="n">select</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">)</span>
-<span class="n">beta_best</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">get_beta</span><span class="p">(</span><span class="n">select</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">)</span>
+<span class="n">beta_last</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">get_fixed_effects</span><span class="p">(</span><span class="n">select</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">)</span>
+<span class="n">beta_best</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">get_fixed_effects</span><span class="p">(</span><span class="n">select</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

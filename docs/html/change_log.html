@@ -330,6 +330,28 @@ rather than a pair of dicts. <code class="docutils literal notranslate"><span cl
 evaluated to, and <code class="docutils literal notranslate"><span class="pre">grad_tree</span></code> to that node’s <code class="docutils literal notranslate"><span class="pre">(grad,</span> <span class="pre">grad_names)</span></code> pair;
 the per-node parameter slices they used to return alongside moved to
 <code class="docutils literal notranslate"><span class="pre">free_param_tree</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MarginalREML.optimize</span></code>’s first optional argument is now <code class="docutils literal notranslate"><span class="pre">init_values</span></code>,
+not <code class="docutils literal notranslate"><span class="pre">theta</span></code>. The parameter holds the starting covariance parameters, which
+the loop then updates, so the old name read as if it were the estimate; the
+estimate is what <code class="docutils literal notranslate"><span class="pre">optimize</span></code> returns and what <code class="docutils literal notranslate"><span class="pre">get_free_params</span></code> reads
+back.
+Positional calls are unaffected, but callers passing <code class="docutils literal notranslate"><span class="pre">theta=</span></code> by keyword
+must rename it. <code class="docutils literal notranslate"><span class="pre">update</span></code> keeps its <code class="docutils literal notranslate"><span class="pre">theta</span></code> argument, where the name does
+mean an estimate.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MarginalREML.get_theta</span></code> and <code class="docutils literal notranslate"><span class="pre">MarginalREML.get_beta</span></code> are now
+<code class="docutils literal notranslate"><span class="pre">get_free_params</span></code> and <code class="docutils literal notranslate"><span class="pre">get_fixed_effects</span></code>, and the <code class="docutils literal notranslate"><span class="pre">history</span></code> keys
+<code class="docutils literal notranslate"><span class="pre">&quot;theta&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;beta&quot;</span></code> are now <code class="docutils literal notranslate"><span class="pre">&quot;free_params&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;fixed_effects&quot;</span></code>.
+The evaluation arguments of <code class="docutils literal notranslate"><span class="pre">blue</span></code>, <code class="docutils literal notranslate"><span class="pre">predict</span></code>, <code class="docutils literal notranslate"><span class="pre">residual</span></code>, <code class="docutils literal notranslate"><span class="pre">loglik</span></code>,
+<code class="docutils literal notranslate"><span class="pre">compute_v_dv</span></code>, <code class="docutils literal notranslate"><span class="pre">ai_step</span></code> and <code class="docutils literal notranslate"><span class="pre">update</span></code> use the same word,
+<code class="docutils literal notranslate"><span class="pre">free_params</span></code>, matching the covariance layer. <code class="docutils literal notranslate"><span class="pre">delta</span></code> and <code class="docutils literal notranslate"><span class="pre">eta</span></code> keep
+their names: both are standard symbols for the AI increment and the step
+size, and the history keys that hold them are unchanged.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MarginalREML.tree</span></code> no longer takes a single <code class="docutils literal notranslate"><span class="pre">theta</span></code>: it takes
+<code class="docutils literal notranslate"><span class="pre">free_params</span></code> plus a keyword-only <code class="docutils literal notranslate"><span class="pre">select</span></code>. <code class="docutils literal notranslate"><span class="pre">tree()</span></code> evaluates at the
+final iterate, <code class="docutils literal notranslate"><span class="pre">tree(free_params)</span></code> at the values given,
+<code class="docutils literal notranslate"><span class="pre">tree(select=&quot;best&quot;)</span></code> at the best iterate, and <code class="docutils literal notranslate"><span class="pre">select=None</span></code> at the
+defaults. A string passed positionally now raises <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> naming
+<code class="docutils literal notranslate"><span class="pre">select=</span></code> as the replacement.</p></li>
 </ul>
 </section>
 <section id="changes">
@@ -365,12 +387,13 @@ inspect how a composite splits its parameters between operands.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">MarginalREML.tree</span></code>, evaluating the fitted covariance structure at a
 parameter estimate and returning the same path-keyed dict as
 <code class="docutils literal notranslate"><span class="pre">Operator.tree</span></code>, the root <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code> holding <span class="math notranslate nohighlight">\(V(\theta)\)</span> itself. It
-accepts a parameter tensor, a dict of named free parameters, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for
-the free-parameter defaults, and a string is passed to <code class="docutils literal notranslate"><span class="pre">get_theta</span></code> —
+takes a <code class="docutils literal notranslate"><span class="pre">free_params</span></code> tensor or dict, and a keyword-only <code class="docutils literal notranslate"><span class="pre">select</span></code> that
+chooses the optimisation iterate when <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is omitted —
 <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code> for the final iterate (the default) or any other selector for the
 iterate with the highest log-likelihood, so <code class="docutils literal notranslate"><span class="pre">reml.tree()</span></code> works straight
-after <code class="docutils literal notranslate"><span class="pre">optimize()</span></code>. When <code class="docutils literal notranslate"><span class="pre">v</span></code> is a plain matrix rather than an operator,
-the tree is the root entry alone.</p></li>
+after <code class="docutils literal notranslate"><span class="pre">optimize()</span></code>, while <code class="docutils literal notranslate"><span class="pre">select=None</span></code> evaluates at the free-parameter
+defaults. When <code class="docutils literal notranslate"><span class="pre">v</span></code> is a plain matrix rather than an operator, the tree is
+the root entry alone.</p></li>
 </ul>
 </section>
 <section id="documentation">

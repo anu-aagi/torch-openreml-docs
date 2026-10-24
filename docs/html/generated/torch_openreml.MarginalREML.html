@@ -369,27 +369,28 @@ and its Jacobian.</p>
 <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">2</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
-<span class="n">theta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">])</span>
+<span class="n">init_values</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">])</span>
 
 <span class="n">mat</span> <span class="o">=</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 <span class="n">reml</span> <span class="o">=</span> <span class="n">MarginalREML</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
-<span class="n">theta_hat</span><span class="p">,</span> <span class="n">beta_hat</span><span class="p">,</span> <span class="n">n_iter</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">theta_hat</span><span class="p">,</span> <span class="n">beta_hat</span><span class="p">,</span> <span class="n">n_iter</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">init_values</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">theta_hat</span><span class="p">,</span> <span class="n">beta_hat</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1] ∥∇∥:       2.3678, ∥Δ∥: 0.0235, η: 1.00, ∥Δᶜ∥: 0.0235, log 𝓛: -29.1144
-[  2] ∥∇∥:       0.0548, ∥Δ∥: 0.0006, η: 1.00, ∥Δᶜ∥: 0.0006, log 𝓛: -29.0861 (+0.0283)
-[  3] ∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -29.0861 (+0.0000)
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1] ∥∇∥:       7.3072, ∥Δ∥: 0.0898, η: 1.00, ∥Δᶜ∥: 0.0898, log 𝓛: -24.0651
+[  2] ∥∇∥:       0.6971, ∥Δ∥: 0.0072, η: 1.00, ∥Δᶜ∥: 0.0072, log 𝓛: -23.7576 (+0.3075)
+[  3] ∥∇∥:       0.0050, ∥Δ∥: 0.0001, η: 1.00, ∥Δᶜ∥: 0.0001, log 𝓛: -23.7551 (+0.0025)
+[  4] ∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛: -23.7551 (-0.0000)
 
 [∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 3, total time: 0.02s
+✓ Converged at iteration 4, total time: 0.02s
 
 </pre></div>
 </div>
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([0.0241]), tensor([0.2619, 0.0876]))
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([-0.0826]), tensor([ 0.3770, -0.1228]))
 </pre></div>
 </div>
 </div>
@@ -398,40 +399,40 @@ and its Jacobian.</p>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.ai_step" title="torch_openreml.MarginalREML.ai_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ai_step</span></code></a>(y, x, theta[, require_loglik, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.ai_step" title="torch_openreml.MarginalREML.ai_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ai_step</span></code></a>(y, x, free_params[, require_loglik, ...])</p></td>
 <td><p>Perform a single average information (AI) algorithm step.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.blue" title="torch_openreml.MarginalREML.blue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">blue</span></code></a>(y, x, theta)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.blue" title="torch_openreml.MarginalREML.blue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">blue</span></code></a>(y, x, free_params)</p></td>
 <td><p>Compute the best linear unbiased estimator (BLUE) of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.compute_v_dv" title="torch_openreml.MarginalREML.compute_v_dv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_v_dv</span></code></a>(theta)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.compute_v_dv" title="torch_openreml.MarginalREML.compute_v_dv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_v_dv</span></code></a>(free_params)</p></td>
 <td><p>Compute the covariance matrix and its Jacobian.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.get_beta" title="torch_openreml.MarginalREML.get_beta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_beta</span></code></a>([select])</p></td>
-<td><p>Retrieve a coefficient estimate from the optimisation history.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.get_fixed_effects" title="torch_openreml.MarginalREML.get_fixed_effects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_fixed_effects</span></code></a>([select])</p></td>
+<td><p>Retrieve a fixed-effects coefficient estimate from the optimisation history.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.get_theta" title="torch_openreml.MarginalREML.get_theta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_theta</span></code></a>([select])</p></td>
-<td><p>Retrieve a covariance parameter estimate from the optimisation history.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.get_free_params" title="torch_openreml.MarginalREML.get_free_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_free_params</span></code></a>([select])</p></td>
+<td><p>Retrieve a free covariance parameter estimate from the optimisation history.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.is_converged" title="torch_openreml.MarginalREML.is_converged"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_converged</span></code></a>()</p></td>
 <td><p>Check whether the optimisation has converged.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.loglik" title="torch_openreml.MarginalREML.loglik"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loglik</span></code></a>(y, x, theta)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.loglik" title="torch_openreml.MarginalREML.loglik"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loglik</span></code></a>(y, x, free_params)</p></td>
 <td><p>Evaluate the REML log-likelihood.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.optimize" title="torch_openreml.MarginalREML.optimize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optimize</span></code></a>(y, x[, theta, max_iter, eta, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.optimize" title="torch_openreml.MarginalREML.optimize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optimize</span></code></a>(y, x[, init_values, max_iter, eta, ...])</p></td>
 <td><p>Run the AI-REML optimisation loop.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.predict" title="torch_openreml.MarginalREML.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(y, x, theta)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.predict" title="torch_openreml.MarginalREML.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(y, x, free_params)</p></td>
 <td><p>Compute fitted values.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.residual" title="torch_openreml.MarginalREML.residual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">residual</span></code></a>(y, x, theta)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.residual" title="torch_openreml.MarginalREML.residual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">residual</span></code></a>(y, x, free_params)</p></td>
 <td><p>Compute residuals.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.tree" title="torch_openreml.MarginalREML.tree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tree</span></code></a>([theta])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.tree" title="torch_openreml.MarginalREML.tree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tree</span></code></a>([free_params, select])</p></td>
 <td><p>Evaluate the covariance structure and return each node keyed by its path.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.update" title="torch_openreml.MarginalREML.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(theta, delta, eta[, lb, ub])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.MarginalREML.update" title="torch_openreml.MarginalREML.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(free_params, delta, eta[, lb, ub])</p></td>
 <td><p>Apply a damped AI step and clip covariance parameters to bounds.</p></td>
 </tr>
 </tbody>
@@ -439,7 +440,7 @@ and its Jacobian.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.MarginalREML.blue">
-<span class="sig-name descname"><span class="pre">blue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.blue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.blue" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">blue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.blue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.blue" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the best linear unbiased estimator (BLUE) of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>.</p>
 <p>Solves for <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span> via generalised least squares:</p>
 <div class="math-wrapper docutils container">
@@ -452,7 +453,7 @@ and its Jacobian.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>y</strong> (<em>torch.Tensor</em>) – Response vector of shape <code class="docutils literal notranslate"><span class="pre">(n,)</span></code>.</p></li>
 <li><p><strong>x</strong> (<em>torch.Tensor</em>) – Design matrix of shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">p)</span></code>.</p></li>
-<li><p><strong>theta</strong> (<em>torch.Tensor</em>) – Flat covariance parameter tensor.</p></li>
+<li><p><strong>free_params</strong> (<em>torch.Tensor</em>) – Flat covariance parameter tensor.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -467,7 +468,7 @@ of shape <code class="docutils literal notranslate"><span class="pre">(p,)</span
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.MarginalREML.predict">
-<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.predict" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.predict" title="Link to this definition">¶</a></dt>
 <dd><p>Compute fitted values.</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -478,7 +479,7 @@ of shape <code class="docutils literal notranslate"><span class="pre">(p,)</span
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>y</strong> (<em>torch.Tensor</em>) – Response vector of shape <code class="docutils literal notranslate"><span class="pre">(n,)</span></code>.</p></li>
 <li><p><strong>x</strong> (<em>torch.Tensor</em>) – Design matrix of shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">p)</span></code>.</p></li>
-<li><p><strong>theta</strong> (<em>torch.Tensor</em>) – Flat covariance parameter tensor.</p></li>
+<li><p><strong>free_params</strong> (<em>torch.Tensor</em>) – Flat covariance parameter tensor.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -492,7 +493,7 @@ of shape <code class="docutils literal notranslate"><span class="pre">(p,)</span
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.MarginalREML.residual">
-<span class="sig-name descname"><span class="pre">residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.residual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.residual" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.residual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.residual" title="Link to this definition">¶</a></dt>
 <dd><p>Compute residuals.</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -503,7 +504,7 @@ of shape <code class="docutils literal notranslate"><span class="pre">(p,)</span
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>y</strong> (<em>torch.Tensor</em>) – Response vector of shape <code class="docutils literal notranslate"><span class="pre">(n,)</span></code>.</p></li>
 <li><p><strong>x</strong> (<em>torch.Tensor</em>) – Design matrix of shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">p)</span></code>.</p></li>
-<li><p><strong>theta</strong> (<em>torch.Tensor</em>) – Flat covariance parameter tensor.</p></li>
+<li><p><strong>free_params</strong> (<em>torch.Tensor</em>) – Flat covariance parameter tensor.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -517,7 +518,7 @@ of shape <code class="docutils literal notranslate"><span class="pre">(p,)</span
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.MarginalREML.loglik">
-<span class="sig-name descname"><span class="pre">loglik</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.loglik"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.loglik" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">loglik</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.loglik"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.loglik" title="Link to this definition">¶</a></dt>
 <dd><p>Evaluate the REML log-likelihood.</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -532,7 +533,7 @@ of shape <code class="docutils literal notranslate"><span class="pre">(p,)</span
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>y</strong> (<em>torch.Tensor</em>) – Response vector of shape <code class="docutils literal notranslate"><span class="pre">(n,)</span></code>.</p></li>
 <li><p><strong>x</strong> (<em>torch.Tensor</em>) – Design matrix of shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">p)</span></code>.</p></li>
-<li><p><strong>theta</strong> (<em>torch.Tensor</em>) – Flat covariance parameter tensor.</p></li>
+<li><p><strong>free_params</strong> (<em>torch.Tensor</em>) – Flat covariance parameter tensor.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -546,14 +547,14 @@ of shape <code class="docutils literal notranslate"><span class="pre">(p,)</span
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.MarginalREML.compute_v_dv">
-<span class="sig-name descname"><span class="pre">compute_v_dv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.compute_v_dv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.compute_v_dv" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">compute_v_dv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.compute_v_dv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.compute_v_dv" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the covariance matrix and its Jacobian.</p>
 <p>Calls <code class="xref py py-attr docutils literal notranslate"><span class="pre">v</span></code> to build <span class="math notranslate nohighlight">\(\symbf{V}(\boldsymbol{\theta})\)</span>
 and <code class="xref py py-meth docutils literal notranslate"><span class="pre">grad()</span></code> for the
 Jacobian <span class="math notranslate nohighlight">\(\partial\symbf{V}(\boldsymbol{\theta})/\partial\boldsymbol{\theta}\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>theta</strong> (<em>torch.Tensor</em>) – Flat covariance parameter tensor.</p>
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em>) – Flat covariance parameter tensor.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(v,</span> <span class="pre">dv)</span></code>, where <code class="docutils literal notranslate"><span class="pre">v</span></code> is the covariance matrix of
@@ -568,7 +569,7 @@ shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <s
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.MarginalREML.ai_step">
-<span class="sig-name descname"><span class="pre">ai_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace_approx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subspace_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.ai_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.ai_step" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ai_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace_approx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subspace_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.ai_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.ai_step" title="Link to this definition">¶</a></dt>
 <dd><p>Perform a single average information (AI) algorithm step.</p>
 <p>Computes the score vector <span class="math notranslate nohighlight">\(\symbf{s}\)</span>, AI matrix, and
 optionally the REML log-likelihood and coefficient estimate at the
@@ -640,7 +641,7 @@ approximated.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>y</strong> (<em>torch.Tensor</em>) – Response vector of shape <code class="docutils literal notranslate"><span class="pre">(n,)</span></code>.</p></li>
 <li><p><strong>x</strong> (<em>torch.Tensor</em>) – Design matrix of shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">p)</span></code>.</p></li>
-<li><p><strong>theta</strong> (<em>torch.Tensor</em>) – Flat covariance parameter tensor.</p></li>
+<li><p><strong>free_params</strong> (<em>torch.Tensor</em>) – Flat covariance parameter tensor.</p></li>
 <li><p><strong>require_loglik</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to evaluate the REML
 log-likelihood. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 <li><p><strong>require_beta</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to compute the coefficient
@@ -665,10 +666,12 @@ accuracy of the approximate score. Only used when
 <dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">subspace_fraction</span></code> is outside <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code>.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">(beta,</span> <span class="pre">score,</span> <span class="pre">ai,</span> <span class="pre">loglik)</span></code>, where <code class="docutils literal notranslate"><span class="pre">beta</span></code> is of shape
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">(fixed_effects,</span> <span class="pre">score,</span> <span class="pre">ai,</span> <span class="pre">loglik)</span></code>, where
+<code class="docutils literal notranslate"><span class="pre">fixed_effects</span></code> is of shape
 <code class="docutils literal notranslate"><span class="pre">(p,)</span></code>, <code class="docutils literal notranslate"><span class="pre">score</span></code> is of shape <code class="docutils literal notranslate"><span class="pre">(num_free_params,)</span></code>, <code class="docutils literal notranslate"><span class="pre">ai</span></code> is of
 shape <code class="docutils literal notranslate"><span class="pre">(num_free_params,</span> <span class="pre">num_free_params)</span></code>, and <code class="docutils literal notranslate"><span class="pre">loglik</span></code> is a scalar
-tensor. <code class="docutils literal notranslate"><span class="pre">beta</span></code> and <code class="docutils literal notranslate"><span class="pre">loglik</span></code> are <code class="docutils literal notranslate"><span class="pre">torch.nan</span></code> if their
+tensor. <code class="docutils literal notranslate"><span class="pre">fixed_effects</span></code> and <code class="docutils literal notranslate"><span class="pre">loglik</span></code> are <code class="docutils literal notranslate"><span class="pre">torch.nan</span></code> if
+their
 respective <code class="docutils literal notranslate"><span class="pre">require_*</span></code> flag is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -678,9 +681,9 @@ respective <code class="docutils literal notranslate"><span class="pre">require_
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="torch_openreml.MarginalREML.get_theta">
-<span class="sig-name descname"><span class="pre">get_theta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">select</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.get_theta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.get_theta" title="Link to this definition">¶</a></dt>
-<dd><p>Retrieve a covariance parameter estimate from the optimisation history.</p>
+<dt class="sig sig-object py" id="torch_openreml.MarginalREML.get_free_params">
+<span class="sig-name descname"><span class="pre">get_free_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">select</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.get_free_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.get_free_params" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve a free covariance parameter estimate from the optimisation history.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>select</strong> (<em>str</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code> returns the final iterate;
@@ -698,9 +701,9 @@ log-likelihood. Defaults to <code class="docutils literal notranslate"><span cla
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="torch_openreml.MarginalREML.get_beta">
-<span class="sig-name descname"><span class="pre">get_beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">select</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.get_beta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.get_beta" title="Link to this definition">¶</a></dt>
-<dd><p>Retrieve a coefficient estimate from the optimisation history.</p>
+<dt class="sig sig-object py" id="torch_openreml.MarginalREML.get_fixed_effects">
+<span class="sig-name descname"><span class="pre">get_fixed_effects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">select</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.get_fixed_effects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.get_fixed_effects" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve a fixed-effects coefficient estimate from the optimisation history.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>select</strong> (<em>str</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code> returns the final iterate;
@@ -719,23 +722,28 @@ log-likelihood. Defaults to <code class="docutils literal notranslate"><span cla
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.MarginalREML.tree">
-<span class="sig-name descname"><span class="pre">tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.tree" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">select</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.tree" title="Link to this definition">¶</a></dt>
 <dd><p>Evaluate the covariance structure and return each node keyed by its path.</p>
-<p>Evaluates <code class="xref py py-attr docutils literal notranslate"><span class="pre">v</span></code> at <code class="docutils literal notranslate"><span class="pre">theta</span></code> and returns the same path-keyed dict
-<a class="reference internal" href="torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.tree" title="torch_openreml.covariance.Operator.tree"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Operator.tree</span></code></a> returns,
-with the marginal covariance matrix <span class="math notranslate nohighlight">\(V(\theta)\)</span> under the root
-<code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code>. When <code class="docutils literal notranslate"><span class="pre">v</span></code> is not an
+<p>Evaluates <code class="xref py py-attr docutils literal notranslate"><span class="pre">v</span></code> at <code class="docutils literal notranslate"><span class="pre">free_params</span></code> and returns the same path-keyed
+dict <a class="reference internal" href="torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.tree" title="torch_openreml.covariance.Operator.tree"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Operator.tree</span></code></a>
+returns, with the marginal covariance matrix <span class="math notranslate nohighlight">\(V(\theta)\)</span> under the
+root <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code>. When <code class="docutils literal notranslate"><span class="pre">v</span></code> is not an
 <a class="reference internal" href="torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator" title="torch_openreml.covariance.Operator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operator</span></code></a>, the tree is the
 root entry alone.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>theta</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – Flat covariance
-parameter tensor or parameter dictionary to evaluate at;
-<code class="docutils literal notranslate"><span class="pre">None</span></code> evaluates at the free-parameter defaults. A string is
-passed to <a class="reference internal" href="#torch_openreml.MarginalREML.get_theta" title="torch_openreml.MarginalREML.get_theta"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_theta()</span></code></a>, so <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code> selects the final
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em><em>, </em><em>optional</em>) – Flat covariance
+parameter tensor or parameter dictionary to evaluate at.
+Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>, which means the parameters come from the
+optimisation history selected by <code class="docutils literal notranslate"><span class="pre">select</span></code>. When both are
+given, <code class="docutils literal notranslate"><span class="pre">free_params</span></code> wins.</p></li>
+<li><p><strong>select</strong> (<em>str</em><em>, </em><em>optional</em>) – Which optimisation iterate to evaluate at
+when <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is omitted: <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code> selects the final
 iterate and any other value the iterate with the highest
-log-likelihood — useful straight after <a class="reference internal" href="#torch_openreml.MarginalREML.optimize" title="torch_openreml.MarginalREML.optimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optimize()</span></code></a>.
-Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code>.</p>
+log-likelihood. Pass <code class="docutils literal notranslate"><span class="pre">None</span></code> to evaluate at the free-parameter
+defaults instead. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code>.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Maps each path to the evaluated matrix.</p>
@@ -745,10 +753,10 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;l
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">theta</span></code> is a selector but no optimisation history
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is a string, or if <code class="docutils literal notranslate"><span class="pre">select</span></code> is
+    neither a string nor <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">select</span></code> is a string but no optimisation history
     exists yet.</p></li>
-<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">theta</span></code> is neither a Torch tensor, a dict, nor a
-    selector.</p></li>
 <li><p><strong>ValueError</strong> – If the parameter tensor is not 1D or has the wrong
     length.</p></li>
 </ul>
@@ -799,7 +807,7 @@ otherwise.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.MarginalREML.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.update" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.update" title="Link to this definition">¶</a></dt>
 <dd><p>Apply a damped AI step and clip covariance parameters to bounds.</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -809,7 +817,7 @@ otherwise.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>theta</strong> (<em>torch.Tensor</em>) – Current covariance parameter tensor.</p></li>
+<li><p><strong>free_params</strong> (<em>torch.Tensor</em>) – Current covariance parameter tensor.</p></li>
 <li><p><strong>delta</strong> (<em>torch.Tensor</em>) – AI step <span class="math notranslate nohighlight">\(\Delta = \symbf{AI}^{-1}\symbf{s}\)</span>.</p></li>
 <li><p><strong>eta</strong> (<em>float</em>) – Step size (learning rate).</p></li>
 <li><p><strong>lb</strong> (<em>float</em><em>, </em><em>optional</em>) – Lower bound for clipping. Defaults to
@@ -819,9 +827,9 @@ otherwise.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(theta,</span> <span class="pre">update)</span></code>, where <code class="docutils literal notranslate"><span class="pre">theta</span></code> is the updated
-covariance parameter tensor and <code class="docutils literal notranslate"><span class="pre">update</span></code> is the actual change
-after clipping.</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(free_params,</span> <span class="pre">update)</span></code>, where <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is the
+updated covariance parameter tensor and <code class="docutils literal notranslate"><span class="pre">update</span></code> is the actual
+change after clipping.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
@@ -831,20 +839,21 @@ after clipping.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_openreml.MarginalREML.optimize">
-<span class="sig-name descname"><span class="pre">optimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace_approx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subspace_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exact_score_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.optimize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.optimize" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">optimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_loglik</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace_approx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subspace_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exact_score_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/marginal_reml.html#MarginalREML.optimize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MarginalREML.optimize" title="Link to this definition">¶</a></dt>
 <dd><p>Run the AI-REML optimisation loop.</p>
 <p>Iterates <a class="reference internal" href="#torch_openreml.MarginalREML.ai_step" title="torch_openreml.MarginalREML.ai_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ai_step()</span></code></a> and <a class="reference internal" href="#torch_openreml.MarginalREML.update" title="torch_openreml.MarginalREML.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> until convergence or
 <code class="docutils literal notranslate"><span class="pre">max_iter</span></code> is reached. Optimisation history is stored in
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">history</span></code> and can be queried afterwards via <a class="reference internal" href="#torch_openreml.MarginalREML.get_theta" title="torch_openreml.MarginalREML.get_theta"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_theta()</span></code></a>
-and <a class="reference internal" href="#torch_openreml.MarginalREML.get_beta" title="torch_openreml.MarginalREML.get_beta"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_beta()</span></code></a>.</p>
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">history</span></code> and can be queried afterwards via <a class="reference internal" href="#torch_openreml.MarginalREML.get_free_params" title="torch_openreml.MarginalREML.get_free_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_free_params()</span></code></a>
+and <a class="reference internal" href="#torch_openreml.MarginalREML.get_fixed_effects" title="torch_openreml.MarginalREML.get_fixed_effects"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_fixed_effects()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>y</strong> (<em>torch.Tensor</em>) – Response vector of shape <code class="docutils literal notranslate"><span class="pre">(n,)</span></code>.</p></li>
 <li><p><strong>x</strong> (<em>torch.Tensor</em>) – Design matrix of shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">p)</span></code>.</p></li>
-<li><p><strong>theta</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Initial covariance parameter tensor,
-or a dictionary mapping free parameter names to value tensors.
-If omitted, default values are used. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>init_values</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Initial covariance parameter
+tensor, or a dictionary mapping free parameter names to value
+tensors. If omitted, default values are used. Defaults to
+<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 <li><p><strong>max_iter</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum number of iterations. Defaults
 to <code class="docutils literal notranslate"><span class="pre">200</span></code>.</p></li>
 <li><p><strong>eta</strong> (<em>float</em><em>, </em><em>optional</em>) – Step size applied to each AI update.
@@ -900,9 +909,10 @@ approximation on throughout. Defaults to <code class="docutils literal notransla
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(theta,</span> <span class="pre">beta,</span> <span class="pre">n_iter)</span></code>, where <code class="docutils literal notranslate"><span class="pre">theta</span></code> is the final
-covariance parameter estimate, <code class="docutils literal notranslate"><span class="pre">beta</span></code> is the corresponding coefficient
-estimate, and <code class="docutils literal notranslate"><span class="pre">n_iter</span></code> is the number of iterations completed.</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(free_params,</span> <span class="pre">fixed_effects,</span> <span class="pre">n_iter)</span></code>, where
+<code class="docutils literal notranslate"><span class="pre">free_params</span></code> is the final covariance parameter estimate,
+<code class="docutils literal notranslate"><span class="pre">fixed_effects</span></code> is the corresponding coefficient estimate, and
+<code class="docutils literal notranslate"><span class="pre">n_iter</span></code> is the number of iterations completed.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
@@ -984,8 +994,8 @@ estimate, and <code class="docutils literal notranslate"><span class="pre">n_ite
 <li><a class="reference internal" href="#torch_openreml.MarginalREML.loglik"><code class="docutils literal notranslate"><span class="pre">MarginalREML.loglik()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.MarginalREML.compute_v_dv"><code class="docutils literal notranslate"><span class="pre">MarginalREML.compute_v_dv()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.MarginalREML.ai_step"><code class="docutils literal notranslate"><span class="pre">MarginalREML.ai_step()</span></code></a></li>
-<li><a class="reference internal" href="#torch_openreml.MarginalREML.get_theta"><code class="docutils literal notranslate"><span class="pre">MarginalREML.get_theta()</span></code></a></li>
-<li><a class="reference internal" href="#torch_openreml.MarginalREML.get_beta"><code class="docutils literal notranslate"><span class="pre">MarginalREML.get_beta()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.MarginalREML.get_free_params"><code class="docutils literal notranslate"><span class="pre">MarginalREML.get_free_params()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.MarginalREML.get_fixed_effects"><code class="docutils literal notranslate"><span class="pre">MarginalREML.get_fixed_effects()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.MarginalREML.tree"><code class="docutils literal notranslate"><span class="pre">MarginalREML.tree()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.MarginalREML.is_converged"><code class="docutils literal notranslate"><span class="pre">MarginalREML.is_converged()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.MarginalREML.update"><code class="docutils literal notranslate"><span class="pre">MarginalREML.update()</span></code></a></li>
