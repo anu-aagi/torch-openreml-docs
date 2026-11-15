@@ -9,7 +9,7 @@
         <title>torch_openreml.MixedModelREML - torch-openreml 0.4.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -261,13 +261,17 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.blue.html">torch_openreml.blue</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.blup.html">torch_openreml.blup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.marginal_predict.html">torch_openreml.marginal_predict</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.marginal_residual.html">torch_openreml.marginal_residual</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.predict.html">torch_openreml.predict</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.residual.html">torch_openreml.residual</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.loglik.html">torch_openreml.loglik</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.blue.html">torch_openreml.post.blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.cov_blue.html">torch_openreml.post.cov_blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.var_blue.html">torch_openreml.post.var_blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.blup.html">torch_openreml.post.blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.cov_blup.html">torch_openreml.post.cov_blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.var_blup.html">torch_openreml.post.var_blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.marginal_predict.html">torch_openreml.post.marginal_predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.marginal_residual.html">torch_openreml.post.marginal_residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.predict.html">torch_openreml.post.predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.residual.html">torch_openreml.post.residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.loglik.html">torch_openreml.post.loglik</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -382,7 +386,7 @@ instance is stored on the model and reused across steps.</p>
 <code class="docutils literal notranslate"><span class="pre">[free_params_Z,</span> <span class="pre">free_params_G,</span> <span class="pre">free_params_R]</span></code>.  A block with no free
 parameters occupies a zero-length slice.  The fitted model keeps the
 optimisation trace in <code class="xref py py-attr docutils literal notranslate"><span class="pre">history</span></code>; use <a class="reference internal" href="#torch_openreml.MixedModelREML.optimize" title="torch_openreml.MixedModelREML.optimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optimize()</span></code></a> for fitting
-and <a class="reference internal" href="torch_openreml.blue.html#torch_openreml.blue" title="torch_openreml.blue"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blue()</span></code></a>, <a class="reference internal" href="torch_openreml.blup.html#torch_openreml.blup" title="torch_openreml.blup"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blup()</span></code></a>, <a class="reference internal" href="#torch_openreml.MixedModelREML.blup_per_term" title="torch_openreml.MixedModelREML.blup_per_term"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blup_per_term()</span></code></a>, <a class="reference internal" href="#torch_openreml.MixedModelREML.build_params" title="torch_openreml.MixedModelREML.build_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build_params()</span></code></a>, <a class="reference internal" href="torch_openreml.marginal_predict.html#torch_openreml.marginal_predict" title="torch_openreml.marginal_predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">marginal_predict()</span></code></a>, <a class="reference internal" href="torch_openreml.marginal_residual.html#torch_openreml.marginal_residual" title="torch_openreml.marginal_residual"><code class="xref py py-meth docutils literal notranslate"><span class="pre">marginal_residual()</span></code></a>, <a class="reference internal" href="torch_openreml.predict.html#torch_openreml.predict" title="torch_openreml.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code></a>, <a class="reference internal" href="torch_openreml.residual.html#torch_openreml.residual" title="torch_openreml.residual"><code class="xref py py-meth docutils literal notranslate"><span class="pre">residual()</span></code></a> and <a class="reference internal" href="torch_openreml.loglik.html#torch_openreml.loglik" title="torch_openreml.loglik"><code class="xref py py-meth docutils literal notranslate"><span class="pre">loglik()</span></code></a>
+and <a class="reference internal" href="#torch_openreml.MixedModelREML.blue" title="torch_openreml.MixedModelREML.blue"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blue()</span></code></a>, <a class="reference internal" href="#torch_openreml.MixedModelREML.blup" title="torch_openreml.MixedModelREML.blup"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blup()</span></code></a>, <a class="reference internal" href="#torch_openreml.MixedModelREML.blup_per_term" title="torch_openreml.MixedModelREML.blup_per_term"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blup_per_term()</span></code></a>, <a class="reference internal" href="#torch_openreml.MixedModelREML.build_params" title="torch_openreml.MixedModelREML.build_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build_params()</span></code></a>, <a class="reference internal" href="#torch_openreml.MixedModelREML.marginal_predict" title="torch_openreml.MixedModelREML.marginal_predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">marginal_predict()</span></code></a>, <a class="reference internal" href="#torch_openreml.MixedModelREML.marginal_residual" title="torch_openreml.MixedModelREML.marginal_residual"><code class="xref py py-meth docutils literal notranslate"><span class="pre">marginal_residual()</span></code></a>, <a class="reference internal" href="#torch_openreml.MixedModelREML.predict" title="torch_openreml.MixedModelREML.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code></a>, <a class="reference internal" href="#torch_openreml.MixedModelREML.residual" title="torch_openreml.MixedModelREML.residual"><code class="xref py py-meth docutils literal notranslate"><span class="pre">residual()</span></code></a> and <a class="reference internal" href="#torch_openreml.MixedModelREML.loglik" title="torch_openreml.MixedModelREML.loglik"><code class="xref py py-meth docutils literal notranslate"><span class="pre">loglik()</span></code></a>
 for post-fitting quantities.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -449,14 +453,16 @@ be named <code class="docutils literal notranslate"><span class="pre">R</span></
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1] ∥∇∥:      34.4222, ∥Δ∥: 4.3130, η: 1.00, ∥Δᶜ∥: 4.3130, accepted: True , log 𝓛: -67.9928
-[  2] ∥∇∥:       4.4038, ∥Δ∥: 0.0238, η: 1.00, ∥Δᶜ∥: 0.0238, accepted: True , log 𝓛: -67.9413
-[  3] ∥∇∥:       0.1068, ∥Δ∥: 0.0005, η: 1.00, ∥Δᶜ∥: 0.0005, accepted: True , log 𝓛: -67.9412
-[  4] ∥∇∥:       0.0056, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, accepted: True , log 𝓛: -67.9413
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1] ∥∇∥:      11.8183, ∥Δ∥: 1.5280, η: 1.00, ∥Δᶜ∥: 1.5280, accepted: True , log 𝓛: -62.1852
+[  2] ∥∇∥:       4.2522, ∥Δ∥: 0.3608, η: 1.00, ∥Δᶜ∥: 0.3608, accepted: True , log 𝓛: -62.0532
+[  3] ∥∇∥:       0.5174, ∥Δ∥: 0.0282, η: 1.00, ∥Δᶜ∥: 0.0282, accepted: True , log 𝓛: -62.0511
+[  4] ∥∇∥:       0.0080, ∥Δ∥: 0.0024, η: 1.00, ∥Δᶜ∥: 0.0024, accepted: True , log 𝓛: -62.0511
+[  5] ∥∇∥:       0.0008, ∥Δ∥: 0.0002, η: 1.00, ∥Δᶜ∥: 0.0002, accepted: True , log 𝓛: -62.0511
+[  6] ∥∇∥:       0.0001, ∥Δ∥: 0.0000, η: 0.01, ∥Δᶜ∥: 0.0000, accepted: True , log 𝓛: -62.0511
 
 [∇: score, Δ: 𝐉⁻¹∇, η: step length, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 4, total time: 0.01s
+✓ Converged at iteration 6, total time: 0.01s
 
 </pre></div>
 </div>
@@ -689,11 +695,9 @@ A <code class="docutils literal notranslate"><span class="pre">ValueError</span>
 <dt class="sig sig-object py" id="torch_openreml.MixedModelREML.cov_blue">
 <span class="sig-name descname"><span class="pre">cov_blue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/mixed_model_reml.html#MixedModelREML.cov_blue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MixedModelREML.cov_blue" title="Link to this definition">¶</a></dt>
 <dd><p>Covariance matrix of the fixed-effect BLUE.</p>
-<p>The BLUE is :math:<a href="#id1"><span class="problematic" id="id2">`</span></a>hat{boldsymbol{beta}}
-= (symbf{X}^{top}symbf{V}^{-1}symbf{X})^{-1}</p>
-<blockquote>
-<div><p>symbf{X}^{top}symbf{V}^{-1}symbf{y}`, so its covariance is</p>
-</div></blockquote>
+<p>The BLUE is
+<span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}} = (\symbf{X}^{\top}\symbf{V}^{-1}\symbf{X})^{-1} \symbf{X}^{\top}\symbf{V}^{-1}\symbf{y}\)</span>,
+so its covariance is</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
 \[\operatorname{Var}(\hat{\boldsymbol{\beta}})
@@ -985,20 +989,17 @@ exists.</p></li>
 <dt class="sig sig-object py" id="torch_openreml.MixedModelREML.cov_blup">
 <span class="sig-name descname"><span class="pre">cov_blup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/mixed_model_reml.html#MixedModelREML.cov_blup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MixedModelREML.cov_blup" title="Link to this definition">¶</a></dt>
 <dd><p>Covariance matrix of the BLUPs.</p>
-<p>The BLUP is <span class="math notranslate nohighlight">\(\hat{\symbf{b}}
-= \symbf{G}\symbf{Z}^{\top}\symbf{P}\symbf{y}\)</span>, so its covariance is</p>
+<p>The BLUP is
+<span class="math notranslate nohighlight">\(\hat{\symbf{b}} = \symbf{G}\symbf{Z}^{\top}\symbf{P}\symbf{y}\)</span>,
+so its covariance is</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
 \[\operatorname{Var}(\hat{\symbf{b}})
 = \symbf{G}\symbf{Z}^{\top}\symbf{P}\symbf{Z}\symbf{G},\]</div>
 </div>
-<p>with :math:<a href="#id3"><span class="problematic" id="id4">`</span></a>symbf{P} = symbf{V}^{-1}
-- symbf{V}^{-1}symbf{X}</p>
-<blockquote>
-<div><p>(symbf{X}^{top}symbf{V}^{-1}symbf{X})^{-1}
-symbf{X}^{top}symbf{V}^{-1}`.</p>
-</div></blockquote>
-<p>This is equal to <span class="math notranslate nohighlight">\(\symbf{G} - \symbf{C}_{22}\)</span>, but it only
+<p>with
+<span class="math notranslate nohighlight">\(\symbf{P} = \symbf{V}^{-1} - \symbf{V}^{-1}\symbf{X}(\symbf{X}^{\top}\symbf{V}^{-1}\symbf{X})^{-1}\symbf{X}^{\top}\symbf{V}^{-1}\)</span>.
+This is equal to <span class="math notranslate nohighlight">\(\symbf{G} - \symbf{C}_{22}\)</span>, but it only
 requires <span class="math notranslate nohighlight">\(\symbf{V}\)</span> to be invertible, not <span class="math notranslate nohighlight">\(\symbf{G}\)</span>.
 The covariance does not depend on the response <span class="math notranslate nohighlight">\(\symbf{y}\)</span>,
 only on the design and the covariance parameters.</p>
@@ -1320,7 +1321,7 @@ of shape <code class="docutils literal notranslate"><span class="pre">(q_i,)</sp
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/mixed_model_reml.html#MixedModelREML.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MixedModelREML.predict" title="Link to this definition">¶</a></dt>
 <dd><p>Conditional fitted values including random effects.</p>
 <p>For a model with no random-effect terms this reduces to
-<a class="reference internal" href="torch_openreml.marginal_predict.html#torch_openreml.marginal_predict" title="torch_openreml.marginal_predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">marginal_predict()</span></code></a>.</p>
+<a class="reference internal" href="#torch_openreml.MixedModelREML.marginal_predict" title="torch_openreml.MixedModelREML.marginal_predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">marginal_predict()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1380,7 +1381,7 @@ and each <code class="docutils literal notranslate"><span class="pre">z</span></
 here. A single new observation is just a one-row batch. For a
 <code class="docutils literal notranslate"><span class="pre">DummyMatrix</span></code> block, <code class="docutils literal notranslate"><span class="pre">DummyMatrix.transform</span></code> does that encoding
 onto the training columns. The random-effect contribution uses the
-BLUPs computed from the stored training data by <a class="reference internal" href="torch_openreml.blup.html#torch_openreml.blup" title="torch_openreml.blup"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blup()</span></code></a>.</p>
+BLUPs computed from the stored training data by <a class="reference internal" href="#torch_openreml.MixedModelREML.blup" title="torch_openreml.MixedModelREML.blup"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blup()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1450,7 +1451,7 @@ parameters are used.</p></li>
 <span class="sig-name descname"><span class="pre">residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/mixed_model_reml.html#MixedModelREML.residual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.MixedModelREML.residual" title="Link to this definition">¶</a></dt>
 <dd><p>Conditional residuals after removing fixed and random effects.</p>
 <p>For a model with no random-effect terms this reduces to
-<a class="reference internal" href="torch_openreml.marginal_residual.html#torch_openreml.marginal_residual" title="torch_openreml.marginal_residual"><code class="xref py py-meth docutils literal notranslate"><span class="pre">marginal_residual()</span></code></a>.</p>
+<a class="reference internal" href="#torch_openreml.MixedModelREML.marginal_residual" title="torch_openreml.MixedModelREML.marginal_residual"><code class="xref py py-meth docutils literal notranslate"><span class="pre">marginal_residual()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1837,8 +1838,8 @@ recorded with <code class="docutils literal notranslate"><span class="pre">False
 iteration, the method that produced the AI step, either
 <code class="docutils literal notranslate"><span class="pre">&quot;cform&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;marginal&quot;</span></code>.
 The response <code class="docutils literal notranslate"><span class="pre">y</span></code> and design <code class="docutils literal notranslate"><span class="pre">x</span></code> are stored on the instance and
-are reused by the post-estimation methods (<a class="reference internal" href="torch_openreml.blue.html#torch_openreml.blue" title="torch_openreml.blue"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blue()</span></code></a>,
-<a class="reference internal" href="torch_openreml.blup.html#torch_openreml.blup" title="torch_openreml.blup"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blup()</span></code></a>, <a class="reference internal" href="torch_openreml.predict.html#torch_openreml.predict" title="torch_openreml.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code></a>, <a class="reference internal" href="torch_openreml.residual.html#torch_openreml.residual" title="torch_openreml.residual"><code class="xref py py-meth docutils literal notranslate"><span class="pre">residual()</span></code></a>, <a class="reference internal" href="torch_openreml.loglik.html#torch_openreml.loglik" title="torch_openreml.loglik"><code class="xref py py-meth docutils literal notranslate"><span class="pre">loglik()</span></code></a>,
+are reused by the post-estimation methods (<a class="reference internal" href="#torch_openreml.MixedModelREML.blue" title="torch_openreml.MixedModelREML.blue"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blue()</span></code></a>,
+<a class="reference internal" href="#torch_openreml.MixedModelREML.blup" title="torch_openreml.MixedModelREML.blup"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blup()</span></code></a>, <a class="reference internal" href="#torch_openreml.MixedModelREML.predict" title="torch_openreml.MixedModelREML.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code></a>, <a class="reference internal" href="#torch_openreml.MixedModelREML.residual" title="torch_openreml.MixedModelREML.residual"><code class="xref py py-meth docutils literal notranslate"><span class="pre">residual()</span></code></a>, <a class="reference internal" href="#torch_openreml.MixedModelREML.loglik" title="torch_openreml.MixedModelREML.loglik"><code class="xref py py-meth docutils literal notranslate"><span class="pre">loglik()</span></code></a>,
 and the covariance methods) when called without them.</p>
 </dd></dl>
 

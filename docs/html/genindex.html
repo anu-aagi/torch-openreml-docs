@@ -7,7 +7,7 @@
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 --><title>Index - torch-openreml 0.4.1-alpha documentation</title>
 <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css?v=572af1d6" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=df86a2a8" />
@@ -259,13 +259,17 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.blue.html">torch_openreml.blue</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.blup.html">torch_openreml.blup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.marginal_predict.html">torch_openreml.marginal_predict</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.marginal_residual.html">torch_openreml.marginal_residual</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.predict.html">torch_openreml.predict</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.residual.html">torch_openreml.residual</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.loglik.html">torch_openreml.loglik</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.post.blue.html">torch_openreml.post.blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.post.cov_blue.html">torch_openreml.post.cov_blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.post.var_blue.html">torch_openreml.post.var_blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.post.blup.html">torch_openreml.post.blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.post.cov_blup.html">torch_openreml.post.cov_blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.post.var_blup.html">torch_openreml.post.var_blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.post.marginal_predict.html">torch_openreml.post.marginal_predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.post.marginal_residual.html">torch_openreml.post.marginal_residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.post.predict.html">torch_openreml.post.predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.post.residual.html">torch_openreml.post.residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.post.loglik.html">torch_openreml.post.loglik</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -442,13 +446,13 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="generated/torch_openreml.covariance.BlockDiagonal.html#torch_openreml.covariance.BlockDiagonal">BlockDiagonal (class in torch_openreml.covariance)</a>
 </li>
-        <li><a href="generated/torch_openreml.blue.html#torch_openreml.blue">blue() (in module torch_openreml)</a>
+        <li><a href="generated/torch_openreml.post.blue.html#torch_openreml.post.blue">blue() (in module torch_openreml.post)</a>
 
         <ul>
           <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.blue">(torch_openreml.MixedModelREML method)</a>
 </li>
         </ul></li>
-        <li><a href="generated/torch_openreml.blup.html#torch_openreml.blup">blup() (in module torch_openreml)</a>
+        <li><a href="generated/torch_openreml.post.blup.html#torch_openreml.post.blup">blup() (in module torch_openreml.post)</a>
 
         <ul>
           <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.blup">(torch_openreml.MixedModelREML method)</a>
@@ -514,10 +518,18 @@
 </li>
         <li><a href="generated/torch_openreml.covariance.CompoundSymmetricMatrix.html#torch_openreml.covariance.CompoundSymmetricMatrix">CompoundSymmetricMatrix (class in torch_openreml.covariance)</a>
 </li>
-        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.cov_blue">cov_blue() (torch_openreml.MixedModelREML method)</a>
+        <li><a href="generated/torch_openreml.post.cov_blue.html#torch_openreml.post.cov_blue">cov_blue() (in module torch_openreml.post)</a>
+
+        <ul>
+          <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.cov_blue">(torch_openreml.MixedModelREML method)</a>
 </li>
-        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.cov_blup">cov_blup() (torch_openreml.MixedModelREML method)</a>
+        </ul></li>
+        <li><a href="generated/torch_openreml.post.cov_blup.html#torch_openreml.post.cov_blup">cov_blup() (in module torch_openreml.post)</a>
+
+        <ul>
+          <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.cov_blup">(torch_openreml.MixedModelREML method)</a>
 </li>
+        </ul></li>
         <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.cov_blup_per_term">cov_blup_per_term() (torch_openreml.MixedModelREML method)</a>
 </li>
         <li><a href="generated/torch_openreml.covariance.CovariancePropagation.html#torch_openreml.covariance.CovariancePropagation">CovariancePropagation (class in torch_openreml.covariance)</a>
@@ -758,7 +770,7 @@
   <h2>L</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="generated/torch_openreml.loglik.html#torch_openreml.loglik">loglik() (in module torch_openreml)</a>
+        <li><a href="generated/torch_openreml.post.loglik.html#torch_openreml.post.loglik">loglik() (in module torch_openreml.post)</a>
 
         <ul>
           <li><a href="generated/torch_openreml.methods.CForm.html#torch_openreml.methods.CForm.loglik">(torch_openreml.methods.CForm method)</a>
@@ -868,13 +880,13 @@
         </ul></li>
         <li><a href="generated/torch_openreml.methods.Marginal.html#torch_openreml.methods.Marginal">Marginal (class in torch_openreml.methods)</a>
 </li>
-        <li><a href="generated/torch_openreml.marginal_predict.html#torch_openreml.marginal_predict">marginal_predict() (in module torch_openreml)</a>
+        <li><a href="generated/torch_openreml.post.marginal_predict.html#torch_openreml.post.marginal_predict">marginal_predict() (in module torch_openreml.post)</a>
 
         <ul>
           <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.marginal_predict">(torch_openreml.MixedModelREML method)</a>
 </li>
         </ul></li>
-        <li><a href="generated/torch_openreml.marginal_residual.html#torch_openreml.marginal_residual">marginal_residual() (in module torch_openreml)</a>
+        <li><a href="generated/torch_openreml.post.marginal_residual.html#torch_openreml.post.marginal_residual">marginal_residual() (in module torch_openreml.post)</a>
 
         <ul>
           <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.marginal_residual">(torch_openreml.MixedModelREML method)</a>
@@ -954,7 +966,7 @@
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="generated/torch_openreml.predict.html#torch_openreml.predict">predict() (in module torch_openreml)</a>
+        <li><a href="generated/torch_openreml.post.predict.html#torch_openreml.post.predict">predict() (in module torch_openreml.post)</a>
 
         <ul>
           <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.predict">(torch_openreml.MixedModelREML method)</a>
@@ -1004,7 +1016,7 @@
           <li><a href="generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.reset_intermediates">(torch_openreml.covariance.Operator method)</a>
 </li>
         </ul></li>
-        <li><a href="generated/torch_openreml.residual.html#torch_openreml.residual">residual() (in module torch_openreml)</a>
+        <li><a href="generated/torch_openreml.post.residual.html#torch_openreml.post.residual">residual() (in module torch_openreml.post)</a>
 
         <ul>
           <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.residual">(torch_openreml.MixedModelREML method)</a>
@@ -1106,12 +1118,20 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.V">V (torch_openreml.MixedModelREML property)</a>
 </li>
-        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.var_blue">var_blue() (torch_openreml.MixedModelREML method)</a>
+        <li><a href="generated/torch_openreml.post.var_blue.html#torch_openreml.post.var_blue">var_blue() (in module torch_openreml.post)</a>
+
+        <ul>
+          <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.var_blue">(torch_openreml.MixedModelREML method)</a>
 </li>
+        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.var_blup">var_blup() (torch_openreml.MixedModelREML method)</a>
+        <li><a href="generated/torch_openreml.post.var_blup.html#torch_openreml.post.var_blup">var_blup() (in module torch_openreml.post)</a>
+
+        <ul>
+          <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.var_blup">(torch_openreml.MixedModelREML method)</a>
 </li>
+        </ul></li>
         <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.var_blup_per_term">var_blup_per_term() (torch_openreml.MixedModelREML method)</a>
 </li>
     </ul></td>

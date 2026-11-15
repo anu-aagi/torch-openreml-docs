@@ -3,13 +3,13 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="torch_openreml.residual" href="torch_openreml.residual.html"><link rel="prev" title="torch_openreml.marginal_residual" href="torch_openreml.marginal_residual.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="torch_openreml.post.var_blue" href="torch_openreml.post.var_blue.html"><link rel="prev" title="torch_openreml.post.blue" href="torch_openreml.post.blue.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>torch_openreml.predict - torch-openreml 0.4.1-alpha documentation</title>
+        <title>torch_openreml.post.cov_blue - torch-openreml 0.4.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -261,13 +261,17 @@
 </ul>
 </li>
 <li class="toctree-l2 current has-children"><a class="reference internal" href="../api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.blue.html">torch_openreml.blue</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.blup.html">torch_openreml.blup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.marginal_predict.html">torch_openreml.marginal_predict</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.marginal_residual.html">torch_openreml.marginal_residual</a></li>
-<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">torch_openreml.predict</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.residual.html">torch_openreml.residual</a></li>
-<li class="toctree-l3"><a class="reference internal" href="torch_openreml.loglik.html">torch_openreml.loglik</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.blue.html">torch_openreml.post.blue</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">torch_openreml.post.cov_blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.var_blue.html">torch_openreml.post.var_blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.blup.html">torch_openreml.post.blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.cov_blup.html">torch_openreml.post.cov_blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.var_blup.html">torch_openreml.post.var_blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.marginal_predict.html">torch_openreml.post.marginal_predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.marginal_residual.html">torch_openreml.post.marginal_residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.predict.html">torch_openreml.post.predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.residual.html">torch_openreml.post.residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.post.loglik.html">torch_openreml.post.loglik</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -303,12 +307,12 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="https://github.com/anu-aagi/torch-openreml/blob/main/docs/source/generated/torch_openreml.predict.rst?plain=true" title="View this page">
+  <a class="muted-link" href="https://github.com/anu-aagi/torch-openreml/blob/main/docs/source/generated/torch_openreml.post.cov_blue.rst?plain=true" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
 </div><div class="edit-this-page">
-  <a class="muted-link" href="https://github.com/anu-aagi/torch-openreml/edit/main/docs/source/generated/torch_openreml.predict.rst" rel="edit" title="Edit this page">
+  <a class="muted-link" href="https://github.com/anu-aagi/torch-openreml/edit/main/docs/source/generated/torch_openreml.post.cov_blue.rst" rel="edit" title="Edit this page">
     <svg><use href="#svg-pencil"></use></svg>
     <span class="visually-hidden">Edit this page</span>
   </a>
@@ -325,33 +329,32 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="torch-openreml-predict">
-<h1>torch_openreml.predict<a class="headerlink" href="#torch-openreml-predict" title="Link to this heading">¶</a></h1>
+          <section id="torch-openreml-post-cov-blue">
+<h1>torch_openreml.post.cov_blue<a class="headerlink" href="#torch-openreml-post-cov-blue" title="Link to this heading">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="torch_openreml.predict">
-<span class="sig-prename descclassname"><span class="pre">torch_openreml.</span></span><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/post.html#predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.predict" title="Link to this definition">¶</a></dt>
-<dd><p>Compute conditional fitted values including random effects.</p>
+<dt class="sig sig-object py" id="torch_openreml.post.cov_blue">
+<span class="sig-prename descclassname"><span class="pre">torch_openreml.post.</span></span><span class="sig-name descname"><span class="pre">cov_blue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/post.html#cov_blue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.post.cov_blue" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the covariance matrix of the BLUE of the fixed effects.</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
-\[\hat{\symbf{y}} = \symbf{X}\hat{\boldsymbol{\beta}} +
-\symbf{Z}\hat{\symbf{b}}\]</div>
+\[\operatorname{Var}(\hat{\boldsymbol{\beta}})
+= \left(\symbf{X}^\top\symbf{V}^{-1}\symbf{X}\right)^{-1},\]</div>
 </div>
+<p>which is the <code class="docutils literal notranslate"><span class="pre">C11</span></code> block of the inverse C-form matrix (see
+<a class="reference internal" href="torch_openreml.methods.CForm.html#torch_openreml.methods.CForm.c_inverse_blocks" title="torch_openreml.methods.CForm.c_inverse_blocks"><code class="xref py py-meth docutils literal notranslate"><span class="pre">c_inverse_blocks()</span></code></a>). The covariance
+does not depend on the response <span class="math notranslate nohighlight">\(\symbf{y}\)</span>, only on the design
+and the covariance parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>y</strong> (<em>torch.Tensor</em>) – Response vector of shape <code class="docutils literal notranslate"><span class="pre">(n,)</span></code>.</p></li>
 <li><p><strong>x</strong> (<em>torch.Tensor</em>) – Fixed-effect design matrix of shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">p)</span></code>.</p></li>
-<li><p><strong>z</strong> (<em>torch.Tensor</em>) – Random-effect design matrix of shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">q)</span></code>.</p></li>
-<li><p><strong>g</strong> (<em>torch.Tensor</em>) – Random-effect covariance matrix of shape <code class="docutils literal notranslate"><span class="pre">(q,</span> <span class="pre">q)</span></code>,
-e.g. <span class="math notranslate nohighlight">\(\symbf{G}(\boldsymbol{\theta})\)</span> evaluated at fitted
-covariance parameters.</p></li>
 <li><p><strong>v</strong> (<em>torch.Tensor</em>) – Marginal covariance matrix of shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">n)</span></code>,
 e.g. <span class="math notranslate nohighlight">\(\symbf{V}(\boldsymbol{\theta})\)</span> evaluated at fitted
 covariance parameters.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Conditional fitted values of shape <code class="docutils literal notranslate"><span class="pre">(n,)</span></code>.</p>
+<dd class="field-even"><p>BLUE covariance matrix of shape <code class="docutils literal notranslate"><span class="pre">(p,</span> <span class="pre">p)</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch.Tensor</p>
@@ -366,23 +369,23 @@ covariance parameters.</p></li>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="torch_openreml.residual.html">
+          <a class="next-page" href="torch_openreml.post.var_blue.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">torch_openreml.residual</div>
+                <div class="title">torch_openreml.post.var_blue</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="torch_openreml.marginal_residual.html">
+          <a class="prev-page" href="torch_openreml.post.blue.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">torch_openreml.marginal_residual</div>
+                <div class="title">torch_openreml.post.blue</div>
                 
               </div>
             </a>
@@ -423,8 +426,8 @@ covariance parameters.</p></li>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">torch_openreml.predict</a><ul>
-<li><a class="reference internal" href="#torch_openreml.predict"><code class="docutils literal notranslate"><span class="pre">predict()</span></code></a></li>
+<li><a class="reference internal" href="#">torch_openreml.post.cov_blue</a><ul>
+<li><a class="reference internal" href="#torch_openreml.post.cov_blue"><code class="docutils literal notranslate"><span class="pre">cov_blue()</span></code></a></li>
 </ul>
 </li>
 </ul>

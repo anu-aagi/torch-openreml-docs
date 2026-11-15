@@ -8,7 +8,7 @@
         <title>torch_openreml.post - torch-openreml 0.4.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css?v=572af1d6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df86a2a8" />
@@ -260,13 +260,17 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.blue.html">torch_openreml.blue</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.blup.html">torch_openreml.blup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.marginal_predict.html">torch_openreml.marginal_predict</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.marginal_residual.html">torch_openreml.marginal_residual</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.predict.html">torch_openreml.predict</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.residual.html">torch_openreml.residual</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.loglik.html">torch_openreml.loglik</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.blue.html">torch_openreml.post.blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.cov_blue.html">torch_openreml.post.cov_blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.var_blue.html">torch_openreml.post.var_blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.blup.html">torch_openreml.post.blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.cov_blup.html">torch_openreml.post.cov_blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.var_blup.html">torch_openreml.post.var_blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.marginal_predict.html">torch_openreml.post.marginal_predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.marginal_residual.html">torch_openreml.post.marginal_residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.predict.html">torch_openreml.post.predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.residual.html">torch_openreml.post.residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.loglik.html">torch_openreml.post.loglik</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -362,7 +366,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_device</span><span class="p">,</span> <span class="n">get_dtype</span>
 
 <div class="viewcode-block" id="blue">
-<a class="viewcode-back" href="../../generated/torch_openreml.blue.html#torch_openreml.blue">[docs]</a>
+<a class="viewcode-back" href="../../generated/torch_openreml.post.blue.html#torch_openreml.post.blue">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">blue</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the best linear unbiased estimator (BLUE) of the fixed effects.</span>
@@ -411,6 +415,8 @@
     <span class="k">return</span> <span class="n">matrix</span><span class="p">[</span><span class="sa">r</span><span class="s2">&quot;\hat{\beta}&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="cov_blue">
+<a class="viewcode-back" href="../../generated/torch_openreml.post.cov_blue.html#torch_openreml.post.cov_blue">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">cov_blue</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the covariance matrix of the BLUE of the fixed effects.</span>
@@ -449,8 +455,11 @@
     <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Var(beta)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cholesky_inverse</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;L_{X^T V^{-1} X}&quot;</span><span class="p">])</span>
     <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Var(beta)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Var(beta)&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Var(beta)&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Var(beta)&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Var(beta)&quot;</span><span class="p">]</span></div>
 
+
+<div class="viewcode-block" id="var_blue">
+<a class="viewcode-back" href="../../generated/torch_openreml.post.var_blue.html#torch_openreml.post.var_blue">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">var_blue</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the variances of the BLUE of the fixed effects.</span>
@@ -474,10 +483,11 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        torch.Tensor: BLUE variances of shape ``(p,)``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">cov_blue</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">cov_blue</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span></div>
+
 
 <div class="viewcode-block" id="marginal_predict">
-<a class="viewcode-back" href="../../generated/torch_openreml.marginal_predict.html#torch_openreml.marginal_predict">[docs]</a>
+<a class="viewcode-back" href="../../generated/torch_openreml.post.marginal_predict.html#torch_openreml.post.marginal_predict">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">marginal_predict</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute marginal fitted values from fixed effects only.</span>
@@ -502,7 +512,7 @@
 
 
 <div class="viewcode-block" id="marginal_residual">
-<a class="viewcode-back" href="../../generated/torch_openreml.marginal_residual.html#torch_openreml.marginal_residual">[docs]</a>
+<a class="viewcode-back" href="../../generated/torch_openreml.post.marginal_residual.html#torch_openreml.post.marginal_residual">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">marginal_residual</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute marginal residuals from fixed effects only.</span>
@@ -527,7 +537,7 @@
 
 
 <div class="viewcode-block" id="blup">
-<a class="viewcode-back" href="../../generated/torch_openreml.blup.html#torch_openreml.blup">[docs]</a>
+<a class="viewcode-back" href="../../generated/torch_openreml.post.blup.html#torch_openreml.post.blup">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">blup</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the best linear unbiased predictor (BLUP) of the random effects.</span>
@@ -573,6 +583,8 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;G&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;V^{-1} e&quot;</span><span class="p">]))</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="cov_blup">
+<a class="viewcode-back" href="../../generated/torch_openreml.post.cov_blup.html#torch_openreml.post.cov_blup">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">cov_blup</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the covariance matrix of the BLUPs.</span>
@@ -635,8 +647,11 @@
 
     <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Var(b)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;G&quot;</span><span class="p">]</span> <span class="o">@</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Z^T P Z G&quot;</span><span class="p">]</span>
     <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Var(b)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Var(b)&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Var(b)&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Var(b)&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">matrix</span><span class="p">[</span><span class="s2">&quot;Var(b)&quot;</span><span class="p">]</span></div>
 
+
+<div class="viewcode-block" id="var_blup">
+<a class="viewcode-back" href="../../generated/torch_openreml.post.var_blup.html#torch_openreml.post.var_blup">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">var_blup</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the variances of the BLUPs.</span>
@@ -663,10 +678,11 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        torch.Tensor: BLUP variances of shape ``(q,)``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">cov_blup</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">cov_blup</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span></div>
+
 
 <div class="viewcode-block" id="predict">
-<a class="viewcode-back" href="../../generated/torch_openreml.predict.html#torch_openreml.predict">[docs]</a>
+<a class="viewcode-back" href="../../generated/torch_openreml.post.predict.html#torch_openreml.post.predict">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute conditional fitted values including random effects.</span>
@@ -724,7 +740,7 @@
 
 
 <div class="viewcode-block" id="residual">
-<a class="viewcode-back" href="../../generated/torch_openreml.residual.html#torch_openreml.residual">[docs]</a>
+<a class="viewcode-back" href="../../generated/torch_openreml.post.residual.html#torch_openreml.post.residual">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">residual</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute conditional residuals including random effects.</span>
@@ -753,7 +769,7 @@
 
 
 <div class="viewcode-block" id="loglik">
-<a class="viewcode-back" href="../../generated/torch_openreml.loglik.html#torch_openreml.loglik">[docs]</a>
+<a class="viewcode-back" href="../../generated/torch_openreml.post.loglik.html#torch_openreml.post.loglik">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">loglik</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Evaluate the REML log-likelihood.</span>
@@ -765,11 +781,12 @@
 <span class="sd">            \symbf{y}^\top \symbf{P} \symbf{y}</span>
 <span class="sd">        \right)</span>
 
-<span class="sd">    where :math:`\symbf{P} = \symbf{V}^{-1} - \symbf{V}^{-1}\symbf{X}</span>
-<span class="sd">    (\symbf{X}^\top\symbf{V}^{-1}\symbf{X})^{-1}\symbf{X}^\top\symbf{V}^{-1}`</span>
-<span class="sd">    is the projection matrix. The quadratic :math:`\symbf{y}^\top \symbf{P}</span>
-<span class="sd">    \symbf{y}` is evaluated as :math:`\hat{\symbf{e}}^\top \symbf{V}^{-1}</span>
-<span class="sd">    \hat{\symbf{e}}`, with :math:`\hat{\symbf{e}}` the marginal residuals.</span>
+<span class="sd">    where</span>
+<span class="sd">    :math:`\symbf{P} = \symbf{V}^{-1} - \symbf{V}^{-1}\symbf{X}(\symbf{X}^\top\symbf{V}^{-1}\symbf{X})^{-1}\symbf{X}^\top\symbf{V}^{-1}`</span>
+<span class="sd">    is the projection matrix. The quadratic</span>
+<span class="sd">    :math:`\symbf{y}^\top \symbf{P} \symbf{y}` is evaluated as</span>
+<span class="sd">    :math:`\hat{\symbf{e}}^\top \symbf{V}^{-1} \hat{\symbf{e}}`, with</span>
+<span class="sd">    :math:`\hat{\symbf{e}}` the marginal residuals.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        y (torch.Tensor): Response vector of shape ``(n,)``.</span>

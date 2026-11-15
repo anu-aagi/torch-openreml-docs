@@ -3,13 +3,13 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="torch_openreml.blue" href="../generated/torch_openreml.blue.html"><link rel="prev" title="torch_openreml.covariance.transform.TransformSigmoid" href="../generated/torch_openreml.covariance.transform.TransformSigmoid.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="torch_openreml.post.blue" href="../generated/torch_openreml.post.blue.html"><link rel="prev" title="torch_openreml.covariance.transform.TransformSigmoid" href="../generated/torch_openreml.covariance.transform.TransformSigmoid.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>Post-hoc estimation - torch-openreml 0.4.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -261,13 +261,17 @@
 </ul>
 </li>
 <li class="toctree-l2 current has-children current-page"><a class="current reference internal" href="#">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.blue.html">torch_openreml.blue</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.blup.html">torch_openreml.blup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.marginal_predict.html">torch_openreml.marginal_predict</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.marginal_residual.html">torch_openreml.marginal_residual</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.predict.html">torch_openreml.predict</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.residual.html">torch_openreml.residual</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.loglik.html">torch_openreml.loglik</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.post.blue.html">torch_openreml.post.blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.post.cov_blue.html">torch_openreml.post.cov_blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.post.var_blue.html">torch_openreml.post.var_blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.post.blup.html">torch_openreml.post.blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.post.cov_blup.html">torch_openreml.post.cov_blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.post.var_blup.html">torch_openreml.post.var_blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.post.marginal_predict.html">torch_openreml.post.marginal_predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.post.marginal_residual.html">torch_openreml.post.marginal_residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.post.predict.html">torch_openreml.post.predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.post.residual.html">torch_openreml.post.residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.post.loglik.html">torch_openreml.post.loglik</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -338,25 +342,37 @@ required.</p>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torch_openreml.blue.html#torch_openreml.blue" title="torch_openreml.blue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.blue</span></code></a>(y, x, v)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torch_openreml.post.blue.html#torch_openreml.post.blue" title="torch_openreml.post.blue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.post.blue</span></code></a>(y, x, v)</p></td>
 <td><p>Compute the best linear unbiased estimator (BLUE) of the fixed effects.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../generated/torch_openreml.blup.html#torch_openreml.blup" title="torch_openreml.blup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.blup</span></code></a>(y, x, z, g, v)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/torch_openreml.post.cov_blue.html#torch_openreml.post.cov_blue" title="torch_openreml.post.cov_blue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.post.cov_blue</span></code></a>(x, v)</p></td>
+<td><p>Compute the covariance matrix of the BLUE of the fixed effects.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torch_openreml.post.var_blue.html#torch_openreml.post.var_blue" title="torch_openreml.post.var_blue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.post.var_blue</span></code></a>(x, v)</p></td>
+<td><p>Compute the variances of the BLUE of the fixed effects.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/torch_openreml.post.blup.html#torch_openreml.post.blup" title="torch_openreml.post.blup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.post.blup</span></code></a>(y, x, z, g, v)</p></td>
 <td><p>Compute the best linear unbiased predictor (BLUP) of the random effects.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torch_openreml.marginal_predict.html#torch_openreml.marginal_predict" title="torch_openreml.marginal_predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.marginal_predict</span></code></a>(y, x, v)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torch_openreml.post.cov_blup.html#torch_openreml.post.cov_blup" title="torch_openreml.post.cov_blup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.post.cov_blup</span></code></a>(x, z, g, v)</p></td>
+<td><p>Compute the covariance matrix of the BLUPs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/torch_openreml.post.var_blup.html#torch_openreml.post.var_blup" title="torch_openreml.post.var_blup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.post.var_blup</span></code></a>(x, z, g, v)</p></td>
+<td><p>Compute the variances of the BLUPs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torch_openreml.post.marginal_predict.html#torch_openreml.post.marginal_predict" title="torch_openreml.post.marginal_predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.post.marginal_predict</span></code></a>(y, x, v)</p></td>
 <td><p>Compute marginal fitted values from fixed effects only.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../generated/torch_openreml.marginal_residual.html#torch_openreml.marginal_residual" title="torch_openreml.marginal_residual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.marginal_residual</span></code></a>(y, x, v)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/torch_openreml.post.marginal_residual.html#torch_openreml.post.marginal_residual" title="torch_openreml.post.marginal_residual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.post.marginal_residual</span></code></a>(y, x, v)</p></td>
 <td><p>Compute marginal residuals from fixed effects only.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torch_openreml.predict.html#torch_openreml.predict" title="torch_openreml.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.predict</span></code></a>(y, x, z, g, v)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torch_openreml.post.predict.html#torch_openreml.post.predict" title="torch_openreml.post.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.post.predict</span></code></a>(y, x, z, g, v)</p></td>
 <td><p>Compute conditional fitted values including random effects.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../generated/torch_openreml.residual.html#torch_openreml.residual" title="torch_openreml.residual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.residual</span></code></a>(y, x, z, g, v)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/torch_openreml.post.residual.html#torch_openreml.post.residual" title="torch_openreml.post.residual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.post.residual</span></code></a>(y, x, z, g, v)</p></td>
 <td><p>Compute conditional residuals including random effects.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torch_openreml.loglik.html#torch_openreml.loglik" title="torch_openreml.loglik"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.loglik</span></code></a>(y, x, v)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torch_openreml.post.loglik.html#torch_openreml.post.loglik" title="torch_openreml.post.loglik"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.post.loglik</span></code></a>(y, x, v)</p></td>
 <td><p>Evaluate the REML log-likelihood.</p></td>
 </tr>
 </tbody>
@@ -369,12 +385,12 @@ required.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../generated/torch_openreml.blue.html">
+          <a class="next-page" href="../generated/torch_openreml.post.blue.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">torch_openreml.blue</div>
+                <div class="title">torch_openreml.post.blue</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>

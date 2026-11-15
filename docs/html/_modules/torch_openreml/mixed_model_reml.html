@@ -8,7 +8,7 @@
         <title>torch_openreml.mixed_model_reml - torch-openreml 0.4.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css?v=572af1d6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=df86a2a8" />
@@ -260,13 +260,17 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.blue.html">torch_openreml.blue</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.blup.html">torch_openreml.blup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.marginal_predict.html">torch_openreml.marginal_predict</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.marginal_residual.html">torch_openreml.marginal_residual</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.predict.html">torch_openreml.predict</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.residual.html">torch_openreml.residual</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.loglik.html">torch_openreml.loglik</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.blue.html">torch_openreml.post.blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.cov_blue.html">torch_openreml.post.cov_blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.var_blue.html">torch_openreml.post.var_blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.blup.html">torch_openreml.post.blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.cov_blup.html">torch_openreml.post.cov_blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.var_blup.html">torch_openreml.post.var_blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.marginal_predict.html">torch_openreml.post.marginal_predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.marginal_residual.html">torch_openreml.post.marginal_residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.predict.html">torch_openreml.post.predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.residual.html">torch_openreml.post.residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torch_openreml.post.loglik.html">torch_openreml.post.loglik</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -804,9 +808,9 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">cov_blue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Covariance matrix of the fixed-effect BLUE.</span>
 
-<span class="sd">        The BLUE is :math:`\hat{\boldsymbol{\beta}}</span>
-<span class="sd">        = (\symbf{X}^{\top}\symbf{V}^{-1}\symbf{X})^{-1}</span>
-<span class="sd">          \symbf{X}^{\top}\symbf{V}^{-1}\symbf{y}`, so its covariance is</span>
+<span class="sd">        The BLUE is</span>
+<span class="sd">        :math:`\hat{\boldsymbol{\beta}} = (\symbf{X}^{\top}\symbf{V}^{-1}\symbf{X})^{-1} \symbf{X}^{\top}\symbf{V}^{-1}\symbf{y}`,</span>
+<span class="sd">        so its covariance is</span>
 
 <span class="sd">        .. math::</span>
 
@@ -1065,18 +1069,17 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">cov_blup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">free_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Covariance matrix of the BLUPs.</span>
 
-<span class="sd">        The BLUP is :math:`\hat{\symbf{b}}</span>
-<span class="sd">        = \symbf{G}\symbf{Z}^{\top}\symbf{P}\symbf{y}`, so its covariance is</span>
+<span class="sd">        The BLUP is</span>
+<span class="sd">        :math:`\hat{\symbf{b}} = \symbf{G}\symbf{Z}^{\top}\symbf{P}\symbf{y}`,</span>
+<span class="sd">        so its covariance is</span>
 
 <span class="sd">        .. math::</span>
 
 <span class="sd">            \operatorname{Var}(\hat{\symbf{b}})</span>
 <span class="sd">            = \symbf{G}\symbf{Z}^{\top}\symbf{P}\symbf{Z}\symbf{G},</span>
 
-<span class="sd">        with :math:`\symbf{P} = \symbf{V}^{-1}</span>
-<span class="sd">        - \symbf{V}^{-1}\symbf{X}</span>
-<span class="sd">          (\symbf{X}^{\top}\symbf{V}^{-1}\symbf{X})^{-1}</span>
-<span class="sd">          \symbf{X}^{\top}\symbf{V}^{-1}`.</span>
+<span class="sd">        with</span>
+<span class="sd">        :math:`\symbf{P} = \symbf{V}^{-1} - \symbf{V}^{-1}\symbf{X}(\symbf{X}^{\top}\symbf{V}^{-1}\symbf{X})^{-1}\symbf{X}^{\top}\symbf{V}^{-1}`.</span>
 <span class="sd">        This is equal to :math:`\symbf{G} - \symbf{C}_{22}`, but it only</span>
 <span class="sd">        requires :math:`\symbf{V}` to be invertible, not :math:`\symbf{G}`.</span>
 <span class="sd">        The covariance does not depend on the response :math:`\symbf{y}`,</span>
