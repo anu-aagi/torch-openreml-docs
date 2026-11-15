@@ -20,7 +20,7 @@ from torch_openreml.covariance import Inverse, ScalarMatrix
 
 op = Inverse(a=ScalarMatrix(3))
 free_params = torch.tensor([0.5])
-op.inverse(free_params)
+op.manual_inverse(free_params)
 
 
 # In[3]:

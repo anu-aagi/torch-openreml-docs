@@ -26,7 +26,7 @@ op = BlockDiagonal(
     random=DiagonalMatrix(2)
 )
 free_params = torch.tensor([0.5, 0.0, 1.0])
-op.inverse(free_params)
+op.manual_inverse(free_params)
 
 
 # In[3]:

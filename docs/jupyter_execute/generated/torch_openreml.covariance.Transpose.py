@@ -19,7 +19,7 @@ from torch_openreml.covariance import AR1Matrix, Transpose
 
 op = Transpose(a=AR1Matrix(3))
 free_params = torch.tensor([0.0, 0.5])
-op.inverse(free_params)
+op.manual_inverse(free_params)
 
 
 # In[3]:

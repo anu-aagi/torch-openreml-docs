@@ -32,5 +32,5 @@ from torch_openreml.covariance import EquicorrelationMatrix
 
 mat = EquicorrelationMatrix(3)
 free_params = torch.tensor([0.5])
-mat.inverse(free_params)
+mat.manual_inverse(free_params)
 

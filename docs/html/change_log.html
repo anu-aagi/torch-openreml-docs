@@ -9,7 +9,7 @@
         <title>Changelog - torch-openreml 0.4.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=df86a2a8" />
@@ -195,17 +195,22 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1 has-children"><a class="reference internal" href="vig.html">Vignettes</a><input aria-label="Toggle navigation of Vignettes" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="vig/vig_marginal_reml.html">Introduction to Marginal REML Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vig/vig_mixed_model_reml.html">Introduction to Mixed Model REML Estimation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="r_user.html">For R Users</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tech.html">Technical Documentation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/reml.html">MarginalREML</a><input aria-label="Toggle navigation of MarginalREML" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.MarginalREML.html">torch_openreml.MarginalREML</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/reml.html">Mixed models</a><input aria-label="Toggle navigation of Mixed models" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.MixedModelREML.html">torch_openreml.MixedModelREML</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/covariance.html">Covariance</a><input aria-label="Toggle navigation of Covariance" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/methods.html">REML methods</a><input aria-label="Toggle navigation of REML methods" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.methods.CForm.html">torch_openreml.methods.CForm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.methods.Marginal.html">torch_openreml.methods.Marginal</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/covariance.html">Covariance</a><input aria-label="Toggle navigation of Covariance" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Matrix.html">torch_openreml.covariance.Matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.AR1Matrix.html">torch_openreml.covariance.AR1Matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.CompoundSymmetricMatrix.html">torch_openreml.covariance.CompoundSymmetricMatrix</a></li>
@@ -214,14 +219,16 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.EqualEntryMatrix.html">torch_openreml.covariance.EqualEntryMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.EquicorrelationMatrix.html">torch_openreml.covariance.EquicorrelationMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.IdentityMatrix.html">torch_openreml.covariance.IdentityMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.KnownMatrix.html">torch_openreml.covariance.KnownMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.LowerTriangularMatrix.html">torch_openreml.covariance.LowerTriangularMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.ScalarMatrix.html">torch_openreml.covariance.ScalarMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.UnconstrainedMatrix.html">torch_openreml.covariance.UnconstrainedMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.SimpleMatrix.html">torch_openreml.covariance.SimpleMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.simple_param_specs.html">torch_openreml.covariance.simple_param_specs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.MarginalCovariance.html">torch_openreml.covariance.MarginalCovariance</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/operators.html">Operators</a><input aria-label="Toggle navigation of Operators" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/operators.html">Operators</a><input aria-label="Toggle navigation of Operators" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Operator.html">torch_openreml.covariance.Operator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.BlockDiagonal.html">torch_openreml.covariance.BlockDiagonal</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.HadamardProduct.html">torch_openreml.covariance.HadamardProduct</a></li>
@@ -236,11 +243,11 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Stack.html">torch_openreml.covariance.Stack</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/adapter.html">Adapter</a><input aria-label="Toggle navigation of Adapter" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/adapter.html">Adapter</a><input aria-label="Toggle navigation of Adapter" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Adapter.html">torch_openreml.covariance.Adapter</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/transforms.html">Transforms</a><input aria-label="Toggle navigation of Transforms" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/transforms.html">Transforms</a><input aria-label="Toggle navigation of Transforms" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.transform.Transform.html">torch_openreml.covariance.transform.Transform</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.transform.TransformChain.html">torch_openreml.covariance.transform.TransformChain</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.transform.TransformExp.html">torch_openreml.covariance.transform.TransformExp</a></li>
@@ -253,7 +260,7 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.transform.TransformSigmoid.html">torch_openreml.covariance.transform.TransformSigmoid</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.blue.html">torch_openreml.blue</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.blup.html">torch_openreml.blup</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.marginal_predict.html">torch_openreml.marginal_predict</a></li>
@@ -263,7 +270,7 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.loglik.html">torch_openreml.loglik</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.get_device.html">torch_openreml.utils.get_device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.get_dtype.html">torch_openreml.utils.get_dtype</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
@@ -325,33 +332,21 @@
 <section id="breaking-changes">
 <h3>Breaking changes<a class="headerlink" href="#breaking-changes" title="Link to this heading">¶</a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Operator.tree</span></code> and <code class="docutils literal notranslate"><span class="pre">Operator.grad_tree</span></code> each return a single dict now,
-rather than a pair of dicts. <code class="docutils literal notranslate"><span class="pre">tree</span></code> maps a path to the matrix the node
-evaluated to, and <code class="docutils literal notranslate"><span class="pre">grad_tree</span></code> to that node’s <code class="docutils literal notranslate"><span class="pre">(grad,</span> <span class="pre">grad_names)</span></code> pair;
-the per-node parameter slices they used to return alongside moved to
+<li><p><code class="docutils literal notranslate"><span class="pre">MarginalREML</span></code> has been removed, and <code class="docutils literal notranslate"><span class="pre">torch_openreml.marginal_reml</span></code> no
+longer exists. Its replacement is
+<a class="reference internal" href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML" title="torch_openreml.mixed_model_reml.MixedModelREML"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixedModelREML</span></code></a>, which takes one or
+more random-effect <code class="docutils literal notranslate"><span class="pre">(design,</span> <span class="pre">covariance)</span></code> terms and a keyword <code class="docutils literal notranslate"><span class="pre">R</span></code> for the
+residual covariance, builds <span class="math notranslate nohighlight">\(V = R + Z G Z^\top\)</span> with
+<a class="reference internal" href="generated/torch_openreml.covariance.MarginalCovariance.html#torch_openreml.covariance.MarginalCovariance" title="torch_openreml.covariance.operator_marginal_covariance.MarginalCovariance"><code class="xref py py-class docutils literal notranslate"><span class="pre">MarginalCovariance</span></code></a>,
+and selects a numerical backend instead of taking a single <code class="docutils literal notranslate"><span class="pre">v</span></code> matrix.
+Code that passed <code class="docutils literal notranslate"><span class="pre">v</span></code> to <code class="docutils literal notranslate"><span class="pre">MarginalREML</span></code> must be rewritten in this form;
+the post-estimation functions in <code class="docutils literal notranslate"><span class="pre">torch_openreml.post</span></code> are unchanged.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Operator.call_tree</span></code> is now <code class="docutils literal notranslate"><span class="pre">Operator.tree</span></code>. It and
+<code class="docutils literal notranslate"><span class="pre">Operator.grad_tree</span></code> each return a single dict now, rather than a pair of
+dicts: <code class="docutils literal notranslate"><span class="pre">tree</span></code> maps a path to the matrix the node evaluated to, and
+<code class="docutils literal notranslate"><span class="pre">grad_tree</span></code> to that node’s <code class="docutils literal notranslate"><span class="pre">(grad,</span> <span class="pre">grad_names)</span></code> pair. The per-node
+parameter slices they used to return alongside moved to
 <code class="docutils literal notranslate"><span class="pre">free_param_tree</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">MarginalREML.optimize</span></code>’s first optional argument is now <code class="docutils literal notranslate"><span class="pre">init_values</span></code>,
-not <code class="docutils literal notranslate"><span class="pre">theta</span></code>. The parameter holds the starting covariance parameters, which
-the loop then updates, so the old name read as if it were the estimate; the
-estimate is what <code class="docutils literal notranslate"><span class="pre">optimize</span></code> returns and what <code class="docutils literal notranslate"><span class="pre">get_free_params</span></code> reads
-back.
-Positional calls are unaffected, but callers passing <code class="docutils literal notranslate"><span class="pre">theta=</span></code> by keyword
-must rename it. <code class="docutils literal notranslate"><span class="pre">update</span></code> keeps its <code class="docutils literal notranslate"><span class="pre">theta</span></code> argument, where the name does
-mean an estimate.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">MarginalREML.get_theta</span></code> and <code class="docutils literal notranslate"><span class="pre">MarginalREML.get_beta</span></code> are now
-<code class="docutils literal notranslate"><span class="pre">get_free_params</span></code> and <code class="docutils literal notranslate"><span class="pre">get_fixed_effects</span></code>, and the <code class="docutils literal notranslate"><span class="pre">history</span></code> keys
-<code class="docutils literal notranslate"><span class="pre">&quot;theta&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;beta&quot;</span></code> are now <code class="docutils literal notranslate"><span class="pre">&quot;free_params&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;fixed_effects&quot;</span></code>.
-The evaluation arguments of <code class="docutils literal notranslate"><span class="pre">blue</span></code>, <code class="docutils literal notranslate"><span class="pre">predict</span></code>, <code class="docutils literal notranslate"><span class="pre">residual</span></code>, <code class="docutils literal notranslate"><span class="pre">loglik</span></code>,
-<code class="docutils literal notranslate"><span class="pre">compute_v_dv</span></code>, <code class="docutils literal notranslate"><span class="pre">ai_step</span></code> and <code class="docutils literal notranslate"><span class="pre">update</span></code> use the same word,
-<code class="docutils literal notranslate"><span class="pre">free_params</span></code>, matching the covariance layer. <code class="docutils literal notranslate"><span class="pre">delta</span></code> and <code class="docutils literal notranslate"><span class="pre">eta</span></code> keep
-their names: both are standard symbols for the AI increment and the step
-size, and the history keys that hold them are unchanged.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">MarginalREML.tree</span></code> no longer takes a single <code class="docutils literal notranslate"><span class="pre">theta</span></code>: it takes
-<code class="docutils literal notranslate"><span class="pre">free_params</span></code> plus a keyword-only <code class="docutils literal notranslate"><span class="pre">select</span></code>. <code class="docutils literal notranslate"><span class="pre">tree()</span></code> evaluates at the
-final iterate, <code class="docutils literal notranslate"><span class="pre">tree(free_params)</span></code> at the values given,
-<code class="docutils literal notranslate"><span class="pre">tree(select=&quot;best&quot;)</span></code> at the best iterate, and <code class="docutils literal notranslate"><span class="pre">select=None</span></code> at the
-defaults. A string passed positionally now raises <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> naming
-<code class="docutils literal notranslate"><span class="pre">select=</span></code> as the replacement.</p></li>
 </ul>
 </section>
 <section id="changes">
@@ -366,11 +361,82 @@ length raises <code class="docutils literal notranslate"><span class="pre">Value
 <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>, before anything is written. Previously every specification was
 assigned the value as given, so a tensor longer than one parameter was
 duplicated across specifications instead of split between them.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MixedModelREML.optimize</span></code> names its starting covariance parameters
+<code class="docutils literal notranslate"><span class="pre">init_values</span></code> rather than <code class="docutils literal notranslate"><span class="pre">theta</span></code>; positional calls are unaffected, but
+<code class="docutils literal notranslate"><span class="pre">theta=</span></code> must be renamed. <code class="docutils literal notranslate"><span class="pre">update</span></code> keeps its <code class="docutils literal notranslate"><span class="pre">theta</span></code> argument, where
+the name does mean an estimate.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MixedModelREML.optimize</span></code> converts <code class="docutils literal notranslate"><span class="pre">y</span></code> and <code class="docutils literal notranslate"><span class="pre">x</span></code> to the dtype and device
+of the initial covariance parameters once, then stores the converted tensors
+for the post-fit methods, instead of repeating the conversion inside every
+step.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MixedModelREML.optimize</span></code> uses a relative Armijo slack
+(<code class="docutils literal notranslate"><span class="pre">armijo_slack=1e-7</span></code>) in its sufficient-increase test, so a step within
+floating-point noise is accepted. Set <code class="docutils literal notranslate"><span class="pre">armijo_slack=0</span></code> for strict Armijo.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MixedModelREML.history</span></code> records the backend that produced each AI step
+under <code class="docutils literal notranslate"><span class="pre">&quot;method&quot;</span></code>, alongside <code class="docutils literal notranslate"><span class="pre">free_params</span></code>, <code class="docutils literal notranslate"><span class="pre">loglik</span></code>, <code class="docutils literal notranslate"><span class="pre">score</span></code>, <code class="docutils literal notranslate"><span class="pre">ai</span></code>,
+<code class="docutils literal notranslate"><span class="pre">delta</span></code>, <code class="docutils literal notranslate"><span class="pre">update</span></code>, <code class="docutils literal notranslate"><span class="pre">eta</span></code> and <code class="docutils literal notranslate"><span class="pre">accepted</span></code>. <code class="docutils literal notranslate"><span class="pre">ai_step</span></code> and <code class="docutils literal notranslate"><span class="pre">loglik</span></code>
+return the method with their numerical result.</p></li>
 </ul>
 </section>
 <section id="new-features">
 <h3>New features<a class="headerlink" href="#new-features" title="Link to this heading">¶</a></h3>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">MixedModelREML</span></code>, the new frontend for linear mixed models. Each
+random-effect term is a <code class="docutils literal notranslate"><span class="pre">(design,</span> <span class="pre">covariance)</span></code> pair; <code class="docutils literal notranslate"><span class="pre">R=</span></code> supplies the
+residual covariance and defaults to a <code class="docutils literal notranslate"><span class="pre">ScalarMatrix</span></code> whose dimension is
+inferred from a random-effect design. Free parameters are ordered as
+<code class="docutils literal notranslate"><span class="pre">[Z,</span> <span class="pre">G,</span> <span class="pre">R]</span></code> and exposed with namespaced names. <code class="docutils literal notranslate"><span class="pre">method=</span></code> accepts
+<code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code> (the default), <code class="docutils literal notranslate"><span class="pre">&quot;cform&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;marginal&quot;</span></code>, or a configured
+<code class="docutils literal notranslate"><span class="pre">CForm</span></code> / <code class="docutils literal notranslate"><span class="pre">Marginal</span></code> instance; <code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code> uses <code class="docutils literal notranslate"><span class="pre">CForm</span></code> when the model
+is eligible and falls back to <code class="docutils literal notranslate"><span class="pre">Marginal</span></code> with a warning if CForm fails.
+<code class="docutils literal notranslate"><span class="pre">optimize</span></code> runs AI-REML with Armijo backtracking, and <code class="docutils literal notranslate"><span class="pre">build_params</span></code>,
+<code class="docutils literal notranslate"><span class="pre">tree</span></code>, <code class="docutils literal notranslate"><span class="pre">c_inverse_blocks</span></code> and <code class="docutils literal notranslate"><span class="pre">get_free_params</span></code> expose the fitted
+structure.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">torch_openreml.methods</span></code> with the two public numerical backends:
+<a class="reference internal" href="generated/torch_openreml.methods.CForm.html#torch_openreml.methods.CForm" title="torch_openreml.methods.cform.CForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">CForm</span></code></a> for dense, invertible <code class="docutils literal notranslate"><span class="pre">G</span></code> and
+<code class="docutils literal notranslate"><span class="pre">R</span></code> and <a class="reference internal" href="generated/torch_openreml.methods.Marginal.html#torch_openreml.methods.Marginal" title="torch_openreml.methods.marginal.Marginal"><code class="xref py py-class docutils literal notranslate"><span class="pre">Marginal</span></code></a> for the general
+<code class="docutils literal notranslate"><span class="pre">V</span></code>-based case, including multiple random-effect blocks and approximate
+traces. Both expose score, average-information and restricted
+log-likelihood; <code class="docutils literal notranslate"><span class="pre">Marginal</span></code> adds the <code class="docutils literal notranslate"><span class="pre">trace_approx</span></code> controls.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MixedModelREML</span></code> post-fit quantities: <code class="docutils literal notranslate"><span class="pre">blue</span></code>, <code class="docutils literal notranslate"><span class="pre">cov_blue</span></code>, <code class="docutils literal notranslate"><span class="pre">var_blue</span></code>,
+<code class="docutils literal notranslate"><span class="pre">blup</span></code>, <code class="docutils literal notranslate"><span class="pre">cov_blup</span></code>, <code class="docutils literal notranslate"><span class="pre">var_blup</span></code>, <code class="docutils literal notranslate"><span class="pre">blup_per_term</span></code>,
+<code class="docutils literal notranslate"><span class="pre">cov_blup_per_term</span></code>, <code class="docutils literal notranslate"><span class="pre">var_blup_per_term</span></code>, <code class="docutils literal notranslate"><span class="pre">marginal_predict</span></code>,
+<code class="docutils literal notranslate"><span class="pre">marginal_residual</span></code>, <code class="docutils literal notranslate"><span class="pre">predict</span></code>, <code class="docutils literal notranslate"><span class="pre">predict_new</span></code>, <code class="docutils literal notranslate"><span class="pre">residual</span></code> and
+<code class="docutils literal notranslate"><span class="pre">loglik</span></code>. They reuse the response and design stored by <code class="docutils literal notranslate"><span class="pre">optimize</span></code> when
+<code class="docutils literal notranslate"><span class="pre">y</span></code> and <code class="docutils literal notranslate"><span class="pre">x</span></code> are omitted, and accept <code class="docutils literal notranslate"><span class="pre">free_params=&quot;last&quot;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&quot;best&quot;</span></code>. <code class="docutils literal notranslate"><span class="pre">predict_new</span></code> predicts at new rows from already-built design
+matrices, with <code class="docutils literal notranslate"><span class="pre">z</span></code> given as a full matrix, a list per term, or a dict
+keyed by term name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">post.cov_blue</span></code> and <code class="docutils literal notranslate"><span class="pre">post.var_blue</span></code>, and <code class="docutils literal notranslate"><span class="pre">post.cov_blup</span></code> and
+<code class="docutils literal notranslate"><span class="pre">post.var_blup</span></code>, the sampling covariance and variance of the fixed-effect
+estimates and random-effect predictions. <code class="docutils literal notranslate"><span class="pre">cov_blue</span></code> is the <code class="docutils literal notranslate"><span class="pre">C11</span></code> block
+of the inverse coefficient matrix and <code class="docutils literal notranslate"><span class="pre">cov_blup</span></code> uses
+<span class="math notranslate nohighlight">\(G Z^\top P Z G\)</span>, which needs only <code class="docutils literal notranslate"><span class="pre">V</span></code> to be invertible.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">KnownMatrix</span></code>, wrapping a fixed two-dimensional tensor as a <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> with
+no free parameters. It follows the parameter tensor’s dtype and device when
+one is supplied, and precomputes the inverse for a square, invertible matrix.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MarginalCovariance</span></code>, an operator with exactly three named operands,
+<code class="docutils literal notranslate"><span class="pre">Z</span></code>, <code class="docutils literal notranslate"><span class="pre">G</span></code> and <code class="docutils literal notranslate"><span class="pre">R</span></code>, evaluating <span class="math notranslate nohighlight">\(R + Z G Z^\top\)</span>. It validates the
+design and covariance shapes and namespaces parameters as <code class="docutils literal notranslate"><span class="pre">Z/...</span></code>,
+<code class="docutils literal notranslate"><span class="pre">G/...</span></code> and <code class="docutils literal notranslate"><span class="pre">R/...</span></code>; it is the operator <code class="docutils literal notranslate"><span class="pre">MixedModelREML</span></code> builds.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Matrix.manual_inverse</span></code>, the opt-in closed-form inversion hook. The base
+implementation raises <code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code>, so a matrix without a closed
+form fails loudly; concrete implementations exist for <code class="docutils literal notranslate"><span class="pre">ScalarMatrix</span></code>,
+<code class="docutils literal notranslate"><span class="pre">IdentityMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">DiagonalMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">EquicorrelationMatrix</span></code>,
+<code class="docutils literal notranslate"><span class="pre">AR1Matrix</span></code>, <code class="docutils literal notranslate"><span class="pre">CompoundSymmetricMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">Adapter</span></code> and <code class="docutils literal notranslate"><span class="pre">KnownMatrix</span></code>.
+<code class="docutils literal notranslate"><span class="pre">Operator.operands_manual_inverse</span></code> is the corresponding operator hook and
+propagates <code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code> when an operand has no closed form, with
+implementations for <code class="docutils literal notranslate"><span class="pre">BlockDiagonal</span></code>, <code class="docutils literal notranslate"><span class="pre">Product</span></code>, <code class="docutils literal notranslate"><span class="pre">KroneckerProduct</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Transpose</span></code> and <code class="docutils literal notranslate"><span class="pre">Inverse</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Matrix.resolve_dim</span></code>, letting these matrix constructors take a list, tuple
+or <code class="docutils literal notranslate"><span class="pre">pandas.Series</span></code> of levels instead of an integer dimension; the dimension
+is the number of distinct levels. It is used by <code class="docutils literal notranslate"><span class="pre">ScalarMatrix</span></code>,
+<code class="docutils literal notranslate"><span class="pre">IdentityMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">DiagonalMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">AR1Matrix</span></code>,
+<code class="docutils literal notranslate"><span class="pre">CompoundSymmetricMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">EquicorrelationMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">EqualEntryMatrix</span></code>,
+<code class="docutils literal notranslate"><span class="pre">LowerTriangularMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">UnconstrainedMatrix</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Adapter.manual_inverse</span></code>, forwarding its mapped parameters to the
+adaptee’s <code class="docutils literal notranslate"><span class="pre">manual_inverse</span></code>, so a reparameterised matrix keeps the
+adaptee’s closed form instead of falling back to a dense inversion.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Operator.walk</span></code>, listing every node of the operand tree as one
 <code class="docutils literal notranslate"><span class="pre">(path,</span> <span class="pre">operand,</span> <span class="pre">free_params)</span></code> triple, in the order <code class="docutils literal notranslate"><span class="pre">tree</span></code>,
 <code class="docutils literal notranslate"><span class="pre">free_param_tree</span></code> and <code class="docutils literal notranslate"><span class="pre">grad_tree</span></code> report. The first entry is always
@@ -384,34 +450,95 @@ free-parameter slice each node received: the root entry is the validated
 input tensor and the remaining entries are views of it, while fixed tensor
 operands get <code class="docutils literal notranslate"><span class="pre">None</span></code>. It evaluates no operand, so it is the cheap way to
 inspect how a composite splits its parameters between operands.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">MarginalREML.tree</span></code>, evaluating the fitted covariance structure at a
+<li><p><code class="docutils literal notranslate"><span class="pre">MixedModelREML.tree</span></code>, evaluating the fitted covariance structure at a
 parameter estimate and returning the same path-keyed dict as
 <code class="docutils literal notranslate"><span class="pre">Operator.tree</span></code>, the root <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code> holding <span class="math notranslate nohighlight">\(V(\theta)\)</span> itself. It
-takes a <code class="docutils literal notranslate"><span class="pre">free_params</span></code> tensor or dict, and a keyword-only <code class="docutils literal notranslate"><span class="pre">select</span></code> that
-chooses the optimisation iterate when <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is omitted —
-<code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code> for the final iterate (the default) or any other selector for the
-iterate with the highest log-likelihood, so <code class="docutils literal notranslate"><span class="pre">reml.tree()</span></code> works straight
-after <code class="docutils literal notranslate"><span class="pre">optimize()</span></code>, while <code class="docutils literal notranslate"><span class="pre">select=None</span></code> evaluates at the free-parameter
-defaults. When <code class="docutils literal notranslate"><span class="pre">v</span></code> is a plain matrix rather than an operator, the tree is
-the root entry alone.</p></li>
+takes a <code class="docutils literal notranslate"><span class="pre">free_params</span></code> tensor or dict, or the selectors <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code> and
+<code class="docutils literal notranslate"><span class="pre">&quot;best&quot;</span></code>; <code class="docutils literal notranslate"><span class="pre">tree()</span></code> uses the last fitted iterate. When <code class="docutils literal notranslate"><span class="pre">v</span></code> is a plain
+matrix rather than an operator, the tree is the root entry alone.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DummyMatrix.transform</span></code>, building the design matrix of new observations
+from the columns fixed at initialisation: each row is one-hot in the column
+named by the <code class="docutils literal notranslate"><span class="pre">&quot;⋈&quot;</span></code> join of its factor values, and a combination with no
+column — an unseen level, or the reference combination dropped by
+<code class="docutils literal notranslate"><span class="pre">drop_first</span></code> — is an all-zero row. New levels therefore cannot widen the
+matrix, which makes the result the <code class="docutils literal notranslate"><span class="pre">z</span></code> block that
+<code class="docutils literal notranslate"><span class="pre">MixedModelREML.predict_new</span></code> expects. It takes <code class="docutils literal notranslate"><span class="pre">dtype</span></code> and <code class="docutils literal notranslate"><span class="pre">device</span></code>
+keywords, defaulting to the PyTorch defaults, and emits no warning, since it
+cannot tell a dropped reference from an unseen level.</p></li>
+</ul>
+</section>
+<section id="bug-fixes">
+<h3>Bug fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">post.blue</span></code>, <code class="docutils literal notranslate"><span class="pre">post.blup</span></code> and <code class="docutils literal notranslate"><span class="pre">post.predict</span></code> now keep at least one
+dimension: they end in <code class="docutils literal notranslate"><span class="pre">.squeeze(-1)</span></code> instead of <code class="docutils literal notranslate"><span class="pre">.squeeze()</span></code>, so a
+single fixed effect, a single random effect or a single observation returns
+the documented <code class="docutils literal notranslate"><span class="pre">(p,)</span></code> / <code class="docutils literal notranslate"><span class="pre">(q,)</span></code> / <code class="docutils literal notranslate"><span class="pre">(n,)</span></code> shape rather than a 0-d
+tensor. This also fixes the downstream <code class="docutils literal notranslate"><span class="pre">marginal_predict</span></code>,
+<code class="docutils literal notranslate"><span class="pre">marginal_residual</span></code> and <code class="docutils literal notranslate"><span class="pre">blup</span></code> failures for those cases.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MixedModelREML.is_converged</span></code> now raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> with an explanatory
+message when called before <code class="docutils literal notranslate"><span class="pre">optimize()</span></code>, instead of leaking a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>
+from a <code class="docutils literal notranslate"><span class="pre">None</span></code> history.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MixedModelREML.optimize</span></code> keeps <code class="docutils literal notranslate"><span class="pre">delta</span></code> one-dimensional when the model
+has one covariance parameter, instead of a 0-d tensor.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Operator.build_params(...,</span> <span class="pre">out_format=&quot;dict&quot;)</span></code> now returns one-element
+tensors keyed by the names that match <code class="docutils literal notranslate"><span class="pre">include_fixed</span></code>; previously it
+returned 0-d scalars and always used the free-parameter names.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AR1Matrix</span></code> computes the correlation derivative without dividing by a
+clamped <code class="docutils literal notranslate"><span class="pre">rho</span></code>, which previously replaced <code class="docutils literal notranslate"><span class="pre">|rho|</span> <span class="pre">&lt;</span> <span class="pre">1e-6</span></code> and produced a
+wrong gradient at <code class="docutils literal notranslate"><span class="pre">rho</span> <span class="pre">==</span> <span class="pre">0</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Marginal</span></code> now rejects <code class="docutils literal notranslate"><span class="pre">trace_approx</span></code> values other than <code class="docutils literal notranslate"><span class="pre">True</span></code>,
+<code class="docutils literal notranslate"><span class="pre">False</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code>. Previously <code class="docutils literal notranslate"><span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">1</span></code> passed validation and
+then matched no dispatch branch, ending in <code class="docutils literal notranslate"><span class="pre">UnboundLocalError</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CForm</span></code> casts a fixed-tensor (or zero-parameter <code class="docutils literal notranslate"><span class="pre">Matrix</span></code>) <code class="docutils literal notranslate"><span class="pre">Z</span></code> to the
+free parameters’ dtype and device, so a float32 design with float64
+parameters no longer fails in matmul.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EqualEntryMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">LowerTriangularMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">UnconstrainedMatrix</span></code>
+now validate the size of a custom <code class="docutils literal notranslate"><span class="pre">param_specs</span></code> at construction.
+<code class="docutils literal notranslate"><span class="pre">EqualEntryMatrix</span></code> requires exactly one spec, so a multi-parameter surface
+is rejected instead of producing a broadcast <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">n,</span> <span class="pre">m)</span></code> gradient. The two
+lower-triangular classes require one spec per slot: short custom surfaces
+previously broadcast silently and then failed inside <code class="docutils literal notranslate"><span class="pre">manual_grad</span></code> with a
+masked <code class="docutils literal notranslate"><span class="pre">IndexError</span></code>, while long ones raised <code class="docutils literal notranslate"><span class="pre">RuntimeError</span></code> from the
+assignment.</p></li>
 </ul>
 </section>
 <section id="documentation">
 <h3>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h3>
 <ul class="simple">
-<li><p>The documentation and the demos read the covariance tree from the fitted
-model with <code class="docutils literal notranslate"><span class="pre">reml.tree()</span></code>, which evaluates at the final iterate, rather than
-calling <code class="docutils literal notranslate"><span class="pre">V.tree(theta_hat)</span></code>. The R examples use <code class="docutils literal notranslate"><span class="pre">fit_openreml$tree()</span></code> and
-index the returned dict directly instead of unpacking the old pair.</p></li>
-<li><p>Added a planning document for <code class="docutils literal notranslate"><span class="pre">MarginalREML.tree</span></code> and a <code class="docutils literal notranslate"><span class="pre">walk</span></code> section to
-the <code class="docutils literal notranslate"><span class="pre">Operator</span></code> planning document.</p></li>
+<li><p>Updated the API, README, R-user guide and examples for <code class="docutils literal notranslate"><span class="pre">MixedModelREML</span></code>,
+the <code class="docutils literal notranslate"><span class="pre">methods</span></code> backends, <code class="docutils literal notranslate"><span class="pre">manual_inverse</span></code> and the path-keyed <code class="docutils literal notranslate"><span class="pre">tree</span></code>
+output. The API reference gained the <code class="docutils literal notranslate"><span class="pre">methods</span></code> page and the
+<code class="docutils literal notranslate"><span class="pre">KnownMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">MarginalCovariance</span></code> and post-fit covariance entries; the
+old <code class="docutils literal notranslate"><span class="pre">MarginalREML</span></code> vignette moved to <code class="docutils literal notranslate"><span class="pre">docs/archive/</span></code>. The R examples now
+use <code class="docutils literal notranslate"><span class="pre">MixedModelREML</span></code> with <code class="docutils literal notranslate"><span class="pre">build_params()</span></code>, <code class="docutils literal notranslate"><span class="pre">blue()</span></code>, <code class="docutils literal notranslate"><span class="pre">blup()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">blup_per_term()</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Marginal.ai_step</span></code> now documents the <code class="docutils literal notranslate"><span class="pre">AttributeError</span></code> raised when
+<code class="docutils literal notranslate"><span class="pre">model</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>; the previous docstring claimed <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>. It also
+states that <code class="docutils literal notranslate"><span class="pre">require_loglik=False</span></code> returns the <code class="docutils literal notranslate"><span class="pre">torch.nan</span></code> sentinel.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">post</span></code> module and API page now document the fixed <code class="docutils literal notranslate"><span class="pre">1e-6</span> <span class="pre">*</span> <span class="pre">I</span></code> ridge
+added before factorising <code class="docutils literal notranslate"><span class="pre">V</span></code>; the behaviour itself is unchanged.</p></li>
 </ul>
 </section>
 <section id="testing">
 <h3>Testing<a class="headerlink" href="#testing" title="Link to this heading">¶</a></h3>
 <ul class="simple">
-<li><p>Added <code class="docutils literal notranslate"><span class="pre">tests/test_marginal_reml.py</span></code> for <code class="docutils literal notranslate"><span class="pre">MarginalREML.tree</span></code>, and a
-<code class="docutils literal notranslate"><span class="pre">TestOperatorWalk</span></code> class to the <code class="docutils literal notranslate"><span class="pre">Operator</span></code> tests.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">tests/test_mixed_model_reml.py</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/methods/test_cform.py</span></code> and
+<code class="docutils literal notranslate"><span class="pre">tests/methods/test_marginal.py</span></code>, with matching planning documents, for the
+new estimator and both numerical backends.</p></li>
+<li><p>Added dedicated tests and plans for <code class="docutils literal notranslate"><span class="pre">param</span></code>, <code class="docutils literal notranslate"><span class="pre">post</span></code>, <code class="docutils literal notranslate"><span class="pre">KnownMatrix</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Gram</span></code>, <code class="docutils literal notranslate"><span class="pre">MarginalCovariance</span></code>, <code class="docutils literal notranslate"><span class="pre">EqualEntryMatrix</span></code>,
+<code class="docutils literal notranslate"><span class="pre">LowerTriangularMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">UnconstrainedMatrix</span></code>.</p></li>
+<li><p>Added dedicated tests and plans for the <code class="docutils literal notranslate"><span class="pre">Inverse</span></code>, <code class="docutils literal notranslate"><span class="pre">Product</span></code>, <code class="docutils literal notranslate"><span class="pre">Stack</span></code>
+and <code class="docutils literal notranslate"><span class="pre">Transpose</span></code> operators, and plans for <code class="docutils literal notranslate"><span class="pre">Adapter</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleMatrix</span></code>.
+Expanded the matrix and operator tests for <code class="docutils literal notranslate"><span class="pre">manual_inverse</span></code>,
+<code class="docutils literal notranslate"><span class="pre">resolve_dim</span></code>, <code class="docutils literal notranslate"><span class="pre">tree</span></code>, <code class="docutils literal notranslate"><span class="pre">walk</span></code>, <code class="docutils literal notranslate"><span class="pre">free_param_tree</span></code> and the distributed
+<code class="docutils literal notranslate"><span class="pre">set_param_specs</span></code> form, and removed the obsolete <code class="docutils literal notranslate"><span class="pre">map_theta_to_v</span></code> /
+<code class="docutils literal notranslate"><span class="pre">map_theta_to_dv</span></code> tests.</p></li>
+<li><p>Expanded the suite to cover every exported module: each test module now has
+a matching <code class="docutils literal notranslate"><span class="pre">test_plan_&lt;module&gt;.md</span></code>, and <code class="docutils literal notranslate"><span class="pre">tests/test_summary.md</span></code> records
+the per-module status. The default pytest path is now the whole <code class="docutils literal notranslate"><span class="pre">tests</span></code>
+tree rather than only <code class="docutils literal notranslate"><span class="pre">tests/covariance</span></code>.</p></li>
 </ul>
 </section>
 </section>
@@ -529,8 +656,8 @@ already cached.</p></li>
 the free, untransformed parameters.</p></li>
 </ul>
 </section>
-<section id="bug-fixes">
-<h3>Bug fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading">¶</a></h3>
+<section id="id9">
+<h3>Bug fixes<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Fixed silent dtype promotion in the operators, where <code class="docutils literal notranslate"><span class="pre">torch.cat</span></code> would
 promote the results of the operands.</p></li>
@@ -547,8 +674,8 @@ raises even there.</p></li>
 are sized by the number of free parameters.</p></li>
 </ul>
 </section>
-<section id="id9">
-<h3>Documentation<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
+<section id="id10">
+<h3>Documentation<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Regenerated and extended the API reference, adding pages for <code class="docutils literal notranslate"><span class="pre">Adapter</span></code>,
 <code class="docutils literal notranslate"><span class="pre">Augment</span></code>, <code class="docutils literal notranslate"><span class="pre">Gram</span></code> and the post-estimation functions.</p></li>
@@ -556,8 +683,8 @@ are sized by the number of free parameters.</p></li>
 of <code class="docutils literal notranslate"><span class="pre">call_tree</span></code> and <code class="docutils literal notranslate"><span class="pre">grad_tree</span></code>.</p></li>
 </ul>
 </section>
-<section id="id10">
-<h3>Testing<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
+<section id="id11">
+<h3>Testing<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Added test modules for the adapter and for <code class="docutils literal notranslate"><span class="pre">Augment</span></code>, and extended the
 operator, matrix, identity, dummy and scalar matrix suites to cover the dtype
@@ -570,8 +697,8 @@ recording what must be covered and the risks worth testing.</p></li>
 </section>
 <section id="alpha-2026-09-15">
 <h2>0.2.0-alpha (2026-09-15)<a class="headerlink" href="#alpha-2026-09-15" title="Link to this heading">¶</a></h2>
-<section id="id11">
-<h3>Breaking changes<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
+<section id="id12">
+<h3>Breaking changes<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Renamed the <code class="docutils literal notranslate"><span class="pre">REML</span></code> estimator to <code class="docutils literal notranslate"><span class="pre">MarginalREML</span></code>. The module
 <code class="docutils literal notranslate"><span class="pre">torch_openreml.reml</span></code> is now <code class="docutils literal notranslate"><span class="pre">torch_openreml.marginal_reml</span></code>, and
@@ -602,8 +729,8 @@ convenience methods.</p></li>
 handled by <code class="docutils literal notranslate"><span class="pre">DummyMatrix</span></code>.</p></li>
 </ul>
 </section>
-<section id="id12">
-<h3>New features<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
+<section id="id13">
+<h3>New features<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>New covariance matrices: <code class="docutils literal notranslate"><span class="pre">EqualEntryMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">UnconstrainedMatrix</span></code>,
 <code class="docutils literal notranslate"><span class="pre">LowerTriangularMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleMatrix</span></code>.</p></li>
@@ -628,8 +755,8 @@ attribute, together with <code class="docutils literal notranslate"><span class=
 <li><p>The package now exposes <code class="docutils literal notranslate"><span class="pre">__version__</span></code>.</p></li>
 </ul>
 </section>
-<section id="id13">
-<h3>Changes<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
+<section id="id14">
+<h3>Changes<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>The default Jacobian method for automatic differentiation is now
 <code class="docutils literal notranslate"><span class="pre">&quot;jacfwd&quot;</span></code>, which avoids the memory blow-up that <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code> suffers as
@@ -643,8 +770,8 @@ contain no observations.</p></li>
 for <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">1</span></code>.</p></li>
 </ul>
 </section>
-<section id="id14">
-<h3>Bug fixes<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h3>
+<section id="id15">
+<h3>Bug fixes<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Fixed incorrect gradient computation in <code class="docutils literal notranslate"><span class="pre">DiagonalMatrix</span></code>, including the
 gradient masking and the selection of the manual gradient for all parameters.</p></li>
@@ -657,8 +784,8 @@ intermediates reset correctly during automatic differentiation.</p></li>
 <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 </ul>
 </section>
-<section id="id15">
-<h3>Documentation<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
+<section id="id16">
+<h3>Documentation<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Added this changelog, a vignette on marginal REML, and a guide for using
 <code class="docutils literal notranslate"><span class="pre">torch-openreml</span></code> from R via <code class="docutils literal notranslate"><span class="pre">reticulate</span></code>.</p></li>
@@ -668,8 +795,8 @@ functions and the new matrices and operators.</p></li>
 instructions.</p></li>
 </ul>
 </section>
-<section id="id16">
-<h3>Testing<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h3>
+<section id="id17">
+<h3>Testing<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Added a pytest suite under <code class="docutils literal notranslate"><span class="pre">tests/covariance</span></code> covering the matrices, the
 operators, the transforms, <code class="docutils literal notranslate"><span class="pre">utils</span></code> and the example data, and registered it
@@ -744,6 +871,7 @@ as the default test path in <code class="docutils literal notranslate"><span cla
 <li><a class="reference internal" href="#breaking-changes">Breaking changes</a></li>
 <li><a class="reference internal" href="#changes">Changes</a></li>
 <li><a class="reference internal" href="#new-features">New features</a></li>
+<li><a class="reference internal" href="#bug-fixes">Bug fixes</a></li>
 <li><a class="reference internal" href="#documentation">Documentation</a></li>
 <li><a class="reference internal" href="#testing">Testing</a></li>
 </ul>
@@ -760,18 +888,18 @@ as the default test path in <code class="docutils literal notranslate"><span cla
 <li><a class="reference internal" href="#id6">Breaking changes</a></li>
 <li><a class="reference internal" href="#id7">New features</a></li>
 <li><a class="reference internal" href="#id8">Changes</a></li>
-<li><a class="reference internal" href="#bug-fixes">Bug fixes</a></li>
-<li><a class="reference internal" href="#id9">Documentation</a></li>
-<li><a class="reference internal" href="#id10">Testing</a></li>
+<li><a class="reference internal" href="#id9">Bug fixes</a></li>
+<li><a class="reference internal" href="#id10">Documentation</a></li>
+<li><a class="reference internal" href="#id11">Testing</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#alpha-2026-09-15">0.2.0-alpha (2026-09-15)</a><ul>
-<li><a class="reference internal" href="#id11">Breaking changes</a></li>
-<li><a class="reference internal" href="#id12">New features</a></li>
-<li><a class="reference internal" href="#id13">Changes</a></li>
-<li><a class="reference internal" href="#id14">Bug fixes</a></li>
-<li><a class="reference internal" href="#id15">Documentation</a></li>
-<li><a class="reference internal" href="#id16">Testing</a></li>
+<li><a class="reference internal" href="#id12">Breaking changes</a></li>
+<li><a class="reference internal" href="#id13">New features</a></li>
+<li><a class="reference internal" href="#id14">Changes</a></li>
+<li><a class="reference internal" href="#id15">Bug fixes</a></li>
+<li><a class="reference internal" href="#id16">Documentation</a></li>
+<li><a class="reference internal" href="#id17">Testing</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#alpha-2026-05-08">0.1.0-alpha (2026-05-08)</a></li>

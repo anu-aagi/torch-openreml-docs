@@ -7,7 +7,7 @@
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 --><title>Index - torch-openreml 0.4.1-alpha documentation</title>
 <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=df86a2a8" />
@@ -193,17 +193,22 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="vig.html">Vignettes</a><input aria-label="Toggle navigation of Vignettes" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="vig/vig_marginal_reml.html">Introduction to Marginal REML Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vig/vig_mixed_model_reml.html">Introduction to Mixed Model REML Estimation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="r_user.html">For R Users</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tech.html">Technical Documentation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/reml.html">MarginalREML</a><input aria-label="Toggle navigation of MarginalREML" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.MarginalREML.html">torch_openreml.MarginalREML</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/reml.html">Mixed models</a><input aria-label="Toggle navigation of Mixed models" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.MixedModelREML.html">torch_openreml.MixedModelREML</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/covariance.html">Covariance</a><input aria-label="Toggle navigation of Covariance" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/methods.html">REML methods</a><input aria-label="Toggle navigation of REML methods" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.methods.CForm.html">torch_openreml.methods.CForm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.methods.Marginal.html">torch_openreml.methods.Marginal</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/covariance.html">Covariance</a><input aria-label="Toggle navigation of Covariance" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Matrix.html">torch_openreml.covariance.Matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.AR1Matrix.html">torch_openreml.covariance.AR1Matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.CompoundSymmetricMatrix.html">torch_openreml.covariance.CompoundSymmetricMatrix</a></li>
@@ -212,14 +217,16 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.EqualEntryMatrix.html">torch_openreml.covariance.EqualEntryMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.EquicorrelationMatrix.html">torch_openreml.covariance.EquicorrelationMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.IdentityMatrix.html">torch_openreml.covariance.IdentityMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.KnownMatrix.html">torch_openreml.covariance.KnownMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.LowerTriangularMatrix.html">torch_openreml.covariance.LowerTriangularMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.ScalarMatrix.html">torch_openreml.covariance.ScalarMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.UnconstrainedMatrix.html">torch_openreml.covariance.UnconstrainedMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.SimpleMatrix.html">torch_openreml.covariance.SimpleMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.simple_param_specs.html">torch_openreml.covariance.simple_param_specs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.MarginalCovariance.html">torch_openreml.covariance.MarginalCovariance</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/operators.html">Operators</a><input aria-label="Toggle navigation of Operators" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/operators.html">Operators</a><input aria-label="Toggle navigation of Operators" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Operator.html">torch_openreml.covariance.Operator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.BlockDiagonal.html">torch_openreml.covariance.BlockDiagonal</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.HadamardProduct.html">torch_openreml.covariance.HadamardProduct</a></li>
@@ -234,11 +241,11 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Stack.html">torch_openreml.covariance.Stack</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/adapter.html">Adapter</a><input aria-label="Toggle navigation of Adapter" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/adapter.html">Adapter</a><input aria-label="Toggle navigation of Adapter" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Adapter.html">torch_openreml.covariance.Adapter</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/transforms.html">Transforms</a><input aria-label="Toggle navigation of Transforms" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/transforms.html">Transforms</a><input aria-label="Toggle navigation of Transforms" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.transform.Transform.html">torch_openreml.covariance.transform.Transform</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.transform.TransformChain.html">torch_openreml.covariance.transform.TransformChain</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.transform.TransformExp.html">torch_openreml.covariance.transform.TransformExp</a></li>
@@ -251,7 +258,7 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.transform.TransformSigmoid.html">torch_openreml.covariance.transform.TransformSigmoid</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.blue.html">torch_openreml.blue</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.blup.html">torch_openreml.blup</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.marginal_predict.html">torch_openreml.marginal_predict</a></li>
@@ -261,7 +268,7 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.loglik.html">torch_openreml.loglik</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.get_device.html">torch_openreml.utils.get_device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.get_dtype.html">torch_openreml.utils.get_dtype</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
@@ -309,7 +316,7 @@
           
 <section class="genindex-section">
   <h1 id="index">Index</h1>
-  <div class="genindex-jumpbox"><a href="#_"><strong>_</strong></a> | <a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#H"><strong>H</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#J"><strong>J</strong></a> | <a href="#K"><strong>K</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#O"><strong>O</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#U"><strong>U</strong></a> | <a href="#W"><strong>W</strong></a></div>
+  <div class="genindex-jumpbox"><a href="#_"><strong>_</strong></a> | <a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#H"><strong>H</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#J"><strong>J</strong></a> | <a href="#K"><strong>K</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#O"><strong>O</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#U"><strong>U</strong></a> | <a href="#V"><strong>V</strong></a> | <a href="#W"><strong>W</strong></a> | <a href="#Z"><strong>Z</strong></a></div>
 </section>
 <section id="_" class="genindex-section">
   <h2>_</h2>
@@ -344,9 +351,13 @@
 </li>
           <li><a href="generated/torch_openreml.covariance.Inverse.html#torch_openreml.covariance.Inverse.__call__">(torch_openreml.covariance.Inverse method)</a>
 </li>
+          <li><a href="generated/torch_openreml.covariance.KnownMatrix.html#torch_openreml.covariance.KnownMatrix.__call__">(torch_openreml.covariance.KnownMatrix method)</a>
+</li>
           <li><a href="generated/torch_openreml.covariance.KroneckerProduct.html#torch_openreml.covariance.KroneckerProduct.__call__">(torch_openreml.covariance.KroneckerProduct method)</a>
 </li>
           <li><a href="generated/torch_openreml.covariance.LowerTriangularMatrix.html#torch_openreml.covariance.LowerTriangularMatrix.__call__">(torch_openreml.covariance.LowerTriangularMatrix method)</a>
+</li>
+          <li><a href="generated/torch_openreml.covariance.MarginalCovariance.html#torch_openreml.covariance.MarginalCovariance.__call__">(torch_openreml.covariance.MarginalCovariance method)</a>
 </li>
           <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.__call__">(torch_openreml.covariance.Matrix method)</a>
 </li>
@@ -397,10 +408,22 @@
 </li>
         <li><a href="generated/torch_openreml.covariance.Adapter.html#torch_openreml.covariance.Adapter">Adapter (class in torch_openreml.covariance)</a>
 </li>
-        <li><a href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.ai_step">ai_step() (torch_openreml.MarginalREML method)</a>
+        <li><a href="generated/torch_openreml.methods.CForm.html#torch_openreml.methods.CForm.ai_step">ai_step() (torch_openreml.methods.CForm method)</a>
+
+        <ul>
+          <li><a href="generated/torch_openreml.methods.Marginal.html#torch_openreml.methods.Marginal.ai_step">(torch_openreml.methods.Marginal method)</a>
 </li>
+          <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.ai_step">(torch_openreml.MixedModelREML method)</a>
+</li>
+        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generated/torch_openreml.methods.CForm.html#torch_openreml.methods.CForm.ai_step_from_tensors">ai_step_from_tensors() (torch_openreml.methods.CForm method)</a>
+
+        <ul>
+          <li><a href="generated/torch_openreml.methods.Marginal.html#torch_openreml.methods.Marginal.ai_step_from_tensors">(torch_openreml.methods.Marginal method)</a>
+</li>
+        </ul></li>
         <li><a href="generated/torch_openreml.covariance.AR1Matrix.html#torch_openreml.covariance.AR1Matrix">AR1Matrix (class in torch_openreml.covariance)</a>
 </li>
         <li><a href="generated/torch_openreml.covariance.Augment.html#torch_openreml.covariance.Augment">Augment (class in torch_openreml.covariance)</a>
@@ -422,12 +445,18 @@
         <li><a href="generated/torch_openreml.blue.html#torch_openreml.blue">blue() (in module torch_openreml)</a>
 
         <ul>
-          <li><a href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.blue">(torch_openreml.MarginalREML method)</a>
+          <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.blue">(torch_openreml.MixedModelREML method)</a>
+</li>
+        </ul></li>
+        <li><a href="generated/torch_openreml.blup.html#torch_openreml.blup">blup() (in module torch_openreml)</a>
+
+        <ul>
+          <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.blup">(torch_openreml.MixedModelREML method)</a>
 </li>
         </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="generated/torch_openreml.blup.html#torch_openreml.blup">blup() (in module torch_openreml)</a>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.blup_per_term">blup_per_term() (torch_openreml.MixedModelREML method)</a>
 </li>
         <li><a href="generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.build_operands">build_operands() (torch_openreml.covariance.Operator method)</a>
 </li>
@@ -435,6 +464,8 @@
 
         <ul>
           <li><a href="generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.build_params">(torch_openreml.covariance.Operator method)</a>
+</li>
+          <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.build_params">(torch_openreml.MixedModelREML method)</a>
 </li>
         </ul></li>
     </ul></td>
@@ -445,7 +476,17 @@
   <h2>C</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generated/torch_openreml.methods.CForm.html#torch_openreml.methods.CForm.c_inverse_blocks">c_inverse_blocks() (torch_openreml.methods.CForm method)</a>
+
+        <ul>
+          <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.c_inverse_blocks">(torch_openreml.MixedModelREML method)</a>
+</li>
+        </ul></li>
+        <li><a href="generated/torch_openreml.methods.CForm.html#torch_openreml.methods.CForm.c_inverse_blocks_from_tensors">c_inverse_blocks_from_tensors() (torch_openreml.methods.CForm method)</a>
+</li>
         <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.cache">cache (torch_openreml.covariance.Matrix attribute)</a>
+</li>
+        <li><a href="generated/torch_openreml.methods.CForm.html#torch_openreml.methods.CForm">CForm (class in torch_openreml.methods)</a>
 </li>
         <li><a href="generated/torch_openreml.covariance.transform.Transform.html#torch_openreml.covariance.transform.Transform.codomain">codomain (torch_openreml.covariance.transform.Transform attribute)</a>
 
@@ -473,7 +514,11 @@
 </li>
         <li><a href="generated/torch_openreml.covariance.CompoundSymmetricMatrix.html#torch_openreml.covariance.CompoundSymmetricMatrix">CompoundSymmetricMatrix (class in torch_openreml.covariance)</a>
 </li>
-        <li><a href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.compute_v_dv">compute_v_dv() (torch_openreml.MarginalREML method)</a>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.cov_blue">cov_blue() (torch_openreml.MixedModelREML method)</a>
+</li>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.cov_blup">cov_blup() (torch_openreml.MixedModelREML method)</a>
+</li>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.cov_blup_per_term">cov_blup_per_term() (torch_openreml.MixedModelREML method)</a>
 </li>
         <li><a href="generated/torch_openreml.covariance.CovariancePropagation.html#torch_openreml.covariance.CovariancePropagation">CovariancePropagation (class in torch_openreml.covariance)</a>
 </li>
@@ -527,6 +572,8 @@
   <h2>E</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generated/torch_openreml.methods.CForm.html#torch_openreml.methods.CForm.eligible">eligible() (torch_openreml.methods.CForm method)</a>
+</li>
         <li><a href="generated/torch_openreml.covariance.Adapter.html#torch_openreml.covariance.Adapter.enable_cache">enable_cache() (torch_openreml.covariance.Adapter method)</a>
 
         <ul>
@@ -577,15 +624,17 @@
   <h2>G</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.G">G (torch_openreml.MixedModelREML property)</a>
+</li>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.G_terms">G_terms (torch_openreml.MixedModelREML property)</a>
+</li>
         <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.get_default_dtype_device">get_default_dtype_device() (torch_openreml.covariance.Matrix method)</a>
 </li>
         <li><a href="generated/torch_openreml.utils.get_device.html#torch_openreml.utils.get_device">get_device() (in module torch_openreml.utils)</a>
 </li>
         <li><a href="generated/torch_openreml.utils.get_dtype.html#torch_openreml.utils.get_dtype">get_dtype() (in module torch_openreml.utils)</a>
 </li>
-        <li><a href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.get_fixed_effects">get_fixed_effects() (torch_openreml.MarginalREML method)</a>
-</li>
-        <li><a href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.get_free_params">get_free_params() (torch_openreml.MarginalREML method)</a>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.get_free_params">get_free_params() (torch_openreml.MixedModelREML method)</a>
 </li>
         <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.get_intermediates">get_intermediates() (torch_openreml.covariance.Matrix method)</a>
 </li>
@@ -647,31 +696,9 @@
 </li>
         <li><a href="generated/torch_openreml.covariance.Inverse.html#torch_openreml.covariance.Inverse">Inverse (class in torch_openreml.covariance)</a>
 </li>
-        <li><a href="generated/torch_openreml.covariance.AR1Matrix.html#torch_openreml.covariance.AR1Matrix.inverse">inverse() (torch_openreml.covariance.AR1Matrix method)</a>
+        <li><a href="generated/torch_openreml.covariance.transform.Transform.html#torch_openreml.covariance.transform.Transform.inverse">inverse() (torch_openreml.covariance.transform.Transform method)</a>
 
         <ul>
-          <li><a href="generated/torch_openreml.covariance.BlockDiagonal.html#torch_openreml.covariance.BlockDiagonal.inverse">(torch_openreml.covariance.BlockDiagonal method)</a>
-</li>
-          <li><a href="generated/torch_openreml.covariance.CompoundSymmetricMatrix.html#torch_openreml.covariance.CompoundSymmetricMatrix.inverse">(torch_openreml.covariance.CompoundSymmetricMatrix method)</a>
-</li>
-          <li><a href="generated/torch_openreml.covariance.DiagonalMatrix.html#torch_openreml.covariance.DiagonalMatrix.inverse">(torch_openreml.covariance.DiagonalMatrix method)</a>
-</li>
-          <li><a href="generated/torch_openreml.covariance.EquicorrelationMatrix.html#torch_openreml.covariance.EquicorrelationMatrix.inverse">(torch_openreml.covariance.EquicorrelationMatrix method)</a>
-</li>
-          <li><a href="generated/torch_openreml.covariance.IdentityMatrix.html#torch_openreml.covariance.IdentityMatrix.inverse">(torch_openreml.covariance.IdentityMatrix method)</a>
-</li>
-          <li><a href="generated/torch_openreml.covariance.Inverse.html#torch_openreml.covariance.Inverse.inverse">(torch_openreml.covariance.Inverse method)</a>
-</li>
-          <li><a href="generated/torch_openreml.covariance.KroneckerProduct.html#torch_openreml.covariance.KroneckerProduct.inverse">(torch_openreml.covariance.KroneckerProduct method)</a>
-</li>
-          <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.inverse">(torch_openreml.covariance.Matrix method)</a>
-</li>
-          <li><a href="generated/torch_openreml.covariance.Product.html#torch_openreml.covariance.Product.inverse">(torch_openreml.covariance.Product method)</a>
-</li>
-          <li><a href="generated/torch_openreml.covariance.ScalarMatrix.html#torch_openreml.covariance.ScalarMatrix.inverse">(torch_openreml.covariance.ScalarMatrix method)</a>
-</li>
-          <li><a href="generated/torch_openreml.covariance.transform.Transform.html#torch_openreml.covariance.transform.Transform.inverse">(torch_openreml.covariance.transform.Transform method)</a>
-</li>
           <li><a href="generated/torch_openreml.covariance.transform.TransformChain.html#torch_openreml.covariance.transform.TransformChain.inverse">(torch_openreml.covariance.transform.TransformChain method)</a>
 </li>
           <li><a href="generated/torch_openreml.covariance.transform.TransformExp.html#torch_openreml.covariance.transform.TransformExp.inverse">(torch_openreml.covariance.transform.TransformExp method)</a>
@@ -690,12 +717,10 @@
 </li>
           <li><a href="generated/torch_openreml.covariance.transform.TransformSigmoid.html#torch_openreml.covariance.transform.TransformSigmoid.inverse">(torch_openreml.covariance.transform.TransformSigmoid method)</a>
 </li>
-          <li><a href="generated/torch_openreml.covariance.Transpose.html#torch_openreml.covariance.Transpose.inverse">(torch_openreml.covariance.Transpose method)</a>
-</li>
         </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.is_converged">is_converged() (torch_openreml.MarginalREML method)</a>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.is_converged">is_converged() (torch_openreml.MixedModelREML method)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -719,6 +744,10 @@
   <h2>K</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generated/torch_openreml.covariance.KnownMatrix.html#torch_openreml.covariance.KnownMatrix">KnownMatrix (class in torch_openreml.covariance)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="generated/torch_openreml.covariance.KroneckerProduct.html#torch_openreml.covariance.KroneckerProduct">KroneckerProduct (class in torch_openreml.covariance)</a>
 </li>
     </ul></td>
@@ -732,11 +761,21 @@
         <li><a href="generated/torch_openreml.loglik.html#torch_openreml.loglik">loglik() (in module torch_openreml)</a>
 
         <ul>
-          <li><a href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.loglik">(torch_openreml.MarginalREML method)</a>
+          <li><a href="generated/torch_openreml.methods.CForm.html#torch_openreml.methods.CForm.loglik">(torch_openreml.methods.CForm method)</a>
+</li>
+          <li><a href="generated/torch_openreml.methods.Marginal.html#torch_openreml.methods.Marginal.loglik">(torch_openreml.methods.Marginal method)</a>
+</li>
+          <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.loglik">(torch_openreml.MixedModelREML method)</a>
 </li>
         </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generated/torch_openreml.methods.CForm.html#torch_openreml.methods.CForm.loglik_from_tensors">loglik_from_tensors() (torch_openreml.methods.CForm method)</a>
+
+        <ul>
+          <li><a href="generated/torch_openreml.methods.Marginal.html#torch_openreml.methods.Marginal.loglik_from_tensors">(torch_openreml.methods.Marginal method)</a>
+</li>
+        </ul></li>
         <li><a href="generated/torch_openreml.covariance.LowerTriangularMatrix.html#torch_openreml.covariance.LowerTriangularMatrix">LowerTriangularMatrix (class in torch_openreml.covariance)</a>
 </li>
     </ul></td>
@@ -776,6 +815,8 @@
 </li>
           <li><a href="generated/torch_openreml.covariance.LowerTriangularMatrix.html#torch_openreml.covariance.LowerTriangularMatrix.manual_grad">(torch_openreml.covariance.LowerTriangularMatrix method)</a>
 </li>
+          <li><a href="generated/torch_openreml.covariance.MarginalCovariance.html#torch_openreml.covariance.MarginalCovariance.manual_grad">(torch_openreml.covariance.MarginalCovariance method)</a>
+</li>
           <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.manual_grad">(torch_openreml.covariance.Matrix method)</a>
 </li>
           <li><a href="generated/torch_openreml.covariance.Product.html#torch_openreml.covariance.Product.manual_grad">(torch_openreml.covariance.Product method)</a>
@@ -795,13 +836,59 @@
         </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generated/torch_openreml.covariance.Adapter.html#torch_openreml.covariance.Adapter.manual_inverse">manual_inverse() (torch_openreml.covariance.Adapter method)</a>
+
+        <ul>
+          <li><a href="generated/torch_openreml.covariance.AR1Matrix.html#torch_openreml.covariance.AR1Matrix.manual_inverse">(torch_openreml.covariance.AR1Matrix method)</a>
+</li>
+          <li><a href="generated/torch_openreml.covariance.BlockDiagonal.html#torch_openreml.covariance.BlockDiagonal.manual_inverse">(torch_openreml.covariance.BlockDiagonal method)</a>
+</li>
+          <li><a href="generated/torch_openreml.covariance.CompoundSymmetricMatrix.html#torch_openreml.covariance.CompoundSymmetricMatrix.manual_inverse">(torch_openreml.covariance.CompoundSymmetricMatrix method)</a>
+</li>
+          <li><a href="generated/torch_openreml.covariance.DiagonalMatrix.html#torch_openreml.covariance.DiagonalMatrix.manual_inverse">(torch_openreml.covariance.DiagonalMatrix method)</a>
+</li>
+          <li><a href="generated/torch_openreml.covariance.EquicorrelationMatrix.html#torch_openreml.covariance.EquicorrelationMatrix.manual_inverse">(torch_openreml.covariance.EquicorrelationMatrix method)</a>
+</li>
+          <li><a href="generated/torch_openreml.covariance.IdentityMatrix.html#torch_openreml.covariance.IdentityMatrix.manual_inverse">(torch_openreml.covariance.IdentityMatrix method)</a>
+</li>
+          <li><a href="generated/torch_openreml.covariance.Inverse.html#torch_openreml.covariance.Inverse.manual_inverse">(torch_openreml.covariance.Inverse method)</a>
+</li>
+          <li><a href="generated/torch_openreml.covariance.KnownMatrix.html#torch_openreml.covariance.KnownMatrix.manual_inverse">(torch_openreml.covariance.KnownMatrix method)</a>
+</li>
+          <li><a href="generated/torch_openreml.covariance.KroneckerProduct.html#torch_openreml.covariance.KroneckerProduct.manual_inverse">(torch_openreml.covariance.KroneckerProduct method)</a>
+</li>
+          <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.manual_inverse">(torch_openreml.covariance.Matrix method)</a>
+</li>
+          <li><a href="generated/torch_openreml.covariance.Product.html#torch_openreml.covariance.Product.manual_inverse">(torch_openreml.covariance.Product method)</a>
+</li>
+          <li><a href="generated/torch_openreml.covariance.ScalarMatrix.html#torch_openreml.covariance.ScalarMatrix.manual_inverse">(torch_openreml.covariance.ScalarMatrix method)</a>
+</li>
+          <li><a href="generated/torch_openreml.covariance.Transpose.html#torch_openreml.covariance.Transpose.manual_inverse">(torch_openreml.covariance.Transpose method)</a>
+</li>
+        </ul></li>
+        <li><a href="generated/torch_openreml.methods.Marginal.html#torch_openreml.methods.Marginal">Marginal (class in torch_openreml.methods)</a>
+</li>
         <li><a href="generated/torch_openreml.marginal_predict.html#torch_openreml.marginal_predict">marginal_predict() (in module torch_openreml)</a>
+
+        <ul>
+          <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.marginal_predict">(torch_openreml.MixedModelREML method)</a>
 </li>
+        </ul></li>
         <li><a href="generated/torch_openreml.marginal_residual.html#torch_openreml.marginal_residual">marginal_residual() (in module torch_openreml)</a>
+
+        <ul>
+          <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.marginal_residual">(torch_openreml.MixedModelREML method)</a>
 </li>
-        <li><a href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML">MarginalREML (class in torch_openreml)</a>
+        </ul></li>
+        <li><a href="generated/torch_openreml.covariance.MarginalCovariance.html#torch_openreml.covariance.MarginalCovariance">MarginalCovariance (class in torch_openreml.covariance)</a>
 </li>
         <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix">Matrix (class in torch_openreml.covariance)</a>
+</li>
+        <li><a href="generated/torch_openreml.covariance.KnownMatrix.html#torch_openreml.covariance.KnownMatrix.matrix">matrix (torch_openreml.covariance.KnownMatrix property)</a>
+</li>
+        <li><a href="generated/torch_openreml.methods.Marginal.html#torch_openreml.methods.Marginal.MIN_N_FOR_TRACE">MIN_N_FOR_TRACE (torch_openreml.methods.Marginal attribute)</a>
+</li>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML">MixedModelREML (class in torch_openreml)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -837,11 +924,11 @@
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.operands_inverse">operands_inverse() (torch_openreml.covariance.Operator method)</a>
+        <li><a href="generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.operands_manual_inverse">operands_manual_inverse() (torch_openreml.covariance.Operator method)</a>
 </li>
         <li><a href="generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator">Operator (class in torch_openreml.covariance)</a>
 </li>
-        <li><a href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.optimize">optimize() (torch_openreml.MarginalREML method)</a>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.optimize">optimize() (torch_openreml.MixedModelREML method)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -863,14 +950,22 @@
           <li><a href="generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.param_specs">(torch_openreml.covariance.Operator property)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.param_trans">param_trans (torch_openreml.covariance.Matrix property)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="generated/torch_openreml.predict.html#torch_openreml.predict">predict() (in module torch_openreml)</a>
 
         <ul>
-          <li><a href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.predict">(torch_openreml.MarginalREML method)</a>
+          <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.predict">(torch_openreml.MixedModelREML method)</a>
+</li>
+        </ul></li>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.predict_new">predict_new() (torch_openreml.MixedModelREML method)</a>
+</li>
+        <li><a href="generated/torch_openreml.methods.CForm.html#torch_openreml.methods.CForm.preprocess_input">preprocess_input() (torch_openreml.methods.CForm method)</a>
+
+        <ul>
+          <li><a href="generated/torch_openreml.methods.Marginal.html#torch_openreml.methods.Marginal.preprocess_input">(torch_openreml.methods.Marginal method)</a>
 </li>
         </ul></li>
         <li><a href="generated/torch_openreml.covariance.Product.html#torch_openreml.covariance.Product">Product (class in torch_openreml.covariance)</a>
@@ -883,6 +978,8 @@
   <h2>R</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.R">R (torch_openreml.MixedModelREML property)</a>
+</li>
         <li><a href="generated/torch_openreml.covariance.Adapter.html#torch_openreml.covariance.Adapter.repr_dict">repr_dict (torch_openreml.covariance.Adapter property)</a>
 
         <ul>
@@ -897,6 +994,8 @@
         </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generated/torch_openreml.methods.Marginal.html#torch_openreml.methods.Marginal.reset">reset() (torch_openreml.methods.Marginal method)</a>
+</li>
         <li><a href="generated/torch_openreml.covariance.Adapter.html#torch_openreml.covariance.Adapter.reset_intermediates">reset_intermediates() (torch_openreml.covariance.Adapter method)</a>
 
         <ul>
@@ -908,7 +1007,7 @@
         <li><a href="generated/torch_openreml.residual.html#torch_openreml.residual">residual() (in module torch_openreml)</a>
 
         <ul>
-          <li><a href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.residual">(torch_openreml.MarginalREML method)</a>
+          <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.residual">(torch_openreml.MixedModelREML method)</a>
 </li>
         </ul></li>
         <li><a href="generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.resolve_dim">resolve_dim() (torch_openreml.covariance.Matrix method)</a>
@@ -953,6 +1052,8 @@
 </li>
         <li><a href="generated/torch_openreml.covariance.transform.Transform.html#torch_openreml.covariance.transform.Transform">Transform (class in torch_openreml.covariance.transform)</a>
 </li>
+        <li><a href="generated/torch_openreml.covariance.DummyMatrix.html#torch_openreml.covariance.DummyMatrix.transform">transform() (torch_openreml.covariance.DummyMatrix method)</a>
+</li>
         <li><a href="generated/torch_openreml.covariance.transform.TransformChain.html#torch_openreml.covariance.transform.TransformChain">TransformChain (class in torch_openreml.covariance.transform)</a>
 </li>
         <li><a href="generated/torch_openreml.covariance.transform.TransformExp.html#torch_openreml.covariance.transform.TransformExp">TransformExp (class in torch_openreml.covariance.transform)</a>
@@ -978,7 +1079,7 @@
         <li><a href="generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.tree">tree() (torch_openreml.covariance.Operator method)</a>
 
         <ul>
-          <li><a href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.tree">(torch_openreml.MarginalREML method)</a>
+          <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.tree">(torch_openreml.MixedModelREML method)</a>
 </li>
         </ul></li>
     </ul></td>
@@ -993,7 +1094,25 @@
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.update">update() (torch_openreml.MarginalREML method)</a>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.update">update() (torch_openreml.MixedModelREML method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="V" class="genindex-section">
+  <h2>V</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.V">V (torch_openreml.MixedModelREML property)</a>
+</li>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.var_blue">var_blue() (torch_openreml.MixedModelREML method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.var_blup">var_blup() (torch_openreml.MixedModelREML method)</a>
+</li>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.var_blup_per_term">var_blup_per_term() (torch_openreml.MixedModelREML method)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -1004,6 +1123,20 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="generated/torch_openreml.covariance.Operator.html#torch_openreml.covariance.Operator.walk">walk() (torch_openreml.covariance.Operator method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="Z" class="genindex-section">
+  <h2>Z</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.Z">Z (torch_openreml.MixedModelREML property)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.Z_terms">Z_terms (torch_openreml.MixedModelREML property)</a>
 </li>
     </ul></td>
   </tr></table>

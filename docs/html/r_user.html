@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Technical Documentation" href="tech.html"><link rel="prev" title="Introduction to Marginal REML Estimation" href="vig/vig_marginal_reml.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Technical Documentation" href="tech.html"><link rel="prev" title="Introduction to Mixed Model REML Estimation" href="vig/vig_mixed_model_reml.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>For R Users - torch-openreml 0.4.1-alpha documentation</title>
@@ -195,17 +195,23 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1 has-children"><a class="reference internal" href="vig.html">Vignettes</a><input aria-label="Toggle navigation of Vignettes" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="vig/vig_marginal_reml.html">Introduction to Marginal REML Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vig/vig_mixed_model_reml.html">Introduction to Mixed Model REML Estimation</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">For R Users</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tech.html">Technical Documentation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/reml.html">MarginalREML</a><input aria-label="Toggle navigation of MarginalREML" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/reml.html">Mixed models</a><input aria-label="Toggle navigation of Mixed models" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.MarginalREML.html">torch_openreml.MarginalREML</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.MixedModelREML.html">torch_openreml.MixedModelREML</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/covariance.html">Covariance</a><input aria-label="Toggle navigation of Covariance" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/methods.html">REML methods</a><input aria-label="Toggle navigation of REML methods" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.methods.CForm.html">torch_openreml.methods.CForm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.methods.Marginal.html">torch_openreml.methods.Marginal</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/covariance.html">Covariance</a><input aria-label="Toggle navigation of Covariance" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Matrix.html">torch_openreml.covariance.Matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.AR1Matrix.html">torch_openreml.covariance.AR1Matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.CompoundSymmetricMatrix.html">torch_openreml.covariance.CompoundSymmetricMatrix</a></li>
@@ -214,14 +220,16 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.EqualEntryMatrix.html">torch_openreml.covariance.EqualEntryMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.EquicorrelationMatrix.html">torch_openreml.covariance.EquicorrelationMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.IdentityMatrix.html">torch_openreml.covariance.IdentityMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.KnownMatrix.html">torch_openreml.covariance.KnownMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.LowerTriangularMatrix.html">torch_openreml.covariance.LowerTriangularMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.ScalarMatrix.html">torch_openreml.covariance.ScalarMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.UnconstrainedMatrix.html">torch_openreml.covariance.UnconstrainedMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.SimpleMatrix.html">torch_openreml.covariance.SimpleMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.simple_param_specs.html">torch_openreml.covariance.simple_param_specs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.MarginalCovariance.html">torch_openreml.covariance.MarginalCovariance</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/operators.html">Operators</a><input aria-label="Toggle navigation of Operators" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/operators.html">Operators</a><input aria-label="Toggle navigation of Operators" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Operator.html">torch_openreml.covariance.Operator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.BlockDiagonal.html">torch_openreml.covariance.BlockDiagonal</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.HadamardProduct.html">torch_openreml.covariance.HadamardProduct</a></li>
@@ -236,11 +244,11 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Stack.html">torch_openreml.covariance.Stack</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/adapter.html">Adapter</a><input aria-label="Toggle navigation of Adapter" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/adapter.html">Adapter</a><input aria-label="Toggle navigation of Adapter" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.Adapter.html">torch_openreml.covariance.Adapter</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/transforms.html">Transforms</a><input aria-label="Toggle navigation of Transforms" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/transforms.html">Transforms</a><input aria-label="Toggle navigation of Transforms" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.transform.Transform.html">torch_openreml.covariance.transform.Transform</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.transform.TransformChain.html">torch_openreml.covariance.transform.TransformChain</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.transform.TransformExp.html">torch_openreml.covariance.transform.TransformExp</a></li>
@@ -253,7 +261,7 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.covariance.transform.TransformSigmoid.html">torch_openreml.covariance.transform.TransformSigmoid</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.blue.html">torch_openreml.blue</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.blup.html">torch_openreml.blup</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.marginal_predict.html">torch_openreml.marginal_predict</a></li>
@@ -263,7 +271,7 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.loglik.html">torch_openreml.loglik</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.get_device.html">torch_openreml.utils.get_device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.get_dtype.html">torch_openreml.utils.get_dtype</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
@@ -366,13 +374,10 @@ whose distinct values define the dimension.</p>
 <span class="n">openreml</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">import</span><span class="p">(</span><span class="s">&quot;torch_openreml&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">convert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
 <span class="n">torch</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">import</span><span class="p">(</span><span class="s">&quot;torch&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">convert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
 
-<span class="n">BlockDiagonal</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">covariance</span><span class="o">$</span><span class="n">BlockDiagonal</span>
 <span class="n">ScalarMatrix</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">covariance</span><span class="o">$</span><span class="n">ScalarMatrix</span>
 <span class="n">IdentityMatrix</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">covariance</span><span class="o">$</span><span class="n">IdentityMatrix</span>
 <span class="n">KroneckerProduct</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">covariance</span><span class="o">$</span><span class="n">KroneckerProduct</span>
-<span class="n">CovariancePropagation</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">covariance</span><span class="o">$</span><span class="n">CovariancePropagation</span>
-<span class="n">Sum</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">covariance</span><span class="o">$</span><span class="n">Sum</span>
-<span class="n">MarginalREML</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">MarginalREML</span>
+<span class="n">MixedModelREML</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="n">MixedModelREML</span>
 
 <span class="n">data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">agridat</span><span class="o">::</span><span class="n">john.alpha</span>
 <span class="n">n</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">nrow</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -381,103 +386,101 @@ whose distinct values define the dimension.</p>
 <span class="n">X</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">model.matrix</span><span class="p">(</span><span class="o">~</span><span class="w"> </span><span class="n">rep</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">    </span><span class="n">torch</span><span class="o">$</span><span class="nf">tensor</span><span class="p">(</span><span class="n">dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">torch</span><span class="o">$</span><span class="n">float32</span><span class="p">)</span>
 
-<span class="n">Z</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">model.matrix</span><span class="p">(</span><span class="o">~</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">gen</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">block</span><span class="o">:</span><span class="n">rep</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="n">Z_gen</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">model.matrix</span><span class="p">(</span><span class="o">~</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">gen</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">    </span><span class="n">torch</span><span class="o">$</span><span class="nf">tensor</span><span class="p">(</span><span class="n">dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">torch</span><span class="o">$</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">Z_rep_block</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">model.matrix</span><span class="p">(</span><span class="o">~</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">block</span><span class="o">:</span><span class="n">rep</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
 <span class="w">    </span><span class="n">torch</span><span class="o">$</span><span class="nf">tensor</span><span class="p">(</span><span class="n">dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">torch</span><span class="o">$</span><span class="n">float32</span><span class="p">)</span>
 
-<span class="n">V</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">Sum</span><span class="p">(</span>
-<span class="w">    </span><span class="n">random</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">CovariancePropagation</span><span class="p">(</span>
-<span class="w">        </span><span class="n">Z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Z</span><span class="p">,</span>
-<span class="w">        </span><span class="n">G</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">BlockDiagonal</span><span class="p">(</span>
-<span class="w">            </span><span class="n">G_gen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ScalarMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">gen</span><span class="p">),</span>
-<span class="w">            </span><span class="n">G_rep_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">KroneckerProduct</span><span class="p">(</span>
-<span class="w">                </span><span class="n">G_rep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">IdentityMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">rep</span><span class="p">),</span>
-<span class="w">                </span><span class="n">G_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ScalarMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">block</span><span class="p">)</span>
-<span class="w">            </span><span class="p">)</span>
+<span class="n">reml</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">MixedModelREML</span><span class="p">(</span>
+<span class="w">    </span><span class="n">genotype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">Z_gen</span><span class="p">,</span><span class="w"> </span><span class="nf">ScalarMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">gen</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">replicate_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span>
+<span class="w">        </span><span class="n">Z_rep_block</span><span class="p">,</span>
+<span class="w">        </span><span class="nf">KroneckerProduct</span><span class="p">(</span>
+<span class="w">            </span><span class="n">G_rep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">IdentityMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">rep</span><span class="p">),</span>
+<span class="w">            </span><span class="n">G_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ScalarMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">block</span><span class="p">)</span>
 <span class="w">        </span><span class="p">)</span>
 <span class="w">    </span><span class="p">),</span>
-<span class="w">    </span><span class="n">residual</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ScalarMatrix</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="w">    </span><span class="n">R</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ScalarMatrix</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 <span class="p">)</span>
-
-<span class="n">fit_openreml</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">MarginalREML</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
-<span class="n">result</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">torch</span><span class="o">$</span><span class="nf">zeros</span><span class="p">(</span><span class="m">3L</span><span class="p">),</span><span class="w"> </span><span class="n">verbose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1L</span><span class="p">)</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">get_free_params</span><span class="p">()</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
-<span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">V</span><span class="o">$</span><span class="nf">build_params</span><span class="p">(</span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">get_free_params</span><span class="p">())</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
-<span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">get_fixed_effects</span><span class="p">()</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">reml</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Random effects are predicted with the same best linear unbiased predictor (BLUP) as in the
-Python example. The joint design and covariance matrices are read back from the fitted
-model with <a class="reference internal" href="generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML.tree" title="torch_openreml.MarginalREML.tree"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit_openreml$tree</span></code></a>, which
-evaluates the structure at the estimated parameters and returns each node under its path:
-<code class="docutils literal notranslate"><span class="pre">&quot;random/Z&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;random/G&quot;</span></code> hold <span class="math notranslate nohighlight">\(\mathbf{Z}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{G}\)</span>, and the root
-<code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code> holds <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>. Note that reticulate indexes Python objects from zero, so a dict
-entry is read with <code class="docutils literal notranslate"><span class="pre">[[path]]</span></code> as below.</p>
-<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">fit_openreml</span><span class="o">$</span><span class="nf">tree</span><span class="p">()</span>
-
-<span class="n">b_hat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="nf">blup</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">tree</span><span class="p">[[</span><span class="s">&quot;random/Z&quot;</span><span class="p">]],</span><span class="w"> </span><span class="n">tree</span><span class="p">[[</span><span class="s">&quot;random/G&quot;</span><span class="p">]],</span><span class="w"> </span><span class="n">tree</span><span class="p">[[</span><span class="s">&quot;/&quot;</span><span class="p">]])</span>
-<span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">b_hat</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
+<p>Printing the model shows the marginal covariance it assembles from those terms.
+The <code class="docutils literal notranslate"><span class="pre">optimize</span></code> method is then called with <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">X</span></code>, and an initial value for the
+covariance parameters (zeros in this example), and the estimated parameters are mapped
+back to variance components using <code class="docutils literal notranslate"><span class="pre">build_params()</span></code>:</p>
+<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">reml</span><span class="o">$</span><span class="nf">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">torch</span><span class="o">$</span><span class="nf">zeros</span><span class="p">(</span><span class="m">3L</span><span class="p">),</span><span class="w"> </span><span class="n">verbose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1L</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">reml</span><span class="o">$</span><span class="nf">build_params</span><span class="p">()</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
 </pre></div>
 </div>
-<p>The BLUPs of a single random-effect component follow the same pattern. Here the design matrix is
-a plain tensor built by <code class="docutils literal notranslate"><span class="pre">model.matrix()</span></code>, so the columns of the <code class="docutils literal notranslate"><span class="pre">gen</span></code> term are built on their
-own, while its covariance is the <code class="docutils literal notranslate"><span class="pre">&quot;random/G/G_gen&quot;</span></code> node of the tree.</p>
-<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="n">Z_gen</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">model.matrix</span><span class="p">(</span><span class="o">~</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">gen</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
-<span class="w">    </span><span class="n">torch</span><span class="o">$</span><span class="nf">tensor</span><span class="p">(</span><span class="n">dtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">torch</span><span class="o">$</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">gen_blup</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">openreml</span><span class="o">$</span><span class="nf">blup</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">Z_gen</span><span class="p">,</span><span class="w"> </span><span class="n">tree</span><span class="p">[[</span><span class="s">&quot;random/G/G_gen&quot;</span><span class="p">]],</span><span class="w"> </span><span class="n">tree</span><span class="p">[[</span><span class="s">&quot;/&quot;</span><span class="p">]])</span>
+<p>The fixed effects follow from generalized least squares, the best linear unbiased estimate (BLUE):</p>
+<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">reml</span><span class="o">$</span><span class="nf">blue</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">X</span><span class="p">)</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
+</pre></div>
+</div>
+<p>The random effects are predicted with the best linear unbiased predictor (BLUP), one value per
+random-effect level. In this example the predictions correspond to the 24 genotypes followed by
+the 18 replicate-by-block combinations:</p>
+<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="nf">print</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">reml</span><span class="o">$</span><span class="nf">blup</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">X</span><span class="p">)</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()))</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.blup_per_term" title="torch_openreml.MixedModelREML.blup_per_term"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blup_per_term</span></code></a> splits the same
+predictions by random-effect term, returning a dict keyed by the term names supplied to the
+constructor. The random intercepts for <code class="docutils literal notranslate"><span class="pre">gen</span></code> are then:</p>
+<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="n">gen_blup</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">reml</span><span class="o">$</span><span class="nf">blup_per_term</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">X</span><span class="p">)[[</span><span class="s">&quot;genotype&quot;</span><span class="p">]]</span>
 <span class="nf">print</span><span class="p">(</span><span class="nf">setNames</span><span class="p">(</span><span class="nf">py_to_r</span><span class="p">(</span><span class="n">gen_blup</span><span class="o">$</span><span class="nf">numpy</span><span class="p">()),</span><span class="w"> </span><span class="nf">levels</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">gen</span><span class="p">)))</span>
 </pre></div>
 </div>
 <div class="jupyter_cell docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1] ∥∇∥:      41.8197, ∥Δ∥: 8.9438, η: 1.00, ∥Δᶜ∥: 8.9438, log 𝓛: -34.3129
-[  2] ∥∇∥:  315228.5938, ∥Δ∥: 0.8838, η: 1.00, ∥Δᶜ∥: 0.8838, log 𝓛: -201185.7344 (-201151.4215)
-[  3] ∥∇∥:  119225.9375, ∥Δ∥: 0.8520, η: 1.00, ∥Δᶜ∥: 0.8520, log 𝓛: -71843.5078 (+129342.2266)
-[  4] ∥∇∥:   44272.7930, ∥Δ∥: 0.8143, η: 1.00, ∥Δᶜ∥: 0.8143, log 𝓛: -26065.1172 (+45778.3906)
-[  5] ∥∇∥:   16331.1592, ∥Δ∥: 0.7587, η: 1.00, ∥Δᶜ∥: 0.7587, log 𝓛: -9457.2500 (+16607.8672)
-[  6] ∥∇∥:    6001.4775, ∥Δ∥: 0.7142, η: 1.00, ∥Δᶜ∥: 0.7142, log 𝓛: -3392.9177 (+6064.3323)
-[  7] ∥∇∥:    2194.9194, ∥Δ∥: 0.7031, η: 1.00, ∥Δᶜ∥: 0.7031, log 𝓛: -1181.2960 (+2211.6217)
-[  8] ∥∇∥:     793.7911, ∥Δ∥: 0.6952, η: 1.00, ∥Δᶜ∥: 0.6952, log 𝓛: -382.4956 (+798.8004)
-[  9] ∥∇∥:     278.6898, ∥Δ∥: 0.6715, η: 1.00, ∥Δᶜ∥: 0.6715, log 𝓛: -102.3004 (+280.1951)
-[ 10] ∥∇∥:      90.4126, ∥Δ∥: 0.5957, η: 1.00, ∥Δᶜ∥: 0.5957, log 𝓛: -11.4280 (+90.8725)
-[ 11] ∥∇∥:      23.9219, ∥Δ∥: 0.4006, η: 1.00, ∥Δᶜ∥: 0.4006, log 𝓛:  12.6795 (+24.1075)
-[ 12] ∥∇∥:       3.8674, ∥Δ∥: 0.1392, η: 1.00, ∥Δᶜ∥: 0.1392, log 𝓛:  16.5915 (+3.9120)
-[ 13] ∥∇∥:       0.2448, ∥Δ∥: 0.0157, η: 1.00, ∥Δᶜ∥: 0.0157, log 𝓛:  16.8083 (+0.2167)
-[ 14] ∥∇∥:       0.0103, ∥Δ∥: 0.0007, η: 1.00, ∥Δᶜ∥: 0.0007, log 𝓛:  16.8093 (+0.0011)
-[ 15] ∥∇∥:       0.0004, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8095 (+0.0001)
-[ 16] ∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8103 (+0.0008)
-[ 17] ∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8101 (-0.0002)
-[ 18] ∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8094 (-0.0007)
-[ 19] ∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8101 (+0.0007)
-[ 20] ∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8095 (-0.0005)
-[ 21] ∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8100 (+0.0005)
-[ 22] ∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8098 (-0.0002)
-[ 23] ∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, log 𝓛:  16.8098 (+0.0000)
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>MarginalCovariance(
+  operands={
+    &#39;Z&#39;: torch.Size([72, 42]),
+    &#39;G&#39;: BlockDiagonal(
+      operands={
+        &#39;genotype&#39;: ScalarMatrix(shape=(24, 24), param_specs={&#39;sigma^2&#39;: {&#39;fixed&#39;: False, &#39;default&#39;: tensor([0.]), &#39;trans&#39;: TransformExpPow2()}}),
+        &#39;replicate_block&#39;: KroneckerProduct(
+          operands={
+            &#39;G_rep&#39;: IdentityMatrix(shape=(3, 3)),
+            &#39;G_block&#39;: ScalarMatrix(shape=(6, 6), param_specs={&#39;sigma^2&#39;: {&#39;fixed&#39;: False, &#39;default&#39;: tensor([0.]), &#39;trans&#39;: TransformExpPow2()}})
+          }
+        )
+      }
+    ),
+    &#39;R&#39;: ScalarMatrix(shape=(72, 72), param_specs={&#39;sigma^2&#39;: {&#39;fixed&#39;: False, &#39;default&#39;: tensor([0.]), &#39;trans&#39;: TransformExpPow2()}})
+  }
+)
+[  1] ∥∇∥:      41.8198, ∥Δ∥: 8.9438, η: 0.25, ∥Δᶜ∥: 2.2359, accepted: True , log 𝓛:  13.4244
+[  2] ∥∇∥:      19.0068, ∥Δ∥: 0.4705, η: 1.00, ∥Δᶜ∥: 0.4705, accepted: True , log 𝓛:  16.6687
+[  3] ∥∇∥:       3.6187, ∥Δ∥: 0.0932, η: 1.00, ∥Δᶜ∥: 0.0932, accepted: True , log 𝓛:  16.7988
+[  4] ∥∇∥:       0.1519, ∥Δ∥: 0.0042, η: 1.00, ∥Δᶜ∥: 0.0042, accepted: True , log 𝓛:  16.8141
+[  5] ∥∇∥:       0.0020, ∥Δ∥: 0.0001, η: 0.00, ∥Δᶜ∥: 0.0000, accepted: False, log 𝓛:  16.8081
+[  6] ∥∇∥:       0.0019, ∥Δ∥: 0.0001, η: 1.00, ∥Δᶜ∥: 0.0001, accepted: True , log 𝓛:  16.8137
+[  7] ∥∇∥:       0.0001, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, accepted: True , log 𝓛:  16.8157
+[  8] ∥∇∥:       0.0001, ∥Δ∥: 0.0000, η: 0.02, ∥Δᶜ∥: 0.0000, accepted: True , log 𝓛:  16.8157
 
-[∇: score, Δ: 𝐉⁻¹∇, η: learning rate, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
+[∇: score, Δ: 𝐉⁻¹∇, η: step length, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 23, total time: 0.02s
+✓ Converged at iteration 8, total time: 0.02s
 
-[1] -0.972798 -1.328073 -1.252864
-[1] 0.14290202 0.07021838 0.08161612
-[1]  4.5182500  0.2978461 -0.4140458
- [1]  0.501184165  0.004963160 -0.784562290  0.006126182  0.474950343
- [6]  0.044640645 -0.308947176  0.062229965 -0.809931338 -0.089372545
-[11] -0.196434021  0.225758880  0.231665403  0.243400365  0.424700201
-[16]  0.200965181  0.078078367 -0.110180408  0.289576441 -0.338968456
-[21]  0.256132513  0.024089186 -0.176997110 -0.253057241  0.123136975
-[26] -0.141224682 -0.150393724 -0.106754780  0.073705100  0.201535776
-[31] -0.532640874 -0.301233053  0.243239447  0.134878606  0.275337100
-[36]  0.180419102  0.050569803 -0.047783963  0.151079059  0.053760782
-[41] -0.008047575 -0.199577898
+[1] 0.14290200 0.07021844 0.08161712
+[1]  4.5182447  0.2978498 -0.4140421
+ [1]  0.501184165  0.004964266 -0.784560025  0.006126862  0.474950671
+ [6]  0.044642225 -0.308945537  0.062230300 -0.809928179 -0.089371264
+[11] -0.196432576  0.225759938  0.231666133  0.243400127  0.424700201
+[16]  0.200965792  0.078079604 -0.110178962  0.289576948 -0.338967472
+[21]  0.256133080  0.024090428 -0.176996052 -0.253055513  0.123139009
+[26] -0.141222149 -0.150390953 -0.106752411  0.073707275  0.201536730
+[31] -0.532639027 -0.301232427  0.243238658  0.134878069  0.275336236
+[36]  0.180418551  0.050570097 -0.047783975  0.151078418  0.053760573
+[41] -0.008047673 -0.199577644
          G01          G02          G03          G04          G05          G06 
- 0.501184165  0.004963160 -0.784562290  0.006126182  0.474950343  0.044640645 
+ 0.501184165  0.004964266 -0.784560025  0.006126862  0.474950671  0.044642225 
          G07          G08          G09          G10          G11          G12 
--0.308947176  0.062229965 -0.809931338 -0.089372545 -0.196434021  0.225758880 
+-0.308945537  0.062230300 -0.809928179 -0.089371264 -0.196432576  0.225759938 
          G13          G14          G15          G16          G17          G18 
- 0.231665403  0.243400365  0.424700201  0.200965181  0.078078367 -0.110180408 
+ 0.231666133  0.243400127  0.424700201  0.200965792  0.078079604 -0.110178962 
          G19          G20          G21          G22          G23          G24 
- 0.289576441 -0.338968456  0.256132513  0.024089186 -0.176997110 -0.253057241 
+ 0.289576948 -0.338967472  0.256133080  0.024090428 -0.176996052 -0.253055513 
 </pre></div>
 </div>
 </div>
@@ -499,14 +502,14 @@ own, while its covariance is the <code class="docutils literal notranslate"><spa
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="vig/vig_marginal_reml.html">
+          <a class="prev-page" href="vig/vig_mixed_model_reml.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Introduction to Marginal REML Estimation</div>
+                <div class="title">Introduction to Mixed Model REML Estimation</div>
                 
               </div>
             </a>
@@ -573,6 +576,5 @@ own, while its covariance is the <code class="docutils literal notranslate"><spa
     <script src="_static/thebelab-helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     </body>
 </html>

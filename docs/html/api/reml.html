@@ -3,13 +3,13 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="torch_openreml.MarginalREML" href="../generated/torch_openreml.MarginalREML.html"><link rel="prev" title="API Reference" href="../api.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="torch_openreml.MixedModelREML" href="../generated/torch_openreml.MixedModelREML.html"><link rel="prev" title="API Reference" href="../api.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>MarginalREML - torch-openreml 0.4.1-alpha documentation</title>
+        <title>Mixed models - torch-openreml 0.4.1-alpha documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -195,17 +195,22 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../vig.html">Vignettes</a><input aria-label="Toggle navigation of Vignettes" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../vig/vig_marginal_reml.html">Introduction to Marginal REML Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vig/vig_mixed_model_reml.html">Introduction to Mixed Model REML Estimation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../r_user.html">For R Users</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tech.html">Technical Documentation</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../api.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
-<li class="toctree-l2 current has-children current-page"><a class="current reference internal" href="#">MarginalREML</a><input aria-label="Toggle navigation of MarginalREML" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.MarginalREML.html">torch_openreml.MarginalREML</a></li>
+<li class="toctree-l2 current has-children current-page"><a class="current reference internal" href="#">Mixed models</a><input aria-label="Toggle navigation of Mixed models" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.MixedModelREML.html">torch_openreml.MixedModelREML</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="covariance.html">Covariance</a><input aria-label="Toggle navigation of Covariance" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="methods.html">REML methods</a><input aria-label="Toggle navigation of REML methods" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.methods.CForm.html">torch_openreml.methods.CForm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.methods.Marginal.html">torch_openreml.methods.Marginal</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="covariance.html">Covariance</a><input aria-label="Toggle navigation of Covariance" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Matrix.html">torch_openreml.covariance.Matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.AR1Matrix.html">torch_openreml.covariance.AR1Matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.CompoundSymmetricMatrix.html">torch_openreml.covariance.CompoundSymmetricMatrix</a></li>
@@ -214,14 +219,16 @@
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.EqualEntryMatrix.html">torch_openreml.covariance.EqualEntryMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.EquicorrelationMatrix.html">torch_openreml.covariance.EquicorrelationMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.IdentityMatrix.html">torch_openreml.covariance.IdentityMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.KnownMatrix.html">torch_openreml.covariance.KnownMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.LowerTriangularMatrix.html">torch_openreml.covariance.LowerTriangularMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.ScalarMatrix.html">torch_openreml.covariance.ScalarMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.UnconstrainedMatrix.html">torch_openreml.covariance.UnconstrainedMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.SimpleMatrix.html">torch_openreml.covariance.SimpleMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.simple_param_specs.html">torch_openreml.covariance.simple_param_specs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.MarginalCovariance.html">torch_openreml.covariance.MarginalCovariance</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="operators.html">Operators</a><input aria-label="Toggle navigation of Operators" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="operators.html">Operators</a><input aria-label="Toggle navigation of Operators" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Operator.html">torch_openreml.covariance.Operator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.BlockDiagonal.html">torch_openreml.covariance.BlockDiagonal</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.HadamardProduct.html">torch_openreml.covariance.HadamardProduct</a></li>
@@ -236,11 +243,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Stack.html">torch_openreml.covariance.Stack</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="adapter.html">Adapter</a><input aria-label="Toggle navigation of Adapter" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="adapter.html">Adapter</a><input aria-label="Toggle navigation of Adapter" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Adapter.html">torch_openreml.covariance.Adapter</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="transforms.html">Transforms</a><input aria-label="Toggle navigation of Transforms" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="transforms.html">Transforms</a><input aria-label="Toggle navigation of Transforms" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.transform.Transform.html">torch_openreml.covariance.transform.Transform</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.transform.TransformChain.html">torch_openreml.covariance.transform.TransformChain</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.transform.TransformExp.html">torch_openreml.covariance.transform.TransformExp</a></li>
@@ -253,7 +260,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.transform.TransformSigmoid.html">torch_openreml.covariance.transform.TransformSigmoid</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.blue.html">torch_openreml.blue</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.blup.html">torch_openreml.blup</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.marginal_predict.html">torch_openreml.marginal_predict</a></li>
@@ -263,7 +270,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.loglik.html">torch_openreml.loglik</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.get_device.html">torch_openreml.utils.get_device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.get_dtype.html">torch_openreml.utils.get_dtype</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
@@ -318,13 +325,13 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="marginalreml">
-<h1>MarginalREML<a class="headerlink" href="#marginalreml" title="Link to this heading">¶</a></h1>
+          <section id="mixed-models">
+<h1>Mixed models<a class="headerlink" href="#mixed-models" title="Link to this heading">¶</a></h1>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torch_openreml.MarginalREML.html#torch_openreml.MarginalREML" title="torch_openreml.MarginalREML"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.MarginalREML</span></code></a>(v)</p></td>
-<td><p>Marginal REML estimator for generalised least squares with a parametric marginal covariance matrix.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML" title="torch_openreml.MixedModelREML"><code class="xref py py-obj docutils literal notranslate"><span class="pre">torch_openreml.MixedModelREML</span></code></a>(*args[, R, method])</p></td>
+<td><p>REML estimator for a structured linear mixed model.</p></td>
 </tr>
 </tbody>
 </table>
@@ -336,12 +343,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../generated/torch_openreml.MarginalREML.html">
+          <a class="next-page" href="../generated/torch_openreml.MixedModelREML.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">torch_openreml.MarginalREML</div>
+                <div class="title">torch_openreml.MixedModelREML</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>

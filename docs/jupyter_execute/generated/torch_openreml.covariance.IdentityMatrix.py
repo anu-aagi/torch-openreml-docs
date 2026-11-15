@@ -34,11 +34,11 @@ import torch
 from torch_openreml.covariance import IdentityMatrix
 
 mat = IdentityMatrix(3)
-mat.inverse()
+mat.manual_inverse()
 
 
 # In[5]:
 
 
-mat.inverse(torch.tensor([], dtype=torch.float64))
+mat.manual_inverse(torch.tensor([], dtype=torch.float64))
 

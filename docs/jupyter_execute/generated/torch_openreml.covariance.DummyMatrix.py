@@ -62,3 +62,25 @@ mat()
 
 mat(torch.tensor([], dtype=torch.float64))
 
+
+# In[8]:
+
+
+import torch
+from torch_openreml.covariance import DummyMatrix
+
+mat = DummyMatrix(["rep1", "rep2", "rep1"])
+mat.colnames
+
+
+# In[9]:
+
+
+mat.transform(["rep2", "rep3"])
+
+
+# In[10]:
+
+
+mat.transform(["rep2", "rep3"], dtype=torch.float64, device="cpu")
+

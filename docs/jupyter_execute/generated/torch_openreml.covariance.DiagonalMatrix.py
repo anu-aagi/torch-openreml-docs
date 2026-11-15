@@ -32,5 +32,5 @@ from torch_openreml.covariance import DiagonalMatrix
 
 mat = DiagonalMatrix(3)
 free_params = torch.tensor([0.0, 0.5, 1.0])
-mat.inverse(free_params)
+mat.manual_inverse(free_params)
 

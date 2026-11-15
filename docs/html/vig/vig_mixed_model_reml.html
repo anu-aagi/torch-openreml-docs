@@ -1,0 +1,1570 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="For R Users" href="../r_user.html"><link rel="prev" title="Vignettes" href="../vig.html">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>Introduction to Mixed Model REML Estimation - torch-openreml 0.4.1-alpha documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">torch-openreml 0.4.1-alpha documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <span class="sidebar-brand-text">torch-openreml 0.4.1-alpha documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../vig.html">Vignettes</a><input aria-label="Toggle navigation of Vignettes" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Introduction to Mixed Model REML Estimation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../r_user.html">For R Users</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tech.html">Technical Documentation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/reml.html">Mixed models</a><input aria-label="Toggle navigation of Mixed models" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.MarginalREML.html">torch_openreml.MarginalREML</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.MixedModelREML.html">torch_openreml.MixedModelREML</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/methods.html">REML methods</a><input aria-label="Toggle navigation of REML methods" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.methods.CForm.html">torch_openreml.methods.CForm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.methods.Marginal.html">torch_openreml.methods.Marginal</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/covariance.html">Covariance</a><input aria-label="Toggle navigation of Covariance" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Matrix.html">torch_openreml.covariance.Matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.AR1Matrix.html">torch_openreml.covariance.AR1Matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.CompoundSymmetricMatrix.html">torch_openreml.covariance.CompoundSymmetricMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.DiagonalMatrix.html">torch_openreml.covariance.DiagonalMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.DummyMatrix.html">torch_openreml.covariance.DummyMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.EqualEntryMatrix.html">torch_openreml.covariance.EqualEntryMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.EquicorrelationMatrix.html">torch_openreml.covariance.EquicorrelationMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.IdentityMatrix.html">torch_openreml.covariance.IdentityMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.KnownMatrix.html">torch_openreml.covariance.KnownMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.LowerTriangularMatrix.html">torch_openreml.covariance.LowerTriangularMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.ScalarMatrix.html">torch_openreml.covariance.ScalarMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.UnconstrainedMatrix.html">torch_openreml.covariance.UnconstrainedMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.SimpleMatrix.html">torch_openreml.covariance.SimpleMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.simple_param_specs.html">torch_openreml.covariance.simple_param_specs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.MarginalCovariance.html">torch_openreml.covariance.MarginalCovariance</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/operators.html">Operators</a><input aria-label="Toggle navigation of Operators" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Operator.html">torch_openreml.covariance.Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.BlockDiagonal.html">torch_openreml.covariance.BlockDiagonal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.HadamardProduct.html">torch_openreml.covariance.HadamardProduct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.KroneckerProduct.html">torch_openreml.covariance.KroneckerProduct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Product.html">torch_openreml.covariance.Product</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Transpose.html">torch_openreml.covariance.Transpose</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Inverse.html">torch_openreml.covariance.Inverse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.CovariancePropagation.html">torch_openreml.covariance.CovariancePropagation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Gram.html">torch_openreml.covariance.Gram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Sum.html">torch_openreml.covariance.Sum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Augment.html">torch_openreml.covariance.Augment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Stack.html">torch_openreml.covariance.Stack</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/adapter.html">Adapter</a><input aria-label="Toggle navigation of Adapter" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.Adapter.html">torch_openreml.covariance.Adapter</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/transforms.html">Transforms</a><input aria-label="Toggle navigation of Transforms" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.transform.Transform.html">torch_openreml.covariance.transform.Transform</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.transform.TransformChain.html">torch_openreml.covariance.transform.TransformChain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.transform.TransformExp.html">torch_openreml.covariance.transform.TransformExp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.transform.TransformExp2.html">torch_openreml.covariance.transform.TransformExp2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.transform.TransformExp10.html">torch_openreml.covariance.transform.TransformExp10</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.transform.TransformExpPow2.html">torch_openreml.covariance.transform.TransformExpPow2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.transform.TransformIdentity.html">torch_openreml.covariance.transform.TransformIdentity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.transform.TransformPow.html">torch_openreml.covariance.transform.TransformPow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.transform.TransformScaleShift.html">torch_openreml.covariance.transform.TransformScaleShift</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.covariance.transform.TransformSigmoid.html">torch_openreml.covariance.transform.TransformSigmoid</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.blue.html">torch_openreml.blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.blup.html">torch_openreml.blup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.marginal_predict.html">torch_openreml.marginal_predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.marginal_residual.html">torch_openreml.marginal_residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.predict.html">torch_openreml.predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.residual.html">torch_openreml.residual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.loglik.html">torch_openreml.loglik</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.get_device.html">torch_openreml.utils.get_device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.get_dtype.html">torch_openreml.utils.get_dtype</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.augment.html">torch_openreml.utils.augment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.interaction.html">torch_openreml.utils.interaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torch_openreml.utils.n_distinct.html">torch_openreml.utils.n_distinct</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/example_data.html">Example Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../change_log.html">Changelog</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/anu-aagi/torch-openreml/blob/main/docs/source/vig/vig_mixed_model_reml.rst?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/anu-aagi/torch-openreml/edit/main/docs/source/vig/vig_mixed_model_reml.rst" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="introduction-to-mixed-model-reml-estimation">
+<span id="vig-mixed-model-reml"></span><h1>Introduction to Mixed Model REML Estimation<a class="headerlink" href="#introduction-to-mixed-model-reml-estimation" title="Link to this heading">¶</a></h1>
+<p>The <a class="reference internal" href="../generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML" title="torch_openreml.MixedModelREML"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixedModelREML</span></code></a> class implements restricted
+maximum likelihood (REML) estimation for linear mixed models, using the
+average information (AI) algorithm. The AI algorithm combines the stability of
+the expected information matrix with the curvature information of the observed
+information matrix, leading to efficient and robust estimation of covariance
+parameters.</p>
+<p>This vignette introduces the mixed model formulation, explains how to specify
+random-effect and residual terms, demonstrates optimisation workflows, and
+covers post-estimation utilities such as BLUEs, BLUPs, marginal predictions,
+residuals, and convergence diagnostics.</p>
+<section id="the-model">
+<h2>The model<a class="headerlink" href="#the-model" title="Link to this heading">¶</a></h2>
+<p>The <a class="reference internal" href="../generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML" title="torch_openreml.MixedModelREML"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixedModelREML</span></code></a> class assumes the linear mixed
+model</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\mathbf{y}
+=
+\mathbf{X}\boldsymbol{\beta}
++
+\sum_{i=1}^{b}\mathbf{Z}_i(\boldsymbol{\theta})\mathbf{u}_i
++
+\boldsymbol{\epsilon},
+\qquad
+\mathbf{u}_i \sim \mathcal{N}(\mathbf{0}, \mathbf{G}_i(\boldsymbol{\theta})),
+\qquad
+\boldsymbol{\epsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{R}(\boldsymbol{\theta})),\]</div>
+</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{y}\)</span> is the response vector of length <span class="math notranslate nohighlight">\(n\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is the fixed-effects design matrix,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> is the vector of fixed effects,</p></li>
+<li><p><span class="math notranslate nohighlight">\(b\)</span> is the number of random-effect terms,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{Z}_i(\boldsymbol{\theta})\)</span> is the incidence matrix of the
+<span class="math notranslate nohighlight">\(i\)</span>-th random-effect term, which may be fixed or parameterised,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span> is the vector of random effects of the <span class="math notranslate nohighlight">\(i\)</span>-th
+term,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{G}_i(\boldsymbol{\theta})\)</span> is the covariance matrix of
+<span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}\)</span> is the vector of residual errors, and</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{R}(\boldsymbol{\theta})\)</span> is the residual covariance matrix.</p></li>
+</ul>
+<p>The random effects and the residual errors are independent, so the response
+has the marginal distribution</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\mathbf{y} \sim \mathcal{N}(\mathbf{X}\boldsymbol{\beta}, \mathbf{V}(\boldsymbol{\theta})),\]</div>
+</div>
+<p>where the marginal covariance matrix is</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\mathbf{V}(\boldsymbol{\theta})
+=
+\mathbf{R}(\boldsymbol{\theta})
++
+\sum_{i=1}^{b}
+\mathbf{Z}_i(\boldsymbol{\theta})
+\mathbf{G}_i(\boldsymbol{\theta})
+\mathbf{Z}_i(\boldsymbol{\theta})^\top,\]</div>
+</div>
+<p>with <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> the variance-component vector collecting the
+parameters of the random-effect covariances, the residual covariance, and any
+parameterised incidence matrices.</p>
+<p>The REML estimator maximises the restricted log-likelihood</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\ell_R(\boldsymbol{\theta}) =
+-\frac{1}{2}
+\Bigl(
+    \log |\mathbf{V}|
+    +
+    \log |\mathbf{X}^\top \mathbf{V}^{-1} \mathbf{X}|
+    +
+    \mathbf{y}^\top \mathbf{P} \mathbf{y}
+\Bigr),\]</div>
+</div>
+<p>where</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\mathbf{P} =
+\mathbf{V}^{-1}
+-
+\mathbf{V}^{-1}\mathbf{X}
+\left(
+    \mathbf{X}^\top \mathbf{V}^{-1}\mathbf{X}
+\right)^{-1}
+\mathbf{X}^\top \mathbf{V}^{-1}\]</div>
+</div>
+<p>is the residual projection matrix.</p>
+<p>The C-form evaluates the same log-likelihood without forming
+<span class="math notranslate nohighlight">\(\mathbf{V}\)</span>.  Write <span class="math notranslate nohighlight">\(\mathbf{Z}\)</span> for the combined incidence
+matrix of all <span class="math notranslate nohighlight">\(b\)</span> terms and <span class="math notranslate nohighlight">\(\mathbf{G}\)</span> for the block-diagonal
+covariance of their random effects, and let</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\mathbf{W} = [\mathbf{X}, \mathbf{Z}],
+\qquad
+\mathbf{C}
+=
+\mathbf{W}^\top \mathbf{R}^{-1} \mathbf{W}
++
+\operatorname{blockdiag}(\mathbf{0}, \mathbf{G}^{-1}),
+\qquad
+\mathbf{U} = \mathbf{R}^{-1}\mathbf{W}.\]</div>
+</div>
+<p>The projection matrix is then</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\mathbf{P}
+=
+\mathbf{R}^{-1}
+-
+\mathbf{U}\mathbf{C}^{-1}\mathbf{U}^\top,\]</div>
+</div>
+<p>and the restricted log-likelihood becomes</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\ell_R(\boldsymbol{\theta})
+=
+-\frac{1}{2}
+\Bigl(
+    \log |\mathbf{C}|
+    +
+    \log |\mathbf{R}|
+    +
+    \log |\mathbf{G}|
+    +
+    \mathbf{y}^\top \mathbf{P} \mathbf{y}
+\Bigr),\]</div>
+</div>
+<p>which involves only <span class="math notranslate nohighlight">\(\mathbf{C}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{R}\)</span> and
+<span class="math notranslate nohighlight">\(\mathbf{G}\)</span>.  This is the form used by
+<a class="reference internal" href="../generated/torch_openreml.methods.CForm.html#torch_openreml.methods.CForm" title="torch_openreml.methods.CForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">CForm</span></code></a>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Internally, <a class="reference internal" href="../generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML" title="torch_openreml.MixedModelREML"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixedModelREML</span></code></a> repeatedly evaluates</p>
+<ul class="simple">
+<li><p>the score vector,</p></li>
+<li><p>and the average information matrix,</p></li>
+</ul>
+<p>until convergence criteria are satisfied.  The default
+<a class="reference internal" href="../generated/torch_openreml.methods.CForm.html#torch_openreml.methods.CForm" title="torch_openreml.methods.CForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">CForm</span></code></a> method derives these from the
+random-effect and residual covariances
+<span class="math notranslate nohighlight">\(\mathbf{Z}_i\)</span>, <span class="math notranslate nohighlight">\(\mathbf{G}_i\)</span> and <span class="math notranslate nohighlight">\(\mathbf{R}\)</span> and
+their derivatives, forming the projection <span class="math notranslate nohighlight">\(\mathbf{P}\)</span> from that
+block structure without ever assembling the <span class="math notranslate nohighlight">\(n \times n\)</span> marginal
+covariance <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>.  The alternative
+<a class="reference internal" href="../generated/torch_openreml.methods.Marginal.html#torch_openreml.methods.Marginal" title="torch_openreml.methods.Marginal"><code class="xref py py-class docutils literal notranslate"><span class="pre">Marginal</span></code></a> method instead evaluates
+<span class="math notranslate nohighlight">\(\mathbf{V}\)</span> and its derivatives
+<span class="math notranslate nohighlight">\(\partial \mathbf{V} / \partial \theta_k\)</span> directly.</p>
+</div>
+</section>
+<section id="constructing-the-reml-object">
+<h2>Constructing the REML object<a class="headerlink" href="#constructing-the-reml-object" title="Link to this heading">¶</a></h2>
+<p>The <a class="reference internal" href="../generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML" title="torch_openreml.MixedModelREML"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixedModelREML</span></code></a> constructor accepts random-effect terms as <code class="docutils literal notranslate"><span class="pre">(design,</span> <span class="pre">covariance)</span></code> pairs, where <code class="docutils literal notranslate"><span class="pre">design</span></code> is the incidence matrix <span class="math notranslate nohighlight">\(\mathbf{Z}_i\)</span> and <code class="docutils literal notranslate"><span class="pre">covariance</span></code> represents <span class="math notranslate nohighlight">\(\mathbf{G}_i\)</span>. Terms can be supplied positionally or by keyword. Positional terms are named <code class="docutils literal notranslate"><span class="pre">random_term_0</span></code>, <code class="docutils literal notranslate"><span class="pre">random_term_1</span></code>, and so on, in the order supplied, and precede keyword terms. Keyword names must be unique and cannot be <code class="docutils literal notranslate"><span class="pre">R</span></code> or <code class="docutils literal notranslate"><span class="pre">method</span></code>. Each term name defines a namespace for its parameters and serves as the key in post-estimation methods that report results by term, such as <a class="reference internal" href="../generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.blup_per_term" title="torch_openreml.MixedModelREML.blup_per_term"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blup_per_term()</span></code></a>.</p>
+<p>Both <code class="docutils literal notranslate"><span class="pre">design</span></code> and <code class="docutils literal notranslate"><span class="pre">covariance</span></code> can be specified as either a tensor or a <a class="reference internal" href="../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix" title="torch_openreml.covariance.matrix.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a>. Tensors are treated as fixed matrices, while <a class="reference internal" href="../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix" title="torch_openreml.covariance.matrix.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a> objects may contain free parameters that are estimated jointly with the other model parameters.</p>
+<p>The residual covariance <code class="docutils literal notranslate"><span class="pre">R</span></code> accepts either a <a class="reference internal" href="../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix" title="torch_openreml.covariance.matrix.Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a> or a two-dimensional tensor. If omitted, it defaults to <span class="math notranslate nohighlight">\(\sigma^2 \mathbf{I}\)</span>, with its dimension inferred from the random-effect design. It must be supplied explicitly when the model has no random-effect terms.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml</span><span class="w"> </span><span class="kn">import</span> <span class="n">MixedModelREML</span>
+
+<span class="n">reml</span> <span class="o">=</span> <span class="n">MixedModelREML</span><span class="p">((</span><span class="n">Z</span><span class="p">,</span> <span class="n">G</span><span class="p">),</span> <span class="n">R</span><span class="o">=</span><span class="n">R</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="via-simplematrix-function-based">
+<h3>Via <code class="docutils literal notranslate"><span class="pre">SimpleMatrix</span></code> (function-based)<a class="headerlink" href="#via-simplematrix-function-based" title="Link to this heading">¶</a></h3>
+<p>For quick prototyping, <a class="reference internal" href="../generated/torch_openreml.covariance.SimpleMatrix.html#torch_openreml.covariance.SimpleMatrix" title="torch_openreml.covariance.SimpleMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleMatrix</span></code></a> provides a convenient way to define a matrix through a user-supplied function. All parameters are free and unconstrained, so transformations can be applied within the function to enforce parameter constraints.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml</span><span class="w"> </span><span class="kn">import</span> <span class="n">MixedModelREML</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleMatrix</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">my_r</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="n">sigma2</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">I</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">J</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sigma2</span> <span class="o">*</span> <span class="p">(</span><span class="n">I</span> <span class="o">+</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">J</span><span class="p">)</span>
+
+<span class="n">R</span> <span class="o">=</span> <span class="n">SimpleMatrix</span><span class="p">(</span><span class="n">num_free_params</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">call</span><span class="o">=</span><span class="n">my_r</span><span class="p">)</span>
+<span class="n">reml</span> <span class="o">=</span> <span class="n">MixedModelREML</span><span class="p">(</span><span class="n">R</span><span class="o">=</span><span class="n">R</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">theta[0]</span></code> controls the variance scale through an exponential transformation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">theta[1]</span></code> controls the correlation parameter through a sigmoid transformation.</p></li>
+</ul>
+<p>The resulting residual covariance matrix is</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\mathbf{R} = \sigma^2 (\mathbf{I} + \rho \mathbf{J}),\]</div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> is the all-ones matrix.</p>
+<p>The supplied function is automatically differentiated by PyTorch, so no derivative code is required.</p>
+<p><a class="reference internal" href="../generated/torch_openreml.covariance.SimpleMatrix.html#torch_openreml.covariance.SimpleMatrix" title="torch_openreml.covariance.SimpleMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleMatrix</span></code></a> can also be used to define design matrices <span class="math notranslate nohighlight">\(\mathbf{Z}_i\)</span> and random-effect covariance matrices <span class="math notranslate nohighlight">\(\mathbf{G}_i\)</span>. For example, the following defines a diagonal random-effect covariance matrix with an estimated variance parameter:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_g</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="n">sigma2</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">sigma2</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">G</span> <span class="o">=</span> <span class="n">SimpleMatrix</span><span class="p">(</span><span class="n">num_free_params</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">call</span><span class="o">=</span><span class="n">my_g</span><span class="p">)</span>
+
+<span class="n">Z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">reml</span> <span class="o">=</span> <span class="n">MixedModelREML</span><span class="p">((</span><span class="n">Z</span><span class="p">,</span> <span class="n">G</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The gradient can also be supplied manually through the <code class="docutils literal notranslate"><span class="pre">manual_grad</span></code> argument. This is useful when analytical derivatives are available and can be computed more efficiently than automatic differentiation, particularly for computationally expensive matrix constructions. For the diagonal covariance matrix above, the analytical gradient is:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_g_grad</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="n">sigma2</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">sigma2</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">G</span> <span class="o">=</span> <span class="n">SimpleMatrix</span><span class="p">(</span><span class="n">num_free_params</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">call</span><span class="o">=</span><span class="n">my_g</span><span class="p">,</span> <span class="n">manual_grad</span><span class="o">=</span><span class="n">my_g_grad</span><span class="p">)</span>
+
+<span class="n">reml</span> <span class="o">=</span> <span class="n">MixedModelREML</span><span class="p">((</span><span class="n">Z</span><span class="p">,</span> <span class="n">G</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The gradient function returns a tensor of shape <code class="docutils literal notranslate"><span class="pre">(num_free_params,</span> <span class="pre">*matrix_shape)</span></code>, where each slice along the first dimension contains the derivative of the matrix with respect to the corresponding parameter. Here, the shape is <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">3,</span> <span class="pre">3)</span></code>.</p>
+</section>
+<section id="via-a-covariance-matrix-builder">
+<h3>Via a covariance Matrix builder<a class="headerlink" href="#via-a-covariance-matrix-builder" title="Link to this heading">¶</a></h3>
+<p>When a covariance structure matches one of the built-in structures, it is generally clearer to construct it using the covariance builders rather than defining it manually.</p>
+<p>The covariance builder API provides reusable components, including:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../generated/torch_openreml.covariance.ScalarMatrix.html#torch_openreml.covariance.ScalarMatrix" title="torch_openreml.covariance.ScalarMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScalarMatrix</span></code></a></p></li>
+<li><p><a class="reference internal" href="../generated/torch_openreml.covariance.IdentityMatrix.html#torch_openreml.covariance.IdentityMatrix" title="torch_openreml.covariance.IdentityMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">IdentityMatrix</span></code></a></p></li>
+<li><p><a class="reference internal" href="../generated/torch_openreml.covariance.DiagonalMatrix.html#torch_openreml.covariance.DiagonalMatrix" title="torch_openreml.covariance.DiagonalMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiagonalMatrix</span></code></a></p></li>
+<li><p><a class="reference internal" href="../generated/torch_openreml.covariance.AR1Matrix.html#torch_openreml.covariance.AR1Matrix" title="torch_openreml.covariance.AR1Matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">AR1Matrix</span></code></a></p></li>
+<li><p><a class="reference internal" href="../generated/torch_openreml.covariance.CompoundSymmetricMatrix.html#torch_openreml.covariance.CompoundSymmetricMatrix" title="torch_openreml.covariance.CompoundSymmetricMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompoundSymmetricMatrix</span></code></a></p></li>
+</ul>
+<p>These components can be combined using composition operators, including:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../generated/torch_openreml.covariance.Sum.html#torch_openreml.covariance.Sum" title="torch_openreml.covariance.Sum"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sum</span></code></a></p></li>
+<li><p><a class="reference internal" href="../generated/torch_openreml.covariance.BlockDiagonal.html#torch_openreml.covariance.BlockDiagonal" title="torch_openreml.covariance.BlockDiagonal"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockDiagonal</span></code></a></p></li>
+<li><p><a class="reference internal" href="../generated/torch_openreml.covariance.KroneckerProduct.html#torch_openreml.covariance.KroneckerProduct" title="torch_openreml.covariance.KroneckerProduct"><code class="xref py py-class docutils literal notranslate"><span class="pre">KroneckerProduct</span></code></a></p></li>
+<li><p><a class="reference internal" href="../generated/torch_openreml.covariance.Gram.html#torch_openreml.covariance.Gram" title="torch_openreml.covariance.Gram"><code class="xref py py-class docutils literal notranslate"><span class="pre">Gram</span></code></a></p></li>
+</ul>
+<p>For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">IdentityMatrix</span><span class="p">,</span> <span class="n">KroneckerProduct</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.example_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">john_alpha</span>
+
+<span class="n">gen</span><span class="p">,</span> <span class="n">rep</span><span class="p">,</span> <span class="n">block</span> <span class="o">=</span> <span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;rep&quot;</span><span class="p">],</span> <span class="n">john_alpha</span><span class="p">[</span><span class="s2">&quot;block&quot;</span><span class="p">]</span>
+
+<span class="n">reml</span> <span class="o">=</span> <span class="n">MixedModelREML</span><span class="p">(</span>
+    <span class="n">gen</span><span class="o">=</span><span class="p">(</span><span class="n">DummyMatrix</span><span class="p">(</span><span class="n">gen</span><span class="p">),</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">gen</span><span class="p">)),</span>
+    <span class="n">block</span><span class="o">=</span><span class="p">(</span>
+        <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">rep</span><span class="p">,</span> <span class="n">block</span><span class="p">),</span>
+        <span class="n">KroneckerProduct</span><span class="p">(</span><span class="n">IdentityMatrix</span><span class="p">(</span><span class="n">rep</span><span class="p">),</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">block</span><span class="p">)),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The covariance builders handle the underlying implementation, including:</p>
+<ul class="simple">
+<li><p>Parameter bookkeeping and transformations.</p></li>
+<li><p>Construction of the design matrices <span class="math notranslate nohighlight">\(\mathbf{Z}_i\)</span>, random-effect covariance matrices <span class="math notranslate nohighlight">\(\mathbf{G}_i\)</span>, and residual covariance matrix <span class="math notranslate nohighlight">\(\mathbf{R}\)</span>.</p></li>
+<li><p>Computation of component derivatives.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Internally, <a class="reference internal" href="../generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML" title="torch_openreml.MixedModelREML"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixedModelREML</span></code></a> calls
+<a class="reference internal" href="../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.__call__" title="torch_openreml.covariance.Matrix.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> to construct each
+matrix component and <a class="reference internal" href="../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.grad" title="torch_openreml.covariance.Matrix.grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grad()</span></code></a>
+to compute its Jacobian. The gradient implementation first attempts
+to use a closed-form <a class="reference internal" href="../generated/torch_openreml.covariance.Matrix.html#torch_openreml.covariance.Matrix.manual_grad" title="torch_openreml.covariance.Matrix.manual_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">manual_grad()</span></code></a>
+implementation and falls back to automatic differentiation when one
+is not available.</p>
+</div>
+</section>
+<section id="parameter-names-and-ordering">
+<h3>Parameter names and ordering<a class="headerlink" href="#parameter-names-and-ordering" title="Link to this heading">¶</a></h3>
+<p>The free parameters in <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> are named according to their associated term and matrix. Since these are the same parameters used to construct the marginal covariance matrix, their names can be inspected before fitting:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">n_env</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">5</span>
+<span class="n">environment</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;env</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">n_env</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+<span class="n">genotype</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">25</span>
+
+<span class="n">reml</span> <span class="o">=</span> <span class="n">MixedModelREML</span><span class="p">(</span>
+    <span class="n">env</span><span class="o">=</span><span class="p">(</span><span class="n">DummyMatrix</span><span class="p">(</span><span class="n">environment</span><span class="p">),</span> <span class="n">CompoundSymmetricMatrix</span><span class="p">(</span><span class="n">environment</span><span class="p">)),</span>
+    <span class="n">gen</span><span class="o">=</span><span class="p">(</span><span class="n">DummyMatrix</span><span class="p">(</span><span class="n">genotype</span><span class="p">),</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">genotype</span><span class="p">))</span>
+<span class="p">)</span>
+<span class="n">reml</span><span class="o">.</span><span class="n">V</span><span class="o">.</span><span class="n">free_param_names</span>
+</pre></div>
+</div>
+<p>which returns:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[&#39;G/env/sigma^2&#39;, &#39;G/env/rho&#39;, &#39;G/gen/sigma^2&#39;, &#39;R/sigma^2&#39;]
+</pre></div>
+</div>
+<p>The parameters are ordered as
+<span class="math notranslate nohighlight">\([\boldsymbol{\theta}_{Z}, \boldsymbol{\theta}_{G}, \boldsymbol{\theta}_{R}]\)</span>.</p>
+</section>
+<section id="choosing-the-numerical-method">
+<h3>Choosing the numerical method<a class="headerlink" href="#choosing-the-numerical-method" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">method</span></code> argument controls how the score vector and average information matrix are computed. By default, <code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code> uses the C-form when applicable and falls back to the <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>-based marginal method otherwise. The <code class="docutils literal notranslate"><span class="pre">&quot;cform&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;marginal&quot;</span></code> options force the corresponding method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reml</span> <span class="o">=</span> <span class="n">MixedModelREML</span><span class="p">(</span>
+    <span class="n">genotype</span><span class="o">=</span><span class="p">(</span><span class="n">DummyMatrix</span><span class="p">(</span><span class="n">genotype</span><span class="p">),</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">genotype</span><span class="p">)),</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;marginal&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also pass a configured method instance to customise its options, such as the trace approximation used by the marginal method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.methods</span><span class="w"> </span><span class="kn">import</span> <span class="n">Marginal</span>
+
+<span class="n">reml</span> <span class="o">=</span> <span class="n">MixedModelREML</span><span class="p">(</span>
+    <span class="n">genotype</span><span class="o">=</span><span class="p">(</span><span class="n">DummyMatrix</span><span class="p">(</span><span class="n">genotype</span><span class="p">),</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">genotype</span><span class="p">)),</span>
+    <span class="n">method</span><span class="o">=</span><span class="n">Marginal</span><span class="p">(</span><span class="n">trace_approx</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="running-the-optimiser">
+<h2>Running the optimiser<a class="headerlink" href="#running-the-optimiser" title="Link to this heading">¶</a></h2>
+<p>Once the REML object is constructed, optimisation is performed with
+<a class="reference internal" href="../generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.optimize" title="torch_openreml.MixedModelREML.optimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optimize()</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml</span><span class="w"> </span><span class="kn">import</span> <span class="n">MixedModelREML</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DummyMatrix</span><span class="p">,</span> <span class="n">ScalarMatrix</span>
+
+<span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span>
+
+<span class="n">group</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span>
+<span class="n">effect</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">])</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">n</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">])</span> <span class="o">+</span> <span class="n">effect</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">reml</span> <span class="o">=</span> <span class="n">MixedModelREML</span><span class="p">(</span>
+    <span class="n">genotype</span><span class="o">=</span><span class="p">(</span><span class="n">DummyMatrix</span><span class="p">(</span><span class="n">group</span><span class="p">),</span> <span class="n">ScalarMatrix</span><span class="p">(</span><span class="n">group</span><span class="p">)),</span>
+<span class="p">)</span>
+
+<span class="n">names</span><span class="p">,</span> <span class="n">free_params</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">names</span><span class="p">,</span> <span class="n">free_params</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1] ∥∇∥:       4.7998, ∥Δ∥: 2.1775, η: 0.50, ∥Δᶜ∥: 1.0888, accepted: True , log 𝓛:  -3.5994
+[  2] ∥∇∥:       3.4880, ∥Δ∥: 0.2075, η: 1.00, ∥Δᶜ∥: 0.2075, accepted: True , log 𝓛:  -3.2312
+[  3] ∥∇∥:       0.5666, ∥Δ∥: 0.0434, η: 1.00, ∥Δᶜ∥: 0.0434, accepted: True , log 𝓛:  -3.2186
+[  4] ∥∇∥:       0.0234, ∥Δ∥: 0.0019, η: 1.00, ∥Δᶜ∥: 0.0019, accepted: True , log 𝓛:  -3.2186
+[  5] ∥∇∥:       0.0000, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, accepted: True , log 𝓛:  -3.2186
+
+[∇: score, Δ: 𝐉⁻¹∇, η: step length, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
+
+✓ Converged at iteration 5, total time: 0.01s
+
+</pre></div>
+</div>
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>([&#39;G/sigma^2&#39;, &#39;R/sigma^2&#39;], tensor([ 0.1894, -0.8235]))
+</pre></div>
+</div>
+</div>
+</div>
+<section id="inputs">
+<h3>Inputs<a class="headerlink" href="#inputs" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">y</span></code></dt><dd><p>Response vector of shape <code class="docutils literal notranslate"><span class="pre">(n,)</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">X</span></code></dt><dd><p>Fixed-effects design matrix of shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">p)</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">init_values</span></code></dt><dd><p>Initial values for the covariance parameters, ordered according to
+<code class="docutils literal notranslate"><span class="pre">reml.V.free_param_names</span></code>. If omitted, the model’s default initial
+values are used. Providing explicit starting values can improve
+convergence, particularly for complex covariance structures.</p>
+</dd>
+</dl>
+</section>
+<section id="returned-values">
+<h3>Returned values<a class="headerlink" href="#returned-values" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">names</span></code></dt><dd><p>Names of the covariance parameters.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">free_params</span></code></dt><dd><p>Final covariance-parameter estimates, in the same order as <code class="docutils literal notranslate"><span class="pre">names</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="the-update-step">
+<h3>The update step<a class="headerlink" href="#the-update-step" title="Link to this heading">¶</a></h3>
+<p>At iteration <span class="math notranslate nohighlight">\(t\)</span>, the optimiser evaluates the score vector <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> and the average-information matrix <span class="math notranslate nohighlight">\(\mathbf{AI}\)</span> at the current parameter estimate <span class="math notranslate nohighlight">\(\boldsymbol{\theta}^{(t)}\)</span>:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[s_k = \frac{1}{2}
+\left(
+    \mathbf{y}^{\top} \mathbf{P}
+    \frac{\partial \mathbf{V}}{\partial \theta_k}
+    \mathbf{P} \mathbf{y}
+    -
+    \operatorname{tr}\!\left(
+        \mathbf{P}
+        \frac{\partial \mathbf{V}}{\partial \theta_k}
+    \right)
+\right),\]</div>
+</div>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\mathrm{AI}_{kj} = \frac{1}{2}\,
+\mathbf{y}^{\top} \mathbf{P}
+\frac{\partial \mathbf{V}}{\partial \theta_k}
+\mathbf{P}
+\frac{\partial \mathbf{V}}{\partial \theta_j}
+\mathbf{P} \mathbf{y},\]</div>
+</div>
+<p>where</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\mathbf{P} = \mathbf{V}^{-1} -
+\mathbf{V}^{-1}\mathbf{X}
+(\mathbf{X}^{\top}\mathbf{V}^{-1}\mathbf{X})^{-1}
+\mathbf{X}^{\top}\mathbf{V}^{-1}.\]</div>
+</div>
+<p>The <a class="reference internal" href="../generated/torch_openreml.methods.CForm.html#torch_openreml.methods.CForm" title="torch_openreml.methods.CForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">CForm</span></code></a> method computes these quantities without explicitly forming <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>.</p>
+<p>The AI direction is obtained by solving <span class="math notranslate nohighlight">\(\mathbf{AI}\,\boldsymbol{\delta} = \mathbf{s}\)</span> in the least-squares sense. Given a step length <span class="math notranslate nohighlight">\(\eta\)</span>, the candidate parameter update is</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\theta}^{c}
+=
+\mathrm{clip}\!\left(
+    \boldsymbol{\theta}^{(t)} + \eta \, \boldsymbol{\delta},
+    \mathrm{lb},
+    \mathrm{ub}
+\right).\]</div>
+</div>
+<p>The candidate is accepted if it satisfies the Armijo sufficient-increase condition:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\ell_R\!\left(\boldsymbol{\theta}^{c}\right)
+\geq
+\ell_R\!\left(\boldsymbol{\theta}^{(t)}\right)
++
+c \, \eta \, \mathbf{s}^{\top} \boldsymbol{\delta}
+-
+\epsilon \,
+\max\!\left(
+    1,
+    \left|\ell_R\!\left(\boldsymbol{\theta}^{(t)}\right)\right|
+\right),\]</div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(c\)</span> and <span class="math notranslate nohighlight">\(\epsilon\)</span> correspond to <code class="docutils literal notranslate"><span class="pre">armijo_c</span></code> and <code class="docutils literal notranslate"><span class="pre">armijo_slack</span></code>, respectively.</p>
+<p>If the condition is not satisfied, the step length is reduced according to</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\eta \leftarrow \texttt{eta\_shrink} \times \eta,\]</div>
+</div>
+<p>and the candidate is evaluated again. This backtracking continues for at most <code class="docutils literal notranslate"><span class="pre">armijo_trials</span></code> attempts and stops if <span class="math notranslate nohighlight">\(\eta\)</span> falls below <code class="docutils literal notranslate"><span class="pre">eta_min</span></code>.</p>
+<p>If no candidate is accepted, the optimiser takes a single normalised gradient step as a fallback:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\theta}^{(t+1)}
+=
+\mathrm{clip}\!\left(
+    \boldsymbol{\theta}^{(t)}
+    +
+    \texttt{fallback\_eta}\,
+    \frac{\mathbf{s}}{\max(\|\mathbf{s}\|, 1)},
+    \mathrm{lb},
+    \mathrm{ub}
+\right).\]</div>
+</div>
+<p>This fallback step is recorded as not accepted. After each iteration, the step length is reset to <code class="docutils literal notranslate"><span class="pre">eta_max</span></code>.</p>
+</section>
+<section id="optimisation-controls">
+<h3>Optimisation controls<a class="headerlink" href="#optimisation-controls" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">max_iter</span></code> (default <code class="docutils literal notranslate"><span class="pre">200</span></code>)</dt><dd><p>Maximum number of AI iterations.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">verbose</span></code> (default <code class="docutils literal notranslate"><span class="pre">0</span></code>)</dt><dd><p>If positive, print one line per iteration showing the score norm
+<span class="math notranslate nohighlight">\(\|\nabla\|\)</span>, the AI step norm <span class="math notranslate nohighlight">\(\|\Delta\|\)</span>, the step length
+<span class="math notranslate nohighlight">\(\eta\)</span>, the clipped step norm <span class="math notranslate nohighlight">\(\|\Delta^{c}\|\)</span>, whether the
+step was accepted, and the restricted log-likelihood.  A legend, the
+convergence status and the total optimisation time are printed at the
+end.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">lb</span></code> and <code class="docutils literal notranslate"><span class="pre">ub</span></code> (default <code class="docutils literal notranslate"><span class="pre">-torch.inf</span></code> and <code class="docutils literal notranslate"><span class="pre">torch.inf</span></code>)</dt><dd><p>Lower and upper bounds applied to the free parameters. Each can be a
+scalar float or a tensor broadcastable to the free-parameter vector,
+allowing per-parameter bounds. If either is specified as a tensor, both
+must be tensors. Bounds apply to the untransformed parameter values,
+before any covariance parameter transformations. For example,
+<code class="docutils literal notranslate"><span class="pre">lb=0</span></code> on a variance parameter constrains its underlying parameter
+to be non-negative, rather than constraining the variance itself to be
+non-negative. Each candidate update is clipped to <code class="docutils literal notranslate"><span class="pre">[lb,</span> <span class="pre">ub]</span></code> before
+evaluating the log-likelihood.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">eta_max</span></code> (default <code class="docutils literal notranslate"><span class="pre">1.0</span></code>)</dt><dd><p>Initial and maximum step length.  Every iteration starts from
+<code class="docutils literal notranslate"><span class="pre">eta_max</span></code> and backtracks from there.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">eta_shrink</span></code> (default <code class="docutils literal notranslate"><span class="pre">0.5</span></code>)</dt><dd><p>Multiplier applied to the step length after each rejected candidate.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">eta_min</span></code> (default <code class="docutils literal notranslate"><span class="pre">1e-10</span></code>)</dt><dd><p>Backtracking stops once the step length falls below <code class="docutils literal notranslate"><span class="pre">eta_min</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">armijo_trials</span></code> (default <code class="docutils literal notranslate"><span class="pre">30</span></code>)</dt><dd><p>Maximum number of backtracking candidates tried per iteration.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">armijo_c</span></code> (default <code class="docutils literal notranslate"><span class="pre">1e-4</span></code>) and <code class="docutils literal notranslate"><span class="pre">armijo_slack</span></code> (default <code class="docutils literal notranslate"><span class="pre">1e-7</span></code>)</dt><dd><p>Constants <span class="math notranslate nohighlight">\(c\)</span> and <span class="math notranslate nohighlight">\(\epsilon\)</span> in the acceptance test defined
+in the update step.  The last term is numerical slack; set
+<code class="docutils literal notranslate"><span class="pre">armijo_slack=0</span></code> for a strict Armijo test.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fallback_eta</span></code> (default <code class="docutils literal notranslate"><span class="pre">1e-3</span></code>)</dt><dd><p>Step length of the normalised gradient step taken when no candidate is
+accepted.</p>
+</dd>
+</dl>
+</section>
+<section id="convergence-criteria">
+<h3>Convergence criteria<a class="headerlink" href="#convergence-criteria" title="Link to this heading">¶</a></h3>
+<p>Two checks are available.</p>
+<dl>
+<dt>Parameter update</dt><dd><p>The largest absolute component of the clipped step must satisfy</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\max_i |\Delta_i^{c}| &lt; \texttt{tol\_update}.\]</div>
+</div>
+</dd>
+<dt>Log-likelihood change</dt><dd><p>The restricted log-likelihood change must satisfy</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\left| \ell_R^{(t)} - \ell_R^{(t-1)} \right| &lt; \texttt{tol\_loglik}.\]</div>
+</div>
+</dd>
+</dl>
+<p>The defaults are <code class="docutils literal notranslate"><span class="pre">tol_update</span> <span class="pre">=</span> <span class="pre">1e-4</span></code> and <code class="docutils literal notranslate"><span class="pre">tol_loglik</span> <span class="pre">=</span> <span class="pre">1e-4</span></code>.  Both
+enabled checks must pass simultaneously, and at least two iterations are
+required before convergence can be declared.  Either check can be disabled
+with <code class="docutils literal notranslate"><span class="pre">check_update=False</span></code> or <code class="docutils literal notranslate"><span class="pre">check_loglik=False</span></code>.
+<a class="reference internal" href="../generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.is_converged" title="torch_openreml.MixedModelREML.is_converged"><code class="xref py py-meth docutils literal notranslate"><span class="pre">is_converged()</span></code></a> reports whether the last
+recorded iteration met the criteria.</p>
+</section>
+</section>
+<section id="optimisation-history">
+<h2>Optimisation history<a class="headerlink" href="#optimisation-history" title="Link to this heading">¶</a></h2>
+<p>Every iteration of <a class="reference internal" href="../generated/torch_openreml.MixedModelREML.html#torch_openreml.MixedModelREML.optimize" title="torch_openreml.MixedModelREML.optimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optimize()</span></code></a> is
+appended to <code class="docutils literal notranslate"><span class="pre">reml.history</span></code>, a dict of lists that is reset when a new
+optimisation starts; it is <code class="docutils literal notranslate"><span class="pre">None</span></code> until <code class="docutils literal notranslate"><span class="pre">optimize</span></code> has run.  Each list
+holds one entry per iteration, where <code class="docutils literal notranslate"><span class="pre">k</span></code> is the number of free parameters:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">free_params</span></code></dt><dd><p>Covariance parameters after the step, shape <code class="docutils literal notranslate"><span class="pre">(k,)</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">loglik</span></code></dt><dd><p>Restricted log-likelihood at the new parameters, a scalar tensor.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">score</span></code></dt><dd><p>Score vector used to compute the step, shape <code class="docutils literal notranslate"><span class="pre">(k,)</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ai</span></code></dt><dd><p>Average information matrix, shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">k)</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">delta</span></code></dt><dd><p>AI direction, the least-squares solution of
+<span class="math notranslate nohighlight">\(\mathbf{AI}\,\boldsymbol{\delta} = \mathbf{s}\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(k,)</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">update</span></code></dt><dd><p>Clipped step actually taken, shape <code class="docutils literal notranslate"><span class="pre">(k,)</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">eta</span></code></dt><dd><p>Step length used, which is below <code class="docutils literal notranslate"><span class="pre">eta_max</span></code> when backtracking shortened
+it.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">accepted</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">True</span></code> for an accepted Newton step and <code class="docutils literal notranslate"><span class="pre">False</span></code> for a gradient
+fallback step.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">method</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">&quot;cform&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;marginal&quot;</span></code> for that iteration.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">history</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">history</span>
+<span class="n">history</span><span class="p">[</span><span class="s2">&quot;loglik&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[tensor(-3.5994),
+ tensor(-3.2312),
+ tensor(-3.2186),
+ tensor(-3.2186),
+ tensor(-3.2186)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Stacking a list gives the trajectory, for example the log-likelihood:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;loglik&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([-3.5994, -3.2312, -3.2186, -3.2186, -3.2186])
+</pre></div>
+</div>
+</div>
+</div>
+<p>or the covariance parameters:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;free_params&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[ 0.2806, -1.0520],
+        [ 0.1836, -0.8685],
+        [ 0.1894, -0.8255],
+        [ 0.1894, -0.8235],
+        [ 0.1894, -0.8235]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="post-estimation-methods">
+<h2>Post-estimation methods<a class="headerlink" href="#post-estimation-methods" title="Link to this heading">¶</a></h2>
+<p>After optimisation, the fitted REML object provides several utilities for extracting estimates and predictions.</p>
+<section id="retrieving-parameter-estimates">
+<h3>Retrieving parameter estimates<a class="headerlink" href="#retrieving-parameter-estimates" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt><cite>get_free_params(select=”last”)</cite></dt><dd><p>Return <code class="docutils literal notranslate"><span class="pre">(names,</span> <span class="pre">free_params)</span></code>.  <code class="docutils literal notranslate"><span class="pre">select=&quot;best&quot;</span></code> selects the iterate
+with the largest recorded log-likelihood, which is useful when
+optimisation overshoots or oscillates near convergence.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span><span class="p">,</span> <span class="n">theta_hat</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">get_free_params</span><span class="p">(</span><span class="s2">&quot;last&quot;</span><span class="p">)</span>
+<span class="n">names</span><span class="p">,</span> <span class="n">theta_hat</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>([&#39;G/sigma^2&#39;, &#39;R/sigma^2&#39;], tensor([ 0.1894, -0.8235]))
+</pre></div>
+</div>
+</div>
+</div>
+<dl class="simple">
+<dt><cite>build_params(free_params=None, include_fixed=True, trans=True, out_format=”tensor”)</cite></dt><dd><p>Build the covariance parameters from the free parameters. By default,
+<code class="docutils literal notranslate"><span class="pre">trans=True</span></code> applies each parameter’s transformation, returning values
+on the model scale.
+<code class="docutils literal notranslate"><span class="pre">trans=False</span></code> returns the untransformed values. Set
+<code class="docutils literal notranslate"><span class="pre">out_format=&quot;dict&quot;</span></code> to return a name-keyed mapping, or
+<code class="docutils literal notranslate"><span class="pre">include_fixed=False</span></code> to exclude fixed parameters.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">build_params</span><span class="p">(</span><span class="s2">&quot;last&quot;</span><span class="p">,</span> <span class="n">out_format</span><span class="o">=</span><span class="s2">&quot;dict&quot;</span><span class="p">)</span>
+<span class="n">params</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;G/sigma^2&#39;: tensor([1.4606]), &#39;R/sigma^2&#39;: tensor([0.1926])}
+</pre></div>
+</div>
+</div>
+</div>
+<dl>
+<dt><cite>tree(free_params=None)</cite></dt><dd><p>Evaluate the covariance structure and return the matrix at each node,
+keyed by its path in the operand tree. The root path <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code> contains
+the marginal covariance <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>. Other paths identify the
+model components: <code class="docutils literal notranslate"><span class="pre">&quot;Z&quot;</span></code> contains the combined random-effect design,
+with individual terms under <code class="docutils literal notranslate"><span class="pre">&quot;Z/&lt;term&gt;&quot;</span></code>; <code class="docutils literal notranslate"><span class="pre">&quot;G&quot;</span></code> contains the
+block-diagonal random-effect covariance, with individual terms under
+<code class="docutils literal notranslate"><span class="pre">&quot;G/&lt;term&gt;&quot;</span></code>; and <code class="docutils literal notranslate"><span class="pre">&quot;R&quot;</span></code> contains the residual covariance.</p>
+<p>Nested builders contribute additional paths using their operand names.
+For example, a term constructed with
+<a class="reference internal" href="../generated/torch_openreml.covariance.KroneckerProduct.html#torch_openreml.covariance.KroneckerProduct" title="torch_openreml.covariance.KroneckerProduct"><code class="xref py py-class docutils literal notranslate"><span class="pre">KroneckerProduct</span></code></a> adds paths such as
+<code class="docutils literal notranslate"><span class="pre">&quot;G/block/op_0&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;G/block/op_1&quot;</span></code>. Each entry contains the
+evaluated matrix at that level, allowing the dimensions of individual
+components and how they combine to be inspected. If the model has no
+random-effect terms, the tree contains only <code class="docutils literal notranslate"><span class="pre">{&quot;/&quot;:</span> <span class="pre">V}</span></code>.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">tree</span><span class="p">(</span><span class="s2">&quot;last&quot;</span><span class="p">)</span>
+<span class="n">tree</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;/&#39;: tensor([[1.6532, 0.0000, 1.4606, 0.0000, 1.4606, 0.0000, 1.4606, 0.0000, 1.4606,
+          0.0000],
+         [0.0000, 1.6532, 0.0000, 1.4606, 0.0000, 1.4606, 0.0000, 1.4606, 0.0000,
+          1.4606],
+         [1.4606, 0.0000, 1.6532, 0.0000, 1.4606, 0.0000, 1.4606, 0.0000, 1.4606,
+          0.0000],
+         [0.0000, 1.4606, 0.0000, 1.6532, 0.0000, 1.4606, 0.0000, 1.4606, 0.0000,
+          1.4606],
+         [1.4606, 0.0000, 1.4606, 0.0000, 1.6532, 0.0000, 1.4606, 0.0000, 1.4606,
+          0.0000],
+         [0.0000, 1.4606, 0.0000, 1.4606, 0.0000, 1.6532, 0.0000, 1.4606, 0.0000,
+          1.4606],
+         [1.4606, 0.0000, 1.4606, 0.0000, 1.4606, 0.0000, 1.6532, 0.0000, 1.4606,
+          0.0000],
+         [0.0000, 1.4606, 0.0000, 1.4606, 0.0000, 1.4606, 0.0000, 1.6532, 0.0000,
+          1.4606],
+         [1.4606, 0.0000, 1.4606, 0.0000, 1.4606, 0.0000, 1.4606, 0.0000, 1.6532,
+          0.0000],
+         [0.0000, 1.4606, 0.0000, 1.4606, 0.0000, 1.4606, 0.0000, 1.4606, 0.0000,
+          1.6532]]),
+ &#39;Z&#39;: tensor([[1., 0.],
+         [0., 1.],
+         [1., 0.],
+         [0., 1.],
+         [1., 0.],
+         [0., 1.],
+         [1., 0.],
+         [0., 1.],
+         [1., 0.],
+         [0., 1.]]),
+ &#39;G&#39;: tensor([[1.4606, 0.0000],
+         [0.0000, 1.4606]]),
+ &#39;R&#39;: tensor([[0.1926, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+          0.0000],
+         [0.0000, 0.1926, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+          0.0000],
+         [0.0000, 0.0000, 0.1926, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+          0.0000],
+         [0.0000, 0.0000, 0.0000, 0.1926, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+          0.0000],
+         [0.0000, 0.0000, 0.0000, 0.0000, 0.1926, 0.0000, 0.0000, 0.0000, 0.0000,
+          0.0000],
+         [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.1926, 0.0000, 0.0000, 0.0000,
+          0.0000],
+         [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.1926, 0.0000, 0.0000,
+          0.0000],
+         [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.1926, 0.0000,
+          0.0000],
+         [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.1926,
+          0.0000],
+         [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+          0.1926]])}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="fixed-effects">
+<h3>Fixed effects<a class="headerlink" href="#fixed-effects" title="Link to this heading">¶</a></h3>
+<p>The BLUE of the fixed effects is</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\widehat{\boldsymbol{\beta}}
+= \left(\mathbf{X}^\top \mathbf{V}^{-1} \mathbf{X}\right)^{-1}
+  \mathbf{X}^\top \mathbf{V}^{-1} \mathbf{y}.\]</div>
+</div>
+<dl class="simple">
+<dt><cite>blue(y=None, x=None, free_params=None)</cite></dt><dd><p>Fixed-effect estimates of shape <code class="docutils literal notranslate"><span class="pre">(p,)</span></code>.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">beta_hat</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">blue</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">theta_hat</span><span class="p">)</span>
+<span class="n">beta_hat</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 0.5495, -0.5096])
+</pre></div>
+</div>
+</div>
+</div>
+<dl class="simple">
+<dt><cite>cov_blue(x=None, free_params=None)</cite></dt><dd><p>Covariance matrix of the BLUE, shape <code class="docutils literal notranslate"><span class="pre">(p,</span> <span class="pre">p)</span></code>.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cov_beta</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">cov_blue</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta_hat</span><span class="p">)</span>
+<span class="n">cov_beta</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[0.0250, 0.0055],
+        [0.0055, 0.0215]])
+</pre></div>
+</div>
+</div>
+</div>
+<dl class="simple">
+<dt><cite>var_blue(x=None, free_params=None)</cite></dt><dd><p>Sampling variances, the diagonal of <code class="docutils literal notranslate"><span class="pre">cov_blue</span></code>.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">se_beta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">reml</span><span class="o">.</span><span class="n">var_blue</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta_hat</span><span class="p">))</span>
+<span class="n">se_beta</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([0.1581, 0.1467])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="random-effects">
+<h3>Random effects<a class="headerlink" href="#random-effects" title="Link to this heading">¶</a></h3>
+<p>The BLUP of the random effects is</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\widehat{\mathbf{b}}
+= \mathbf{G}\mathbf{Z}^\top\mathbf{V}^{-1}
+  \left(\mathbf{y} - \mathbf{X}\widehat{\boldsymbol{\beta}}\right),\]</div>
+</div>
+<p>with covariance <span class="math notranslate nohighlight">\(\operatorname{Var}(\widehat{\mathbf{b}})
+= \mathbf{G}\mathbf{Z}^\top\mathbf{P}\mathbf{Z}\mathbf{G}\)</span>.</p>
+<dl class="simple">
+<dt><cite>blup(y=None, x=None, free_params=None)</cite></dt><dd><p>Random-effect predictions of shape <code class="docutils literal notranslate"><span class="pre">(q,)</span></code>.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b_hat</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">blup</span><span class="p">()</span>
+<span class="n">b_hat</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 1.0284, -1.3340])
+</pre></div>
+</div>
+</div>
+</div>
+<dl class="simple">
+<dt><cite>cov_blup(x=None, free_params=None)</cite></dt><dd><p>Covariance matrix of the BLUPs, shape <code class="docutils literal notranslate"><span class="pre">(q,</span> <span class="pre">q)</span></code>.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b_cov</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">cov_blup</span><span class="p">()</span>
+<span class="n">b_cov</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[ 1.4212, -0.0036],
+        [-0.0036,  1.4159]])
+</pre></div>
+</div>
+</div>
+</div>
+<dl class="simple">
+<dt><cite>var_blup(x=None, free_params=None)</cite></dt><dd><p>BLUP sampling variances, the diagonal of <code class="docutils literal notranslate"><span class="pre">cov_blup</span></code>.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b_var</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">var_blup</span><span class="p">()</span>
+<span class="n">b_var</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([1.4212, 1.4159])
+</pre></div>
+</div>
+</div>
+</div>
+<dl class="simple">
+<dt><cite>blup_per_term(y=None, x=None, free_params=None)</cite></dt><dd><p>BLUPs split by random-effect term, as a dict keyed by term name.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b_by_term</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">blup_per_term</span><span class="p">()</span>
+<span class="n">b_by_term</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;genotype&#39;: tensor([ 1.0284, -1.3340])}
+</pre></div>
+</div>
+</div>
+</div>
+<dl class="simple">
+<dt><cite>cov_blup_per_term(x=None, free_params=None)</cite></dt><dd><p>Diagonal blocks of <code class="docutils literal notranslate"><span class="pre">cov_blup</span></code>, one per term, as a dict.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b_cov_by_term</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">cov_blup_per_term</span><span class="p">()</span>
+<span class="n">b_cov_by_term</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;genotype&#39;: tensor([[ 1.4212, -0.0036],
+         [-0.0036,  1.4159]])}
+</pre></div>
+</div>
+</div>
+</div>
+<dl class="simple">
+<dt><cite>var_blup_per_term(x=None, free_params=None)</cite></dt><dd><p>Term-wise sampling variances, as a dict.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b_var_by_term</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">var_blup_per_term</span><span class="p">()</span>
+<span class="n">b_var_by_term</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;genotype&#39;: tensor([1.4212, 1.4159])}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="predictions">
+<h3>Predictions<a class="headerlink" href="#predictions" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt><cite>marginal_predict(y=None, x=None, free_params=None)</cite></dt><dd><p>Marginal fitted values <span class="math notranslate nohighlight">\(\mathbf{X}\widehat{\boldsymbol{\beta}}\)</span>.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_marginal</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">marginal_predict</span><span class="p">()</span>
+<span class="n">y_marginal</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 0.3317,  0.8644, -0.7591, -1.2185, -0.0440, -0.1003,  1.0306,  1.5697,
+         0.2316,  0.1966])
+</pre></div>
+</div>
+</div>
+</div>
+<dl class="simple">
+<dt><cite>predict(y=None, x=None, free_params=None)</cite></dt><dd><p>Conditional fitted values <span class="math notranslate nohighlight">\(\mathbf{X}\widehat{\boldsymbol{\beta}}
++ \mathbf{Z}\widehat{\mathbf{b}}\)</span>.  For a model with no random-effect
+terms this reduces to <code class="docutils literal notranslate"><span class="pre">marginal_predict</span></code>.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_conditional</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span>
+<span class="n">y_conditional</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 1.3600, -0.4697,  0.2692, -2.5525,  0.9844, -1.4343,  2.0590,  0.2357,
+         1.2600, -1.1375])
+</pre></div>
+</div>
+</div>
+</div>
+<dl>
+<dt><cite>predict_new(x, z=None, free_params=None)</cite></dt><dd><p>Predict responses for new observations using pre-built design matrices.
+The <code class="docutils literal notranslate"><span class="pre">z</span></code> argument accepts a full <code class="docutils literal notranslate"><span class="pre">(n_new,</span> <span class="pre">q)</span></code> tensor, a list of
+design blocks (one per random-effect term), or a dictionary keyed by
+term name. Terms omitted from a dictionary contribute zero. If
+<code class="docutils literal notranslate"><span class="pre">z=None</span></code>, predictions use only the fixed effects, giving the
+population-level predictions.</p>
+<p>The random-effect predictions use BLUPs computed from the stored
+training data, so <code class="docutils literal notranslate"><span class="pre">optimize</span></code> must have been called. Construct the
+design matrices using the same column order as the training data.
+<code class="docutils literal notranslate"><span class="pre">DummyMatrix.transform</span></code> encodes new factor levels against the
+training columns. A single new observation should be supplied as a
+one-row batch.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_new</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">predict_new</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
+    <span class="p">{</span><span class="s2">&quot;genotype&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]])},</span>
+<span class="p">)</span>
+<span class="n">y_new</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 1.3600, -0.4697])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z_new</span> <span class="o">=</span> <span class="n">DummyMatrix</span><span class="p">(</span><span class="n">group</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">])</span>
+
+<span class="n">y_new</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">predict_new</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">z_new</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">y_new</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 1.3600, -0.4697])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="residuals">
+<h3>Residuals<a class="headerlink" href="#residuals" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt><cite>marginal_residual(y=None, x=None, free_params=None)</cite></dt><dd><p>Marginal residuals <span class="math notranslate nohighlight">\(\mathbf{y} -
+\mathbf{X}\widehat{\boldsymbol{\beta}}\)</span>.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">e_marginal</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">marginal_residual</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">theta_hat</span><span class="p">)</span>
+<span class="n">e_marginal</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 1.6104, -1.2705,  0.6012, -0.9624,  1.4019, -1.7037,  0.8124, -1.2095,
+         0.8516, -1.6999])
+</pre></div>
+</div>
+</div>
+</div>
+<dl class="simple">
+<dt><cite>residual(y=None, x=None, free_params=None)</cite></dt><dd><p>Conditional residuals <span class="math notranslate nohighlight">\(\mathbf{y} -
+\mathbf{X}\widehat{\boldsymbol{\beta}} - \mathbf{Z}\widehat{\mathbf{b}}\)</span>.
+For a model with no random-effect terms this reduces to
+<code class="docutils literal notranslate"><span class="pre">marginal_residual</span></code>.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">e_conditional</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">residual</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">theta_hat</span><span class="p">)</span>
+<span class="n">e_conditional</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 0.5820,  0.0635, -0.4272,  0.3716,  0.3735, -0.3697, -0.2160,  0.1245,
+        -0.1768, -0.3658])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="covariance-blocks">
+<h3>Covariance blocks<a class="headerlink" href="#covariance-blocks" title="Link to this heading">¶</a></h3>
+<dl>
+<dt><cite>c_inverse_blocks(x=None, free_params=None)</cite></dt><dd><p>Blocks <code class="docutils literal notranslate"><span class="pre">(c11,</span> <span class="pre">c12,</span> <span class="pre">c21,</span> <span class="pre">c22)</span></code> of the inverse coefficient matrix</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{C} =
+\begin{pmatrix}
+    \mathbf{X}^\top\mathbf{R}^{-1}\mathbf{X} &amp;
+    \mathbf{X}^\top\mathbf{R}^{-1}\mathbf{Z} \\
+    \mathbf{Z}^\top\mathbf{R}^{-1}\mathbf{X} &amp;
+    \mathbf{Z}^\top\mathbf{R}^{-1}\mathbf{Z} + \mathbf{G}^{-1}
+\end{pmatrix},\end{split}\]</div>
+</div>
+<p>with shapes <code class="docutils literal notranslate"><span class="pre">(p,</span> <span class="pre">p)</span></code>, <code class="docutils literal notranslate"><span class="pre">(p,</span> <span class="pre">q)</span></code>, <code class="docutils literal notranslate"><span class="pre">(q,</span> <span class="pre">p)</span></code> and <code class="docutils literal notranslate"><span class="pre">(q,</span> <span class="pre">q)</span></code>.
+<span class="math notranslate nohighlight">\(\mathbf{C}_{11}\)</span> equals <code class="docutils literal notranslate"><span class="pre">cov_blue</span></code> and <span class="math notranslate nohighlight">\(\mathbf{C}_{22}\)</span>
+is the prediction-error covariance of the random effects.  The model
+must have random-effect terms.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c11</span><span class="p">,</span> <span class="n">c12</span><span class="p">,</span> <span class="n">c21</span><span class="p">,</span> <span class="n">c22</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">c_inverse_blocks</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">theta_hat</span><span class="p">)</span>
+<span class="n">c11</span><span class="p">,</span> <span class="n">c12</span><span class="p">,</span> <span class="n">c21</span><span class="p">,</span> <span class="n">c22</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([[0.0250, 0.0055],
+         [0.0055, 0.0215]]),
+ tensor([[-0.0068, -0.0133],
+         [-0.0013, -0.0041]]),
+ tensor([[-0.0068, -0.0013],
+         [-0.0133, -0.0041]]),
+ tensor([[0.0394, 0.0036],
+         [0.0036, 0.0446]]))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="log-likelihood-and-convergence">
+<h3>Log-likelihood and convergence<a class="headerlink" href="#log-likelihood-and-convergence" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt><cite>loglik(y=None, x=None, free_params=None)</cite></dt><dd><p>Evaluate the log-likelihood and return <code class="docutils literal notranslate"><span class="pre">(loglik,</span> <span class="pre">method)</span></code>, where
+<code class="docutils literal notranslate"><span class="pre">method</span></code> indicates the evaluation method: <code class="docutils literal notranslate"><span class="pre">&quot;cform&quot;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&quot;marginal&quot;</span></code>. With
+<code class="docutils literal notranslate"><span class="pre">method=&quot;auto&quot;</span></code>, the evaluation silently falls back to the marginal
+method when the C-form is not applicable.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loglik_value</span><span class="p">,</span> <span class="n">loglik_method</span> <span class="o">=</span> <span class="n">reml</span><span class="o">.</span><span class="n">loglik</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">theta_hat</span><span class="p">)</span>
+<span class="n">loglik_value</span><span class="p">,</span> <span class="n">loglik_method</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor(-3.2186), &#39;cform&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<dl class="simple">
+<dt><cite>is_converged()</cite></dt><dd><p>Whether the last recorded iteration met the enabled convergence checks.</p>
+</dd>
+</dl>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reml</span><span class="o">.</span><span class="n">is_converged</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../r_user.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">For R Users</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../vig.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Vignettes</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, Patrick Li
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/anu-aagi/torch-openreml" aria-label="GitHub">
+                                      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                                          <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                                      </svg>
+                                  </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Introduction to Mixed Model REML Estimation</a><ul>
+<li><a class="reference internal" href="#the-model">The model</a></li>
+<li><a class="reference internal" href="#constructing-the-reml-object">Constructing the REML object</a><ul>
+<li><a class="reference internal" href="#via-simplematrix-function-based">Via <code class="docutils literal notranslate"><span class="pre">SimpleMatrix</span></code> (function-based)</a></li>
+<li><a class="reference internal" href="#via-a-covariance-matrix-builder">Via a covariance Matrix builder</a></li>
+<li><a class="reference internal" href="#parameter-names-and-ordering">Parameter names and ordering</a></li>
+<li><a class="reference internal" href="#choosing-the-numerical-method">Choosing the numerical method</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-the-optimiser">Running the optimiser</a><ul>
+<li><a class="reference internal" href="#inputs">Inputs</a></li>
+<li><a class="reference internal" href="#returned-values">Returned values</a></li>
+<li><a class="reference internal" href="#the-update-step">The update step</a></li>
+<li><a class="reference internal" href="#optimisation-controls">Optimisation controls</a></li>
+<li><a class="reference internal" href="#convergence-criteria">Convergence criteria</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#optimisation-history">Optimisation history</a></li>
+<li><a class="reference internal" href="#post-estimation-methods">Post-estimation methods</a><ul>
+<li><a class="reference internal" href="#retrieving-parameter-estimates">Retrieving parameter estimates</a></li>
+<li><a class="reference internal" href="#fixed-effects">Fixed effects</a></li>
+<li><a class="reference internal" href="#random-effects">Random effects</a></li>
+<li><a class="reference internal" href="#predictions">Predictions</a></li>
+<li><a class="reference internal" href="#residuals">Residuals</a></li>
+<li><a class="reference internal" href="#covariance-blocks">Covariance blocks</a></li>
+<li><a class="reference internal" href="#log-likelihood-and-convergence">Log-likelihood and convergence</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=b0ee98c4"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    </body>
+</html>

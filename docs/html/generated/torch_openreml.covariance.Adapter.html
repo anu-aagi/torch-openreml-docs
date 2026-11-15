@@ -195,17 +195,23 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../vig.html">Vignettes</a><input aria-label="Toggle navigation of Vignettes" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../vig/vig_marginal_reml.html">Introduction to Marginal REML Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vig/vig_mixed_model_reml.html">Introduction to Mixed Model REML Estimation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../r_user.html">For R Users</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tech.html">Technical Documentation</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../api.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/reml.html">MarginalREML</a><input aria-label="Toggle navigation of MarginalREML" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/reml.html">Mixed models</a><input aria-label="Toggle navigation of Mixed models" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.MarginalREML.html">torch_openreml.MarginalREML</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.MixedModelREML.html">torch_openreml.MixedModelREML</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/covariance.html">Covariance</a><input aria-label="Toggle navigation of Covariance" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/methods.html">REML methods</a><input aria-label="Toggle navigation of REML methods" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.methods.CForm.html">torch_openreml.methods.CForm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.methods.Marginal.html">torch_openreml.methods.Marginal</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/covariance.html">Covariance</a><input aria-label="Toggle navigation of Covariance" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.Matrix.html">torch_openreml.covariance.Matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.AR1Matrix.html">torch_openreml.covariance.AR1Matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.CompoundSymmetricMatrix.html">torch_openreml.covariance.CompoundSymmetricMatrix</a></li>
@@ -214,14 +220,16 @@
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.EqualEntryMatrix.html">torch_openreml.covariance.EqualEntryMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.EquicorrelationMatrix.html">torch_openreml.covariance.EquicorrelationMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.IdentityMatrix.html">torch_openreml.covariance.IdentityMatrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.KnownMatrix.html">torch_openreml.covariance.KnownMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.LowerTriangularMatrix.html">torch_openreml.covariance.LowerTriangularMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.ScalarMatrix.html">torch_openreml.covariance.ScalarMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.UnconstrainedMatrix.html">torch_openreml.covariance.UnconstrainedMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.SimpleMatrix.html">torch_openreml.covariance.SimpleMatrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.simple_param_specs.html">torch_openreml.covariance.simple_param_specs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.MarginalCovariance.html">torch_openreml.covariance.MarginalCovariance</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/operators.html">Operators</a><input aria-label="Toggle navigation of Operators" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/operators.html">Operators</a><input aria-label="Toggle navigation of Operators" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.Operator.html">torch_openreml.covariance.Operator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.BlockDiagonal.html">torch_openreml.covariance.BlockDiagonal</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.HadamardProduct.html">torch_openreml.covariance.HadamardProduct</a></li>
@@ -236,11 +244,11 @@
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.Stack.html">torch_openreml.covariance.Stack</a></li>
 </ul>
 </li>
-<li class="toctree-l2 current has-children"><a class="reference internal" href="../api/adapter.html">Adapter</a><input aria-label="Toggle navigation of Adapter" checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../api/adapter.html">Adapter</a><input aria-label="Toggle navigation of Adapter" checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">torch_openreml.covariance.Adapter</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/transforms.html">Transforms</a><input aria-label="Toggle navigation of Transforms" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/transforms.html">Transforms</a><input aria-label="Toggle navigation of Transforms" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.transform.Transform.html">torch_openreml.covariance.transform.Transform</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.transform.TransformChain.html">torch_openreml.covariance.transform.TransformChain</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.transform.TransformExp.html">torch_openreml.covariance.transform.TransformExp</a></li>
@@ -253,7 +261,7 @@
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.covariance.transform.TransformSigmoid.html">torch_openreml.covariance.transform.TransformSigmoid</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/post.html">Post-hoc estimation</a><input aria-label="Toggle navigation of Post-hoc estimation" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.blue.html">torch_openreml.blue</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.blup.html">torch_openreml.blup</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.marginal_predict.html">torch_openreml.marginal_predict</a></li>
@@ -263,7 +271,7 @@
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.loglik.html">torch_openreml.loglik</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/utils.html">Utils</a><input aria-label="Toggle navigation of Utils" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.utils.get_device.html">torch_openreml.utils.get_device</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.utils.get_dtype.html">torch_openreml.utils.get_dtype</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torch_openreml.utils.numeric_to_design_matrix.html">torch_openreml.utils.numeric_to_design_matrix</a></li>
@@ -423,11 +431,11 @@ tensor expected by <code class="docutils literal notranslate"><span class="pre">
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code>([free_params])</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.Adapter.__call__" title="torch_openreml.covariance.Adapter.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> with respect to trainable parameters.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code>([free_params])</p></td>
-<td><p>Construct the matrix and return its inverse.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Adapter.manual_grad" title="torch_openreml.covariance.Adapter.manual_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code></a>([free_params])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Adapter.manual_grad" title="torch_openreml.covariance.Adapter.manual_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_grad</span></code></a>([free_params])</p></td>
 <td><p>Compute the Jacobian of <a class="reference internal" href="#torch_openreml.covariance.Adapter.__call__" title="torch_openreml.covariance.Adapter.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> via the chain rule.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_openreml.covariance.Adapter.manual_inverse" title="torch_openreml.covariance.Adapter.manual_inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_inverse</span></code></a>([free_params])</p></td>
+<td><p>Return the inverse of the reparameterised matrix from the adaptee's closed form.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#torch_openreml.covariance.Adapter.reset_intermediates" title="torch_openreml.covariance.Adapter.reset_intermediates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_intermediates</span></code></a>()</p></td>
 <td><p>Clear the intermediate caches of this adapter and its adaptee.</p></td>
@@ -553,6 +561,76 @@ omitted, default values are used. Default: <code class="docutils literal notrans
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_openreml.covariance.Adapter.manual_inverse">
+<span class="sig-name descname"><span class="pre">manual_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">free_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_openreml/covariance/adapter.html#Adapter.manual_inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_openreml.covariance.Adapter.manual_inverse" title="Link to this definition">¶</a></dt>
+<dd><p>Return the inverse of the reparameterised matrix from the adaptee’s
+closed form.</p>
+<p>The adapter is
+<span class="math notranslate nohighlight">\(\symbf{V}(\boldsymbol{\theta}) =
+\symbf{V}_{\text{adaptee}}\!\big(f(\boldsymbol{\theta})\big)\)</span>,
+so its inverse is</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\symbf{V}^{-1}(\boldsymbol{\theta}) =
+\symbf{V}_{\text{adaptee}}^{-1}\!\big(f(\boldsymbol{\theta})\big),\]</div>
+</div>
+<p>obtained by forwarding the mapped parameters to the adaptee’s
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">manual_inverse()</span></code>. The
+adapter’s parameters reach <code class="docutils literal notranslate"><span class="pre">param_map</span></code> untransformed, exactly as in
+<a class="reference internal" href="#torch_openreml.covariance.Adapter.__call__" title="torch_openreml.covariance.Adapter.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a>, and the matrix is never inverted densely.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>free_params</strong> (<em>torch.Tensor</em><em> or </em><em>dict</em>) – Flat 1D parameter tensor or
+parameter dictionary. If omitted, default values are used.
+Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – If the adaptee has no closed-form inverse;
+    the error is propagated from its <code class="docutils literal notranslate"><span class="pre">manual_inverse</span></code>.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">x</span> <span class="pre">n</span></code> inverse of the constructed matrix.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>torch.Tensor</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiagonalMatrix</span><span class="p">,</span> <span class="n">Adapter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_openreml.covariance.transform</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransformIdentity</span>
+
+<span class="n">adaptee</span> <span class="o">=</span> <span class="n">DiagonalMatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">param_map</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">])</span>
+
+<span class="n">param_specs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;logit&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;fixed&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]),</span>
+        <span class="s2">&quot;trans&quot;</span><span class="p">:</span> <span class="n">TransformIdentity</span><span class="p">(),</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">adapter</span> <span class="o">=</span> <span class="n">Adapter</span><span class="p">(</span><span class="n">adaptee</span><span class="p">,</span> <span class="n">param_specs</span><span class="p">,</span> <span class="n">param_map</span><span class="p">)</span>
+<span class="n">adapter</span><span class="o">.</span><span class="n">manual_inverse</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[0.3679, 0.0000],
+        [0.0000, 0.3679]])
+</pre></div>
+</div>
+</div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -730,6 +808,7 @@ that this adapter reparameterises.</p>
 <li><a class="reference internal" href="#">torch_openreml.covariance.Adapter</a><ul>
 <li><a class="reference internal" href="#torch_openreml.covariance.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a><ul>
 <li><a class="reference internal" href="#torch_openreml.covariance.Adapter.__call__"><code class="docutils literal notranslate"><span class="pre">Adapter.__call__()</span></code></a></li>
+<li><a class="reference internal" href="#torch_openreml.covariance.Adapter.manual_inverse"><code class="docutils literal notranslate"><span class="pre">Adapter.manual_inverse()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Adapter.reset_intermediates"><code class="docutils literal notranslate"><span class="pre">Adapter.reset_intermediates()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Adapter.enable_cache"><code class="docutils literal notranslate"><span class="pre">Adapter.enable_cache()</span></code></a></li>
 <li><a class="reference internal" href="#torch_openreml.covariance.Adapter.disable_cache"><code class="docutils literal notranslate"><span class="pre">Adapter.disable_cache()</span></code></a></li>

@@ -28,3 +28,28 @@ param_specs = {
 adapter = Adapter(adaptee, param_specs, param_map)
 adapter(torch.tensor([0.0]))
 
+
+# In[2]:
+
+
+import torch
+from torch_openreml.covariance import DiagonalMatrix, Adapter
+from torch_openreml.covariance.transform import TransformIdentity
+
+adaptee = DiagonalMatrix(2)
+
+def param_map(params):
+    p = torch.sigmoid(params[0])
+    return torch.stack([p, 1 - p])
+
+param_specs = {
+    "logit": {
+        "fixed": False,
+        "default": torch.tensor([0.0]),
+        "trans": TransformIdentity(),
+    }
+}
+
+adapter = Adapter(adaptee, param_specs, param_map)
+adapter.manual_inverse(torch.tensor([0.0]))
+
