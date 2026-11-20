@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="prev" title="Example Datasets" href="api/example_data.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Changelog - torch-openreml 0.4.1-alpha documentation</title>
+        <title>Changelog - torch-openreml 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -164,7 +164,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">torch-openreml 0.4.1-alpha documentation</div></a>
+      <a href="index.html"><div class="brand">torch-openreml 1.0.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -185,7 +185,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
-  <span class="sidebar-brand-text">torch-openreml 0.4.1-alpha documentation</span>
+  <span class="sidebar-brand-text">torch-openreml 1.0.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -196,6 +196,7 @@
   <ul class="current">
 <li class="toctree-l1 has-children"><a class="reference internal" href="vig.html">Vignettes</a><input aria-label="Toggle navigation of Vignettes" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="vig/vig_mixed_model_reml.html">Introduction to Mixed Model REML Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vig/vig_factor_analysis.html">Factor Analysis of a Multi-Environment Trial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="r_user.html">For R Users</a></li>
@@ -331,8 +332,13 @@
         <article role="main" id="furo-main-content">
           <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">¶</a></h1>
-<section id="alpha-unreleased">
-<h2>0.4.1-alpha (unreleased)<a class="headerlink" href="#alpha-unreleased" title="Link to this heading">¶</a></h2>
+<section id="id1">
+<h2>1.0.0 (2026-11-20)<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<p>This is the first stable release, and it follows <code class="docutils literal notranslate"><span class="pre">0.4.0-alpha</span></code> directly. The
+jump to 1.0.0 marks that the interface below — <code class="docutils literal notranslate"><span class="pre">MixedModelREML</span></code> together with
+the <code class="docutils literal notranslate"><span class="pre">methods</span></code> backends — is the shape the package intends to keep: later
+releases stay backward compatible with it, and breaking changes are reserved
+for a major version.</p>
 <section id="breaking-changes">
 <h3>Breaking changes<a class="headerlink" href="#breaking-changes" title="Link to this heading">¶</a></h3>
 <ul class="simple">
@@ -460,6 +466,17 @@ parameter estimate and returning the same path-keyed dict as
 takes a <code class="docutils literal notranslate"><span class="pre">free_params</span></code> tensor or dict, or the selectors <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code> and
 <code class="docutils literal notranslate"><span class="pre">&quot;best&quot;</span></code>; <code class="docutils literal notranslate"><span class="pre">tree()</span></code> uses the last fitted iterate. When <code class="docutils literal notranslate"><span class="pre">v</span></code> is a plain
 matrix rather than an operator, the tree is the root entry alone.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">torch_openreml.example_data.fa_met</span></code>, the simulated FA(2)
+multi-environment trial used by the factor-analysis vignette, shipped as
+<code class="docutils literal notranslate"><span class="pre">torch_openreml/example_data/data/fa_met.csv</span></code> and read into a DataFrame.
+The genotype and environment labels are read as strings, preserving the
+zero-padding that <code class="docutils literal notranslate"><span class="pre">DummyMatrix</span></code>’s lexicographic ordering relies on, and
+the <code class="docutils literal notranslate"><span class="pre">genetic</span></code> column holds the latent effects that generated the yields.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">torch_openreml.example_data.fa_met_params</span></code>, the generating values of that
+trial (environment means, FA(2) loadings and uniquenesses, residual
+variance), shipped as
+<code class="docutils literal notranslate"><span class="pre">torch_openreml/example_data/data/fa_met_params.json</span></code> and read into a
+dict.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">DummyMatrix.transform</span></code>, building the design matrix of new observations
 from the columns fixed at initialisation: each row is one-hot in the column
 named by the <code class="docutils literal notranslate"><span class="pre">&quot;⋈&quot;</span></code> join of its factor values, and a combination with no
@@ -517,6 +534,18 @@ output. The API reference gained the <code class="docutils literal notranslate">
 old <code class="docutils literal notranslate"><span class="pre">MarginalREML</span></code> vignette moved to <code class="docutils literal notranslate"><span class="pre">docs/archive/</span></code>. The R examples now
 use <code class="docutils literal notranslate"><span class="pre">MixedModelREML</span></code> with <code class="docutils literal notranslate"><span class="pre">build_params()</span></code>, <code class="docutils literal notranslate"><span class="pre">blue()</span></code>, <code class="docutils literal notranslate"><span class="pre">blup()</span></code> and
 <code class="docutils literal notranslate"><span class="pre">blup_per_term()</span></code>.</p></li>
+<li><p>Added a factor-analysis vignette,
+<code class="docutils literal notranslate"><span class="pre">docs/source/vig/vig_factor_analysis.rst</span></code>, which loads a simulated FA(2)
+multi-environment trial, fits it with <code class="docutils literal notranslate"><span class="pre">MixedModelREML</span></code>, and checks the
+recovery of the covariance, the random effects and the environment means.
+A second part refits the same model on an unbalanced version of the trial,
+in which each genotype is grown in only three of the six environments, and
+compares the recovery, the untested-cell BLUPs and the factor-count choice.
+The trial is shipped as <code class="docutils literal notranslate"><span class="pre">torch_openreml/example_data/data/fa_met.csv</span></code> and
+exposed as <code class="docutils literal notranslate"><span class="pre">torch_openreml.example_data.fa_met</span></code>, with the latent effects
+in its <code class="docutils literal notranslate"><span class="pre">genetic</span></code> column; the generating values are shipped as
+<code class="docutils literal notranslate"><span class="pre">fa_met_params.json</span></code> and exposed as
+<code class="docutils literal notranslate"><span class="pre">torch_openreml.example_data.fa_met_params</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Marginal.ai_step</span></code> now documents the <code class="docutils literal notranslate"><span class="pre">AttributeError</span></code> raised when
 <code class="docutils literal notranslate"><span class="pre">model</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>; the previous docstring claimed <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>. It also
 states that <code class="docutils literal notranslate"><span class="pre">require_loglik=False</span></code> returns the <code class="docutils literal notranslate"><span class="pre">torch.nan</span></code> sentinel.</p></li>
@@ -530,6 +559,11 @@ added before factorising <code class="docutils literal notranslate"><span class=
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">tests/test_mixed_model_reml.py</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/methods/test_cform.py</span></code> and
 <code class="docutils literal notranslate"><span class="pre">tests/methods/test_marginal.py</span></code>, with matching planning documents, for the
 new estimator and both numerical backends.</p></li>
+<li><p>Extended <code class="docutils literal notranslate"><span class="pre">tests/example_data</span></code> with checks on the shipped <code class="docutils literal notranslate"><span class="pre">fa_met</span></code> trial
+and <code class="docutils literal notranslate"><span class="pre">fa_met_params</span></code>: 1200 observations, two replicates per
+genotype-by-environment cell, zero-padded string labels, the documented
+dtypes, a <code class="docutils literal notranslate"><span class="pre">genetic</span></code> column constant within each cell, and the generating
+values.</p></li>
 <li><p>Added dedicated tests and plans for <code class="docutils literal notranslate"><span class="pre">param</span></code>, <code class="docutils literal notranslate"><span class="pre">post</span></code>, <code class="docutils literal notranslate"><span class="pre">KnownMatrix</span></code>,
 <code class="docutils literal notranslate"><span class="pre">Gram</span></code>, <code class="docutils literal notranslate"><span class="pre">MarginalCovariance</span></code>, <code class="docutils literal notranslate"><span class="pre">EqualEntryMatrix</span></code>,
 <code class="docutils literal notranslate"><span class="pre">LowerTriangularMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">UnconstrainedMatrix</span></code>.</p></li>
@@ -548,8 +582,8 @@ tree rather than only <code class="docutils literal notranslate"><span class="pr
 </section>
 <section id="alpha-2026-10-05">
 <h2>0.4.0-alpha (2026-10-05)<a class="headerlink" href="#alpha-2026-10-05" title="Link to this heading">¶</a></h2>
-<section id="id1">
-<h3>Breaking changes<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<section id="id2">
+<h3>Breaking changes<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">simple_param_specs</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleMatrix</span></code> now take their default as a 1D
 tensor of shape <code class="docutils literal notranslate"><span class="pre">(1,)</span></code>. A default passed as a float raises a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>,
@@ -559,8 +593,8 @@ path syntax of <code class="docutils literal notranslate"><span class="pre">set_
 in an operator follow the same rule.</p></li>
 </ul>
 </section>
-<section id="id2">
-<h3>New features<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<section id="id3">
+<h3>New features<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>New operators: <code class="docutils literal notranslate"><span class="pre">Product</span></code>, the matrix product <span class="math notranslate nohighlight">\(V = A B\)</span> of exactly
 two operands; <code class="docutils literal notranslate"><span class="pre">Transpose</span></code>, <span class="math notranslate nohighlight">\(V = A^\top\)</span>; <code class="docutils literal notranslate"><span class="pre">Stack</span></code>, binding two or
@@ -582,24 +616,24 @@ stored while caching was on cannot come back when it is turned on again.
 <code class="docutils literal notranslate"><span class="pre">Adapter</span></code> into its adaptee, so one call covers a whole composite.</p></li>
 </ul>
 </section>
-<section id="id3">
-<h3>Changes<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<section id="id4">
+<h3>Changes<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">MarginalREML.ai_step</span></code> now resolves the dtype and device from <code class="docutils literal notranslate"><span class="pre">theta</span></code>
 alone and converts <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> to them, rather than resolving a common
 dtype and device from the three.</p></li>
 </ul>
 </section>
-<section id="id4">
-<h3>Documentation<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
+<section id="id5">
+<h3>Documentation<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Added API reference pages for <code class="docutils literal notranslate"><span class="pre">Product</span></code>, <code class="docutils literal notranslate"><span class="pre">Transpose</span></code>, <code class="docutils literal notranslate"><span class="pre">Stack</span></code> and
 <code class="docutils literal notranslate"><span class="pre">Inverse</span></code>, listed them on the operators page, and regenerated the
 per-class pages.</p></li>
 </ul>
 </section>
-<section id="id5">
-<h3>Testing<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
+<section id="id6">
+<h3>Testing<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Added test modules and planning documents for <code class="docutils literal notranslate"><span class="pre">Product</span></code>, <code class="docutils literal notranslate"><span class="pre">Transpose</span></code>,
 <code class="docutils literal notranslate"><span class="pre">Stack</span></code> and <code class="docutils literal notranslate"><span class="pre">Inverse</span></code>.</p></li>
@@ -608,8 +642,8 @@ per-class pages.</p></li>
 </section>
 <section id="alpha-2026-09-20">
 <h2>0.3.0-alpha (2026-09-20)<a class="headerlink" href="#alpha-2026-09-20" title="Link to this heading">¶</a></h2>
-<section id="id6">
-<h3>Breaking changes<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<section id="id7">
+<h3>Breaking changes<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">IdentityMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">DummyMatrix</span></code> no longer accept <code class="docutils literal notranslate"><span class="pre">dtype</span></code> and
 <code class="docutils literal notranslate"><span class="pre">device</span></code> arguments. Both follow the dtype and the device of their input
@@ -621,8 +655,8 @@ Where the operands’ own defaults disagree and no input parameters override
 them, a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> is raised instead of <code class="docutils literal notranslate"><span class="pre">torch.cat</span></code> silently promoting.</p></li>
 </ul>
 </section>
-<section id="id7">
-<h3>New features<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<section id="id8">
+<h3>New features<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Operator.call_tree</span></code>, a debugging view of a composite. It returns two
 dictionaries over one key set, keyed by the path to each node — the operand
@@ -640,8 +674,8 @@ joining the path to a name gives the name the composite exposes in
 be resolved from the current parameters.</p></li>
 </ul>
 </section>
-<section id="id8">
-<h3>Changes<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
+<section id="id9">
+<h3>Changes<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>The dtype and device of a composite are resolved once for the whole
 structure: the input parameters first, then the free-parameter defaults of
@@ -660,8 +694,8 @@ already cached.</p></li>
 the free, untransformed parameters.</p></li>
 </ul>
 </section>
-<section id="id9">
-<h3>Bug fixes<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
+<section id="id10">
+<h3>Bug fixes<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Fixed silent dtype promotion in the operators, where <code class="docutils literal notranslate"><span class="pre">torch.cat</span></code> would
 promote the results of the operands.</p></li>
@@ -678,8 +712,8 @@ raises even there.</p></li>
 are sized by the number of free parameters.</p></li>
 </ul>
 </section>
-<section id="id10">
-<h3>Documentation<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
+<section id="id11">
+<h3>Documentation<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Regenerated and extended the API reference, adding pages for <code class="docutils literal notranslate"><span class="pre">Adapter</span></code>,
 <code class="docutils literal notranslate"><span class="pre">Augment</span></code>, <code class="docutils literal notranslate"><span class="pre">Gram</span></code> and the post-estimation functions.</p></li>
@@ -687,8 +721,8 @@ are sized by the number of free parameters.</p></li>
 of <code class="docutils literal notranslate"><span class="pre">call_tree</span></code> and <code class="docutils literal notranslate"><span class="pre">grad_tree</span></code>.</p></li>
 </ul>
 </section>
-<section id="id11">
-<h3>Testing<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
+<section id="id12">
+<h3>Testing<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Added test modules for the adapter and for <code class="docutils literal notranslate"><span class="pre">Augment</span></code>, and extended the
 operator, matrix, identity, dummy and scalar matrix suites to cover the dtype
@@ -701,8 +735,8 @@ recording what must be covered and the risks worth testing.</p></li>
 </section>
 <section id="alpha-2026-09-15">
 <h2>0.2.0-alpha (2026-09-15)<a class="headerlink" href="#alpha-2026-09-15" title="Link to this heading">¶</a></h2>
-<section id="id12">
-<h3>Breaking changes<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
+<section id="id13">
+<h3>Breaking changes<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Renamed the <code class="docutils literal notranslate"><span class="pre">REML</span></code> estimator to <code class="docutils literal notranslate"><span class="pre">MarginalREML</span></code>. The module
 <code class="docutils literal notranslate"><span class="pre">torch_openreml.reml</span></code> is now <code class="docutils literal notranslate"><span class="pre">torch_openreml.marginal_reml</span></code>, and
@@ -733,8 +767,8 @@ convenience methods.</p></li>
 handled by <code class="docutils literal notranslate"><span class="pre">DummyMatrix</span></code>.</p></li>
 </ul>
 </section>
-<section id="id13">
-<h3>New features<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
+<section id="id14">
+<h3>New features<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>New covariance matrices: <code class="docutils literal notranslate"><span class="pre">EqualEntryMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">UnconstrainedMatrix</span></code>,
 <code class="docutils literal notranslate"><span class="pre">LowerTriangularMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleMatrix</span></code>.</p></li>
@@ -759,8 +793,8 @@ attribute, together with <code class="docutils literal notranslate"><span class=
 <li><p>The package now exposes <code class="docutils literal notranslate"><span class="pre">__version__</span></code>.</p></li>
 </ul>
 </section>
-<section id="id14">
-<h3>Changes<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h3>
+<section id="id15">
+<h3>Changes<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>The default Jacobian method for automatic differentiation is now
 <code class="docutils literal notranslate"><span class="pre">&quot;jacfwd&quot;</span></code>, which avoids the memory blow-up that <code class="docutils literal notranslate"><span class="pre">&quot;jacrev&quot;</span></code> suffers as
@@ -774,8 +808,8 @@ contain no observations.</p></li>
 for <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">1</span></code>.</p></li>
 </ul>
 </section>
-<section id="id15">
-<h3>Bug fixes<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
+<section id="id16">
+<h3>Bug fixes<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Fixed incorrect gradient computation in <code class="docutils literal notranslate"><span class="pre">DiagonalMatrix</span></code>, including the
 gradient masking and the selection of the manual gradient for all parameters.</p></li>
@@ -788,8 +822,8 @@ intermediates reset correctly during automatic differentiation.</p></li>
 <code class="docutils literal notranslate"><span class="pre">free_params</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 </ul>
 </section>
-<section id="id16">
-<h3>Documentation<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h3>
+<section id="id17">
+<h3>Documentation<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Added this changelog, a vignette on marginal REML, and a guide for using
 <code class="docutils literal notranslate"><span class="pre">torch-openreml</span></code> from R via <code class="docutils literal notranslate"><span class="pre">reticulate</span></code>.</p></li>
@@ -799,8 +833,8 @@ functions and the new matrices and operators.</p></li>
 instructions.</p></li>
 </ul>
 </section>
-<section id="id17">
-<h3>Testing<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h3>
+<section id="id18">
+<h3>Testing<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Added a pytest suite under <code class="docutils literal notranslate"><span class="pre">tests/covariance</span></code> covering the matrices, the
 operators, the transforms, <code class="docutils literal notranslate"><span class="pre">utils</span></code> and the example data, and registered it
@@ -871,7 +905,7 @@ as the default test path in <code class="docutils literal notranslate"><span cla
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Changelog</a><ul>
-<li><a class="reference internal" href="#alpha-unreleased">0.4.1-alpha (unreleased)</a><ul>
+<li><a class="reference internal" href="#id1">1.0.0 (2026-11-20)</a><ul>
 <li><a class="reference internal" href="#breaking-changes">Breaking changes</a></li>
 <li><a class="reference internal" href="#changes">Changes</a></li>
 <li><a class="reference internal" href="#new-features">New features</a></li>
@@ -881,29 +915,29 @@ as the default test path in <code class="docutils literal notranslate"><span cla
 </ul>
 </li>
 <li><a class="reference internal" href="#alpha-2026-10-05">0.4.0-alpha (2026-10-05)</a><ul>
-<li><a class="reference internal" href="#id1">Breaking changes</a></li>
-<li><a class="reference internal" href="#id2">New features</a></li>
-<li><a class="reference internal" href="#id3">Changes</a></li>
-<li><a class="reference internal" href="#id4">Documentation</a></li>
-<li><a class="reference internal" href="#id5">Testing</a></li>
+<li><a class="reference internal" href="#id2">Breaking changes</a></li>
+<li><a class="reference internal" href="#id3">New features</a></li>
+<li><a class="reference internal" href="#id4">Changes</a></li>
+<li><a class="reference internal" href="#id5">Documentation</a></li>
+<li><a class="reference internal" href="#id6">Testing</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#alpha-2026-09-20">0.3.0-alpha (2026-09-20)</a><ul>
-<li><a class="reference internal" href="#id6">Breaking changes</a></li>
-<li><a class="reference internal" href="#id7">New features</a></li>
-<li><a class="reference internal" href="#id8">Changes</a></li>
-<li><a class="reference internal" href="#id9">Bug fixes</a></li>
-<li><a class="reference internal" href="#id10">Documentation</a></li>
-<li><a class="reference internal" href="#id11">Testing</a></li>
+<li><a class="reference internal" href="#id7">Breaking changes</a></li>
+<li><a class="reference internal" href="#id8">New features</a></li>
+<li><a class="reference internal" href="#id9">Changes</a></li>
+<li><a class="reference internal" href="#id10">Bug fixes</a></li>
+<li><a class="reference internal" href="#id11">Documentation</a></li>
+<li><a class="reference internal" href="#id12">Testing</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#alpha-2026-09-15">0.2.0-alpha (2026-09-15)</a><ul>
-<li><a class="reference internal" href="#id12">Breaking changes</a></li>
-<li><a class="reference internal" href="#id13">New features</a></li>
-<li><a class="reference internal" href="#id14">Changes</a></li>
-<li><a class="reference internal" href="#id15">Bug fixes</a></li>
-<li><a class="reference internal" href="#id16">Documentation</a></li>
-<li><a class="reference internal" href="#id17">Testing</a></li>
+<li><a class="reference internal" href="#id13">Breaking changes</a></li>
+<li><a class="reference internal" href="#id14">New features</a></li>
+<li><a class="reference internal" href="#id15">Changes</a></li>
+<li><a class="reference internal" href="#id16">Bug fixes</a></li>
+<li><a class="reference internal" href="#id17">Documentation</a></li>
+<li><a class="reference internal" href="#id18">Testing</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#alpha-2026-05-08">0.1.0-alpha (2026-05-08)</a></li>
@@ -918,7 +952,7 @@ as the default test path in <code class="docutils literal notranslate"><span cla
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=b0ee98c4"></script>
+</div><script src="_static/documentation_options.js?v=8d563738"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
