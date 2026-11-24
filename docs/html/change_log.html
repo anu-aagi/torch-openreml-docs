@@ -9,7 +9,7 @@
         <title>Changelog - torch-openreml 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css?v=572af1d6" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=df86a2a8" />
@@ -379,6 +379,13 @@ the name does mean an estimate.</p></li>
 of the initial covariance parameters once, then stores the converted tensors
 for the post-fit methods, instead of repeating the conversion inside every
 step.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MixedModelREML.optimize</span></code> replaces the fixed <code class="docutils literal notranslate"><span class="pre">eta</span></code> step of
+<code class="docutils literal notranslate"><span class="pre">MarginalREML.optimize</span></code> with Armijo backtracking. The AI direction is
+unchanged; the step starts at <code class="docutils literal notranslate"><span class="pre">eta_max</span></code> and is multiplied by
+<code class="docutils literal notranslate"><span class="pre">eta_shrink</span></code> after each rejected candidate until the log-likelihood
+increases sufficiently, with a small gradient-ascent step when no candidate
+qualifies. This keeps the fit stable when the score or AI matrix is
+inaccurate.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">MixedModelREML.optimize</span></code> uses a relative Armijo slack
 (<code class="docutils literal notranslate"><span class="pre">armijo_slack=1e-7</span></code>) in its sufficient-increase test, so a step within
 floating-point noise is accepted. Set <code class="docutils literal notranslate"><span class="pre">armijo_slack=0</span></code> for strict Armijo.</p></li>

@@ -7,6 +7,7 @@
 import torch
 
 torch.set_default_dtype(torch.float64)
+torch.set_printoptions(precision=4, sci_mode=False)
 
 from torch_openreml import MixedModelREML
 from torch_openreml.covariance import (
@@ -32,53 +33,49 @@ loadings = torch.tensor(fa_met_params["loadings"])
 uniqueness = torch.tensor(fa_met_params["uniqueness"])
 sigma2 = fa_met_params["sigma2"]
 
-sigma_g = loadings @ loadings.T + torch.diag(uniqueness)
-means, sigma2, sigma_g.round(decimals=4)
+Sigma_g = loadings @ loadings.T + torch.diag(uniqueness)
+print(f"{means=}")
+print(f"{loadings=}")
+print(f"{sigma2=}")
+print(f"{Sigma_g=}")
 
 
 # In[3]:
 
 
-cells = fa_met.drop_duplicates(["genotype", "environment"])
-genetic = torch.tensor(cells["genetic"].to_numpy())
+genotype = fa_met["genotype"]
+environment = fa_met["environment"]
 
-genotype_labels = fa_met["genotype"]
-environment_labels = fa_met["environment"]
-
-y = torch.tensor(fa_met["yield"].to_numpy())
-X = DummyMatrix(environment_labels)()
-
-y.shape, X.shape, len(genotype_labels)
+y = torch.tensor(fa_met["yield"].values)
+X = DummyMatrix(environment)()
 
 
 # In[4]:
 
 
-Z = DummyMatrix(genotype_labels, environment_labels)
+Z = DummyMatrix(genotype, environment)
 
 k = 2
 
-fa = Sum(
-    factors=Gram(
-        LowerTriangularMatrix(environment_labels, k),
-        gram_type="xxt",
-    ),
-    uniqueness=DiagonalMatrix(environment_labels),
-)
-
 G = KroneckerProduct(
-    genotype=IdentityMatrix(genotype_labels),
-    environment=fa,
+    genotype=IdentityMatrix(genotype),
+    environment=Sum(
+        factors=Gram(
+            loadings=LowerTriangularMatrix(environment, k),
+            gram_type="xxt",
+        ),
+        uniqueness=DiagonalMatrix(environment),
+    ),
 )
 
-reml = MixedModelREML(genotype=(Z, G), R=ScalarMatrix(len(y)))
+reml = MixedModelREML(g_by_e=(Z, G), R=ScalarMatrix(len(y)))
 
 
 # In[5]:
 
 
 names = reml.V.free_param_names
-len(names), names
+names
 
 
 # In[6]:
@@ -90,139 +87,120 @@ names, theta_hat = reml.optimize(y, X, verbose=1)
 # In[7]:
 
 
-reml.is_converged(), reml.loglik()
+theta_hat
 
 
 # In[8]:
-
-
-theta_hat.round(decimals=4)
-
-
-# In[9]:
 
 
 params = reml.build_params(out_format="dict")
 params
 
 
-# In[10]:
+# In[9]:
 
 
 tree = reml.tree()
 
 Sigma_hat = tree["G/environment"]
-Lambda_hat = tree["G/environment/factors/op_0"]
+Lambda_hat = tree["G/environment/factors/loadings"]
 Psi_hat = tree["G/environment/uniqueness"]
 
-Sigma_hat.round(decimals=4)
+
+# In[10]:
+
+
+Psi_hat
 
 
 # In[11]:
 
 
-Lambda_hat.round(decimals=4)
+sign = torch.sign(torch.diagonal(Lambda_hat))
+Lambda_aligned = Lambda_hat * sign
+
+Lambda_aligned
 
 
 # In[12]:
 
 
-psi_hat = Psi_hat.diagonal()
-uniqueness.round(decimals=4), psi_hat.round(decimals=4)
+loadings
 
 
 # In[13]:
 
 
-sigma2_hat = params["R/sigma^2"]
-sigma2_hat
+(Sigma_hat - Sigma_g).abs().max()
 
 
 # In[14]:
 
 
-sign = torch.sign(torch.diagonal(Lambda_hat))
-Lambda_aligned = Lambda_hat * sign
-
-Lambda_aligned.round(decimals=4)
+torch.corrcoef(torch.stack([Sigma_hat.flatten(), Sigma_g.flatten()]))[0, 1]
 
 
 # In[15]:
 
 
-loadings
+genetic = torch.tensor(fa_met.drop_duplicates(["genotype", "environment"])["genetic"].values)
+
+blup = reml.blup_per_term()["g_by_e"]
+
+torch.corrcoef(torch.stack([genetic, blup]))[0, 1]
 
 
 # In[16]:
 
 
-(Sigma_hat - sigma_g).abs().max()
+(blup - genetic).pow(2).mean().sqrt()
 
 
 # In[17]:
 
 
-torch.corrcoef(torch.stack([Sigma_hat.flatten(), sigma_g.flatten()]))[0, 1]
+beta_hat = reml.blue()
+se_beta = torch.sqrt(reml.var_blue())
+
+beta_hat, se_beta
 
 
 # In[18]:
 
 
-blup = reml.blup_per_term()["genotype"]
+def fit_fa(k):
+    G = KroneckerProduct(
+        genotype=IdentityMatrix(genotype),
+        environment=Sum(
+            factors=Gram(
+                LowerTriangularMatrix(environment, k),
+                gram_type="xxt",
+            ),
+            uniqueness=DiagonalMatrix(environment),
+        ),
+    )
+    model = MixedModelREML(g_by_e=(Z, G), R=ScalarMatrix(len(y)))
+    names_k, _ = model.optimize(
+        y, X, armijo_trials=5, fallback_eta=0.1
+    )
+    loglik_k = model.loglik()[0].item()
+    p_k = len(names_k)
+    return p_k, loglik_k, -2 * loglik_k + 2 * p_k
 
-torch.corrcoef(torch.stack([genetic, blup]))[0, 1]
+for k_k in (1, 2, 3):
+    p_k, loglik_k, aic_k = fit_fa(k_k)
+    print(f"k = {k_k}: p = {p_k}, loglik = {loglik_k:.3f}, AIC = {aic_k:.3f}")
 
 
 # In[19]:
 
 
-(blup - genetic).pow(2).mean().sqrt()
-
-
-# In[20]:
-
-
-beta_hat = reml.blue()
-se_beta = torch.sqrt(reml.var_blue())
-
-beta_hat.round(decimals=4), se_beta.round(decimals=4)
-
-
-# In[21]:
-
-
-def fit_fa(k):
-    fa = Sum(
-        factors=Gram(
-            LowerTriangularMatrix(environment_labels, k),
-            gram_type="xxt",
-        ),
-        uniqueness=DiagonalMatrix(environment_labels),
-    )
-    G = KroneckerProduct(
-        genotype=IdentityMatrix(genotype_labels),
-        environment=fa,
-    )
-    model = MixedModelREML(genotype=(Z, G), R=ScalarMatrix(len(y)))
-    names_k, _ = model.optimize(y, X)
-    loglik_k = model.loglik()[0].item()
-    p_k = len(names_k)
-    return p_k, loglik_k, -2 * loglik_k + 2 * p_k
-
-for k_k in (1, 2):
-    p_k, loglik_k, aic_k = fit_fa(k_k)
-    print(f"k = {k_k}: p = {p_k}, loglik = {loglik_k:.3f}, AIC = {aic_k:.3f}")
-
-
-# In[22]:
-
-
 env_levels = sorted(fa_met["environment"].unique())
-geno_levels = sorted(fa_met["genotype"].unique())
+gen_levels = sorted(fa_met["genotype"].unique())
 
 generator = torch.Generator().manual_seed(20261120)
 missing = {}
-for genotype in geno_levels:
+for genotype in gen_levels:
     picks = torch.randperm(len(env_levels), generator=generator)[:3]
     missing[genotype] = {env_levels[i] for i in picks.tolist()}
 
@@ -235,93 +213,80 @@ unbalanced = fa_met[keep].reset_index(drop=True)
 unbalanced.head()
 
 
+# In[20]:
+
+
+unbalanced.drop_duplicates(["genotype", "environment"]).groupby("environment").size()
+
+
+# In[21]:
+
+
+y_u = torch.tensor(unbalanced["yield"].values)
+X_u = DummyMatrix(unbalanced["environment"], levels=[env_levels])()
+Z_u = DummyMatrix(unbalanced["genotype"], unbalanced["environment"])
+
+
+# In[22]:
+
+
+G_u = KroneckerProduct(
+    genotype=IdentityMatrix(gen_levels),
+    environment=Sum(
+        factors=Gram(LowerTriangularMatrix(env_levels, 2), gram_type="xxt"),
+        uniqueness=DiagonalMatrix(env_levels),
+    ),
+)
+
+model_u = MixedModelREML(genotype=(Z_u, G_u), R=ScalarMatrix(len(y_u)))
+
+
 # In[23]:
 
 
-unbalanced_cells = unbalanced.drop_duplicates(["genotype", "environment"])
-len(unbalanced), len(unbalanced_cells), unbalanced_cells.groupby("environment").size()
+names_u, theta_u = model_u.optimize(y_u, X_u, verbose=1)
 
 
 # In[24]:
 
 
-y_u = torch.tensor(unbalanced["yield"].to_numpy())
-X_u = DummyMatrix(unbalanced["environment"], levels=[env_levels])()
-Z_u = DummyMatrix(
-    unbalanced["genotype"],
-    unbalanced["environment"],
-    levels=[geno_levels, env_levels],
-)
-
-Z_u().shape, (Z_u() == 0).all(dim=0).sum()
+model_u.build_params(out_format="dict")["R/sigma^2"]
 
 
 # In[25]:
 
 
-fa_u = Sum(
-    factors=Gram(LowerTriangularMatrix(env_levels, 2), gram_type="xxt"),
-    uniqueness=DiagonalMatrix(env_levels),
-)
-G_u = KroneckerProduct(
-    genotype=IdentityMatrix(geno_levels),
-    environment=fa_u,
-)
-
-model_u = MixedModelREML(genotype=(Z_u, G_u), R=ScalarMatrix(len(y_u)))
-len(model_u.V.free_param_names)
+tree_u = model_u.tree()
+Sigma_u = tree_u["G/environment"]
+Psi_u = tree_u["G/environment/uniqueness"]
 
 
 # In[26]:
 
 
-names_u, theta_u = model_u.optimize(y_u, X_u)
-
-model_u.is_converged(), model_u.loglik()
+Psi_u
 
 
 # In[27]:
 
 
-sigma2_u = model_u.build_params(out_format="dict")["R/sigma^2"]
-sigma2_u
+torch.corrcoef(torch.stack([Sigma_u.flatten(), Sigma_g.flatten()]))[0, 1]
 
 
 # In[28]:
 
 
-tree_u = model_u.tree()
-Sigma_u = tree_u["G/environment"]
-psi_u = tree_u["G/environment/uniqueness"].diagonal()
+(Sigma_u - Sigma_g).abs().max()
 
 
 # In[29]:
 
 
-torch.corrcoef(torch.stack([Sigma_u.flatten(), sigma_g.flatten()]))[0, 1]
+blup_u = model_u.blup_per_term()["genotype"]
+seen = (Z_u() != 0).any(dim=0)
 
 
 # In[30]:
-
-
-(Sigma_u - sigma_g).abs().max()
-
-
-# In[31]:
-
-
-psi_u.round(decimals=4), uniqueness.round(decimals=4)
-
-
-# In[32]:
-
-
-blup_u = model_u.blup_per_term()["genotype"]
-seen = (Z_u() != 0).any(dim=0)
-seen.sum()
-
-
-# In[33]:
 
 
 def corr(x, y):
@@ -331,59 +296,59 @@ def rmse(x, y):
     return (x - y).pow(2).mean().sqrt()
 
 
-# In[34]:
+# In[31]:
 
 
 corr(genetic[seen], blup_u[seen])
 
 
-# In[35]:
+# In[32]:
 
 
 rmse(genetic[seen], blup_u[seen])
 
 
-# In[36]:
+# In[33]:
 
 
 corr(genetic[~seen], blup_u[~seen])
 
 
-# In[37]:
+# In[34]:
 
 
 rmse(genetic[~seen], blup_u[~seen])
 
 
-# In[38]:
+# In[35]:
 
 
 blup_u[~seen].std(), genetic[~seen].std()
 
 
-# In[39]:
+# In[36]:
 
 
 def fit_fa_u(k):
-    fa = Sum(
-        factors=Gram(
-            LowerTriangularMatrix(env_levels, k),
-            gram_type="xxt",
-        ),
-        uniqueness=DiagonalMatrix(env_levels),
-    )
     G = KroneckerProduct(
-        genotype=IdentityMatrix(geno_levels),
-        environment=fa,
+        genotype=IdentityMatrix(gen_levels),
+        environment=Sum(
+            factors=Gram(
+                LowerTriangularMatrix(env_levels, k),
+                gram_type="xxt",
+            ),
+            uniqueness=DiagonalMatrix(env_levels),
+        ),
     )
     model = MixedModelREML(genotype=(Z_u, G), R=ScalarMatrix(len(y_u)))
-    names_k, _ = model.optimize(y_u, X_u)
+    names_k, _ = model.optimize(
+        y_u, X_u, armijo_trials=5, fallback_eta=0.1
+    )
     loglik_k = model.loglik()[0].item()
     p_k = len(names_k)
     return p_k, loglik_k, -2 * loglik_k + 2 * p_k
 
-p_1, loglik_1, aic_1 = fit_fa_u(1)
-print(f"k = 1: p = {p_1}, loglik = {loglik_1:.3f}, AIC = {aic_1:.3f}")
-print(f"k = 2: p = {len(names_u)}, loglik = {model_u.loglik()[0].item():.3f}, "
-      f"AIC = {-2 * model_u.loglik()[0].item() + 2 * len(names_u):.3f}")
+for k_k in (1, 2, 3):
+    p_k, loglik_k, aic_k = fit_fa_u(k_k)
+    print(f"k = {k_k}: p = {p_k}, loglik = {loglik_k:.3f}, AIC = {aic_k:.3f}")
 
