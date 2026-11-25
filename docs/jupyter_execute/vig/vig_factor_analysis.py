@@ -180,9 +180,7 @@ def fit_fa(k):
         ),
     )
     model = MixedModelREML(g_by_e=(Z, G), R=ScalarMatrix(len(y)))
-    names_k, _ = model.optimize(
-        y, X, armijo_trials=5, fallback_eta=0.1
-    )
+    names_k, _ = model.optimize(y, X, armijo_trials=5, fallback_eta=0.1)
     loglik_k = model.loglik()[0].item()
     p_k = len(names_k)
     return p_k, loglik_k, -2 * loglik_k + 2 * p_k
@@ -341,9 +339,7 @@ def fit_fa_u(k):
         ),
     )
     model = MixedModelREML(genotype=(Z_u, G), R=ScalarMatrix(len(y_u)))
-    names_k, _ = model.optimize(
-        y_u, X_u, armijo_trials=5, fallback_eta=0.1
-    )
+    names_k, _ = model.optimize(y_u, X_u, armijo_trials=5, fallback_eta=0.1)
     loglik_k = model.loglik()[0].item()
     p_k = len(names_k)
     return p_k, loglik_k, -2 * loglik_k + 2 * p_k

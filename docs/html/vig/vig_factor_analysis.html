@@ -3,13 +3,13 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="For R Users" href="../r_user.html"><link rel="prev" title="Introduction to Mixed Model REML Estimation" href="vig_mixed_model_reml.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="For R Users" href="../r_user.html"><link rel="prev" title="Random-Slope Models" href="vig_random_slope.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>Factor Analysis of a Multi-Environment Trial - torch-openreml 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css?v=572af1d6" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=df86a2a8" />
@@ -196,6 +196,8 @@
   <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../vig.html">Vignettes</a><input aria-label="Toggle navigation of Vignettes" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="vig_mixed_model_reml.html">Introduction to Mixed Model REML Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vig_random_intercept.html">Random-Intercept Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vig_random_slope.html">Random-Slope Models</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Factor Analysis of a Multi-Environment Trial</a></li>
 </ul>
 </li>
@@ -695,26 +697,28 @@ C-form for this covariance structure:</p>
 </pre></div>
 </div>
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  9] ∥∇∥:      14.5894, ∥Δ∥: 0.2143, η: 1.00, ∥Δᶜ∥: 0.2143, accepted: True , log 𝓛: -433.7947
-[ 10] ∥∇∥:       4.0579, ∥Δ∥: 0.0649, η: 1.00, ∥Δᶜ∥: 0.0649, accepted: True , log 𝓛: -433.7195
 </pre></div>
 </div>
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 11] ∥∇∥:       1.2253, ∥Δ∥: 0.0314, η: 1.00, ∥Δᶜ∥: 0.0314, accepted: True , log 𝓛: -433.7115
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 10] ∥∇∥:       4.0579, ∥Δ∥: 0.0649, η: 1.00, ∥Δᶜ∥: 0.0649, accepted: True , log 𝓛: -433.7195
+[ 11] ∥∇∥:       1.2253, ∥Δ∥: 0.0314, η: 1.00, ∥Δᶜ∥: 0.0314, accepted: True , log 𝓛: -433.7115
 </pre></div>
 </div>
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 12] ∥∇∥:       0.4508, ∥Δ∥: 0.0098, η: 1.00, ∥Δᶜ∥: 0.0098, accepted: True , log 𝓛: -433.7106
-[ 13] ∥∇∥:       0.1530, ∥Δ∥: 0.0038, η: 1.00, ∥Δᶜ∥: 0.0038, accepted: True , log 𝓛: -433.7105
 </pre></div>
 </div>
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 14] ∥∇∥:       0.0562, ∥Δ∥: 0.0013, η: 1.00, ∥Δᶜ∥: 0.0013, accepted: True , log 𝓛: -433.7105
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 13] ∥∇∥:       0.1530, ∥Δ∥: 0.0038, η: 1.00, ∥Δᶜ∥: 0.0038, accepted: True , log 𝓛: -433.7105
+[ 14] ∥∇∥:       0.0562, ∥Δ∥: 0.0013, η: 1.00, ∥Δᶜ∥: 0.0013, accepted: True , log 𝓛: -433.7105
 </pre></div>
 </div>
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 15] ∥∇∥:       0.0196, ∥Δ∥: 0.0005, η: 1.00, ∥Δᶜ∥: 0.0005, accepted: True , log 𝓛: -433.7105
-[ 16] ∥∇∥:       0.0071, ∥Δ∥: 0.0002, η: 1.00, ∥Δᶜ∥: 0.0002, accepted: True , log 𝓛: -433.7105
+</pre></div>
+</div>
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 16] ∥∇∥:       0.0071, ∥Δ∥: 0.0002, η: 1.00, ∥Δᶜ∥: 0.0002, accepted: True , log 𝓛: -433.7105
 [ 17] ∥∇∥:       0.0025, ∥Δ∥: 0.0001, η: 1.00, ∥Δᶜ∥: 0.0001, accepted: True , log 𝓛: -433.7105
 
 [∇: score, Δ: 𝐉⁻¹∇, η: step length, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 17, total time: 1.40s
+✓ Converged at iteration 17, total time: 1.45s
 
 </pre></div>
 </div>
@@ -961,9 +965,7 @@ all estimates are within approximately 2 standard errors.</p>
         <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">MixedModelREML</span><span class="p">(</span><span class="n">g_by_e</span><span class="o">=</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">G</span><span class="p">),</span> <span class="n">R</span><span class="o">=</span><span class="n">ScalarMatrix</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)))</span>
-    <span class="n">names_k</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span>
-        <span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">armijo_trials</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">fallback_eta</span><span class="o">=</span><span class="mf">0.1</span>
-    <span class="p">)</span>
+    <span class="n">names_k</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">armijo_trials</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">fallback_eta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
     <span class="n">loglik_k</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">loglik</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
     <span class="n">p_k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">names_k</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">p_k</span><span class="p">,</span> <span class="n">loglik_k</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">loglik_k</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p_k</span>
@@ -1151,32 +1153,34 @@ dtype: int64
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1] ∥∇∥:     232.4998, ∥Δ∥: 7.1491, η: 0.50, ∥Δᶜ∥: 3.5746, accepted: True , log 𝓛: -300.7863
-[  2] ∥∇∥:      41.6616, ∥Δ∥: 6.3930, η: 0.25, ∥Δᶜ∥: 1.5982, accepted: True , log 𝓛: -288.0995
 </pre></div>
 </div>
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  3] ∥∇∥:      42.2211, ∥Δ∥: 2.8327, η: 1.00, ∥Δᶜ∥: 2.8327, accepted: True , log 𝓛: -280.0281
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  2] ∥∇∥:      41.6616, ∥Δ∥: 6.3930, η: 0.25, ∥Δᶜ∥: 1.5982, accepted: True , log 𝓛: -288.0995
+[  3] ∥∇∥:      42.2211, ∥Δ∥: 2.8327, η: 1.00, ∥Δᶜ∥: 2.8327, accepted: True , log 𝓛: -280.0281
 </pre></div>
 </div>
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  4] ∥∇∥:      24.9921, ∥Δ∥: 15.8148, η: 0.12, ∥Δᶜ∥: 1.9768, accepted: True , log 𝓛: -279.2710
-[  5] ∥∇∥:      22.9592, ∥Δ∥: 4.9669, η: 0.25, ∥Δᶜ∥: 1.2417, accepted: True , log 𝓛: -274.6874
 </pre></div>
 </div>
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  6] ∥∇∥:      20.5298, ∥Δ∥: 19.6949, η: 1.00, ∥Δᶜ∥: 19.6949, accepted: True , log 𝓛: -269.6175
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  5] ∥∇∥:      22.9592, ∥Δ∥: 4.9669, η: 0.25, ∥Δᶜ∥: 1.2417, accepted: True , log 𝓛: -274.6874
+[  6] ∥∇∥:      20.5298, ∥Δ∥: 19.6949, η: 1.00, ∥Δᶜ∥: 19.6949, accepted: True , log 𝓛: -269.6175
 [  7] ∥∇∥:      12.7599, ∥Δ∥: 0.4775, η: 1.00, ∥Δᶜ∥: 0.4775, accepted: True , log 𝓛: -267.5594
-[  8] ∥∇∥:       6.1950, ∥Δ∥: 0.1315, η: 1.00, ∥Δᶜ∥: 0.1315, accepted: True , log 𝓛: -267.2806
 </pre></div>
 </div>
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  9] ∥∇∥:       0.4922, ∥Δ∥: 0.0171, η: 1.00, ∥Δᶜ∥: 0.0171, accepted: True , log 𝓛: -267.2773
-[ 10] ∥∇∥:       0.0444, ∥Δ∥: 0.0067, η: 1.00, ∥Δᶜ∥: 0.0067, accepted: True , log 𝓛: -267.2773
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  8] ∥∇∥:       6.1950, ∥Δ∥: 0.1315, η: 1.00, ∥Δᶜ∥: 0.1315, accepted: True , log 𝓛: -267.2806
+[  9] ∥∇∥:       0.4922, ∥Δ∥: 0.0171, η: 1.00, ∥Δᶜ∥: 0.0171, accepted: True , log 𝓛: -267.2773
 </pre></div>
 </div>
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 11] ∥∇∥:       0.0096, ∥Δ∥: 0.0005, η: 1.00, ∥Δᶜ∥: 0.0005, accepted: True , log 𝓛: -267.2773
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 10] ∥∇∥:       0.0444, ∥Δ∥: 0.0067, η: 1.00, ∥Δᶜ∥: 0.0067, accepted: True , log 𝓛: -267.2773
+[ 11] ∥∇∥:       0.0096, ∥Δ∥: 0.0005, η: 1.00, ∥Δᶜ∥: 0.0005, accepted: True , log 𝓛: -267.2773
 [ 12] ∥∇∥:       0.0015, ∥Δ∥: 0.0004, η: 1.00, ∥Δᶜ∥: 0.0004, accepted: True , log 𝓛: -267.2773
-[ 13] ∥∇∥:       0.0004, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, accepted: True , log 𝓛: -267.2773
+</pre></div>
+</div>
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 13] ∥∇∥:       0.0004, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, accepted: True , log 𝓛: -267.2773
 
 [∇: score, Δ: 𝐉⁻¹∇, η: step length, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 13, total time: 0.67s
+✓ Converged at iteration 13, total time: 0.75s
 
 </pre></div>
 </div>
@@ -1380,9 +1384,7 @@ data:</p>
         <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">MixedModelREML</span><span class="p">(</span><span class="n">genotype</span><span class="o">=</span><span class="p">(</span><span class="n">Z_u</span><span class="p">,</span> <span class="n">G</span><span class="p">),</span> <span class="n">R</span><span class="o">=</span><span class="n">ScalarMatrix</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_u</span><span class="p">)))</span>
-    <span class="n">names_k</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span>
-        <span class="n">y_u</span><span class="p">,</span> <span class="n">X_u</span><span class="p">,</span> <span class="n">armijo_trials</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">fallback_eta</span><span class="o">=</span><span class="mf">0.1</span>
-    <span class="p">)</span>
+    <span class="n">names_k</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">y_u</span><span class="p">,</span> <span class="n">X_u</span><span class="p">,</span> <span class="n">armijo_trials</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">fallback_eta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
     <span class="n">loglik_k</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">loglik</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
     <span class="n">p_k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">names_k</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">p_k</span><span class="p">,</span> <span class="n">loglik_k</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">loglik_k</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p_k</span>
@@ -1431,14 +1433,14 @@ information to distinguish between the two.</p>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="vig_mixed_model_reml.html">
+          <a class="prev-page" href="vig_random_slope.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Introduction to Mixed Model REML Estimation</div>
+                <div class="title">Random-Slope Models</div>
                 
               </div>
             </a>
