@@ -197,6 +197,7 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../vig.html">Vignettes</a><input aria-label="Toggle navigation of Vignettes" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="vig_mixed_model_reml.html">Introduction to Mixed Model REML Estimation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vig_matrix.html">The Matrix Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vig_operator.html">The Operator Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vig_random_intercept.html">Random-Intercept Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vig_random_slope.html">Random-Slope Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vig_known_covariance.html">Random Effects with a Known Covariance</a></li>
@@ -702,25 +703,25 @@ C-form for this covariance structure:</p>
 </pre></div>
 </div>
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 10] ∥∇∥:       4.0579, ∥Δ∥: 0.0649, η: 1.00, ∥Δᶜ∥: 0.0649, accepted: True , log 𝓛: -433.7195
-[ 11] ∥∇∥:       1.2253, ∥Δ∥: 0.0314, η: 1.00, ∥Δᶜ∥: 0.0314, accepted: True , log 𝓛: -433.7115
 </pre></div>
 </div>
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 12] ∥∇∥:       0.4508, ∥Δ∥: 0.0098, η: 1.00, ∥Δᶜ∥: 0.0098, accepted: True , log 𝓛: -433.7106
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 11] ∥∇∥:       1.2253, ∥Δ∥: 0.0314, η: 1.00, ∥Δᶜ∥: 0.0314, accepted: True , log 𝓛: -433.7115
+[ 12] ∥∇∥:       0.4508, ∥Δ∥: 0.0098, η: 1.00, ∥Δᶜ∥: 0.0098, accepted: True , log 𝓛: -433.7106
 </pre></div>
 </div>
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 13] ∥∇∥:       0.1530, ∥Δ∥: 0.0038, η: 1.00, ∥Δᶜ∥: 0.0038, accepted: True , log 𝓛: -433.7105
-[ 14] ∥∇∥:       0.0562, ∥Δ∥: 0.0013, η: 1.00, ∥Δᶜ∥: 0.0013, accepted: True , log 𝓛: -433.7105
 </pre></div>
 </div>
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 15] ∥∇∥:       0.0196, ∥Δ∥: 0.0005, η: 1.00, ∥Δᶜ∥: 0.0005, accepted: True , log 𝓛: -433.7105
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 14] ∥∇∥:       0.0562, ∥Δ∥: 0.0013, η: 1.00, ∥Δᶜ∥: 0.0013, accepted: True , log 𝓛: -433.7105
+[ 15] ∥∇∥:       0.0196, ∥Δ∥: 0.0005, η: 1.00, ∥Δᶜ∥: 0.0005, accepted: True , log 𝓛: -433.7105
+[ 16] ∥∇∥:       0.0071, ∥Δ∥: 0.0002, η: 1.00, ∥Δᶜ∥: 0.0002, accepted: True , log 𝓛: -433.7105
 </pre></div>
 </div>
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 16] ∥∇∥:       0.0071, ∥Δ∥: 0.0002, η: 1.00, ∥Δᶜ∥: 0.0002, accepted: True , log 𝓛: -433.7105
-[ 17] ∥∇∥:       0.0025, ∥Δ∥: 0.0001, η: 1.00, ∥Δᶜ∥: 0.0001, accepted: True , log 𝓛: -433.7105
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 17] ∥∇∥:       0.0025, ∥Δ∥: 0.0001, η: 1.00, ∥Δᶜ∥: 0.0001, accepted: True , log 𝓛: -433.7105
 
 [∇: score, Δ: 𝐉⁻¹∇, η: step length, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 17, total time: 1.45s
+✓ Converged at iteration 17, total time: 1.53s
 
 </pre></div>
 </div>
@@ -1176,13 +1177,11 @@ dtype: int64
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 10] ∥∇∥:       0.0444, ∥Δ∥: 0.0067, η: 1.00, ∥Δᶜ∥: 0.0067, accepted: True , log 𝓛: -267.2773
 [ 11] ∥∇∥:       0.0096, ∥Δ∥: 0.0005, η: 1.00, ∥Δᶜ∥: 0.0005, accepted: True , log 𝓛: -267.2773
 [ 12] ∥∇∥:       0.0015, ∥Δ∥: 0.0004, η: 1.00, ∥Δᶜ∥: 0.0004, accepted: True , log 𝓛: -267.2773
-</pre></div>
-</div>
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 13] ∥∇∥:       0.0004, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, accepted: True , log 𝓛: -267.2773
+[ 13] ∥∇∥:       0.0004, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, accepted: True , log 𝓛: -267.2773
 
 [∇: score, Δ: 𝐉⁻¹∇, η: step length, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 13, total time: 0.76s
+✓ Converged at iteration 13, total time: 0.75s
 
 </pre></div>
 </div>
