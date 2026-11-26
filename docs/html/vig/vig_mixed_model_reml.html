@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Random-Intercept Models" href="vig_random_intercept.html"><link rel="prev" title="Vignettes" href="../vig.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="The Matrix Interface" href="vig_matrix.html"><link rel="prev" title="Vignettes" href="../vig.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>Introduction to Mixed Model REML Estimation - torch-openreml 1.0.0 documentation</title>
@@ -196,8 +196,10 @@
   <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../vig.html">Vignettes</a><input aria-label="Toggle navigation of Vignettes" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Introduction to Mixed Model REML Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vig_matrix.html">The Matrix Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vig_random_intercept.html">Random-Intercept Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vig_random_slope.html">Random-Slope Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vig_known_covariance.html">Random Effects with a Known Covariance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vig_factor_analysis.html">Factor Analysis of a Multi-Environment Trial</a></li>
 </ul>
 </li>
@@ -674,18 +676,19 @@ is not available.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1] ∥∇∥:       4.2882, ∥Δ∥: 1.0907, η: 0.50, ∥Δᶜ∥: 0.5454, accepted: True , log 𝓛:  -3.3515
-[  2] ∥∇∥:       0.5511, ∥Δ∥: 0.1392, η: 1.00, ∥Δᶜ∥: 0.1392, accepted: True , log 𝓛:  -3.3220
-[  3] ∥∇∥:       0.0532, ∥Δ∥: 0.0150, η: 1.00, ∥Δᶜ∥: 0.0150, accepted: True , log 𝓛:  -3.3216
-[  4] ∥∇∥:       0.0005, ∥Δ∥: 0.0001, η: 0.02, ∥Δᶜ∥: 0.0000, accepted: True , log 𝓛:  -3.3216
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  1] ∥∇∥:       3.7535, ∥Δ∥: 0.7383, η: 1.00, ∥Δᶜ∥: 0.7383, accepted: True , log 𝓛:  -5.5326
+[  2] ∥∇∥:       4.4534, ∥Δ∥: 0.2132, η: 1.00, ∥Δᶜ∥: 0.2132, accepted: True , log 𝓛:  -4.9983
+[  3] ∥∇∥:       0.8228, ∥Δ∥: 0.0617, η: 1.00, ∥Δᶜ∥: 0.0617, accepted: True , log 𝓛:  -4.9724
+[  4] ∥∇∥:       0.0469, ∥Δ∥: 0.0040, η: 1.00, ∥Δᶜ∥: 0.0040, accepted: True , log 𝓛:  -4.9723
+[  5] ∥∇∥:       0.0001, ∥Δ∥: 0.0000, η: 1.00, ∥Δᶜ∥: 0.0000, accepted: True , log 𝓛:  -4.9723
 
 [∇: score, Δ: 𝐉⁻¹∇, η: step length, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 4, total time: 0.01s
+✓ Converged at iteration 5, total time: 0.01s
 
 </pre></div>
 </div>
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>([&#39;G/sigma^2&#39;, &#39;R/sigma^2&#39;], tensor([-0.1559, -0.5766]))
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>([&#39;G/sigma^2&#39;, &#39;R/sigma^2&#39;], tensor([-0.1648, -0.4480]))
 </pre></div>
 </div>
 </div>
@@ -899,7 +902,11 @@ fallback step.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[tensor(-3.3515), tensor(-3.3220), tensor(-3.3216), tensor(-3.3216)]
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[tensor(-5.5326),
+ tensor(-4.9983),
+ tensor(-4.9724),
+ tensor(-4.9723),
+ tensor(-4.9723)]
 </pre></div>
 </div>
 </div>
@@ -912,7 +919,7 @@ fallback step.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([-3.3515, -3.3220, -3.3216, -3.3216])
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([-5.5326, -4.9983, -4.9724, -4.9723, -4.9723])
 </pre></div>
 </div>
 </div>
@@ -925,10 +932,11 @@ fallback step.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-0.0357, -0.5442],
-        [-0.1709, -0.5774],
-        [-0.1559, -0.5766],
-        [-0.1559, -0.5766]])
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-0.1389, -0.7251],
+        [-0.1509, -0.5122],
+        [-0.1637, -0.4519],
+        [-0.1648, -0.4480],
+        [-0.1648, -0.4480]])
 </pre></div>
 </div>
 </div>
@@ -953,7 +961,7 @@ optimisation overshoots or oscillates near convergence.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>([&#39;G/sigma^2&#39;, &#39;R/sigma^2&#39;], tensor([-0.1559, -0.5766]))
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>([&#39;G/sigma^2&#39;, &#39;R/sigma^2&#39;], tensor([-0.1648, -0.4480]))
 </pre></div>
 </div>
 </div>
@@ -975,7 +983,7 @@ on the model scale.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;G/sigma^2&#39;: tensor([0.7321]), &#39;R/sigma^2&#39;: tensor([0.3156])}
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;G/sigma^2&#39;: tensor([0.7192]), &#39;R/sigma^2&#39;: tensor([0.4082])}
 </pre></div>
 </div>
 </div>
@@ -1005,26 +1013,26 @@ random-effect terms, the tree contains only <code class="docutils literal notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;/&#39;: tensor([[1.0478, 0.0000, 0.7321, 0.0000, 0.7321, 0.0000, 0.7321, 0.0000, 0.7321,
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;/&#39;: tensor([[1.1274, 0.0000, 0.7192, 0.0000, 0.7192, 0.0000, 0.7192, 0.0000, 0.7192,
           0.0000],
-         [0.0000, 1.0478, 0.0000, 0.7321, 0.0000, 0.7321, 0.0000, 0.7321, 0.0000,
-          0.7321],
-         [0.7321, 0.0000, 1.0478, 0.0000, 0.7321, 0.0000, 0.7321, 0.0000, 0.7321,
+         [0.0000, 1.1274, 0.0000, 0.7192, 0.0000, 0.7192, 0.0000, 0.7192, 0.0000,
+          0.7192],
+         [0.7192, 0.0000, 1.1274, 0.0000, 0.7192, 0.0000, 0.7192, 0.0000, 0.7192,
           0.0000],
-         [0.0000, 0.7321, 0.0000, 1.0478, 0.0000, 0.7321, 0.0000, 0.7321, 0.0000,
-          0.7321],
-         [0.7321, 0.0000, 0.7321, 0.0000, 1.0478, 0.0000, 0.7321, 0.0000, 0.7321,
+         [0.0000, 0.7192, 0.0000, 1.1274, 0.0000, 0.7192, 0.0000, 0.7192, 0.0000,
+          0.7192],
+         [0.7192, 0.0000, 0.7192, 0.0000, 1.1274, 0.0000, 0.7192, 0.0000, 0.7192,
           0.0000],
-         [0.0000, 0.7321, 0.0000, 0.7321, 0.0000, 1.0478, 0.0000, 0.7321, 0.0000,
-          0.7321],
-         [0.7321, 0.0000, 0.7321, 0.0000, 0.7321, 0.0000, 1.0478, 0.0000, 0.7321,
+         [0.0000, 0.7192, 0.0000, 0.7192, 0.0000, 1.1274, 0.0000, 0.7192, 0.0000,
+          0.7192],
+         [0.7192, 0.0000, 0.7192, 0.0000, 0.7192, 0.0000, 1.1274, 0.0000, 0.7192,
           0.0000],
-         [0.0000, 0.7321, 0.0000, 0.7321, 0.0000, 0.7321, 0.0000, 1.0478, 0.0000,
-          0.7321],
-         [0.7321, 0.0000, 0.7321, 0.0000, 0.7321, 0.0000, 0.7321, 0.0000, 1.0478,
+         [0.0000, 0.7192, 0.0000, 0.7192, 0.0000, 0.7192, 0.0000, 1.1274, 0.0000,
+          0.7192],
+         [0.7192, 0.0000, 0.7192, 0.0000, 0.7192, 0.0000, 0.7192, 0.0000, 1.1274,
           0.0000],
-         [0.0000, 0.7321, 0.0000, 0.7321, 0.0000, 0.7321, 0.0000, 0.7321, 0.0000,
-          1.0478]]),
+         [0.0000, 0.7192, 0.0000, 0.7192, 0.0000, 0.7192, 0.0000, 0.7192, 0.0000,
+          1.1274]]),
  &#39;Z&#39;: tensor([[1., 0.],
          [0., 1.],
          [1., 0.],
@@ -1035,28 +1043,28 @@ random-effect terms, the tree contains only <code class="docutils literal notran
          [0., 1.],
          [1., 0.],
          [0., 1.]]),
- &#39;G&#39;: tensor([[0.7321, 0.0000],
-         [0.0000, 0.7321]]),
- &#39;R&#39;: tensor([[0.3156, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+ &#39;G&#39;: tensor([[0.7192, 0.0000],
+         [0.0000, 0.7192]]),
+ &#39;R&#39;: tensor([[0.4082, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
           0.0000],
-         [0.0000, 0.3156, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+         [0.0000, 0.4082, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
           0.0000],
-         [0.0000, 0.0000, 0.3156, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+         [0.0000, 0.0000, 0.4082, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
           0.0000],
-         [0.0000, 0.0000, 0.0000, 0.3156, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+         [0.0000, 0.0000, 0.0000, 0.4082, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
           0.0000],
-         [0.0000, 0.0000, 0.0000, 0.0000, 0.3156, 0.0000, 0.0000, 0.0000, 0.0000,
+         [0.0000, 0.0000, 0.0000, 0.0000, 0.4082, 0.0000, 0.0000, 0.0000, 0.0000,
           0.0000],
-         [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.3156, 0.0000, 0.0000, 0.0000,
+         [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.4082, 0.0000, 0.0000, 0.0000,
           0.0000],
-         [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.3156, 0.0000, 0.0000,
+         [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.4082, 0.0000, 0.0000,
           0.0000],
-         [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.3156, 0.0000,
+         [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.4082, 0.0000,
           0.0000],
-         [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.3156,
+         [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.4082,
           0.0000],
          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
-          0.3156]])}
+          0.4082]])}
 </pre></div>
 </div>
 </div>
@@ -1083,7 +1091,7 @@ random-effect terms, the tree contains only <code class="docutils literal notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 0.6561, -0.4716])
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 0.4491, -0.4573])
 </pre></div>
 </div>
 </div>
@@ -1100,8 +1108,8 @@ random-effect terms, the tree contains only <code class="docutils literal notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[0.0593, 0.0119],
-        [0.0119, 0.1044]])
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[0.0293, 0.0157],
+        [0.0157, 0.0688]])
 </pre></div>
 </div>
 </div>
@@ -1118,7 +1126,7 @@ random-effect terms, the tree contains only <code class="docutils literal notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([0.2436, 0.3231])
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([0.1711, 0.2623])
 </pre></div>
 </div>
 </div>
@@ -1147,7 +1155,7 @@ random-effect terms, the tree contains only <code class="docutils literal notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 0.9230, -0.6892])
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 0.6915, -0.8678])
 </pre></div>
 </div>
 </div>
@@ -1164,8 +1172,8 @@ random-effect terms, the tree contains only <code class="docutils literal notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[ 0.6599, -0.0067],
-        [-0.0067,  0.6668]])
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[0.5889, 0.0032],
+        [0.0032, 0.6424]])
 </pre></div>
 </div>
 </div>
@@ -1182,7 +1190,7 @@ random-effect terms, the tree contains only <code class="docutils literal notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([0.6599, 0.6668])
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([0.5889, 0.6424])
 </pre></div>
 </div>
 </div>
@@ -1199,7 +1207,7 @@ random-effect terms, the tree contains only <code class="docutils literal notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;genotype&#39;: tensor([ 0.9230, -0.6892])}
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;genotype&#39;: tensor([ 0.6915, -0.8678])}
 </pre></div>
 </div>
 </div>
@@ -1216,8 +1224,8 @@ random-effect terms, the tree contains only <code class="docutils literal notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;genotype&#39;: tensor([[ 0.6599, -0.0067],
-         [-0.0067,  0.6668]])}
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;genotype&#39;: tensor([[0.5889, 0.0032],
+         [0.0032, 0.6424]])}
 </pre></div>
 </div>
 </div>
@@ -1234,7 +1242,7 @@ random-effect terms, the tree contains only <code class="docutils literal notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;genotype&#39;: tensor([0.6599, 0.6668])}
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;genotype&#39;: tensor([0.5889, 0.6424])}
 </pre></div>
 </div>
 </div>
@@ -1254,8 +1262,8 @@ random-effect terms, the tree contains only <code class="docutils literal notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([-7.4236e-01, -2.7355e-01,  4.5222e-01, -1.5072e+00, -8.6841e-01,
-         4.2749e-01,  1.2203e-01, -9.9789e-04, -2.4980e-01, -1.5936e-01])
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([-0.6209,  0.7244,  0.7736,  0.5274,  1.0974,  1.3518,  0.7843, -1.2331,
+         0.5651, -0.4491])
 </pre></div>
 </div>
 </div>
@@ -1275,8 +1283,8 @@ For a model with no random-effect terms this reduces to
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 0.1806, -0.9628,  1.3752, -2.1964,  0.0546, -0.2617,  1.0450, -0.6902,
-         0.6732, -0.8486])
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 0.0706, -0.1434,  1.4651, -0.3404,  1.7889,  0.4840,  1.4757, -2.1009,
+         1.2565, -1.3169])
 </pre></div>
 </div>
 </div>
@@ -1307,7 +1315,7 @@ one-row batch.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 0.1806, -0.9628])
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 0.0706, -0.1434])
 </pre></div>
 </div>
 </div>
@@ -1325,7 +1333,7 @@ one-row batch.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 0.1806, -0.9628])
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 0.0706, -0.1434])
 </pre></div>
 </div>
 </div>
@@ -1346,8 +1354,8 @@ one-row batch.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 0.8993, -0.0089,  0.8618, -0.6759,  0.4293, -1.4035,  1.7114, -0.6919,
-         1.1110, -0.9630])
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 1.5868, -0.7943,  0.6020, -0.8039, -0.2332, -0.5604,  1.2735, -1.2502,
+         0.6207, -1.4229])
 </pre></div>
 </div>
 </div>
@@ -1367,8 +1375,8 @@ For a model with no random-effect terms this reduces to
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([-0.0237,  0.6803, -0.0611,  0.0133, -0.4937, -0.7143,  0.7884, -0.0027,
-         0.1880, -0.2738])
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([ 0.8954,  0.0735, -0.0895,  0.0640, -0.9246,  0.3074,  0.5820, -0.3824,
+        -0.0707, -0.5551])
 </pre></div>
 </div>
 </div>
@@ -1402,14 +1410,14 @@ must have random-effect terms.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([[0.0593, 0.0119],
-         [0.0119, 0.1044]]),
- tensor([[ 0.0276,  0.0178],
-         [ 0.0171, -0.0103]]),
- tensor([[ 0.0276,  0.0171],
-         [ 0.0178, -0.0103]]),
- tensor([[0.0722, 0.0067],
-         [0.0067, 0.0653]]))
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor([[0.0293, 0.0157],
+         [0.0157, 0.0688]]),
+ tensor([[ 0.0119, -0.0101],
+         [ 0.0625, -0.0044]]),
+ tensor([[ 0.0119,  0.0625],
+         [-0.0101, -0.0044]]),
+ tensor([[ 0.1303, -0.0032],
+         [-0.0032,  0.0768]]))
 </pre></div>
 </div>
 </div>
@@ -1433,7 +1441,7 @@ method when the C-form is not applicable.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor(-3.3216), &#39;cform&#39;)
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(tensor(-4.9723), &#39;cform&#39;)
 </pre></div>
 </div>
 </div>
@@ -1463,12 +1471,12 @@ method when the C-form is not applicable.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="vig_random_intercept.html">
+          <a class="next-page" href="vig_matrix.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Random-Intercept Models</div>
+                <div class="title">The Matrix Interface</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>

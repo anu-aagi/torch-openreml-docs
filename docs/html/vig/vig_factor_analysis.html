@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="For R Users" href="../r_user.html"><link rel="prev" title="Random-Slope Models" href="vig_random_slope.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="For R Users" href="../r_user.html"><link rel="prev" title="Random Effects with a Known Covariance" href="vig_known_covariance.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>Factor Analysis of a Multi-Environment Trial - torch-openreml 1.0.0 documentation</title>
@@ -196,8 +196,10 @@
   <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../vig.html">Vignettes</a><input aria-label="Toggle navigation of Vignettes" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="vig_mixed_model_reml.html">Introduction to Mixed Model REML Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vig_matrix.html">The Matrix Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vig_random_intercept.html">Random-Intercept Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vig_random_slope.html">Random-Slope Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vig_known_covariance.html">Random Effects with a Known Covariance</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Factor Analysis of a Multi-Environment Trial</a></li>
 </ul>
 </li>
@@ -693,10 +695,10 @@ C-form for this covariance structure:</p>
 </pre></div>
 </div>
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  7] ∥∇∥:      59.2477, ∥Δ∥: 1.0082, η: 1.00, ∥Δᶜ∥: 1.0082, accepted: True , log 𝓛: -442.0145
-[  8] ∥∇∥:      39.1265, ∥Δ∥: 0.4969, η: 1.00, ∥Δᶜ∥: 0.4969, accepted: True , log 𝓛: -434.7584
 </pre></div>
 </div>
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  9] ∥∇∥:      14.5894, ∥Δ∥: 0.2143, η: 1.00, ∥Δᶜ∥: 0.2143, accepted: True , log 𝓛: -433.7947
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[  8] ∥∇∥:      39.1265, ∥Δ∥: 0.4969, η: 1.00, ∥Δᶜ∥: 0.4969, accepted: True , log 𝓛: -434.7584
+[  9] ∥∇∥:      14.5894, ∥Δ∥: 0.2143, η: 1.00, ∥Δᶜ∥: 0.2143, accepted: True , log 𝓛: -433.7947
 </pre></div>
 </div>
 <div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>[ 10] ∥∇∥:       4.0579, ∥Δ∥: 0.0649, η: 1.00, ∥Δᶜ∥: 0.0649, accepted: True , log 𝓛: -433.7195
@@ -1180,7 +1182,7 @@ dtype: int64
 
 [∇: score, Δ: 𝐉⁻¹∇, η: step length, Δᶜ: clip(𝛉 + ηΔ, lb, ub) - 𝛉, 𝓛: restricted likelihood]
 
-✓ Converged at iteration 13, total time: 0.75s
+✓ Converged at iteration 13, total time: 0.76s
 
 </pre></div>
 </div>
@@ -1433,14 +1435,14 @@ information to distinguish between the two.</p>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="vig_random_slope.html">
+          <a class="prev-page" href="vig_known_covariance.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Random-Slope Models</div>
+                <div class="title">Random Effects with a Known Covariance</div>
                 
               </div>
             </a>
